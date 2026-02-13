@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investigation - Fraud Finder</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1419; color: #e7e9ea; line-height: 1.5; }
+a { color: #1d9bf0; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid #e63946; padding: 1rem 2rem; }
+.header h1 { font-size: 1.2rem; }
+.header h1 span { color: #e63946; }
+.container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+.card { background: #1a1f2e; border: 1px solid #2f3640; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+.card h2 { font-size: 1rem; color: #e63946; margin-bottom: 0.75rem; }
+.meta { font-size: 0.8rem; color: #8899a6; }
+.badge { display: inline-block; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; }
+.badge-red { background: rgba(230,57,70,0.25); color: #e63946; }
+.evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.evidence-item { background: #0f1419; border-radius: 8px; overflow: hidden; }
+.evidence-item video, .evidence-item img { width: 100%; display: block; }
+.evidence-item .caption { padding: 0.5rem; font-size: 0.8rem; color: #8899a6; }
+.share-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.share-btn { padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; border: none; cursor: pointer; color: white; }
+.share-x { background: #000; border: 1px solid #333; }
+.share-fb { background: #1877f2; }
+.share-reddit { background: #ff4500; }
+.share-copy { background: #2f3640; }
+.back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.85rem; }
+.notes { background: #0f1419; padding: 0.75rem; border-radius: 4px; font-size: 0.85rem; white-space: pre-wrap; }
+
+/* Upload form */
+.upload-form { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #2f3640; }
+label { display: block; font-size: 0.8rem; color: #8899a6; margin-bottom: 0.25rem; }
+textarea { width: 100%; padding: 0.5rem; background: #0f1419; color: #e7e9ea; border: 1px solid #2f3640; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.5rem; }
+button.btn-primary { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; background: #e63946; color: white; }
+.status { padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.8rem; display: none; }
+.status.success { display: block; background: rgba(45,198,83,0.15); border: 1px solid #2dc653; }
+.status.error { display: block; background: rgba(230,57,70,0.15); border: 1px solid #e63946; }
+.footer { text-align: center; padding: 2rem 1rem; color: #8899a6; font-size: 0.75rem; border-top: 1px solid #2f3640; margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><a href="/" style="color:inherit;"><span>Fraud Finder</span> for Citizen Journalists</a></h1>
+</div>
+
+<div class="container">
+  <a class="back-link" href="/">&larr; Back to Dashboard</a>
+
+  <div id="loading" class="card">Loading investigation...</div>
+  <div id="content" style="display:none;"></div>
+</div>
+
+<div class="footer">
+  <p>Data source: <a href="https://data.cms.gov" target="_blank">CMS.gov</a> | Outliers are not proof of fraud. Verify before accusing.</p>
+</div>
+
+<script>
+const INV_ID = "{{ investigation_id }}";
+
+function fmtUSD(n) {
+  if (n == null) return '-';
+  return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+async function load() {
+  try {
+    const resp = await fetch(`/api/investigations/${INV_ID}`);
+    if (!resp.ok) throw new Error('Investigation not found');
+    const inv = await resp.json();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    render(inv);
+  } catch (e) {
+    document.getElementById('loading').innerHTML = '<span style="color:#e63946;">Investigation not found.</span>';
+  }
+}
+
+function render(inv) {
+  const shareText = encodeURIComponent(`Medicare billing outlier: ${inv.provider_name || 'Provider'} in ${inv.city || ''}, ${inv.state || ''} — ${inv.std_devs_above ? inv.std_devs_above.toFixed(1) + ' std devs above average' : ''} for ${inv.hcpcs || ''}. #FraudFinder #CitizenJournalism`);
+  const shareUrl = encodeURIComponent(window.location.href);
+
+  let evidenceHTML = '';
+  if (inv.evidence && inv.evidence.length > 0) {
+    evidenceHTML = '<div class="evidence-grid">' + inv.evidence.map(e => `
+      <div class="evidence-item">
+        ${e.media_type === 'video'
+          ? `<video controls><source src="/uploads/${e.filename}" type="video/mp4">Your browser does not support video.</video>`
+          : `<img src="/uploads/${e.filename}" alt="Evidence">`}
+        <div class="caption">${e.caption || ''}<br><span style="font-size:0.7rem;">${new Date(e.created_at).toLocaleString()}</span></div>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <h2>Investigation: ${inv.provider_name || 'Unknown Provider'}</h2>
+      <p><strong>NPI:</strong> ${inv.npi || 'N/A'}</p>
+      <p><strong>Location:</strong> ${inv.city || ''}, ${inv.state || ''} ${inv.zip || ''}</p>
+      <p><strong>HCPCS Code:</strong> ${inv.hcpcs || ''} ${inv.hcpcs_desc ? '— ' + inv.hcpcs_desc : ''}</p>
+      <p><strong>Flagged Metric:</strong> ${inv.metric ? inv.metric.replace(/_/g, ' ') : ''} = ${inv.metric && inv.metric.includes('payment') ? fmtUSD(inv.value) : (inv.value || 'N/A')}</p>
+      <p>${inv.std_devs_above ? '<span class="badge badge-red">' + inv.std_devs_above.toFixed(1) + ' std devs above mean</span>' : ''}</p>
+      <p class="meta">Created: ${new Date(inv.created_at).toLocaleString()}</p>
+
+      ${inv.notes ? '<h3 style="margin-top:1rem;color:#8899a6;">Investigator Notes</h3><div class="notes">' + inv.notes + '</div>' : ''}
+    </div>
+
+    <div class="card">
+      <h2>Evidence</h2>
+      ${evidenceHTML || '<p class="meta">No evidence uploaded yet.</p>'}
+
+      <div class="upload-form">
+        <h3 style="color:#8899a6;margin-bottom:0.5rem;">Add More Evidence</h3>
+        <input type="file" id="ev-file" accept="video/*,image/*" style="margin-bottom:0.5rem;">
+        <label>Caption</label>
+        <textarea id="ev-caption" rows="2" placeholder="Describe what this evidence shows..."></textarea>
+        <button class="btn-primary" onclick="uploadMore()">Upload</button>
+        <div id="upload-status" class="status"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Share This Investigation</h2>
+      <p class="meta" style="margin-bottom:0.75rem;">Spread the word — let others know about this billing anomaly.</p>
+      <div class="share-btns">
+        <button class="share-btn share-x" onclick="window.open('https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}','_blank')">Post on X</button>
+        <button class="share-btn share-fb" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${shareUrl}','_blank')">Facebook</button>
+        <button class="share-btn share-reddit" onclick="window.open('https://www.reddit.com/submit?url=${shareUrl}&title=${shareText}','_blank')">Reddit</button>
+        <button class="share-btn share-copy" onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!'))">Copy Link</button>
+      </div>
+    </div>
+  `;
+}
+
+async function uploadMore() {
+  const fileInput = document.getElementById('ev-file');
+  const statusEl = document.getElementById('upload-status');
+  if (!fileInput.files.length) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Please select a file.';
+    return;
+  }
+  const formData = new FormData();
+  formData.append('file', fileInput.files[0]);
+  formData.append('caption', document.getElementById('ev-caption').value);
+  try {
+    const resp = await fetch(`/api/investigate/${INV_ID}/upload`, {method: 'POST', body: formData});
+    if (!resp.ok) throw new Error('Upload failed');
+    statusEl.className = 'status success';
+    statusEl.textContent = 'Evidence uploaded! Reloading...';
+    setTimeout(() => load(), 1000);
+  } catch (e) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Error: ' + e.message;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
