@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – CalSync</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { font-family: 'Inter', system-ui, sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Nav -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-blue-600">CalSync</a>
+    <div class="flex items-center gap-4">
+      <a href="/availability" class="text-sm text-gray-600 hover:text-gray-900 font-medium">Availability</a>
+      <div class="flex items-center gap-2 cursor-pointer" id="userMenu">
+        <img id="userPic" class="w-8 h-8 rounded-full bg-gray-200 hidden" />
+        <span id="userName" class="text-sm font-medium text-gray-700"></span>
+        <button onclick="logout()"
+          class="ml-2 text-xs text-gray-400 hover:text-red-500 transition">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-6 py-10">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Event Types</h1>
+        <p class="text-gray-500 text-sm mt-1">Manage the types of meetings people can book with you.</p>
+      </div>
+      <button onclick="openCreateModal()"
+        class="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition">
+        + New event type
+      </button>
+    </div>
+
+    <!-- Booking page link -->
+    <div id="shareBar" class="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 mb-8 flex items-center justify-between hidden">
+      <div>
+        <p class="text-sm font-medium text-blue-800">Your booking page</p>
+        <p id="shareUrl" class="text-sm text-blue-600 font-mono mt-0.5"></p>
+      </div>
+      <button onclick="copyShareUrl()"
+        class="text-xs bg-white border border-blue-300 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-50 transition font-medium">
+        Copy link
+      </button>
+    </div>
+
+    <!-- Event type cards -->
+    <div id="eventTypeGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14"></div>
+
+    <!-- Bookings section -->
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-bold text-gray-900">Upcoming Bookings</h2>
+    </div>
+    <div id="bookingsList" class="space-y-3"></div>
+    <p id="noBookings" class="text-gray-400 text-sm hidden">No upcoming bookings yet.</p>
+
+  </div>
+
+  <!-- Create / Edit modal -->
+  <div id="modal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8">
+      <h2 id="modalTitle" class="text-xl font-bold mb-6">New event type</h2>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <input id="etName" type="text" placeholder="e.g. 30 Minute Meeting"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+          <select id="etDuration"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="15">15 minutes</option>
+            <option value="30" selected>30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">60 minutes</option>
+            <option value="90">90 minutes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+          <textarea id="etDesc" rows="2" placeholder="A brief description…"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Location / Link (optional)</label>
+          <input id="etLocation" type="text" placeholder="Zoom link, office address…"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Colour</label>
+          <input id="etColor" type="color" value="#0069ff" class="h-9 w-full rounded cursor-pointer" />
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-8">
+        <button onclick="closeModal()"
+          class="flex-1 border border-gray-300 text-gray-700 rounded-lg py-2.5 text-sm font-medium hover:bg-gray-50 transition">
+          Cancel
+        </button>
+        <button onclick="saveEventType()"
+          class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-blue-700 transition">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+    let token = '';
+    let currentUser = null;
+    let editingId = null;
+
+    // ── Bootstrap ─────────────────────────────────────────────────────────────
+    (async function init() {
+      // Grab token from URL or localStorage
+      const params = new URLSearchParams(location.search);
+      const urlToken = params.get('token');
+      if (urlToken) {
+        localStorage.setItem('auth_token', urlToken);
+        history.replaceState({}, '', '/dashboard');
+      }
+      token = localStorage.getItem('auth_token') || '';
+      if (!token) return (window.location.href = '/');
+
+      try {
+        currentUser = await apiFetch('/api/auth/me');
+      } catch {
+        return (window.location.href = '/');
+      }
+
+      document.getElementById('userName').textContent = currentUser.name;
+      const pic = document.getElementById('userPic');
+      if (currentUser.picture_url) {
+        pic.src = currentUser.picture_url;
+        pic.classList.remove('hidden');
+      }
+
+      const shareBar = document.getElementById('shareBar');
+      const shareUrl = document.getElementById('shareUrl');
+      shareUrl.textContent = `${location.origin}/book/${currentUser.username}`;
+      shareBar.classList.remove('hidden');
+
+      await Promise.all([loadEventTypes(), loadBookings()]);
+    })();
+
+    // ── API helper ────────────────────────────────────────────────────────────
+    async function apiFetch(path, options = {}) {
+      const res = await fetch(path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          ...(options.headers || {}),
+        },
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('auth_token');
+        window.location.href = '/';
+        throw new Error('Unauthenticated');
+      }
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    }
+
+    // ── Event types ───────────────────────────────────────────────────────────
+    async function loadEventTypes() {
+      const ets = await apiFetch('/api/event-types');
+      const grid = document.getElementById('eventTypeGrid');
+      grid.innerHTML = '';
+      if (!ets.length) {
+        grid.innerHTML = `<p class="text-gray-400 text-sm col-span-3">
+          No event types yet. Create one above!</p>`;
+        return;
+      }
+      ets.forEach(et => grid.insertAdjacentHTML('beforeend', renderCard(et)));
+    }
+
+    function renderCard(et) {
+      const bookUrl = `${location.origin}/book/${currentUser.username}/${et.slug}`;
+      return `
+        <div class="bg-white rounded-2xl border-t-4 shadow-sm p-6 flex flex-col gap-3"
+             style="border-color:${et.color}">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-semibold text-gray-900">${escHtml(et.name)}</h3>
+              <p class="text-xs text-gray-400 mt-0.5">${et.duration_minutes} min${et.location ? ' · ' + escHtml(et.location) : ''}</p>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full font-medium ${et.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}">
+              ${et.is_active ? 'Active' : 'Inactive'}
+            </span>
+          </div>
+          ${et.description ? `<p class="text-sm text-gray-500">${escHtml(et.description)}</p>` : ''}
+          <div class="flex gap-2 mt-auto pt-2 border-t border-gray-100">
+            <button onclick="copyLink('${bookUrl}')"
+              class="flex-1 text-xs border border-gray-200 rounded-lg py-1.5 hover:bg-gray-50 transition text-gray-600 font-medium">
+              Copy link
+            </button>
+            <button onclick="openEditModal(${JSON.stringify(et).replace(/"/g, '&quot;')})"
+              class="flex-1 text-xs border border-gray-200 rounded-lg py-1.5 hover:bg-gray-50 transition text-gray-600 font-medium">
+              Edit
+            </button>
+            <button onclick="toggleActive(${et.id}, ${!et.is_active})"
+              class="flex-1 text-xs border border-gray-200 rounded-lg py-1.5 hover:bg-gray-50 transition text-gray-600 font-medium">
+              ${et.is_active ? 'Deactivate' : 'Activate'}
+            </button>
+            <button onclick="deleteEventType(${et.id})"
+              class="text-xs border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-50 transition text-red-500 font-medium">
+              Delete
+            </button>
+          </div>
+        </div>`;
+    }
+
+    async function toggleActive(id, newState) {
+      await apiFetch(`/api/event-types/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ is_active: newState }),
+      });
+      loadEventTypes();
+    }
+
+    async function deleteEventType(id) {
+      if (!confirm('Delete this event type? All bookings will also be removed.')) return;
+      await apiFetch(`/api/event-types/${id}`, { method: 'DELETE' });
+      loadEventTypes();
+    }
+
+    // ── Bookings ──────────────────────────────────────────────────────────────
+    async function loadBookings() {
+      const bookings = await apiFetch('/api/bookings');
+      const list = document.getElementById('bookingsList');
+      const none = document.getElementById('noBookings');
+      list.innerHTML = '';
+
+      const upcoming = bookings.filter(b =>
+        b.status === 'confirmed' && new Date(b.start_time) > new Date()
+      );
+
+      if (!upcoming.length) {
+        none.classList.remove('hidden');
+        return;
+      }
+      none.classList.add('hidden');
+
+      upcoming.forEach(b => {
+        const start = new Date(b.start_time + 'Z');
+        list.insertAdjacentHTML('beforeend', `
+          <div class="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium text-gray-900">${escHtml(b.invitee_name)}
+                <span class="text-gray-400 text-sm font-normal">· ${escHtml(b.invitee_email)}</span>
+              </p>
+              <p class="text-sm text-gray-500 mt-0.5">
+                ${escHtml(b.event_type)} ·
+                ${start.toLocaleDateString(undefined, {weekday:'short', month:'short', day:'numeric'})}
+                at ${start.toLocaleTimeString(undefined, {hour:'2-digit', minute:'2-digit'})}
+              </p>
+            </div>
+            <button onclick="cancelBooking(${b.id})"
+              class="text-xs text-red-500 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-50 transition font-medium">
+              Cancel
+            </button>
+          </div>`);
+      });
+    }
+
+    async function cancelBooking(id) {
+      if (!confirm('Cancel this booking?')) return;
+      await apiFetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      loadBookings();
+    }
+
+    // ── Modal ─────────────────────────────────────────────────────────────────
+    function openCreateModal() {
+      editingId = null;
+      document.getElementById('modalTitle').textContent = 'New event type';
+      document.getElementById('etName').value = '';
+      document.getElementById('etDuration').value = '30';
+      document.getElementById('etDesc').value = '';
+      document.getElementById('etLocation').value = '';
+      document.getElementById('etColor').value = '#0069ff';
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function openEditModal(et) {
+      editingId = et.id;
+      document.getElementById('modalTitle').textContent = 'Edit event type';
+      document.getElementById('etName').value = et.name;
+      document.getElementById('etDuration').value = et.duration_minutes;
+      document.getElementById('etDesc').value = et.description || '';
+      document.getElementById('etLocation').value = et.location || '';
+      document.getElementById('etColor').value = et.color;
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    async function saveEventType() {
+      const body = {
+        name: document.getElementById('etName').value.trim(),
+        duration_minutes: parseInt(document.getElementById('etDuration').value),
+        description: document.getElementById('etDesc').value.trim(),
+        location: document.getElementById('etLocation').value.trim(),
+        color: document.getElementById('etColor').value,
+      };
+      if (!body.name) return alert('Please enter a name.');
+
+      if (editingId) {
+        await apiFetch(`/api/event-types/${editingId}`, {
+          method: 'PUT', body: JSON.stringify(body),
+        });
+      } else {
+        await apiFetch('/api/event-types', {
+          method: 'POST', body: JSON.stringify(body),
+        });
+      }
+      closeModal();
+      loadEventTypes();
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function copyLink(url) {
+      navigator.clipboard.writeText(url);
+      alert('Booking link copied!');
+    }
+
+    function copyShareUrl() {
+      const url = document.getElementById('shareUrl').textContent;
+      navigator.clipboard.writeText(url);
+      alert('Link copied!');
+    }
+
+    function logout() {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/';
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
+</body>
+</html>

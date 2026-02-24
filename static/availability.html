@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Availability – CalSync</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { font-family: 'Inter', system-ui, sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Nav -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-blue-600">CalSync</a>
+    <div class="flex items-center gap-4">
+      <a href="/dashboard" class="text-sm text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
+      <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-500 transition">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-6 py-10">
+
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-900">Availability</h1>
+      <p class="text-gray-500 text-sm mt-1">
+        Set the hours you're available each day. Visitors can only book within these windows.
+        All times are in your browser's local timezone.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 divide-y divide-gray-100" id="availGrid">
+      <!-- rows rendered by JS -->
+    </div>
+
+    <div id="saveBar" class="mt-6 flex justify-end">
+      <button onclick="saveAvailability()"
+        class="bg-blue-600 text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition shadow">
+        Save changes
+      </button>
+    </div>
+
+    <p id="savedMsg" class="mt-4 text-center text-green-600 text-sm font-medium hidden">
+      Availability saved!
+    </p>
+
+  </div>
+
+  <script>
+    const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    let token = localStorage.getItem('auth_token') || '';
+    let availability = [];
+
+    (async function init() {
+      if (!token) return (window.location.href = '/');
+      try {
+        availability = await apiFetch('/api/availability');
+        // Fill in missing days
+        for (let dow = 0; dow < 7; dow++) {
+          if (!availability.find(a => a.day_of_week === dow)) {
+            availability.push({ day_of_week: dow, start_time: '09:00', end_time: '17:00', is_active: false });
+          }
+        }
+        availability.sort((a, b) => a.day_of_week - b.day_of_week);
+        renderRows();
+      } catch {
+        window.location.href = '/';
+      }
+    })();
+
+    async function apiFetch(path, options = {}) {
+      const res = await fetch(path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          ...(options.headers || {}),
+        },
+      });
+      if (res.status === 401) { localStorage.removeItem('auth_token'); window.location.href = '/'; throw new Error(); }
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    }
+
+    function renderRows() {
+      const grid = document.getElementById('availGrid');
+      grid.innerHTML = '';
+      availability.forEach(a => {
+        grid.insertAdjacentHTML('beforeend', `
+          <div class="px-6 py-4 flex items-center gap-4">
+            <!-- Toggle -->
+            <button onclick="toggleDay(${a.day_of_week})"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition
+                     ${a.is_active ? 'bg-blue-600' : 'bg-gray-200'}"
+              id="toggle-${a.day_of_week}">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition
+                           ${a.is_active ? 'translate-x-6' : 'translate-x-1'}"
+                    id="knob-${a.day_of_week}"></span>
+            </button>
+
+            <!-- Day label -->
+            <span class="w-28 text-sm font-medium ${a.is_active ? 'text-gray-900' : 'text-gray-400'}"
+                  id="label-${a.day_of_week}">
+              ${DAYS[a.day_of_week]}
+            </span>
+
+            <!-- Times -->
+            <div id="times-${a.day_of_week}" class="flex items-center gap-2 ${a.is_active ? '' : 'opacity-40 pointer-events-none'}">
+              <input type="time" value="${a.start_time}"
+                onchange="updateTime(${a.day_of_week}, 'start', this.value)"
+                class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <span class="text-gray-400 text-sm">–</span>
+              <input type="time" value="${a.end_time}"
+                onchange="updateTime(${a.day_of_week}, 'end', this.value)"
+                class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <span id="unavail-${a.day_of_week}"
+              class="text-sm text-gray-400 ${a.is_active ? 'hidden' : ''}">Unavailable</span>
+          </div>`);
+      });
+    }
+
+    function toggleDay(dow) {
+      const a = availability.find(x => x.day_of_week === dow);
+      a.is_active = !a.is_active;
+
+      document.getElementById(`toggle-${dow}`).className =
+        `relative inline-flex h-6 w-11 items-center rounded-full transition ${a.is_active ? 'bg-blue-600' : 'bg-gray-200'}`;
+      document.getElementById(`knob-${dow}`).className =
+        `inline-block h-4 w-4 transform rounded-full bg-white shadow transition ${a.is_active ? 'translate-x-6' : 'translate-x-1'}`;
+      document.getElementById(`label-${dow}`).className =
+        `w-28 text-sm font-medium ${a.is_active ? 'text-gray-900' : 'text-gray-400'}`;
+      document.getElementById(`times-${dow}`).className =
+        `flex items-center gap-2 ${a.is_active ? '' : 'opacity-40 pointer-events-none'}`;
+      const unavail = document.getElementById(`unavail-${dow}`);
+      if (a.is_active) unavail.classList.add('hidden'); else unavail.classList.remove('hidden');
+    }
+
+    function updateTime(dow, field, value) {
+      const a = availability.find(x => x.day_of_week === dow);
+      if (field === 'start') a.start_time = value;
+      else a.end_time = value;
+    }
+
+    async function saveAvailability() {
+      await apiFetch('/api/availability', {
+        method: 'PUT',
+        body: JSON.stringify(availability),
+      });
+      const msg = document.getElementById('savedMsg');
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 3000);
+    }
+
+    function logout() {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>

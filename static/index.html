@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalSync – Scheduling made simple</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+
+  <!-- Nav -->
+  <nav class="flex items-center justify-between px-8 py-4 border-b border-gray-100">
+    <span class="text-2xl font-bold text-blue-600">CalSync</span>
+    <a href="/api/auth/google"
+       class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transition">
+      Sign in with Google
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="max-w-4xl mx-auto px-6 py-24 text-center">
+    <h1 class="text-5xl font-extrabold leading-tight mb-6">
+      Scheduling that syncs with<br/>
+      <span class="text-blue-600">your Google Calendar</span>
+    </h1>
+    <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+      Share a link. Let people book time with you. Every appointment
+      automatically blocks your calendar and sends invites — no back-and-forth required.
+    </p>
+    <a href="/api/auth/google"
+       class="inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition shadow-lg">
+      <!-- Google icon -->
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Get started free with Google
+    </a>
+  </section>
+
+  <!-- Features -->
+  <section class="bg-gray-50 py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-14">Everything you need</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Google Calendar Sync</h3>
+          <p class="text-gray-500 text-sm">
+            Reads your existing events so you're never double-booked.
+            New bookings appear in your calendar instantly.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Flexible Availability</h3>
+          <p class="text-gray-500 text-sm">
+            Set your working hours per day of the week.
+            Visitors only see slots when you're actually free.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Shareable Links</h3>
+          <p class="text-gray-500 text-sm">
+            Each event type gets its own link. Share it in email,
+            Slack, or anywhere — no account needed to book.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-10 text-gray-400 text-sm">
+    CalSync &copy; 2025
+  </footer>
+
+  <script>
+    // If already logged in, go straight to dashboard
+    if (localStorage.getItem('auth_token')) {
+      window.location.href = '/dashboard';
+    }
+  </script>
+</body>
+</html>
