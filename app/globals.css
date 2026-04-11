@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Ovanova Scheduling — global styles.
+ * Brand tokens are also exposed as CSS variables for use outside Tailwind
+ * (e.g., inline styles in emails, SVG `currentColor`, third-party embeds).
+ */
+:root {
+  --brand: #006837;
+  --brand-dark: #004d29;
+  --brand-light: #1f8a4c;
+  --brand-secondary: #0b3d5c;
+  --brand-accent: #f5a524;
+  --surface: #f7f9f8;
+  --surface-muted: #eef2ef;
+  --ink: #0f1c17;
+  --ink-muted: #475a52;
+  --border: #d8e1dc;
+}
+
+html,
+body {
+  background-color: var(--surface);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+
+/* Selection uses brand color */
+::selection {
+  background: var(--brand);
+  color: #ffffff;
+}
+
+/* Focus ring uses brand color */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-brand-dark focus-visible:shadow-ring;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand;
+  }
+  .card {
+    @apply rounded-2xl border border-border bg-white p-6 shadow-card;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-brand;
+  }
+}

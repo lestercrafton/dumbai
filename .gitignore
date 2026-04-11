@@ -1,0 +1,41 @@
+# deps
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# next.js
+.next/
+out/
+build
+dist
+
+# production
+*.tsbuildinfo
+next-env.d.ts
+
+# env
+.env
+.env*.local
+
+# local db
+*.db
+*.db-journal
+prisma/dev.db*
+
+# misc
+.DS_Store
+*.pem
+.vscode
+.idea
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# vercel
+.vercel
