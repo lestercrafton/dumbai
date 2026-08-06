@@ -16,17 +16,33 @@ technical consultations, and partner meetings.
 ## Project layout
 
 ```
-app/              Next.js App Router pages
-  layout.tsx      Root metadata + fonts (reads lib/branding.ts)
-  page.tsx        Public Ovanova landing page
-  globals.css     Tailwind + brand CSS variables
+app/
+  layout.tsx              Root layout with Ovanova metadata
+  page.tsx                Public landing page
+  globals.css             Tailwind + brand CSS variables
+  admin/                  Admin dashboard (event types, bookings, availability, teams)
+  api/auth/               NextAuth route handler
+  api/slots/              Available dates & time slots API
+  api/bookings/           Booking creation API
+  book/                   Public booking page
+    [slug]/               Per-event-type booking flow with calendar widget
 components/
-  brand/          Logo and brand primitives
-  layout/         SiteHeader / SiteFooter
+  brand/                  Logo and brand primitives
+  layout/                 SiteHeader / SiteFooter
+  admin/                  AdminSidebar
+  booking/                BookingWidget (calendar + time picker + form)
 lib/
-  branding.ts     Single source of truth for name, colors, URLs, copy
-  utils.ts        cn() helper
-public/brand/     Favicon + brand assets
+  branding.ts             Single source of truth for name, colors, URLs, copy
+  auth.ts                 NextAuth config (Google + credentials)
+  auth-helpers.ts         requireAuth / requireAdmin
+  availability.ts         Slot computation engine
+  db.ts                   Prisma client singleton
+  email.ts                Branded HTML email templates
+  utils.ts                cn() helper
+prisma/
+  schema.prisma           Full data model (User, EventType, Booking, Team, etc.)
+  seed.ts                 Seeds admin, event types, teams, availability
+public/brand/             Favicon + brand assets
 ```
 
 ## Where branding lives
@@ -47,14 +63,14 @@ Open <http://localhost:3000>.
 
 ## Roadmap (phases)
 
-1. ✅ **Branding foundation** — config, theme, landing page, layout
-2. 🔜 Data model & auth (Prisma + NextAuth)
-3. 🔜 Admin dashboard (event types, availability, bookings)
-4. 🔜 Public booking flow with custom questions
-5. 🔜 Google Calendar + Outlook + Meet/Zoom integrations
-6. 🔜 Branded transactional emails
-7. 🔜 Advanced — Stripe payments, approvals, CRM webhooks
-8. 🔜 Deployment guide (Vercel + Neon + Resend)
+1. Branding foundation — config, theme, landing page, layout
+2. Data model & auth — Prisma schema + NextAuth (Google + credentials)
+3. Admin dashboard — event types, availability, bookings, teams
+4. Public booking flow — calendar widget, time slots, custom questions
+5. Branded emails — confirmation, reminder, cancellation, host notification
+6. Deployment guide — see DEPLOY.md
+7. Google Calendar + Outlook + Meet/Zoom integrations (wired in auth, needs API calls)
+8. Advanced — Stripe payments, approvals, CRM webhooks
 
 ## License
 
