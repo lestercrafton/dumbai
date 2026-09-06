@@ -1,228 +1,99 @@
-"""Milly 1.0: independent, chronological NFL forecasts. No analyst/market/ownership inputs.
-Roster membership is retrospectively sourced; see model-card limitations.
+"""Independent NFL forecasts. No salaries, analyst projections, ownership or beliefs in X.
+Historical roster membership is retrospective, not an authenticated pre-lock archive.
 """
 from __future__ import annotations
-import datetime as dt, hashlib, json, pathlib, re, unicodedata
+import os
+for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'):os.environ.setdefault(k,'2')
+import json,re,pathlib
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingRegressor
-from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_pinball_loss
-ROOT=pathlib.Path(__file__).resolve().parent
-POSITIONS=['QB','RB','WR','TE','DST']
-MEASURES=['dk','targets','carries','attempts','receiving_yards','rushing_yards','passing_yards','receiving_tds','rushing_tds','passing_tds','receiving_air_yards']
-TEAM_MEASURES=['points','allowed','targets','carries','attempts','passing_yards','rushing_yards','passing_tds','rushing_tds','sacks_suffered','passing_interceptions']
-BLOCKED={'O','OUT','IR','INACTIVE','SUSPENDED','SUSP','PUP','NFI'}
-
-def num(d,k,default=0):
-    if k not in d:return pd.Series(default,index=d.index,dtype=float)
-    return pd.to_numeric(d[k],errors='coerce').fillna(default)
-
-def norm(s):
-    s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode().lower()
-    return re.sub(r'(jr|sr|iii|ii|iv)$','',re.sub('[^a-z]','',s))
-
-def team(s):return {'LA':'LAR','JAC':'JAX','WSH':'WAS','OAK':'LV','SD':'LAC','STL':'LAR'}.get(str(s),str(s))
-
-def read(name,required=True):
-    p=ROOT/'cache'/(name+'.csv.gz')
-    if not p.exists():
-        if required:raise FileNotFoundError(p)
-        return pd.DataFrame()
-    return pd.read_csv(p,low_memory=False)
-
+from sklearn.metrics import mean_absolute_error,mean_squared_error
+ROOT=pathlib.Path(__file__).resolve().parent;CACHE=ROOT/'cache';PUBLIC=ROOT/'public';PUBLIC.mkdir(exist_ok=True)
+POS=['QB','RB','WR','TE','DST']
+STAT=['dk','targets','carries','attempts','receptions','receiving_yards','rushing_yards','passing_yards','receiving_tds','rushing_tds','passing_tds']
+def read(name):return pd.read_csv(CACHE/(name+'.csv.gz'),low_memory=False)
+def nums(d,k):return pd.to_numeric(d[k],errors='coerce').fillna(0) if k in d else pd.Series(0.,index=d.index)
+def normalize(s):
+ s=re.sub(r'\b(jr|sr|ii|iii|iv)\b','',str(s).lower().replace('.',''));return re.sub('[^a-z0-9]','',s)
 def score(d):
-    g=lambda c:num(d,c)
-    return (.04*g('passing_yards')+4*g('passing_tds')-g('passing_interceptions')
-        +.1*(g('rushing_yards')+g('receiving_yards'))+g('receptions')
-        +6*(g('rushing_tds')+g('receiving_tds')+g('special_teams_tds')+g('fumble_recovery_tds'))
-        -g('sack_fumbles_lost')-g('rushing_fumbles_lost')-g('receiving_fumbles_lost')
-        +2*(g('passing_2pt_conversions')+g('rushing_2pt_conversions')+g('receiving_2pt_conversions'))
-        +3*(g('passing_yards')>=300)+3*(g('rushing_yards')>=100)+3*(g('receiving_yards')>=100))
+ return (.04*nums(d,'passing_yards')+4*nums(d,'passing_tds')-nums(d,'passing_interceptions')+.1*(nums(d,'rushing_yards')+nums(d,'receiving_yards'))+6*(nums(d,'rushing_tds')+nums(d,'receiving_tds')+nums(d,'special_teams_tds')+nums(d,'fumble_recovery_tds'))+nums(d,'receptions')-nums(d,'sack_fumbles_lost')-nums(d,'rushing_fumbles_lost')-nums(d,'receiving_fumbles_lost')+2*(nums(d,'passing_2pt_conversions')+nums(d,'rushing_2pt_conversions')+nums(d,'receiving_2pt_conversions'))+3*(nums(d,'passing_yards')>=300)+3*(nums(d,'rushing_yards')>=100)+3*(nums(d,'receiving_yards')>=100))
+def schedule_long(games):
+ out=[]
+ for side,other in [('home','away'),('away','home')]:
+  t=games[['game_id','season','week','gameday','gametime','roof','weekday','total_line']].copy()
+  t['team']=games[side+'_team'];t['opp']=games[other+'_team'];t['home']=float(side=='home');t['team_score']=games[side+'_score'];t['opp_score']=games[other+'_score'];t['rest']=games[side+'_rest'];t['opp_rest']=games[other+'_rest'];out.append(t)
+ return pd.concat(out,ignore_index=True).sort_values(['gameday','game_id','team'])
+def dataset(target=None):
+ games=read('schedule');games=games[games.game_type.eq('REG')].copy();tg=schedule_long(games);allstats=[]
+ for f in sorted(CACHE.glob('stats_*.csv.gz')):
+  s=pd.read_csv(f,low_memory=False);s=s[s.season_type.eq('REG')].copy();s['dk']=score(s);allstats.append(s)
+ stats=pd.concat(allstats,ignore_index=True).drop_duplicates(['game_id','player_id']);rosters=[]
+ for f in sorted(CACHE.glob('rosters_*.csv.gz')):
+  r=pd.read_csv(f,low_memory=False);r=r[r.game_type.eq('REG')&r.position.isin(POS[:-1])&r.gsis_id.notna()].copy();rosters.append(r)
+ r=pd.concat(rosters,ignore_index=True).drop_duplicates(['season','week','team','gsis_id'])
+ if target is not None:
+  season,week=target;current=read('roster_current');current=current[current.position.isin(POS[:-1])&current.gsis_id.notna()].copy();current['season']=season;current['week']=week
+  r=r[(r.season<season)|((r.season==season)&(r.week<week))];r=pd.concat([r,current],ignore_index=True).drop_duplicates(['season','week','team','gsis_id'])
+ r=r.rename(columns={'gsis_id':'player_id','full_name':'name'});use=['season','week','team','player_id','name','position','birth_date','height','weight','years_exp','draft_number','status']
+ d=r[use].merge(tg,on=['season','week','team'],how='inner',validate='many_to_one')
+ missing=stats[stats.position.isin(POS[:-1])][['season','week','team','game_id','player_id','player_display_name','position']].merge(d[['game_id','player_id']],on=['game_id','player_id'],how='left',indicator=True)
+ missing=missing[missing._merge.eq('left_only')].drop(columns=['_merge','game_id']).rename(columns={'player_display_name':'name'}).merge(tg,on=['season','week','team'],how='inner')
+ for k in ['birth_date','height','weight','years_exp','draft_number']:missing[k]=np.nan
+ missing['status']='UNKNOWN';d=pd.concat([d,missing],ignore_index=True)
+ d=d.merge(stats[['game_id','player_id']+STAT],on=['game_id','player_id'],how='left',validate='many_to_one');completed=d.team_score.notna()&d.game_id.isin(stats.game_id)
+ for k in STAT:d.loc[completed,k]=d.loc[completed,k].fillna(0)
+ d=d[completed|d.team_score.isna()].copy()
+ # DST target is explicitly a proxy. Total opponent points lack DK defensive-touchdown exclusions.
+ defense=stats.groupby(['game_id','team'],as_index=False).agg(sacks=('def_sacks','sum'),ints=('def_interceptions','sum'),frec=('fumble_recovery_opp','sum'),tds=('def_tds','sum'),returns=('special_teams_tds','sum'),safeties=('def_safeties','sum'),blocks=('def_punt_blocks','sum'))
+ z=tg.merge(defense,on=['game_id','team'],how='left');pa=z.opp_score;bonus=np.select([pa.eq(0),pa.le(6),pa.le(13),pa.le(20),pa.le(27),pa.le(34)],[10,7,4,1,0,-1],default=-4)
+ z['dk']=z.sacks+2*(z.ints+z.frec+z.safeties+z.blocks)+6*(z.tds+z.returns)+bonus;z['player_id']='DST_'+z.team;z['name']=z.team+' defense';z['position']='DST';z['status']='ACT'
+ for k in STAT[1:]:z[k]=0.
+ d=pd.concat([d,z[d.columns.intersection(z.columns)]],ignore_index=True);d=d.sort_values(['player_id','gameday','game_id']).drop_duplicates(['game_id','player_id']).reset_index(drop=True)
+ gd=pd.to_datetime(d.gameday);birth=pd.to_datetime(d.birth_date,errors='coerce');d['age']=(gd-birth).dt.days/365.25;d['dome']=d.roof.isin(['dome','closed']).astype(float)
+ d['draft_log']=np.log1p(pd.to_numeric(d.draft_number,errors='coerce').fillna(300));d['years_exp']=pd.to_numeric(d.years_exp,errors='coerce')
+ for k in ['height','weight']:d[k]=pd.to_numeric(d[k],errors='coerce')
+ features=['week','home','rest','opp_rest','dome','age','years_exp','height','weight','draft_log']
+ for pos in POS:d['is_'+pos]=d.position.eq(pos).astype(float);features.append('is_'+pos)
+ groups=d.groupby('player_id',sort=False)
+ for k in STAT:
+  for span in [4,12]:
+   col=f'{k}_ewm{span}';d[col]=groups[k].transform(lambda s:s.shift().ewm(span=span,adjust=False,ignore_na=True).mean());features.append(col)
+ d['dk_std12']=groups.dk.transform(lambda s:s.shift().rolling(12,min_periods=2).std());features.append('dk_std12');d['prior_rows']=groups.cumcount().clip(upper=100);features.append('prior_rows')
+ d['gap_days']=(gd-groups.gameday.shift().pipe(pd.to_datetime)).dt.days;features.append('gap_days');d['new_team']=(d.team!=groups.team.shift()).astype(float);features.append('new_team')
+ d['activity']=np.where(d.dk.notna(),(d[['attempts','targets','carries']].fillna(0).sum(axis=1)>0).astype(float),np.nan);d['active_rate']=d.groupby('player_id').activity.transform(lambda s:s.shift().ewm(span=8,adjust=False,ignore_na=True).mean());features.append('active_rate')
+ d['prior_opp']=d.targets_ewm4.fillna(0)+d.carries_ewm4.fillna(0)+d.attempts_ewm4.fillna(0);d['role_rank']=d.groupby(['game_id','team','position']).prior_opp.rank(method='min',ascending=False);features.append('role_rank')
+ total=d.groupby(['game_id','team','position']).prior_opp.transform('sum');d['role_share']=d.prior_opp/(1+total);features.append('role_share')
+ fp=stats[stats.position.isin(POS[:-1])].groupby(['game_id','team']).dk.sum().rename('fp').reset_index();team=tg.merge(fp,on=['game_id','team'],how='left').sort_values(['team','gameday'])
+ for k in ['team_score','opp_score','fp']:team['lag_'+k]=team.groupby('team')[k].transform(lambda s:s.shift().ewm(span=8,adjust=False,ignore_na=True).mean())
+ d=d.merge(team[['game_id','team','lag_team_score','lag_opp_score','lag_fp']],on=['game_id','team'],how='left');opp=team[['game_id','team','lag_team_score','lag_opp_score','lag_fp']].rename(columns={'team':'opp','lag_team_score':'opp_lag_score','lag_opp_score':'opp_lag_allowed','lag_fp':'opp_lag_fp'})
+ d=d.merge(opp,on=['game_id','opp'],how='left');features+=['lag_team_score','lag_opp_score','lag_fp','opp_lag_score','opp_lag_allowed','opp_lag_fp'];d=d.sort_values(['gameday','game_id','player_id']).reset_index(drop=True);d['baseline']=d.dk_ewm4.fillna(0)
+ return d,features,games,stats,team
 
-def normalize_roster(r):
-    if r.empty:return r
-    r=r.copy(); r=r.rename(columns={'gsis_id':'player_id','full_name':'name'})
-    if 'game_type' in r:r=r[r.game_type=='REG'].copy()
-    if 'name' not in r:r['name']=r.get('football_name',r.get('player_name',r['player_id']))
-    r['team']=r['team'].map(team); r['position']=r['position'].replace({'FB':'RB'})
-    return r[r.position.isin(POSITIONS[:-1]) & r.player_id.notna()].copy()
-
-def team_rows(schedule,allstats):
-    rows=[]
-    for side,opp in [('away','home'),('home','away')]:
-        s=schedule.copy();s['team']=s[side+'_team'].map(team);s['opp']=s[opp+'_team'].map(team)
-        s['points']=pd.to_numeric(s[side+'_score'],errors='coerce');s['allowed']=pd.to_numeric(s[opp+'_score'],errors='coerce')
-        s['home']=int(side=='home');rows.append(s[['game_id','season','week','gameday','gametime','team','opp','points','allowed','home','total_line']])
-    t=pd.concat(rows,ignore_index=True);t['date']=pd.to_datetime(t.gameday)
-    if allstats.empty:return t
-    sums=[c for c in set(TEAM_MEASURES+['def_sacks','def_interceptions','fumble_recovery_opp','def_tds','special_teams_tds','def_safeties','def_punt_blocks','def_fg_blocks','def_pat_blocks','def_2pt_made']) if c in allstats and c not in ['points','allowed']]
-    a=allstats.groupby(['game_id','team'])[sums].sum().reset_index();t=t.merge(a,on=['game_id','team'],how='left',validate='1:1')
-    pa=t['allowed'];bucket=np.select([pa==0,pa<=6,pa<=13,pa<=20,pa<=27,pa<=34],[10,7,4,1,0,-1],default=-4)
-    t['dst']=num(t,'def_sacks')+2*(num(t,'def_interceptions')+num(t,'fumble_recovery_opp'))+6*(num(t,'def_tds')+num(t,'special_teams_tds'))+2*(num(t,'def_safeties')+num(t,'def_punt_blocks')+num(t,'def_fg_blocks')+num(t,'def_pat_blocks')+num(t,'def_2pt_made'))+bucket
-    t.loc[t.points.isna(),'dst']=np.nan
-    return t
-
-def discover(audit):
-    now=pd.Timestamp.now(tz='UTC'); choices=[]
-    discovery=json.loads((ROOT/'public'/'contest-discovery.json').read_text())
-    for c in discovery.get('contests',[]):
-        if str(c.get('gameType','')).lower()!='classic':continue
-        gid=str(c.get('dg','')); p=ROOT/'cache'/('dk_pool_'+gid+'.json')
-        if not p.exists():continue
-        d=json.loads(p.read_text());ds=d.get('draftables',[])
-        times=[pd.to_datetime(x.get('competition',{}).get('startTime'),utc=True) for x in ds]
-        times=[x for x in times if pd.notna(x)]
-        if not times:continue
-        start=min(times); comps={x.get('competition',{}).get('competitionId') for x in ds}
-        if start<=now or start.tz_convert('America/New_York').dayofweek!=6 or len(comps)<5:continue
-        choices.append((start,-len(comps),abs(float(c.get('a',20))-20),c,d))
-    if not choices:raise ValueError('No complete upcoming Sunday NFL Classic Millionaire salary pool. No old-slate fallback.')
-    _,_,_,contest,d=min(choices,key=lambda x:x[:3]); unique={}
-    for p in sorted(d['draftables'],key=lambda x:int(x['draftableId'])):
-        if p.get('position') not in POSITIONS:continue
-        key=str(p.get('playerId',p['draftableId']));competition=p.get('competition',{})
-        game=re.sub(r'\s+','',competition.get('name',''));tm=team(p.get('teamAbbreviation',''))
-        gteams=[team(x) for x in game.split('@')]
-        if len(gteams)!=2 or tm not in gteams:raise ValueError('Invalid official player/game mapping')
-        row={'id':str(p['draftableId']),'identity':key,'dk_id':str(p.get('playerDkId','')),'name':p['displayName'],'position':p['position'],'salary':int(p['salary']),'team':tm,'opp':gteams[1] if tm==gteams[0] else gteams[0],'matchup':'@'.join(gteams),'start':competition['startTime'],'status':str(p.get('status','')),'disabled':bool(p.get('isDisabled',False))}
-        if key in unique:
-            if unique[key]['salary']!=row['salary']:raise ValueError('Conflicting salaries for same player')
-            continue
-        unique[key]=row
-    pool=pd.DataFrame(unique.values()); source=next((s for s in audit['sources'] if s['name']=='dk_pool_'+str(contest['dg']) and s['ok']),None)
-    if not source or (now-pd.Timestamp(source['retrieved_at'])).total_seconds()>6*3600:raise ValueError('Salary source older than six hours')
-    return pool,contest,source
-
-def datasets(pool):
-    schedule=read('schedule');schedule=schedule[(schedule.game_type=='REG') & (schedule.season>=2019)].copy()
-    now=pd.Timestamp.now(tz='UTC');year=int(schedule[schedule.gameday<=str(now.date())].season.max())
-    allstats=[];rosters=[]
-    for y in range(2019,year+1):
-        s=read('stats_'+str(y),False)
-        if not s.empty:
-            s=s[s.season_type=='REG'].copy();s['team']=s['team'].map(team);allstats.append(s)
-        r=read('rosters_'+str(y),False)
-        if not r.empty:rosters.append(normalize_roster(r))
-    if len(allstats)<6:raise ValueError('At least six historical seasons required')
-    stats=pd.concat(allstats,ignore_index=True);stats=stats.drop_duplicates(['game_id','team','player_id'])
-    t=team_rows(schedule,stats)
-    completed=t[t.points.notna()].copy()
-    roster=pd.concat(rosters,ignore_index=True)
-    roster['season']=pd.to_numeric(roster.season);roster['week']=pd.to_numeric(roster.week)
-    hist=roster.merge(completed[['game_id','season','week','team','opp','date','home']],on=['season','week','team'],how='inner',validate='m:1')
-    hist=hist.drop_duplicates(['game_id','team','player_id'])
-    skill=stats[stats.position.isin(POSITIONS[:-1])].copy();skill['dk']=score(skill)
-    keep=['game_id','team','player_id']+MEASURES
-    for c in keep:
-        if c not in skill:skill[c]=0
-    hist=hist.drop(columns=[c for c in MEASURES if c in hist],errors='ignore').merge(skill[keep],on=['game_id','team','player_id'],how='left',validate='1:1')
-    hist[MEASURES]=hist[MEASURES].fillna(0)
-    current=normalize_roster(read('roster_current'))
-    current=current.drop_duplicates(['team','player_id'],keep='last');current['nname']=current.name.map(norm)
-    maps={(r.team,r.nname):r for r in current.itertuples()}
-    aliases={'hollywoodbrown':'marquisebrown','kennygainwell':'kennethgainwell','joshpalmer':'joshuapalmer','bamaknight':'zonovanknight'}
-    todaygames=t[t.gameday.isin(pool.start.map(lambda x:str(pd.Timestamp(x).date())).unique())].copy()
-    futures=[];unmatched=[]
-    for i,p in pool.iterrows():
-        g=todaygames[(todaygames.team==p.team)&(todaygames.opp==p.opp)]
-        if len(g)!=1:raise ValueError('Official salary matchup absent from NFL schedule: '+p.matchup)
-        g=g.iloc[0];pool.loc[i,'game_id']=g.game_id
-        if p.position=='DST':
-            pid='DST:'+p.team;row={'player_id':pid,'name':p['name'],'position':'DST'};pool.loc[i,'roster_status']='ACT'
-        else:
-            key=norm(p['name']);m=maps.get((p.team,key)) or maps.get((p.team,aliases.get(key,key)))
-            if m is None:
-                unmatched.append({'name':p['name'],'team':p.team,'reason':'No exact current-roster identity'});continue
-            row=m._asdict();pid=row['player_id'];pool.loc[i,'roster_status']=str(row.get('status','UNKNOWN'))
-        pool.loc[i,'player_id']=pid
-        row.update({k:g[k] for k in ['game_id','season','week','team','opp','date','home']});row['future']=True
-        row.update({k:np.nan for k in MEASURES});futures.append(row)
-    dst=completed[['game_id','season','week','team','opp','date','home','dst']].rename(columns={'dst':'dk'}).copy()
-    dst['player_id']='DST:'+dst.team;dst['position']='DST';dst['name']=dst.team+' DST'
-    for c in MEASURES:
-        if c not in dst:dst[c]=0
-    hist['future']=False;dst['future']=False
-    d=pd.concat([hist,dst,pd.DataFrame(futures)],ignore_index=True)
-    d=d.drop_duplicates(['game_id','team','player_id'],keep='last').sort_values(['player_id','date']).reset_index(drop=True)
-    d['date']=pd.to_datetime(d.date);d['future']=d.future.fillna(False)
-    features=[]
-    for c in MEASURES:
-        for w in [1,3,8]:
-            k=f'lag{w}_{c}';d[k]=d.groupby('player_id',sort=False)[c].transform(lambda x:x.shift(1).rolling(w,min_periods=1).mean());features.append(k)
-    d['history_n']=d.groupby('player_id').cumcount().clip(upper=100)
-    prev=d.groupby('player_id').date.shift(1);d['days_since']=(d.date-prev).dt.days.clip(0,730).fillna(730)
-    prevteam=d.groupby('player_id').team.shift(1);d['team_change']=(prevteam.notna() & (prevteam!=d.team)).astype(int)
-    birth=pd.to_datetime(d.get('birth_date',pd.Series(pd.NaT,index=d.index)),errors='coerce');d['age']=(d.date-birth).dt.days/365.25
-    d['draft_number']=num(d,'draft_number',300);d['week1']=(d.week==1).astype(int)
-    d['target_acceleration']=d.lag1_targets-d.lag8_targets;d['carry_acceleration']=d.lag1_carries-d.lag8_carries
-    d['role_volume']=d.lag3_targets.fillna(0)+d.lag3_carries.fillna(0)+d.lag3_attempts.fillna(0)/3
-    d['role_rank']=d.groupby(['game_id','team','position']).role_volume.rank(method='first',ascending=False)
-    denom=d.groupby(['game_id','team']).role_volume.transform('sum');d['opportunity_fraction']=d.role_volume/(denom+1)
-    for p in POSITIONS:
-        d['pos_'+p]=(d.position==p).astype(int);features.append('pos_'+p)
-    basic=features+['history_n','days_since','team_change','age','draft_number','week1','home','role_rank','opportunity_fraction','target_acceleration','carry_acceleration']
-    t=t.sort_values(['team','date']).copy();tf=[]
-    for c in TEAM_MEASURES:
-        if c not in t:t[c]=np.nan
-        for w in [3,8]:
-            k=f'team_lag{w}_{c}';t[k]=t.groupby('team')[c].transform(lambda x:x.shift().rolling(w,min_periods=1).mean());tf.append(k)
-    d=d.merge(t[['game_id','team']+tf],on=['game_id','team'],how='left',validate='m:1')
-    other=t[['game_id','team']+tf].rename(columns={'team':'opp',**{k:'opp_'+k for k in tf}})
-    d=d.merge(other,on=['game_id','opp'],how='left',validate='m:1')
-    t=t.merge(other,on=['game_id','opp'],how='left',validate='m:1')
-    features=basic+tf+['opp_'+k for k in tf]
-    d[features]=d[features].replace([np.inf,-np.inf],np.nan)
-    volume=[k for k in basic if k not in ['target_acceleration','carry_acceleration','role_rank','opportunity_fraction']]
-    return d,t,pool,stats,{'unmatched':unmatched,'historical_rows':int((~d.future).sum()),'seasons':sorted(map(int,d[~d.future].season.unique()))},features,volume,tf+['opp_'+k for k in tf]+['home']
-
-def baseline(d):return (.6*d.lag3_dk.fillna(0)+.4*d.lag8_dk.fillna(0)).to_numpy()
-
-def fit_model(d,features,loss='squared_error',quantile=None):
-    model=HistGradientBoostingRegressor(loss=loss,quantile=quantile,max_iter=100,max_leaf_nodes=15,min_samples_leaf=60,l2_regularization=20,learning_rate=.07,early_stopping=False,random_state=271828)
-    return model.fit(d[features],d.dk)
-
-def metrics(y,p):
-    return {'n':len(y),'rmse':float(np.sqrt(mean_squared_error(y,p))),'mae':float(mean_absolute_error(y,p))}
-
-def train(d,features,volume):
-    h=d[~d.future & d.dk.notna() & (d.season>=2020)].copy()
-    a=h[h.season<=2022];v=h[h.season==2023];cal=h[h.season==2024];test=h[h.season==2025]
-    if min(len(a),len(v),len(cal),len(test))<500:raise ValueError('Chronological training/calibration/test partitions incomplete')
-    candidates={'baseline':metrics(v.dk,baseline(v))};fs={'volume':volume,'context':features}
-    for key,cols in fs.items():
-        m=fit_model(a,cols);candidates[key]=metrics(v.dk,m.predict(v[cols]))
-    champion=min(candidates,key=lambda k:candidates[k]['rmse']);cols=fs.get(champion,features)
-    predictions={};reports={}
-    for yr in [2024,2025]:
-        tr=h[h.season<yr];te=h[h.season==yr].copy()
-        m=None if champion=='baseline' else fit_model(tr,cols)
-        te['mu']=baseline(te) if m is None else m.predict(te[cols]);te['residual']=te.dk-te.mu
-        qm=fit_model(tr,cols,'quantile',.90);qp=qm.predict(te[cols]);te['q90']=qp
-        reports[str(yr)]={'model':metrics(te.dk,te.mu),'baseline':metrics(te.dk,baseline(te)),
-            'q90_coverage':float(np.mean(te.dk<=qp)),'q90_pinball':float(mean_pinball_loss(te.dk,qp,alpha=.90)),
-            'by_position':{p:metrics(te[te.position==p].dk,te[te.position==p].mu) for p in POSITIONS},
-            'known_opportunity':metrics(te[te.lag3_dk.fillna(0)>=5].dk,te[te.lag3_dk.fillna(0)>=5].mu)}
-        predictions[yr]=te
-    final=None if champion=='baseline' else fit_model(h,cols)
-    future=d[d.future].copy();future['mu']=baseline(future) if final is None else final.predict(future[cols]);future['mu']=future.mu.clip(lower=0)
-    calibration=predictions[2024]
-    residuals={}
-    bins=np.array([-np.inf,3,6,10,15,20,np.inf]);qs=np.linspace(.001,.999,101)
-    for p in POSITIONS:
-        allr=calibration[calibration.position==p].residual.to_numpy()
-        for j in range(len(bins)-1):
-            r=calibration[(calibration.position==p)&(calibration.mu>=bins[j])&(calibration.mu<bins[j+1])].residual.to_numpy()
-            if len(r)<50:r=allr
-            residuals[p+':'+str(j)]={'n':len(r),'quantiles':np.quantile(r-np.mean(r),qs).round(5).tolist()}
-    audit={'model':'Milly independent chronological GBM v1.0','champion':champion,'selection_year':2023,'candidates':candidates,'calibration_year':2024,'unseen_audit_year':2025,'evaluation':reports,'training_rows':len(h),'training_seasons':sorted(map(int,h.season.unique())),'feature_count':len(cols),'features':cols,'analyst_forecasts_used':False,'market_lines_used_in_forecasts':False,'ownership_used_in_forecasts':False,'target':'DK offensive scoring; DST uses approximate scoreboard points-allowed buckets','residuals':residuals,'bins':[3,6,10,15,20]}
-    future['resid_key']=[p+':'+str(int(np.searchsorted(bins[1:-1],mu,side='right'))) for p,mu in zip(future.position,future.mu)]
-    return future,calibration,audit,predictions
-
-def fit_team(t,features):
-    h=t[(t.season>=2020)&t.points.notna()].copy();h['dk']=h.points
-    pred={};reports={}
-    for yr in [2024,2025]:
-        te=h[h.season==yr].copy();m=fit_model(h[h.season<yr],features);te['mu']=m.predict(te[features]);te['residual']=te.points-te.mu;pred[yr]=te
-        base=(te.team_lag8_points.fillna(22)+te.opp_team_lag8_allowed.fillna(22))/2
-        reports[str(yr)]={'model':metrics(te.points,te.mu),'baseline':metrics(te.points,base)}
-    m=fit_model(h,features);future=t[t.points.isna()].copy();future['mu']=m.predict(future[features]);return future,pred[2024],reports
+def model(loss='squared_error',quantile=None):return HistGradientBoostingRegressor(loss=loss,quantile=quantile,max_iter=160,max_leaf_nodes=15,min_samples_leaf=80,l2_regularization=5,learning_rate=.055,early_stopping=False,random_state=4811)
+def metrics(y,p,b):return {'n':len(y),'model_mae':float(mean_absolute_error(y,p)),'baseline_mae':float(mean_absolute_error(y,b)),'model_rmse':float(np.sqrt(mean_squared_error(y,p))),'baseline_rmse':float(np.sqrt(mean_squared_error(y,b)))}
+def fit_forecasts(d,features):
+ finite=d.dk.notna();last=int(d.loc[finite,'season'].max());evaluations=[];oof=[]
+ for yr in [last-1,last]:
+  train=finite&d.season.lt(yr)&d.season.ge(yr-5);test=finite&d.season.eq(yr)
+  if train.sum()<5000 or test.sum()<1000:continue
+  print('FIT',yr,int(train.sum()),int(test.sum()),flush=True);m=model();m.fit(d.loc[train,features],d.loc[train,'dk']);p=m.predict(d.loc[test,features]);y=d.loc[test,'dk'].to_numpy();b=d.loc[test,'baseline'].to_numpy();q=d.loc[test].copy();q['prediction']=p;q['residual']=y-p;oof.append(q)
+  e={'season':yr,'train_seasons':sorted(d.loc[train,'season'].unique().astype(int).tolist()),**metrics(y,p,b),'positions':{}}
+  for pos in POS:k=q.position.eq(pos).to_numpy();e['positions'][pos]=metrics(y[k],p[k],b[k])
+  starter=(q.prior_opp>=5).to_numpy();e['prior_opportunity_5plus']=metrics(y[starter],p[starter],b[starter]);evaluations.append(e)
+ oof=pd.concat(oof,ignore_index=True);chosen={pos:('gradient_boosting' if evaluations[0]['positions'][pos]['model_rmse']<evaluations[0]['positions'][pos]['baseline_rmse'] else 'lagged_baseline') for pos in POS}
+ train=finite&d.season.ge(last-5);m=model();m.fit(d.loc[train,features],d.loc[train,'dk']);d['mean']=m.predict(d[features])
+ for pos in POS:
+  if chosen[pos]=='lagged_baseline':
+   d.loc[d.position.eq(pos),'mean']=d.loc[d.position.eq(pos),'baseline'];k=oof.position.eq(pos);oof.loc[k,'prediction']=oof.loc[k,'baseline'];oof.loc[k,'residual']=oof.loc[k,'dk']-oof.loc[k,'prediction']
+ report={'version':'0.5.0','target':'offensive DK score; DST score proxy','training_rows':int(train.sum()),'features':features,'selection':str(evaluations[0]['season'])+' per-position RMSE selects gradient boosting vs lagged baseline; later seasons are diagnostics','chosen':chosen,'evaluations':evaluations,'independent_of':['analyst projections','salary','ownership','user beliefs','same-game box score features','bookmaker lines'],'caveats':['Historical roster membership is not a timestamp-authenticated pre-lock eligibility archive.','Current depth and availability are hard eligibility checks, not fitted player projections.','All rostered zero-output games are retained; forecasting returning starters and rookies remains uncertain.','DST target is a proxy using total opponent points, not exact official contest settlement.']}
+ import pickle
+ with open(CACHE/'fitted_model.pkl','wb') as f:pickle.dump({'model':m,'features':features,'chosen':chosen,'trained_through':str(d.loc[train,'gameday'].max()),'version':'0.5.0'},f)
+ return d,oof,report,team_score_model(d,train)
+def team_score_model(d,train):
+ tf=['home','rest','opp_rest','dome','lag_team_score','lag_opp_score','opp_lag_score','opp_lag_allowed'];t=d.drop_duplicates(['game_id','team']).copy();tr=t.team_score.notna();last=int(t.loc[tr,'season'].max());tr=tr&t.season.ge(last-6)
+ def estimator():return HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=7,min_samples_leaf=70,l2_regularization=10,early_stopping=False,random_state=4811)
+ m=estimator();m.fit(t.loc[tr,tf],t.loc[tr,'team_score']);t['score_mean']=m.predict(t[tf]);t['score_oof']=np.nan
+ for yr in [last-1,last]:
+  fitmask=tr&t.season.lt(yr);test=t.season.eq(yr)&t.team_score.notna();mm=estimator();mm.fit(t.loc[fitmask,tf],t.loc[fitmask,'team_score']);t.loc[test,'score_oof']=mm.predict(t.loc[test,tf])
+ return t[['game_id','team','score_mean','score_oof','team_score','home','season','gameday','lag_team_score','opp_lag_allowed']]
