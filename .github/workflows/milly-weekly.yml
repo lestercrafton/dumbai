@@ -38,31 +38,28 @@ jobs:
         run: python milly/collect.py
       - name: Grade frozen predictions and version stat corrections
         run: python milly/grade.py
-      - name: Train, evaluate, generate and publish validated independent release
+      - name: Train, evaluate, generate and validate independent release
         run: python milly/run_weekly.py
-      - name: Record a failed refresh without relabelling old predictions
+      - name: Record failed refresh without relabelling old predictions
         if: failure()
         run: |
           python - <<'PY'
           import json,datetime,pathlib
           p=pathlib.Path('milly/public');p.mkdir(parents=True,exist_ok=True)
-          status={'state':'failed','finished_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'error':'Weekly refresh failed a source, model or validation check. Consult this Actions run. Last release is not automatically current.','last_release_preserved':True}
+          status={'state':'failed','finished_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'error':'Refresh failed a source, model or validation check. Consult this Actions run. Last release is not automatically current.','last_release_preserved':True}
           (p/'runner-status.json').write_text(json.dumps(status))
           PY
-      - name: Commit public evidence, frozen release and current status
+      - name: Publish evidence onto current main without rebasing generated data
         if: always()
-        run: |
-          git config user.name 'Milly research bot'
-          git config user.email 'milly-bot@users.noreply.github.com'
-          git add milly/public
-          git diff --cached --quiet || git commit -m 'Milly: publish validated research or explicit refresh failure [skip ci]'
-          git pull --rebase origin main
-          git push
+        run: python milly/publish.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: milly-complete-run
           path: |
-            milly/
+            milly/public/
+            milly/models/
+            milly/*.py
+            milly/site/
             .github/workflows/milly-weekly.yml
-          retention-days: 30
+          retention-days: 14
