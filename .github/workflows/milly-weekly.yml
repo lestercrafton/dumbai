@@ -3,12 +3,16 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'milly/**'
+      - 'milly/*.py'
+      - 'milly/site/**'
       - '.github/workflows/milly-weekly.yml'
   schedule:
-    - cron: '17 13 * * 3,6'
-    - cron: '43 15,16 * * 0'
-    - cron: '27 13 * * 2'
+    - cron: '17 8 * * 3,6'
+      timezone: America/Chicago
+    - cron: '43 10,11 * * 0'
+      timezone: America/Chicago
+    - cron: '27 8 * * 2'
+      timezone: America/Chicago
 permissions:
   contents: write
 concurrency:
@@ -18,36 +22,37 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify public data access
+      - name: Install model runtime
+        run: pip install numpy==2.2.6 pandas==2.2.3 scipy==1.15.3 scikit-learn==1.6.1
+      - name: Fetch dated historical and current sources
+        run: python milly/collect.py
+      - name: Train, evaluate, generate and archive
         run: |
-          mkdir -p milly/public
-          python - <<'PY'
-          import urllib.request,json,datetime,pathlib
-          sources=[('schedule','https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv'),('stats_2025','https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv')]
-          results=[]
-          for name,url in sources:
-              try:
-                  with urllib.request.urlopen(url,timeout=45) as r: data=r.read()
-                  results.append({'name':name,'url':url,'bytes':len(data),'header':data.decode('utf-8-sig').splitlines()[0],'ok':True})
-              except Exception as e: results.append({'name':name,'url':url,'error':str(e),'ok':False})
-          pathlib.Path('milly/public/runner-health.json').write_text(json.dumps({'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'stage':'connectivity_only','sources':results},indent=2))
-          print(json.dumps(results,indent=2))
-          PY
-      - name: Commit run receipt
+          if test -f milly/pipeline.py; then python milly/pipeline.py; fi
+          if test -f milly/test_pipeline.py; then python milly/test_pipeline.py; fi
+      - name: Commit public evidence and latest release
+        if: always()
         run: |
           git config user.name 'Milly research bot'
           git config user.email 'milly-bot@users.noreply.github.com'
-          git add milly/public/runner-health.json
-          git diff --cached --quiet || git commit -m 'Milly: record execution receipt [skip ci]'
+          git add milly/public
+          git diff --cached --quiet || git commit -m 'Milly: archive research run and refresh public evidence [skip ci]'
+          git pull --rebase origin main
           git push
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: milly-run-receipt
-          path: milly/public/
+          name: milly-complete-run
+          path: |
+            milly/
+            .github/workflows/milly-weekly.yml
           retention-days: 30
