@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'milly/*.py'
-      - 'milly/site/**'
       - '.github/workflows/milly-weekly.yml'
   schedule:
     - cron: '17 8 * * 3,6'
@@ -30,22 +29,33 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install model runtime
-        run: pip install numpy==2.2.6 pandas==2.2.3 scipy==1.15.3 scikit-learn==1.6.1
-      - name: Fetch dated historical and current sources
+          python-version: '3.13'
+      - name: Install pinned model runtime
+        run: pip install numpy==2.3.5 pandas==2.2.3 scipy==1.17.0 scikit-learn==1.8.0
+      - name: Test scoring, temporal features, roster constraints and simulation invariants
+        run: python milly/test_pipeline.py
+      - name: Fetch fresh historical and current sources
         run: python milly/collect.py
-      - name: Train, evaluate, generate and archive
+      - name: Grade frozen predictions and version stat corrections
+        run: python milly/grade.py
+      - name: Train, evaluate, generate and publish validated independent release
+        run: python milly/run_weekly.py
+      - name: Record a failed refresh without relabelling old predictions
+        if: failure()
         run: |
-          if test -f milly/pipeline.py; then python milly/pipeline.py; fi
-          if test -f milly/test_pipeline.py; then python milly/test_pipeline.py; fi
-      - name: Commit public evidence and latest release
+          python - <<'PY'
+          import json,datetime,pathlib
+          p=pathlib.Path('milly/public');p.mkdir(parents=True,exist_ok=True)
+          status={'state':'failed','finished_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'error':'Weekly refresh failed a source, model or validation check. Consult this Actions run. Last release is not automatically current.','last_release_preserved':True}
+          (p/'runner-status.json').write_text(json.dumps(status))
+          PY
+      - name: Commit public evidence, frozen release and current status
         if: always()
         run: |
           git config user.name 'Milly research bot'
           git config user.email 'milly-bot@users.noreply.github.com'
           git add milly/public
-          git diff --cached --quiet || git commit -m 'Milly: archive research run and refresh public evidence [skip ci]'
+          git diff --cached --quiet || git commit -m 'Milly: publish validated research or explicit refresh failure [skip ci]'
           git pull --rebase origin main
           git push
       - uses: actions/upload-artifact@v4
