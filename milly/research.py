@@ -1,29 +1,21 @@
-"""Executed historical hypothesis tests, explicitly distinct from contest backtests."""
+"""Registered slate hypotheses and paired week-block forecast diagnostics."""
 import numpy as np,pandas as pd
-from sklearn.linear_model import LinearRegression
-from model import POS,metrics
 
-def corr(a,b):
-    a=np.asarray(a,float);b=np.asarray(b,float);ok=np.isfinite(a)&np.isfinite(b)
-    return float(np.corrcoef(a[ok],b[ok])[0,1]) if ok.sum()>3 else None
+def correlation(a,b):return float(np.corrcoef(a,b)[0,1]) if len(a)>2 and np.std(a)>0 and np.std(b)>0 else None
 
-def run_research(stats,calendar,season,oof):
-    games=calendar[(calendar.season>=season-6)&(calendar.weekday=='Sunday')&(calendar.gametime>='13:00')&(calendar.gametime<='16:30')&calendar.home_score.notna()&calendar.total_line.notna()].copy()
-    fp=stats[stats.position.isin(POS)].groupby('game_id').fpts.sum();games['fpts']=games.game_id.map(fp);games=games.dropna(subset=['fpts']);rows=[]
-    for (y,w),g in games.groupby(['season','week']):
-        if len(g)<3:continue
-        rows.append({'season':int(y),'week':int(w),'games':len(g),'sum_ou':float(g.total_line.sum()),'mean_ou':float(g.total_line.mean()),'dispersion_ou':float(g.total_line.std()),'sum_fpts':float(g.fpts.sum()),'mean_fpts':float(g.fpts.mean()),'nfl_points':float((g.home_score+g.away_score).sum()),'normalized_top2':float(g.fpts.nlargest(2).sum()/g.fpts.sum()*len(g)/2)})
-    r=pd.DataFrame(rows);train=r[r.season<season-2];test=r[r.season>=season-2]
-    fit=LinearRegression().fit(train[['mean_ou']],train.mean_fpts);pred=fit.predict(test[['mean_ou']]);constant=np.repeat(train.mean_fpts.mean(),len(test))
-    controls=pd.concat([r[['games']],pd.get_dummies(r.season,prefix='season',dtype=float)],axis=1)
-    ra=r.sum_ou-LinearRegression().fit(controls,r.sum_ou).predict(controls);rb=r.sum_fpts-LinearRegression().fit(controls,r.sum_fpts).predict(controls)
-    threshold=float(train.mean_ou.quantile(.25));low=test[test.mean_ou<=threshold];high=test[test.mean_ou>threshold]
-    delta=float(low.normalized_top2.mean()-high.normalized_top2.mean());rg=np.random.default_rng(78503);dist=[]
-    if len(low)>2 and len(high)>2:
-        for _ in range(2000):dist.append(float(rg.choice(low.normalized_top2,len(low)).mean()-rg.choice(high.normalized_top2,len(high)).mean()))
-    subgroup={}
-    for p in POS:
-        a=oof[oof.pos==p];subgroup[p]={}
-        for label,q in [('all_active',a),('depth_one',a[a.depth==1]),('week_one',a[a.week==1])]:
-            if len(q):subgroup[p][label]={'model':metrics(q.fpts,q.pred),'baseline':metrics(q.fpts,q.baseline)}
-    return {'definition':'Sunday regular-season games, 13:00–16:30 Eastern, >=3 games; reconstructed, not authenticated historical DK draft groups.','seasons':sorted(r.season.unique().tolist()),'slates':len(r),'games':len(games),'raw_total_correlation':corr(r.sum_ou,r.sum_fpts),'per_game_correlation':corr(r.mean_ou,r.mean_fpts),'partial_correlation_game_count_and_season':corr(ra,rb),'holdout':{'train_years':sorted(train.season.unique().tolist()),'test_years':sorted(test.season.unique().tolist()),'mean_ou_model':metrics(test.mean_fpts,pred),'constant_baseline':metrics(test.mean_fpts,constant),'low_ou_cutoff':threshold,'low_n':len(low),'other_n':len(high),'low_top2_normalized':low.normalized_top2.mean(),'other_top2_normalized':high.normalized_top2.mean(),'difference':delta,'difference_bootstrap95':np.quantile(dist,[.025,.975]) if dist else None},'forecast_subgroups':subgroup,'limitations':['Odds snapshots are historical totals with unverified pre-lock publication time; not a tradable forecast backtest.','Game concentration measures all core offensive fantasy production, NOT a salary-constrained winning roster.','No complete historical Millionaire contest fields, ownership or salaries in this test.','Bootstrap on slates is descriptive; residual dependence may make uncertainty larger.','Neither the market total nor user beliefs are production player forecast features.'],'rows':rows}
+def slate_hypothesis(games,stats):
+ g=games[(games.season.between(2020,2025))&games.game_type.eq('REG')&games.weekday.eq('Sunday')&games.gametime.between('13:00','16:30')&games.total_line.notna()&games.home_score.notna()].copy()
+ fp=stats[stats.position.isin(['QB','RB','WR','TE'])].groupby('game_id').dk.sum();g['fp']=g.game_id.map(fp);g=g.dropna(subset=['fp']);rows=[]
+ for (year,week),s in g.groupby(['season','week']):
+  if len(s)<3:continue
+  rows.append({'season':int(year),'week':int(week),'games':len(s),'ou_sum':float(s.total_line.sum()),'ou_mean':float(s.total_line.mean()),'ou_std':float(s.total_line.std()),'fantasy_sum':float(s.fp.sum()),'fantasy_mean':float(s.fp.mean()),'realized_total_mean':float((s.home_score+s.away_score).mean()),'top2_share':float(s.fp.nlargest(2).sum()/s.fp.sum()),'top2_normalized':float(s.fp.nlargest(2).sum()/s.fp.sum()*len(s)/2)})
+ d=pd.DataFrame(rows);train=d[d.season<=2023];test=d[d.season>=2024];coef=np.polyfit(train.ou_mean,train.fantasy_mean,1);pred=np.polyval(coef,test.ou_mean);mae=float(np.mean(abs(test.fantasy_mean-pred)));base=float(np.mean(abs(test.fantasy_mean-train.fantasy_mean.mean())))
+ X=pd.get_dummies(d.season.astype(str),dtype=float);X['count']=d.games;X=np.array(X,float);residual=lambda y:np.array(y)-X@np.linalg.lstsq(X,y,rcond=None)[0]
+ threshold=float(train.ou_mean.quantile(.25));low=test[test.ou_mean<=threshold];high=test[test.ou_mean>threshold];r=correlation(d.ou_mean,d.fantasy_mean);rng=np.random.default_rng(173);boot=[]
+ for _ in range(1500):sample=d.iloc[rng.integers(len(d),size=len(d))];boot.append(correlation(sample.ou_mean,sample.fantasy_mean))
+ return {'id':'SLATE-001','status':'historical-proxy-test-completed','slates':len(d),'games':len(g),'seasons':sorted(d.season.unique().tolist()),'raw_sum_correlation':correlation(d.ou_sum,d.fantasy_sum),'per_game_correlation':r,'per_game_95_bootstrap':np.quantile(boot,[.025,.975]).tolist(),'partial_game_count_season':correlation(residual(d.ou_sum),residual(d.fantasy_sum)),'holdout':{'train':'2020–2023','test':'2024–2025','n':len(test),'ou_model_mae':mae,'constant_baseline_mae':base,'improvement_percent':100*(base-mae)/base,'low_ou_threshold':threshold,'low_n':len(low),'other_n':len(high),'low_top2_normalized':float(low.top2_normalized.mean()),'other_top2_normalized':float(high.top2_normalized.mean())},'shape_correlations':{'pregame_mean_ou_vs_normalized_top2':correlation(d.ou_mean,d.top2_normalized),'realized_fp_vs_normalized_top2':correlation(d.fantasy_mean,d.top2_normalized),'pregame_total_dispersion_vs_normalized_top2':correlation(d.ou_std,d.top2_normalized)},'interpretation':'Total production and game concentration, not optimal roster shape or profitability. Bookmaker lines do not enter the baseline model.','limitations':['Historical bookmaker-line timestamps are not authenticated pre-lock snapshots.','Sunday time-window reconstruction is not a historical DraftKings draft-group archive.','No historical contest entry fields, salaries or ownership are present.','Bootstrap treats weeks as blocks but does not resolve season dependence.'],'rows':rows}
+
+def forecast_diagnostics(oof,report):
+ d=oof[oof.season.eq(oof.season.max())].copy();d['mse']=(d.dk-d.prediction)**2;d['bse']=(d.dk-d.baseline)**2;d['ae']=abs(d.dk-d.prediction);d['bae']=abs(d.dk-d.baseline);weekly=d.groupby('week').agg(mse=('mse','mean'),bse=('bse','mean'),ae=('ae','mean'),bae=('bae','mean'));rng=np.random.default_rng(4823);boots=[]
+ for _ in range(2000):r=weekly.iloc[rng.integers(len(weekly),size=len(weekly))];boots.append(100*(np.sqrt(r.bse.mean())-np.sqrt(r.mse.mean()))/np.sqrt(r.bse.mean()))
+ w=d[d.week==1];report['last_year_paired_week_bootstrap_rmse_lift_95']=np.quantile(boots,[.025,.975]).tolist();report['week_one_diagnostic']={'n':len(w),'model_mae':float(w.ae.mean()),'baseline_mae':float(w.bae.mean()),'model_rmse':float(np.sqrt(w.mse.mean())),'baseline_rmse':float(np.sqrt(w.bse.mean()))};return report
