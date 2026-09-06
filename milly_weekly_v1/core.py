@@ -113,14 +113,14 @@ def prepare(s,st,ro,current,dep,pool):
  if 'dt' in dep:
   dep['stamp']=pd.to_datetime(dep.dt,utc=True);dep=dep[dep.stamp<=NOW];last=dep.stamp.max()
   if pd.isna(last) or NOW-last>pd.Timedelta(days=4):raise RuntimeError('Current depth chart too stale')
-  dep=dep[dep.stamp==last].copy();dep['team']=dep.team.replace(ALIASES);dep['depth_rank']=pd.to_numeric(dep.pos_rank,errors='coerce')
+  dep=dep.sort_values('stamp').drop_duplicates(['team','gsis_id'],keep='last').copy();dep['team']=dep.team.replace(ALIASES);dep['depth_rank']=pd.to_numeric(dep.pos_rank,errors='coerce')
  else:raise RuntimeError('Timestamped current depth information required')
  deps=dep.dropna(subset=['gsis_id']).groupby(['team','gsis_id']).depth_rank.min().to_dict()
  aliases={'hollywoodbrown':'marquisebrown','kennygainwell':'kennethgainwell'};rows=[];rejected=[]
  for p in pool.to_dict('records'):
   if p['position']=='DST':continue
   match=current[(current.team==p['team'])&current.norm.eq(aliases.get(norm(p['name']),norm(p['name'])))&current.position.eq(p['position'])]
-  if len(match)!=1:rejected.append({'name':p['name'],'reason':'Unresolved current roster identity'});continue
+  if len(match)!=1 or pd.isna(match.iloc[0].get('gsis_id')):rejected.append({'name':p['name'],'reason':'Unresolved current roster identity'});continue
   r=match.iloc[0].to_dict();status=str(r.get('status',''));rank=deps.get((p['team'],r['gsis_id']))
   if status!='ACT' or p['disabled'] or p['status'].upper() in ['O','OUT','IR','INACTIVE','D','DOUBTFUL','SUSPENDED'] or (p['position']=='QB' and rank!=1):rejected.append({'name':p['name'],'reason':'Roster/status/depth eligibility'});continue
   g=t[(t.team==p['team'])&(t.opp==p['opp'])&(t.kick==pd.Timestamp(p['start']))]
@@ -265,15 +265,16 @@ def run():
  try:
   s,st,ro,current,dep,pool,contest=collect();d,t,st,fs,rejected=prepare(s,st,ro,current,dep,pool);print('Historical rows',int((~d.future).sum()),flush=True);f,cal,validation=fit_players(d,fs);t,tc,teamreport=team_and_defense(t,st);validation['team_models']=teamreport
   N=int(os.getenv('MILLY_WORLDS','4096'));ps,games,blocks,W,G=build_worlds(f,cal,t,tc,pool,N,811);_,_,_,H,HG=build_worlds(f,cal,t,tc,pool,N,812);lineups,diag,bank,refs,ra,rb=twenty(ps,games,W,H,HG);hyp=over_under(s,st)
-  now=pd.Timestamp.now(tz='UTC');rid=f'{YEAR}-w{int(f.week.iloc[0]):02d}-'+now.strftime('%Y%m%dT%H%M%SZ');release={'version':'1.0','release_id':rid,'generated_at':now,'contest':contest,'players':ps,'games':games,'lineups':lineups,'diagnostics':diag,'validation':validation,'hypothesis':hyp,'excluded':rejected,'entry_ready':False,'independent_baseline':True,'limitations':['Historical rosters are reconstructed, not authenticated pre-lock snapshots.','Joint empirical worlds are statistical, not exact conserved plays or final box scores.','DST uses a learned scoreboard-based scoring proxy, not exact rare-play attribution.','Questionable players are conditional on playing; no guaranteed final-inactive service.','No six-year full-field Millionaire Maker backtest, ownership calibration or demonstrated profitable edge.']}
+  now=pd.Timestamp.now(tz='UTC');rid=f'{YEAR}-w{int(f.week.iloc[0]):02d}-'+now.strftime('%Y%m%dT%H%M%SZ');release={'version':'1.0','release_id':rid,'generated_at':now,'contest':contest,'players':ps,'games':games,'lineups':lineups,'diagnostics':diag,'validation':validation,'hypothesis':hyp,'excluded':rejected,'source_receipts':[json.loads(x) for x in (CACHE/'source-receipts.jsonl').read_text().splitlines()],'code_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'entry_ready':False,'independent_baseline':True,'limitations':['Historical rosters are reconstructed, not authenticated pre-lock snapshots.','Joint empirical worlds are statistical, not exact conserved plays or final box scores.','DST uses a learned scoreboard-based scoring proxy, not exact rare-play attribution.','Questionable players are conditional on playing; no guaranteed final-inactive service.','No six-year full-field Millionaire Maker backtest, ownership calibration or demonstrated profitable edge.']}
   assert len(lineups)==20 and all(legal(l['ids'],ps) for l in lineups)
   assert len({tuple(sorted(l['ids'])) for l in lineups})==20
   assert not set(fs)&{'salary','ownership','total_line','points','expert_projection','user_belief'}
   assert now<pd.Timestamp(contest['kickoff'])
   for l in lineups:assert abs(sum(l['witness']['player_points'])-l['witness']['lineup_points'])<.1
-  take=min(1024,N);world={'release_id':rid,'generated_at':now,'lock':contest['kickoff'],'players':ps,'games':games,'candidates':bank,'reference_entries':len(refs),'selection':{'points':W[:take],'scores':G[:take],'reference':ra[:take]},'evaluation':{'points':H[:take],'scores':HG[:take],'reference':rb[:take]}}
+  take=min(1024,N);world={'release_id':rid,'generated_at':now,'lock':contest['kickoff'],'players':ps,'games':games,'candidates':bank,'reference_entries':len(refs),'selection':{'points':np.rint(W[:take]*100).astype(np.int32),'scores':G[:take],'reference':ra[:take]},'evaluation':{'points':np.rint(H[:take]*100).astype(np.int32),'scores':HG[:take],'reference':rb[:take]}}
+  world['point_scale']=100
   save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world);save(STAGE/'hypothesis.json',hyp);save(STAGE/'validation.json',validation)
-  from site import render
+  from publication import render
   render(release,world,STAGE)
   from tests import verify
   checks=verify(release,world);save(STAGE/'verification.json',checks)

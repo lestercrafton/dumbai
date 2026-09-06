@@ -6,7 +6,7 @@ ROOT=pathlib.Path(__file__).resolve().parent
 p=ROOT/'core.py';s=p.read_text();s=s.replace('from site import render','from publication import render')
 s=s.replace("'points':W[:take]","'points':np.rint(W[:take]*100).astype(np.int32)")
 s=s.replace("'points':H[:take]","'points':np.rint(H[:take]*100).astype(np.int32)")
-s=s.replace("save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)","world['point_scale']=100\n  save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)")
+s=s if "world['point_scale']=100" in s else s.replace("save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)","world['point_scale']=100\n  save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)")
 p.write_text(s)
 p=ROOT/'publication.py';s=p.read_text();s=s.replace("bank=await r.json();}if(bank.release_id", "bank=await r.json();if(bank.point_scale===100){for(const part of ['selection','evaluation'])bank[part].points=bank[part].points.map(row=>row.map(x=>x/100));bank.point_scale=1;}}if(bank.release_id")
 p.write_text(s)
