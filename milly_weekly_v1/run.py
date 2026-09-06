@@ -4,6 +4,8 @@ import pathlib,json,datetime as dt,traceback
 ROOT=pathlib.Path(__file__).resolve().parent
 # These idempotent source migrations also apply when installing the initial bundle.
 p=ROOT/'core.py';s=p.read_text();s=s.replace('from site import render','from publication import render')
+# Match nflverse/nflreadr R/load_rosters_weekly.R; the reversed release name returns 404.
+s=s.replace('/releases/download/rosters_weekly/roster_weekly_', '/releases/download/weekly_rosters/roster_weekly_')
 s=s.replace("'points':W[:take]","'points':np.rint(W[:take]*100).astype(np.int32)")
 s=s.replace("'points':H[:take]","'points':np.rint(H[:take]*100).astype(np.int32)")
 s=s if "world['point_scale']=100" in s else s.replace("save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)","world['point_scale']=100\n  save(STAGE/'latest.json',release);save(STAGE/'worlds.json',world)")
