@@ -1,0 +1,457 @@
+{
+  "release_id": "2026-w01-20260906T172744Z",
+  "summary": "Twenty independently forecast, salary-legal research lineups. No analyst forecast inputs. Real-world tournament edge is not established.",
+  "model": {
+    "training_rows": 84338,
+    "champion": "context",
+    "evaluation": {
+      "2024": {
+        "model": {
+          "n": 14010,
+          "rmse": 4.811385699020763,
+          "mae": 2.649507105784524
+        },
+        "baseline": {
+          "n": 14010,
+          "rmse": 5.049113327403365,
+          "mae": 2.6399998980320176
+        },
+        "q90_coverage": 0.9238401142041399,
+        "q90_pinball": 0.8071320126964521,
+        "by_position": {
+          "QB": {
+            "n": 1867,
+            "rmse": 5.759051952256889,
+            "mae": 3.2564716997692833
+          },
+          "RB": {
+            "n": 3223,
+            "rmse": 4.861381863176532,
+            "mae": 2.6783798544254402
+          },
+          "WR": {
+            "n": 5440,
+            "rmse": 4.937825894179859,
+            "mae": 2.6482725072514914
+          },
+          "TE": {
+            "n": 2936,
+            "rmse": 3.6234779732589955,
+            "mae": 1.9714432700114588
+          },
+          "DST": {
+            "n": 544,
+            "rmse": 5.2588943952362355,
+            "mae": 4.067249517567981
+          }
+        },
+        "known_opportunity": {
+          "n": 3598,
+          "rmse": 7.999917556206329,
+          "mae": 6.1355900874297165
+        }
+      },
+      "2025": {
+        "model": {
+          "n": 14224,
+          "rmse": 4.697802498844442,
+          "mae": 2.5836288755006627
+        },
+        "baseline": {
+          "n": 14224,
+          "rmse": 4.9932252607889165,
+          "mae": 2.608206346751299
+        },
+        "q90_coverage": 0.9281496062992126,
+        "q90_pinball": 0.7853543851754208,
+        "by_position": {
+          "QB": {
+            "n": 1948,
+            "rmse": 5.6888228390885125,
+            "mae": 3.162229063341421
+          },
+          "RB": {
+            "n": 3371,
+            "rmse": 4.776286043428373,
+            "mae": 2.5408142562112905
+          },
+          "WR": {
+            "n": 5401,
+            "rmse": 4.629538872768837,
+            "mae": 2.550773943678485
+          },
+          "TE": {
+            "n": 2960,
+            "rmse": 3.7429715448164544,
+            "mae": 1.9926178954069784
+          },
+          "DST": {
+            "n": 544,
+            "rmse": 5.547720180269944,
+            "mae": 4.319027595279268
+          }
+        },
+        "known_opportunity": {
+          "n": 3635,
+          "rmse": 7.842756478962238,
+          "mae": 6.033172482492161
+        }
+      }
+    }
+  },
+  "experiments": {
+    "selection_worlds": 8192,
+    "evaluation_worlds": 8192,
+    "candidates": 480,
+    "benchmark_entries": 540,
+    "top20_holdout_overlap": 11,
+    "flex_audit": {
+      "RB": {
+        "searched": 160,
+        "selected_top_twenty": 14,
+        "best_selection_share": 0.00732421875,
+        "same_candidate_holdout_share": 0.0064697265625
+      },
+      "WR": {
+        "searched": 160,
+        "selected_top_twenty": 1,
+        "best_selection_share": 0.0048828125,
+        "same_candidate_holdout_share": 0.0057373046875
+      },
+      "TE": {
+        "searched": 160,
+        "selected_top_twenty": 5,
+        "best_selection_share": 0.005126953125,
+        "same_candidate_holdout_share": 0.0068359375
+      }
+    }
+  },
+  "quality": {
+    "official_pool": 744,
+    "modeled_eligible": 348,
+    "depth_snapshot": "2026-09-06 11:29:30+00:00",
+    "depth_age_hours": 5.97
+  },
+  "lineups": [
+    {
+      "rank": 1,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Jakobi Meyers",
+        "WR2": "Wan'Dale Robinson",
+        "WR3": "Michael Wilson",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Chase Brown",
+        "DST": "Vikings"
+      }
+    },
+    {
+      "rank": 2,
+      "salary": 49700,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Derrick Henry",
+        "RB2": "Chase Brown",
+        "WR1": "Ja'Marr Chase",
+        "WR2": "Michael Wilson",
+        "WR3": "Jauan Jennings",
+        "TE": "Colston Loveland",
+        "FLEX": "Kenny Gainwell",
+        "DST": "Saints"
+      }
+    },
+    {
+      "rank": 3,
+      "salary": 50000,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Jakobi Meyers",
+        "WR2": "Wan'Dale Robinson",
+        "WR3": "Michael Wilson",
+        "TE": "Tyler Warren",
+        "FLEX": "Chase Brown",
+        "DST": "Dolphins"
+      }
+    },
+    {
+      "rank": 4,
+      "salary": 50000,
+      "flex": "RB",
+      "players": {
+        "QB": "Jared Goff",
+        "RB1": "Derrick Henry",
+        "RB2": "Chase Brown",
+        "WR1": "Jerry Jeudy",
+        "WR2": "Amon-Ra St. Brown",
+        "WR3": "Jameson Williams",
+        "TE": "Colston Loveland",
+        "FLEX": "Kenny Gainwell",
+        "DST": "Browns"
+      }
+    },
+    {
+      "rank": 5,
+      "salary": 50000,
+      "flex": "RB",
+      "players": {
+        "QB": "Jacoby Brissett",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Tetairoa McMillan",
+        "WR2": "Michael Wilson",
+        "WR3": "Jauan Jennings",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Jahmyr Gibbs",
+        "DST": "Browns"
+      }
+    },
+    {
+      "rank": 6,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Jahmyr Gibbs",
+        "WR1": "Zay Flowers",
+        "WR2": "Alec Pierce",
+        "WR3": "Jakobi Meyers",
+        "TE": "Greg Dulcich",
+        "FLEX": "Kenny Gainwell",
+        "DST": "Falcons"
+      }
+    },
+    {
+      "rank": 7,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "C.J. Stroud",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Jakobi Meyers",
+        "WR2": "Wan'Dale Robinson",
+        "WR3": "Michael Wilson",
+        "TE": "Colston Loveland",
+        "FLEX": "Chase Brown",
+        "DST": "Vikings"
+      }
+    },
+    {
+      "rank": 8,
+      "salary": 50000,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Jameson Williams",
+        "WR2": "Parker Washington",
+        "WR3": "Michael Wilson",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Jaylen Warren",
+        "DST": "Vikings"
+      }
+    },
+    {
+      "rank": 9,
+      "salary": 49000,
+      "flex": "TE",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Derrick Henry",
+        "RB2": "Kenny Gainwell",
+        "WR1": "Amon-Ra St. Brown",
+        "WR2": "Jakobi Meyers",
+        "WR3": "DeVonta Smith",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Colston Loveland",
+        "DST": "Saints"
+      }
+    },
+    {
+      "rank": 10,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "Baker Mayfield",
+        "RB1": "Derrick Henry",
+        "RB2": "Chase Brown",
+        "WR1": "Tetairoa McMillan",
+        "WR2": "Ja'Marr Chase",
+        "WR3": "Michael Wilson",
+        "TE": "Juwan Johnson",
+        "FLEX": "Kenny Gainwell",
+        "DST": "Browns"
+      }
+    },
+    {
+      "rank": 11,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Alec Pierce",
+        "WR2": "Parker Washington",
+        "WR3": "Michael Wilson",
+        "TE": "Michael Mayer",
+        "FLEX": "Jahmyr Gibbs",
+        "DST": "Saints"
+      }
+    },
+    {
+      "rank": 12,
+      "salary": 50000,
+      "flex": "WR",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Zay Flowers",
+        "WR2": "Jameson Williams",
+        "WR3": "Alec Pierce",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Jakobi Meyers",
+        "DST": "Cardinals"
+      }
+    },
+    {
+      "rank": 13,
+      "salary": 50000,
+      "flex": "TE",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Tetairoa McMillan",
+        "WR2": "Michael Wilson",
+        "WR3": "Stefon Diggs",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Colston Loveland",
+        "DST": "Eagles"
+      }
+    },
+    {
+      "rank": 14,
+      "salary": 49500,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Ja'Marr Chase",
+        "WR2": "Jauan Jennings",
+        "WR3": "Stefon Diggs",
+        "TE": "Dalton Schultz",
+        "FLEX": "Jaylen Warren",
+        "DST": "Eagles"
+      }
+    },
+    {
+      "rank": 15,
+      "salary": 49900,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Derrick Henry",
+        "RB2": "Jonathan Taylor",
+        "WR1": "Jameson Williams",
+        "WR2": "Michael Wilson",
+        "WR3": "Quentin Johnston",
+        "TE": "Colston Loveland",
+        "FLEX": "Ashton Jeanty",
+        "DST": "Saints"
+      }
+    },
+    {
+      "rank": 16,
+      "salary": 49700,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Chase Brown",
+        "WR1": "Jameson Williams",
+        "WR2": "Adonai Mitchell",
+        "WR3": "Michael Wilson",
+        "TE": "Brenton Strange",
+        "FLEX": "Jahmyr Gibbs",
+        "DST": "Saints"
+      }
+    },
+    {
+      "rank": 17,
+      "salary": 50000,
+      "flex": "RB",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Alec Pierce",
+        "WR2": "Jakobi Meyers",
+        "WR3": "Elic Ayomanor",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Jahmyr Gibbs",
+        "DST": "Vikings"
+      }
+    },
+    {
+      "rank": 18,
+      "salary": 49500,
+      "flex": "TE",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Chase Brown",
+        "WR1": "Tetairoa McMillan",
+        "WR2": "Jakobi Meyers",
+        "WR3": "Michael Wilson",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Tyler Warren",
+        "DST": "Texans"
+      }
+    },
+    {
+      "rank": 19,
+      "salary": 49900,
+      "flex": "TE",
+      "players": {
+        "QB": "Cam Ward",
+        "RB1": "Derrick Henry",
+        "RB2": "Jahmyr Gibbs",
+        "WR1": "Zay Flowers",
+        "WR2": "Tetairoa McMillan",
+        "WR3": "Wan'Dale Robinson",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Colston Loveland",
+        "DST": "Vikings"
+      }
+    },
+    {
+      "rank": 20,
+      "salary": 50000,
+      "flex": "TE",
+      "players": {
+        "QB": "Trevor Lawrence",
+        "RB1": "Bijan Robinson",
+        "RB2": "Derrick Henry",
+        "WR1": "Ja'Marr Chase",
+        "WR2": "Michael Wilson",
+        "WR3": "Stefon Diggs",
+        "TE": "Kyle Pitts Sr.",
+        "FLEX": "Brenton Strange",
+        "DST": "Eagles"
+      }
+    }
+  ]
+}

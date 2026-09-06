@@ -1,11 +1,11 @@
 {
-  "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+  "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
   "season": 2026,
   "sources": [
     {
       "name": "schedule",
       "url": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": null,
       "rows": 7548,
@@ -115,7 +115,7 @@
     {
       "name": "stats_2019",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2019.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:45:38 GMT",
       "rows": 17362,
@@ -433,7 +433,7 @@
     {
       "name": "rosters_2019",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2019.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Wed, 13 Sep 2023 00:59:14 GMT",
       "rows": 51632,
@@ -523,7 +523,7 @@
     {
       "name": "depth_2019",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2019.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 04 Aug 2024 21:42:53 GMT",
       "rows": 36308,
@@ -571,7 +571,7 @@
     {
       "name": "stats_2020",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2020.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Wed, 26 Aug 2026 07:35:24 GMT",
       "rows": 17602,
@@ -889,7 +889,7 @@
     {
       "name": "rosters_2020",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2020.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Wed, 13 Sep 2023 01:04:29 GMT",
       "rows": 44130,
@@ -979,7 +979,7 @@
     {
       "name": "depth_2020",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2020.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 04 Aug 2024 21:44:09 GMT",
       "rows": 36168,
@@ -1027,7 +1027,7 @@
     {
       "name": "stats_2021",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2021.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:48:00 GMT",
       "rows": 18969,
@@ -1345,7 +1345,7 @@
     {
       "name": "rosters_2021",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2021.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Wed, 13 Sep 2023 01:10:08 GMT",
       "rows": 46696,
@@ -1435,7 +1435,7 @@
     {
       "name": "depth_2021",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2021.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 04 Aug 2024 21:45:28 GMT",
       "rows": 37487,
@@ -1483,7 +1483,7 @@
     {
       "name": "stats_2022",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2022.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:48:13 GMT",
       "rows": 18831,
@@ -1801,7 +1801,7 @@
     {
       "name": "rosters_2022",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2022.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Wed, 13 Sep 2023 01:15:43 GMT",
       "rows": 46163,
@@ -1891,7 +1891,7 @@
     {
       "name": "depth_2022",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2022.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 04 Aug 2024 21:46:48 GMT",
       "rows": 37780,
@@ -1939,7 +1939,7 @@
     {
       "name": "stats_2023",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2023.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:48:36 GMT",
       "rows": 18643,
@@ -2257,7 +2257,7 @@
     {
       "name": "rosters_2023",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2023.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Thu, 14 Mar 2024 07:17:48 GMT",
       "rows": 45655,
@@ -2347,7 +2347,7 @@
     {
       "name": "depth_2023",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2023.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 04 Aug 2024 21:48:05 GMT",
       "rows": 37327,
@@ -2395,7 +2395,7 @@
     {
       "name": "stats_2024",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2024.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:49:11 GMT",
       "rows": 18983,
@@ -2713,7 +2713,7 @@
     {
       "name": "rosters_2024",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2024.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Fri, 14 Mar 2025 07:16:07 GMT",
       "rows": 46579,
@@ -2803,7 +2803,7 @@
     {
       "name": "depth_2024",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2024.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Thu, 13 Feb 2025 07:32:56 GMT",
       "rows": 37312,
@@ -2851,7 +2851,7 @@
     {
       "name": "stats_2025",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": true,
       "last_modified": "Thu, 13 Aug 2026 16:51:22 GMT",
       "rows": 19422,
@@ -3169,7 +3169,7 @@
     {
       "name": "rosters_2025",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2025.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sat, 14 Mar 2026 07:33:06 GMT",
       "rows": 46849,
@@ -3259,7 +3259,7 @@
     {
       "name": "depth_2025",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2025.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sat, 14 Mar 2026 07:32:30 GMT",
       "rows": 554215,
@@ -3301,7 +3301,7 @@
     {
       "name": "stats_2026",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "ok": false,
       "error": "HTTP Error 404: Not Found"
@@ -3309,7 +3309,7 @@
     {
       "name": "rosters_2026",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_2026.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 06 Sep 2026 11:28:09 GMT",
       "rows": 2946,
@@ -3399,7 +3399,7 @@
     {
       "name": "depth_2026",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2026.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 06 Sep 2026 11:29:39 GMT",
       "rows": 501068,
@@ -3441,7 +3441,7 @@
     {
       "name": "roster_current",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_2026.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 06 Sep 2026 11:28:11 GMT",
       "rows": 2946,
@@ -3531,7 +3531,7 @@
     {
       "name": "injuries_current",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "ok": false,
       "error": "HTTP Error 404: Not Found"
@@ -3539,7 +3539,7 @@
     {
       "name": "players",
       "url": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": "Sun, 06 Sep 2026 11:54:34 GMT",
       "rows": 24828,
@@ -3635,7 +3635,7 @@
     {
       "name": "dk_groups",
       "url": "https://api.draftkings.com/draftgroups/v1/",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "keys": [
@@ -3652,7 +3652,7 @@
     {
       "name": "dk_lobby",
       "url": "https://www.draftkings.com/lobby/getcontests?sport=NFL",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "keys": [
@@ -3677,14 +3677,14 @@
         "AdsEnabled"
       ],
       "ok": true,
-      "bytes": 3213122,
-      "sha256": "62fda8c42de1fab60a783224915cae60e007d2b62f7007a1d030aa168ff9b433",
+      "bytes": 3211673,
+      "sha256": "ee9d762887980067e6e50d7ce909cb1a2aece92a065f8286d3d427e276520173",
       "path": "cache/dk_lobby.json"
     },
     {
       "name": "dk_pool_151307",
       "url": "https://api.draftkings.com/draftgroups/v1/draftgroups/151307/draftables",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "keys": [
@@ -3704,7 +3704,7 @@
     {
       "name": "dk_pool_153054",
       "url": "https://api.draftkings.com/draftgroups/v1/draftgroups/153054/draftables",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "keys": [
@@ -3724,7 +3724,7 @@
     {
       "name": "dk_pool_153105",
       "url": "https://api.draftkings.com/draftgroups/v1/draftgroups/153105/draftables",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "keys": [
@@ -3744,7 +3744,7 @@
     {
       "name": "salary_2026_09_13",
       "url": "https://raw.githubusercontent.com/relomy/learn-dfs-lessons/95aec847b996d288029bb791625020d60c63f964/data/raw/draftkings/2026-09-13-main-slate.csv",
-      "retrieved_at": "2026-09-06T17:22:34.355415+00:00",
+      "retrieved_at": "2026-09-06T17:26:22.726858+00:00",
       "required": false,
       "last_modified": null,
       "rows": 719,

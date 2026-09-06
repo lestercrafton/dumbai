@@ -1,7 +1,10 @@
 {
-  "status": "withheld",
-  "started_at": "2026-09-06T17:22:50.492298+00:00",
-  "failed_at": "2026-09-06T17:23:37.706507+00:00",
-  "error": "Merge keys are not unique in left dataset; not a one-to-one merge",
-  "previous_releases_retained_not_relabelled": true
+  "status": "published_research",
+  "started_at": "2026-09-06T17:26:37.811789+00:00",
+  "completed_at": "2026-09-06T17:27:45.844741+00:00",
+  "release_id": "2026-w01-20260906T172744Z",
+  "lineups": 20,
+  "entry_ready": false,
+  "training_completed": true,
+  "validation_passed": true
 }

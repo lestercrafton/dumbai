@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "lineups_checked": 20,
+  "checks": [
+    "unique lineups and player identities",
+    "official salaries and positions",
+    "salary cap and at least two games",
+    "no explicitly unavailable selections",
+    "winning-witness sum and benchmark comparison",
+    "balanced FLEX search",
+    "independent baseline inputs",
+    "separate conditional selection/evaluation draws",
+    "matching release identity"
+  ]
+}
