@@ -1,0 +1,3801 @@
+{
+  "depth_2026.csv.gz": {
+    "columns": [
+      "dt",
+      "team",
+      "player_name",
+      "espn_id",
+      "gsis_id",
+      "pos_grp_id",
+      "pos_grp",
+      "pos_id",
+      "pos_name",
+      "pos_abb",
+      "pos_slot",
+      "pos_rank"
+    ],
+    "rows": 501068,
+    "sample": [
+      {
+        "dt": "2026-09-06T11:29:30Z",
+        "team": "ARI",
+        "player_name": "Josh Sweat",
+        "espn_id": 3693166,
+        "gsis_id": "00-0034381",
+        "pos_grp_id": 16,
+        "pos_grp": "Base 4-3 D",
+        "pos_id": 11,
+        "pos_name": "Left Defensive End",
+        "pos_abb": "LDE",
+        "pos_slot": 1,
+        "pos_rank": 1
+      },
+      {
+        "dt": "2026-09-06T11:29:30Z",
+        "team": "ARI",
+        "player_name": "Roy Lopez",
+        "espn_id": 4040805,
+        "gsis_id": "00-0036568",
+        "pos_grp_id": 16,
+        "pos_grp": "Base 4-3 D",
+        "pos_id": 24,
+        "pos_name": "Left Defensive Tackle",
+        "pos_abb": "LDT",
+        "pos_slot": 2,
+        "pos_rank": 1
+      }
+    ],
+    "dt": {
+      "2026-08-28T19:13:13Z": 3289,
+      "2026-08-27T18:05:02Z": 3288,
+      "2026-08-26T07:41:22Z": 3287,
+      "2026-08-25T07:39:23Z": 3281,
+      "2026-08-24T07:53:13Z": 3281,
+      "2026-08-23T07:28:22Z": 3281,
+      "2026-08-22T07:26:29Z": 3280,
+      "2026-08-21T07:40:57Z": 3275,
+      "2026-08-20T07:36:02Z": 3270,
+      "2026-08-19T07:43:54Z": 3266,
+      "2026-08-29T12:56:08Z": 3260,
+      "2026-08-18T07:33:20Z": 3258,
+      "2026-08-17T07:46:40Z": 3257,
+      "2026-08-14T08:10:38Z": 3256,
+      "2026-08-13T08:15:32Z": 3256,
+      "2026-08-16T07:26:28Z": 3254,
+      "2026-08-15T07:25:20Z": 3254,
+      "2026-08-11T08:08:52Z": 3253,
+      "2026-08-12T08:11:43Z": 3252,
+      "2026-08-09T07:49:05Z": 3231
+    }
+  },
+  "dk_pool_151307.json": {
+    "keys": [
+      "draftables",
+      "competitions",
+      "teamsWithoutCompetitions",
+      "draftAlerts",
+      "draftStats",
+      "playerGameAttributes",
+      "errorStatus"
+    ],
+    "count": 1372,
+    "sample": [
+      {
+        "draftableId": 43727325,
+        "firstName": "Jahmyr",
+        "lastName": "Gibbs",
+        "displayName": "Jahmyr Gibbs",
+        "shortName": "J. Gibbs",
+        "playerId": 1214154,
+        "playerDkId": 693115,
+        "position": "RB",
+        "rosterSlotId": 67,
+        "salary": 8000,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/693115.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/693115.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6176012,
+          "name": "NO @ DET",
+          "nameDisplay": [
+            {
+              "value": "NO"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "DET",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6176012,
+            "name": "NO @ DET",
+            "nameDisplay": [
+              {
+                "value": "NO"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "DET",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "22.3",
+            "sortValue": "22.3"
+          },
+          {
+            "id": -2,
+            "value": "13th",
+            "sortValue": "13",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 334,
+        "teamAbbreviation": "DET",
+        "draftAlerts": [],
+        "playerGameHash": "1214154-6176012",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 43727326,
+        "firstName": "Jahmyr",
+        "lastName": "Gibbs",
+        "displayName": "Jahmyr Gibbs",
+        "shortName": "J. Gibbs",
+        "playerId": 1214154,
+        "playerDkId": 693115,
+        "position": "RB",
+        "rosterSlotId": 70,
+        "salary": 8000,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/693115.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/693115.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6176012,
+          "name": "NO @ DET",
+          "nameDisplay": [
+            {
+              "value": "NO"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "DET",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6176012,
+            "name": "NO @ DET",
+            "nameDisplay": [
+              {
+                "value": "NO"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "DET",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "22.3",
+            "sortValue": "22.3"
+          },
+          {
+            "id": -2,
+            "value": "13th",
+            "sortValue": "13",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 334,
+        "teamAbbreviation": "DET",
+        "draftAlerts": [],
+        "playerGameHash": "1214154-6176012",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 43727631,
+        "firstName": "Ja'Marr",
+        "lastName": "Chase",
+        "displayName": "Ja'Marr Chase",
+        "shortName": "J. Chase",
+        "playerId": 1109979,
+        "playerDkId": 557826,
+        "position": "WR",
+        "rosterSlotId": 68,
+        "salary": 7800,
+        "status": "Q",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/557826.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/557826.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6175928,
+          "name": "TB @ CIN",
+          "nameDisplay": [
+            {
+              "value": "TB"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "CIN",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6175928,
+            "name": "TB @ CIN",
+            "nameDisplay": [
+              {
+                "value": "TB"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "CIN",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "21.0",
+            "sortValue": "21.0"
+          },
+          {
+            "id": -2,
+            "value": "17th",
+            "sortValue": "17",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 327,
+        "teamAbbreviation": "CIN",
+        "draftAlerts": [],
+        "playerGameHash": "1109979-6175928",
+        "externalRequirements": {}
+      }
+    ],
+    "other": {
+      "competitions": [
+        {
+          "competitionId": 6176114,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 336,
+            "teamName": "Titans",
+            "abbreviation": "TEN",
+            "city": "Tennessee",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18366.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 352,
+            "teamName": "Jets",
+            "abbreviation": "NYJ",
+            "city": "New York",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18441.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18441.png"
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "NYJ @ TEN",
+          "venue": "LP Field",
+          "weather": {
+            "icon": "clear-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175928,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 327,
+            "teamName": "Bengals",
+            "abbreviation": "CIN",
+            "city": "Cincinnati",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18320.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 362,
+            "teamName": "Buccaneers",
+            "abbreviation": "TB",
+            "city": "Tampa Bay",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18474.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "TB @ CIN",
+          "venue": "Paul Brown Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176030,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 365,
+            "teamName": "Jaguars",
+            "abbreviation": "JAX",
+            "city": "Jacksonville",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18489.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 329,
+            "teamName": "Browns",
+            "abbreviation": "CLE",
+            "city": "Cleveland",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18325.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "CLE @ JAX",
+          "venue": "EverBank Field",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176168,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 364,
+            "teamName": "Panthers",
+            "abbreviation": "CAR",
+            "city": "Carolina",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18484.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 326,
+            "teamName": "Bears",
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18312.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18312.png"
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "CHI @ CAR",
+          "venue": "Bank of America Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175934,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 338,
+            "teamName": "Colts",
+            "abbreviation": "IND",
+            "city": "Indianapolis",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18372.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 366,
+            "teamName": "Ravens",
+            "abbreviation": "BAL",
+            "city": "Baltimore",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18495.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "BAL @ IND",
+          "venue": "Lucas Oil Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176012,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 334,
+            "teamName": "Lions",
+            "abbreviation": "DET",
+            "city": "Detroit",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18348.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 350,
+            "teamName": "Saints",
+            "abbreviation": "NO",
+            "city": "New Orleans",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18423.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "NO @ DET",
+          "venue": "Ford Field",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175952,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 325,
+            "teamName": "Texans",
+            "abbreviation": "HOU",
+            "city": "Houston",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18500.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 324,
+            "teamName": "Bills",
+            "abbreviation": "BUF",
+            "city": "Buffalo",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18302.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "BUF @ HOU",
+          "venue": "Reliant Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176144,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 356,
+            "teamName": "Steelers",
+            "abbreviation": "PIT",
+            "city": "Pittsburgh",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18456.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 323,
+            "teamName": "Falcons",
+            "abbreviation": "ATL",
+            "city": "Atlanta",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18297.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "ATL @ PIT",
+          "venue": "Heinz Field",
+          "weather": {
+            "icon": "partly-cloudy-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176090,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 341,
+            "teamName": "Raiders",
+            "abbreviation": "LV",
+            "city": "Las Vegas",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18388.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18388.png"
+          },
+          "awayTeam": {
+            "teamId": 345,
+            "teamName": "Dolphins",
+            "abbreviation": "MIA",
+            "city": "Miami",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18401.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "MIA @ LV",
+          "venue": "Allegiant Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175964,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 347,
+            "teamName": "Vikings",
+            "abbreviation": "MIN",
+            "city": "Minnesota",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18409.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 335,
+            "teamName": "Packers",
+            "abbreviation": "GB",
+            "city": "Green Bay",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18357.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "GB @ MIN",
+          "venue": "U.S. Bank Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176048,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 357,
+            "teamName": "Chargers",
+            "abbreviation": "LAC",
+            "city": "Los Angeles",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18461.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 355,
+            "teamName": "Cardinals",
+            "abbreviation": "ARI",
+            "city": "Arizona",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18454.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "ARI @ LAC",
+          "venue": "SoFi Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175988,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 354,
+            "teamName": "Eagles",
+            "abbreviation": "PHI",
+            "city": "Philadelphia",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18448.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 363,
+            "teamName": "Commanders",
+            "abbreviation": "WAS",
+            "city": "Washington",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18480.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18480.png"
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "WAS @ PHI",
+          "venue": "Lincoln Financial Field",
+          "weather": {
+            "icon": "partly-cloudy-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "teamsWithoutCompetitions": [],
+      "draftAlerts": [],
+      "draftStats": [
+        {
+          "id": 90,
+          "abbr": "FPPG",
+          "name": "Fantasy Points Per Game",
+          "order": 11
+        },
+        {
+          "id": -2,
+          "abbr": "OPRK",
+          "name": "Opponent Rank",
+          "order": 20
+        }
+      ],
+      "playerGameAttributes": [],
+      "errorStatus": {}
+    }
+  },
+  "dk_pool_153054.json": {
+    "keys": [
+      "draftables",
+      "competitions",
+      "teamsWithoutCompetitions",
+      "draftAlerts",
+      "draftStats",
+      "playerGameAttributes",
+      "errorStatus"
+    ],
+    "count": 1486,
+    "sample": [
+      {
+        "draftableId": 44037607,
+        "firstName": "Jahmyr",
+        "lastName": "Gibbs",
+        "displayName": "Jahmyr Gibbs",
+        "shortName": "J. Gibbs",
+        "playerId": 1214154,
+        "playerDkId": 693115,
+        "position": "RB",
+        "rosterSlotId": 67,
+        "salary": 8000,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/693115.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/693115.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6176012,
+          "name": "NO @ DET",
+          "nameDisplay": [
+            {
+              "value": "NO"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "DET",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6176012,
+            "name": "NO @ DET",
+            "nameDisplay": [
+              {
+                "value": "NO"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "DET",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "22.3",
+            "sortValue": "22.3"
+          },
+          {
+            "id": -2,
+            "value": "13th",
+            "sortValue": "13",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 334,
+        "teamAbbreviation": "DET",
+        "draftAlerts": [],
+        "playerGameHash": "1214154-6176012",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 44037608,
+        "firstName": "Jahmyr",
+        "lastName": "Gibbs",
+        "displayName": "Jahmyr Gibbs",
+        "shortName": "J. Gibbs",
+        "playerId": 1214154,
+        "playerDkId": 693115,
+        "position": "RB",
+        "rosterSlotId": 70,
+        "salary": 8000,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/693115.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/693115.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6176012,
+          "name": "NO @ DET",
+          "nameDisplay": [
+            {
+              "value": "NO"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "DET",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6176012,
+            "name": "NO @ DET",
+            "nameDisplay": [
+              {
+                "value": "NO"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "DET",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "22.3",
+            "sortValue": "22.3"
+          },
+          {
+            "id": -2,
+            "value": "13th",
+            "sortValue": "13",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 334,
+        "teamAbbreviation": "DET",
+        "draftAlerts": [],
+        "playerGameHash": "1214154-6176012",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 44037977,
+        "firstName": "Ja'Marr",
+        "lastName": "Chase",
+        "displayName": "Ja'Marr Chase",
+        "shortName": "J. Chase",
+        "playerId": 1109979,
+        "playerDkId": 557826,
+        "position": "WR",
+        "rosterSlotId": 68,
+        "salary": 7800,
+        "status": "Q",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/557826.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/557826.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6175928,
+          "name": "TB @ CIN",
+          "nameDisplay": [
+            {
+              "value": "TB"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "CIN",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-13T17:00:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6175928,
+            "name": "TB @ CIN",
+            "nameDisplay": [
+              {
+                "value": "TB"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "CIN",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-13T17:00:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "21.0",
+            "sortValue": "21.0"
+          },
+          {
+            "id": -2,
+            "value": "17th",
+            "sortValue": "17",
+            "quality": "Medium"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "6"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "6"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 327,
+        "teamAbbreviation": "CIN",
+        "draftAlerts": [],
+        "playerGameHash": "1109979-6175928",
+        "externalRequirements": {}
+      }
+    ],
+    "other": {
+      "competitions": [
+        {
+          "competitionId": 6175541,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 361,
+            "teamName": "Seahawks",
+            "abbreviation": "SEA",
+            "city": "Seattle",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18471.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 348,
+            "teamName": "Patriots",
+            "abbreviation": "NE",
+            "city": "New England",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18415.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-10T00:20:00.0000000Z",
+          "name": "NE @ SEA",
+          "venue": "CenturyLink Field",
+          "weather": {
+            "icon": "clear-night",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "NBC"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175535,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 343,
+            "teamName": "Rams",
+            "abbreviation": "LAR",
+            "city": "Los Angeles",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18397.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18397.png"
+          },
+          "awayTeam": {
+            "teamId": 359,
+            "teamName": "49ers",
+            "abbreviation": "SF",
+            "city": "San Francisco",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18465.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-11T00:35:00.0000000Z",
+          "name": "SF @ LAR",
+          "venue": "Melbourne Cricket Ground",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175928,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 327,
+            "teamName": "Bengals",
+            "abbreviation": "CIN",
+            "city": "Cincinnati",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18320.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 362,
+            "teamName": "Buccaneers",
+            "abbreviation": "TB",
+            "city": "Tampa Bay",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18474.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "TB @ CIN",
+          "venue": "Paul Brown Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175934,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 338,
+            "teamName": "Colts",
+            "abbreviation": "IND",
+            "city": "Indianapolis",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18372.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 366,
+            "teamName": "Ravens",
+            "abbreviation": "BAL",
+            "city": "Baltimore",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18495.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "BAL @ IND",
+          "venue": "Lucas Oil Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175952,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 325,
+            "teamName": "Texans",
+            "abbreviation": "HOU",
+            "city": "Houston",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18500.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 324,
+            "teamName": "Bills",
+            "abbreviation": "BUF",
+            "city": "Buffalo",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18302.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "BUF @ HOU",
+          "venue": "Reliant Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176012,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 334,
+            "teamName": "Lions",
+            "abbreviation": "DET",
+            "city": "Detroit",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18348.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 350,
+            "teamName": "Saints",
+            "abbreviation": "NO",
+            "city": "New Orleans",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18423.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "NO @ DET",
+          "venue": "Ford Field",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176030,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 365,
+            "teamName": "Jaguars",
+            "abbreviation": "JAX",
+            "city": "Jacksonville",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18489.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 329,
+            "teamName": "Browns",
+            "abbreviation": "CLE",
+            "city": "Cleveland",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18325.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "CLE @ JAX",
+          "venue": "EverBank Field",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176114,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 336,
+            "teamName": "Titans",
+            "abbreviation": "TEN",
+            "city": "Tennessee",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18366.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 352,
+            "teamName": "Jets",
+            "abbreviation": "NYJ",
+            "city": "New York",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18441.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18441.png"
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "NYJ @ TEN",
+          "venue": "LP Field",
+          "weather": {
+            "icon": "clear-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176144,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 356,
+            "teamName": "Steelers",
+            "abbreviation": "PIT",
+            "city": "Pittsburgh",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18456.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 323,
+            "teamName": "Falcons",
+            "abbreviation": "ATL",
+            "city": "Atlanta",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18297.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "ATL @ PIT",
+          "venue": "Heinz Field",
+          "weather": {
+            "icon": "partly-cloudy-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176168,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 364,
+            "teamName": "Panthers",
+            "abbreviation": "CAR",
+            "city": "Carolina",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18484.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 326,
+            "teamName": "Bears",
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18312.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18312.png"
+          },
+          "startTime": "2026-09-13T17:00:00.0000000Z",
+          "name": "CHI @ CAR",
+          "venue": "Bank of America Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175964,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 347,
+            "teamName": "Vikings",
+            "abbreviation": "MIN",
+            "city": "Minnesota",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18409.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 335,
+            "teamName": "Packers",
+            "abbreviation": "GB",
+            "city": "Green Bay",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18357.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "GB @ MIN",
+          "venue": "U.S. Bank Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175988,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 354,
+            "teamName": "Eagles",
+            "abbreviation": "PHI",
+            "city": "Philadelphia",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18448.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 363,
+            "teamName": "Commanders",
+            "abbreviation": "WAS",
+            "city": "Washington",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18480.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18480.png"
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "WAS @ PHI",
+          "venue": "Lincoln Financial Field",
+          "weather": {
+            "icon": "partly-cloudy-day",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176048,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 357,
+            "teamName": "Chargers",
+            "abbreviation": "LAC",
+            "city": "Los Angeles",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18461.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 355,
+            "teamName": "Cardinals",
+            "abbreviation": "ARI",
+            "city": "Arizona",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18454.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "ARI @ LAC",
+          "venue": "SoFi Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "CBS"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6176090,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 341,
+            "teamName": "Raiders",
+            "abbreviation": "LV",
+            "city": "Las Vegas",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18388.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18388.png"
+          },
+          "awayTeam": {
+            "teamId": 345,
+            "teamName": "Dolphins",
+            "abbreviation": "MIA",
+            "city": "Miami",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18401.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-13T20:25:00.0000000Z",
+          "name": "MIA @ LV",
+          "venue": "Allegiant Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "FOX"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175514,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 351,
+            "teamName": "Giants",
+            "abbreviation": "NYG",
+            "city": "New York",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18432.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18432.png"
+          },
+          "awayTeam": {
+            "teamId": 331,
+            "teamName": "Cowboys",
+            "abbreviation": "DAL",
+            "city": "Dallas",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18336.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-14T00:20:00.0000000Z",
+          "name": "DAL @ NYG",
+          "venue": "MetLife Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "NBC"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "competitionId": 6175651,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 339,
+            "teamName": "Chiefs",
+            "abbreviation": "KC",
+            "city": "Kansas City",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18379.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 332,
+            "teamName": "Broncos",
+            "abbreviation": "DEN",
+            "city": "Denver",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18342.png",
+            "darkModeImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/d/18342.png"
+          },
+          "startTime": "2026-09-15T00:15:00.0000000Z",
+          "name": "DEN @ KC",
+          "venue": "Arrowhead Stadium",
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "ESPN"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "teamsWithoutCompetitions": [],
+      "draftAlerts": [],
+      "draftStats": [
+        {
+          "id": 90,
+          "abbr": "FPPG",
+          "name": "Fantasy Points Per Game",
+          "order": 11
+        },
+        {
+          "id": -2,
+          "abbr": "OPRK",
+          "name": "Opponent Rank",
+          "order": 20
+        }
+      ],
+      "playerGameAttributes": [],
+      "errorStatus": {}
+    }
+  },
+  "dk_pool_153105.json": {
+    "keys": [
+      "draftables",
+      "competitions",
+      "teamsWithoutCompetitions",
+      "draftAlerts",
+      "draftStats",
+      "playerGameAttributes",
+      "errorStatus"
+    ],
+    "count": 44,
+    "sample": [
+      {
+        "draftableId": 44036912,
+        "firstName": "Jaxon",
+        "lastName": "Smith-Njigba",
+        "displayName": "Jaxon Smith-Njigba",
+        "shortName": "J. Smith-Njigba",
+        "playerId": 1214087,
+        "playerDkId": 686189,
+        "position": "WR",
+        "rosterSlotId": 70,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "Breaking",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/686189.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/686189.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6175541,
+          "name": "NE @ SEA",
+          "nameDisplay": [
+            {
+              "value": "NE"
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "SEA",
+              "isEmphasized": true
+            }
+          ],
+          "startTime": "2026-09-10T00:20:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6175541,
+            "name": "NE @ SEA",
+            "nameDisplay": [
+              {
+                "value": "NE"
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "SEA",
+                "isEmphasized": true
+              }
+            ],
+            "startTime": "2026-09-10T00:20:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "101.4",
+            "sortValue": "101.4"
+          },
+          {
+            "id": -2,
+            "value": "5th",
+            "sortValue": "5",
+            "quality": "Low"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "11"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "11"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 361,
+        "teamAbbreviation": "SEA",
+        "draftAlerts": [],
+        "playerGameHash": "1214087-6175541",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 44036913,
+        "firstName": "A.J.",
+        "lastName": "Brown",
+        "displayName": "A.J. Brown",
+        "shortName": "A. Brown",
+        "playerId": 944826,
+        "playerDkId": 19839,
+        "position": "WR",
+        "rosterSlotId": 70,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "None",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/19839.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/19839.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6175541,
+          "name": "NE @ SEA",
+          "nameDisplay": [
+            {
+              "value": "NE",
+              "isEmphasized": true
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "SEA"
+            }
+          ],
+          "startTime": "2026-09-10T00:20:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6175541,
+            "name": "NE @ SEA",
+            "nameDisplay": [
+              {
+                "value": "NE",
+                "isEmphasized": true
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "SEA"
+              }
+            ],
+            "startTime": "2026-09-10T00:20:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "64.3",
+            "sortValue": "64.3"
+          },
+          {
+            "id": -2,
+            "value": "3rd",
+            "sortValue": "3",
+            "quality": "Low"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "11"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "11"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 348,
+        "teamAbbreviation": "NE",
+        "draftAlerts": [],
+        "playerGameHash": "944826-6175541",
+        "externalRequirements": {}
+      },
+      {
+        "draftableId": 44036914,
+        "firstName": "Rhamondre",
+        "lastName": "Stevenson",
+        "displayName": "Rhamondre Stevenson",
+        "shortName": "R. Stevenson",
+        "playerId": 1174682,
+        "playerDkId": 560810,
+        "position": "RB",
+        "rosterSlotId": 70,
+        "status": "None",
+        "isSwappable": true,
+        "isDisabled": false,
+        "newsStatus": "None",
+        "playerImage50": "https://dkn.gs/sports/images/nfl/players/50/560810.png",
+        "playerImage160": "https://dkn.gs/sports/images/nfl/players/160/560810.png",
+        "altPlayerImage50": "",
+        "altPlayerImage160": "",
+        "competition": {
+          "competitionId": 6175541,
+          "name": "NE @ SEA",
+          "nameDisplay": [
+            {
+              "value": "NE",
+              "isEmphasized": true
+            },
+            {
+              "value": " @ "
+            },
+            {
+              "value": "SEA"
+            }
+          ],
+          "startTime": "2026-09-10T00:20:00.0000000Z"
+        },
+        "competitions": [
+          {
+            "competitionId": 6175541,
+            "name": "NE @ SEA",
+            "nameDisplay": [
+              {
+                "value": "NE",
+                "isEmphasized": true
+              },
+              {
+                "value": " @ "
+              },
+              {
+                "value": "SEA"
+              }
+            ],
+            "startTime": "2026-09-10T00:20:00.0000000Z"
+          }
+        ],
+        "draftStatAttributes": [
+          {
+            "id": 90,
+            "value": "71.7",
+            "sortValue": "71.7"
+          },
+          {
+            "id": -2,
+            "value": "7th",
+            "sortValue": "7",
+            "quality": "Low"
+          }
+        ],
+        "playerAttributes": [
+          {
+            "name": "ByeWeek",
+            "value": "11"
+          }
+        ],
+        "teamLeagueSeasonAttributes": [
+          {
+            "attributeId": 1,
+            "description": "Bye",
+            "value": "11"
+          }
+        ],
+        "playerGameAttributes": [],
+        "teamId": 348,
+        "teamAbbreviation": "NE",
+        "draftAlerts": [],
+        "playerGameHash": "1174682-6175541",
+        "externalRequirements": {}
+      }
+    ],
+    "other": {
+      "competitions": [
+        {
+          "competitionId": 6175541,
+          "sport": "NFL",
+          "sportId": 1,
+          "homeTeam": {
+            "teamId": 361,
+            "teamName": "Seahawks",
+            "abbreviation": "SEA",
+            "city": "Seattle",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18471.png",
+            "darkModeImageUrl": ""
+          },
+          "awayTeam": {
+            "teamId": 348,
+            "teamName": "Patriots",
+            "abbreviation": "NE",
+            "city": "New England",
+            "teamImageUrl": "https://dkn.gs/sports/images/nfl/teams/logos/160/18415.png",
+            "darkModeImageUrl": ""
+          },
+          "startTime": "2026-09-10T00:20:00.0000000Z",
+          "name": "NE @ SEA",
+          "venue": "CenturyLink Field",
+          "weather": {
+            "icon": "clear-night",
+            "isDome": false
+          },
+          "startingLineupsAvailable": false,
+          "depthChartsAvailable": true,
+          "competitionState": "Upcoming",
+          "competitionStateDetail": "",
+          "competitionStartedEarly": false,
+          "competitionAttributes": [
+            {
+              "typeId": 9,
+              "value": "Pre-Game"
+            },
+            {
+              "typeId": 22,
+              "value": "1"
+            },
+            {
+              "typeId": 23,
+              "value": "2"
+            },
+            {
+              "typeId": 27,
+              "value": "False"
+            },
+            {
+              "typeId": 32,
+              "value": "NBC"
+            },
+            {
+              "typeId": 46,
+              "value": "0"
+            },
+            {
+              "typeId": 47,
+              "value": "0"
+            },
+            {
+              "typeId": 83,
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "teamsWithoutCompetitions": [],
+      "draftAlerts": [],
+      "draftStats": [
+        {
+          "id": 90,
+          "abbr": "YPG",
+          "name": "Fantasy Points Per Game",
+          "order": 11
+        },
+        {
+          "id": -2,
+          "abbr": "OPRK",
+          "name": "Opponent Rank",
+          "order": 20
+        }
+      ],
+      "playerGameAttributes": [],
+      "errorStatus": {}
+    }
+  },
+  "players.csv.gz": {
+    "columns": [
+      "gsis_id",
+      "display_name",
+      "common_first_name",
+      "first_name",
+      "last_name",
+      "short_name",
+      "football_name",
+      "suffix",
+      "esb_id",
+      "nfl_id",
+      "pfr_id",
+      "pff_id",
+      "otc_id",
+      "espn_id",
+      "smart_id",
+      "birth_date",
+      "position_group",
+      "position",
+      "ngs_position_group",
+      "ngs_position",
+      "height",
+      "weight",
+      "headshot",
+      "college_name",
+      "college_conference",
+      "jersey_number",
+      "rookie_season",
+      "last_season",
+      "latest_team",
+      "status",
+      "ngs_status",
+      "ngs_status_short_description",
+      "years_of_experience",
+      "pff_position",
+      "pff_status",
+      "draft_year",
+      "draft_round",
+      "draft_pick",
+      "draft_team"
+    ],
+    "rows": 24828,
+    "sample": [
+      {
+        "gsis_id": "00-0028830",
+        "display_name": "Isaako Aaitui",
+        "common_first_name": "Isaako",
+        "first_name": "Isaako",
+        "last_name": "Aaitui",
+        "short_name": "",
+        "football_name": "",
+        "suffix": "",
+        "esb_id": "AAI622937",
+        "nfl_id": "",
+        "pfr_id": "AaitIs00",
+        "pff_id": 6998.0,
+        "otc_id": 2535.0,
+        "espn_id": 14856.0,
+        "smart_id": "32004141-4962-2937-61ff-017b1804dec6",
+        "birth_date": "1987-01-25",
+        "position_group": "DL",
+        "position": "NT",
+        "ngs_position_group": "",
+        "ngs_position": "",
+        "height": 76.0,
+        "weight": 307.0,
+        "headshot": "https://static.www.nfl.com/image/private/f_auto,q_auto/league/hwncbbaztu3pc5unqgnj",
+        "college_name": "UNLV",
+        "college_conference": "",
+        "jersey_number": 0.0,
+        "rookie_season": 2011,
+        "last_season": 2014,
+        "latest_team": "WAS",
+        "status": "DEV",
+        "ngs_status": "",
+        "ngs_status_short_description": "",
+        "years_of_experience": 2,
+        "pff_position": "DI",
+        "pff_status": "",
+        "draft_year": "",
+        "draft_round": "",
+        "draft_pick": "",
+        "draft_team": ""
+      },
+      {
+        "gsis_id": "00-0038389",
+        "display_name": "Israel Abanikanda",
+        "common_first_name": "Israel",
+        "first_name": "Israel",
+        "last_name": "Abanikanda",
+        "short_name": "I.Abanikanda",
+        "football_name": "Israel",
+        "suffix": "",
+        "esb_id": "ABA159567",
+        "nfl_id": 56008.0,
+        "pfr_id": "AbanIs00",
+        "pff_id": 122999.0,
+        "otc_id": 10967.0,
+        "espn_id": 4429202.0,
+        "smart_id": "32004142-4115-9567-2e24-0eab29f6a4b9",
+        "birth_date": "2002-10-05",
+        "position_group": "RB",
+        "position": "RB",
+        "ngs_position_group": "RB",
+        "ngs_position": "RB",
+        "height": 70.0,
+        "weight": 225.0,
+        "headshot": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/mt7lgg9gbjcmb2wttxeg",
+        "college_name": "Pittsburgh",
+        "college_conference": "Atlantic Coast Conference",
+        "jersey_number": 25.0,
+        "rookie_season": 2023,
+        "last_season": 2026,
+        "latest_team": "DAL",
+        "status": "DEV",
+        "ngs_status": "DEV",
+        "ngs_status_short_description": "Practice Squad",
+        "years_of_experience": 3,
+        "pff_position": "HB",
+        "pff_status": "A",
+        "draft_year": 2023.0,
+        "draft_round": 5.0,
+        "draft_pick": 143.0,
+        "draft_team": "NYJ"
+      }
+    ],
+    "position": {
+      "WR": 3248,
+      "LB": 2610,
+      "RB": 2451,
+      "DB": 2309,
+      "DE": 1754,
+      "OT": 1694,
+      "TE": 1583,
+      "G": 1577,
+      "DT": 1480,
+      "CB": 1207,
+      "QB": 1006,
+      "C": 785,
+      "OLB": 471,
+      "K": 378,
+      "P": 350,
+      "SAF": 334,
+      "S": 325,
+      "FS": 282,
+      "NT": 246,
+      "FB": 210
+    },
+    "status": {
+      "ACT": 13938,
+      "DEV": 3443,
+      "RES": 3436,
+      "CUT": 3389,
+      "RSN": 161,
+      "PUP": 148,
+      "NWT": 120,
+      "RSR": 100,
+      "SUS": 46,
+      "RET": 33,
+      "EXE": 10,
+      "INA": 3,
+      "RLS": 1
+    }
+  },
+  "roster_current.csv.gz": {
+    "columns": [
+      "season",
+      "team",
+      "position",
+      "depth_chart_position",
+      "jersey_number",
+      "status",
+      "full_name",
+      "first_name",
+      "last_name",
+      "birth_date",
+      "height",
+      "weight",
+      "college",
+      "gsis_id",
+      "espn_id",
+      "sportradar_id",
+      "yahoo_id",
+      "rotowire_id",
+      "pff_id",
+      "pfr_id",
+      "fantasy_data_id",
+      "sleeper_id",
+      "years_exp",
+      "headshot_url",
+      "ngs_position",
+      "week",
+      "game_type",
+      "status_description_abbr",
+      "football_name",
+      "esb_id",
+      "gsis_it_id",
+      "smart_id",
+      "entry_year",
+      "rookie_year",
+      "draft_club",
+      "draft_number"
+    ],
+    "rows": 2946,
+    "sample": [
+      {
+        "season": 2026,
+        "team": "PIT",
+        "position": "QB",
+        "depth_chart_position": "QB",
+        "jersey_number": 8.0,
+        "status": "ACT",
+        "full_name": "Aaron Rodgers",
+        "first_name": "Aaron",
+        "last_name": "Rodgers",
+        "birth_date": "1983-12-02",
+        "height": 74.0,
+        "weight": 225,
+        "college": "California; Butte College",
+        "gsis_id": "00-0023459",
+        "espn_id": 8439.0,
+        "sportradar_id": "0ce48193-e2fa-466e-a986-33f751add206",
+        "yahoo_id": 7200.0,
+        "rotowire_id": 4307.0,
+        "pff_id": 2241.0,
+        "pfr_id": "RodgAa00",
+        "fantasy_data_id": 2593.0,
+        "sleeper_id": 96.0,
+        "years_exp": 21,
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/dypvakakxhccxs67tb0y",
+        "ngs_position": "",
+        "week": 1,
+        "game_type": "REG",
+        "status_description_abbr": "A01",
+        "football_name": "Aaron",
+        "esb_id": "ROD339293",
+        "gsis_it_id": 29851,
+        "smart_id": "3200524f-4433-9293-a3cf-ad7758d03003",
+        "entry_year": 2005,
+        "rookie_year": 2005,
+        "draft_club": "GB",
+        "draft_number": 24.0
+      },
+      {
+        "season": 2026,
+        "team": "ATL",
+        "position": "K",
+        "depth_chart_position": "K",
+        "jersey_number": 6.0,
+        "status": "ACT",
+        "full_name": "Nick Folk",
+        "first_name": "Nick",
+        "last_name": "Folk",
+        "birth_date": "1984-11-05",
+        "height": 73.0,
+        "weight": 222,
+        "college": "Arizona",
+        "gsis_id": "00-0025565",
+        "espn_id": 10621.0,
+        "sportradar_id": "b37c621e-1125-4c35-bea0-fcabb1527060",
+        "yahoo_id": 8432.0,
+        "rotowire_id": 5365.0,
+        "pff_id": 3794.0,
+        "pfr_id": "FolkNi20",
+        "fantasy_data_id": 11694.0,
+        "sleeper_id": 650.0,
+        "years_exp": 19,
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/qf6vaghxuoxqw0pyrvg3",
+        "ngs_position": "",
+        "week": 1,
+        "game_type": "REG",
+        "status_description_abbr": "A01",
+        "football_name": "Nick",
+        "esb_id": "FOL378021",
+        "gsis_it_id": 32371,
+        "smart_id": "3200464f-4c37-8021-409f-36e78a589e4b",
+        "entry_year": 2007,
+        "rookie_year": 2007,
+        "draft_club": "DAL",
+        "draft_number": 178.0
+      }
+    ],
+    "position": {
+      "DB": 571,
+      "OL": 503,
+      "LB": 433,
+      "DL": 407,
+      "WR": 381,
+      "RB": 214,
+      "TE": 205,
+      "QB": 119,
+      "K": 40,
+      "P": 37,
+      "LS": 36
+    },
+    "status": {
+      "ACT": 1693,
+      "DEV": 528,
+      "CUT": 421,
+      "RES": 277,
+      "RET": 23,
+      "EXE": 4
+    },
+    "week": {
+      "1": 2946
+    }
+  },
+  "rosters_2025.csv.gz": {
+    "columns": [
+      "season",
+      "team",
+      "position",
+      "depth_chart_position",
+      "jersey_number",
+      "status",
+      "full_name",
+      "first_name",
+      "last_name",
+      "birth_date",
+      "height",
+      "weight",
+      "college",
+      "gsis_id",
+      "espn_id",
+      "sportradar_id",
+      "yahoo_id",
+      "rotowire_id",
+      "pff_id",
+      "pfr_id",
+      "fantasy_data_id",
+      "sleeper_id",
+      "years_exp",
+      "headshot_url",
+      "ngs_position",
+      "week",
+      "game_type",
+      "status_description_abbr",
+      "football_name",
+      "esb_id",
+      "gsis_it_id",
+      "smart_id",
+      "entry_year",
+      "rookie_year",
+      "draft_club",
+      "draft_number"
+    ],
+    "rows": 46849,
+    "sample": [
+      {
+        "season": 2025,
+        "team": "GB",
+        "position": "DL",
+        "depth_chart_position": "DT",
+        "jersey_number": 69.0,
+        "status": "DEV",
+        "full_name": "Dante Barnett",
+        "first_name": "Dante",
+        "last_name": "Barnett",
+        "birth_date": "",
+        "height": "",
+        "weight": 275.0,
+        "college": "",
+        "gsis_id": "",
+        "espn_id": "",
+        "sportradar_id": "",
+        "yahoo_id": "",
+        "rotowire_id": "",
+        "pff_id": "",
+        "pfr_id": "",
+        "fantasy_data_id": "",
+        "sleeper_id": "",
+        "years_exp": 0,
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/ojtce2im0wp2ltyel0vc",
+        "ngs_position": "",
+        "week": 16,
+        "game_type": "REG",
+        "status_description_abbr": "P03",
+        "football_name": "Dante",
+        "esb_id": "BAR591037",
+        "gsis_it_id": 58805,
+        "smart_id": "32004a55-4435-9919-355b-3e0aef2de56d",
+        "entry_year": 2025,
+        "rookie_year": 2025,
+        "draft_club": "",
+        "draft_number": ""
+      },
+      {
+        "season": 2025,
+        "team": "GB",
+        "position": "DL",
+        "depth_chart_position": "DT",
+        "jersey_number": 69.0,
+        "status": "DEV",
+        "full_name": "Dante Barnett",
+        "first_name": "Dante",
+        "last_name": "Barnett",
+        "birth_date": "",
+        "height": "",
+        "weight": 275.0,
+        "college": "",
+        "gsis_id": "",
+        "espn_id": "",
+        "sportradar_id": "",
+        "yahoo_id": "",
+        "rotowire_id": "",
+        "pff_id": "",
+        "pfr_id": "",
+        "fantasy_data_id": "",
+        "sleeper_id": "",
+        "years_exp": 0,
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/ojtce2im0wp2ltyel0vc",
+        "ngs_position": "",
+        "week": 17,
+        "game_type": "REG",
+        "status_description_abbr": "P03",
+        "football_name": "Dante",
+        "esb_id": "BAR591037",
+        "gsis_it_id": 58805,
+        "smart_id": "32004a55-4435-9919-355b-3e0aef2de56d",
+        "entry_year": 2025,
+        "rookie_year": 2025,
+        "draft_club": "",
+        "draft_number": ""
+      }
+    ],
+    "position": {
+      "DB": 8944,
+      "OL": 8402,
+      "DL": 6860,
+      "LB": 6312,
+      "WR": 5662,
+      "RB": 3553,
+      "TE": 3110,
+      "QB": 2032,
+      "K": 759,
+      "LS": 616,
+      "P": 599
+    },
+    "status": {
+      "ACT": 27377,
+      "DEV": 8783,
+      "RES": 5763,
+      "INA": 3593,
+      "CUT": 951,
+      "RET": 361,
+      "EXE": 7,
+      "TRD": 7,
+      "TRC": 7
+    },
+    "week": {
+      "1": 3047,
+      "18": 2673,
+      "17": 2658,
+      "16": 2654,
+      "15": 2643,
+      "13": 2625,
+      "4": 2548,
+      "3": 2534,
+      "2": 2517,
+      "11": 2441,
+      "7": 2428,
+      "6": 2424,
+      "14": 2309,
+      "12": 2284,
+      "10": 2284,
+      "9": 2266,
+      "5": 2258,
+      "8": 2104,
+      "19": 996,
+      "20": 667
+    }
+  },
+  "stats_2025.csv.gz": {
+    "columns": [
+      "player_id",
+      "player_name",
+      "player_display_name",
+      "position",
+      "position_group",
+      "headshot_url",
+      "season",
+      "week",
+      "season_type",
+      "game_id",
+      "team",
+      "opponent_team",
+      "completions",
+      "attempts",
+      "passing_yards",
+      "passing_tds",
+      "passing_interceptions",
+      "sacks_suffered",
+      "sack_yards_lost",
+      "sack_fumbles",
+      "sack_fumbles_lost",
+      "passing_air_yards",
+      "passing_yards_after_catch",
+      "passing_first_downs",
+      "passing_epa",
+      "passing_cpoe",
+      "passing_2pt_conversions",
+      "pacr",
+      "passing_10",
+      "passing_16",
+      "passing_20",
+      "passing_40",
+      "carries",
+      "rushing_yards",
+      "rushing_tds",
+      "rushing_fumbles",
+      "rushing_fumbles_lost",
+      "rushing_first_downs",
+      "rushing_epa",
+      "rushing_2pt_conversions",
+      "rushing_10",
+      "rushing_12",
+      "rushing_20",
+      "rushing_40",
+      "receptions",
+      "targets",
+      "receiving_yards",
+      "receiving_tds",
+      "receiving_fumbles",
+      "receiving_fumbles_lost",
+      "receiving_air_yards",
+      "receiving_yards_after_catch",
+      "receiving_first_downs",
+      "receiving_epa",
+      "receiving_2pt_conversions",
+      "receiving_10",
+      "receiving_16",
+      "receiving_20",
+      "receiving_40",
+      "racr",
+      "target_share",
+      "air_yards_share",
+      "wopr",
+      "special_teams_tds",
+      "def_tackles_solo",
+      "def_tackles_with_assist",
+      "def_tackle_assists",
+      "def_tackles_for_loss",
+      "def_tackles_for_loss_yards",
+      "def_fumbles_forced",
+      "def_sacks",
+      "def_sack_yards",
+      "def_qb_hits",
+      "def_interceptions",
+      "def_interception_yards",
+      "def_pass_defended",
+      "def_tds",
+      "def_fumbles",
+      "def_safeties",
+      "def_punt_blocks",
+      "def_pat_blocks",
+      "def_fg_blocks",
+      "def_2pt_atts",
+      "def_2pt_made",
+      "misc_yards",
+      "fumble_recovery_own",
+      "fumble_recovery_yards_own",
+      "fumble_recovery_opp",
+      "fumble_recovery_yards_opp",
+      "fumble_recovery_tds",
+      "penalties",
+      "penalty_yards",
+      "fumbles_forced_by_opp",
+      "fumbles_not_forced",
+      "fumbles_out_of_bounds",
+      "fumbles_total",
+      "fumbles_lost_total",
+      "punt_returns",
+      "punt_return_yards",
+      "kickoff_returns",
+      "kickoff_return_yards",
+      "fg_made",
+      "fg_att",
+      "fg_missed",
+      "fg_blocked",
+      "fg_long",
+      "fg_pct",
+      "fg_made_0_19",
+      "fg_made_20_29",
+      "fg_made_30_39",
+      "fg_made_40_49",
+      "fg_made_50_59",
+      "fg_made_60_",
+      "fg_missed_0_19",
+      "fg_missed_20_29",
+      "fg_missed_30_39",
+      "fg_missed_40_49",
+      "fg_missed_50_59",
+      "fg_missed_60_",
+      "fg_made_list",
+      "fg_missed_list",
+      "fg_blocked_list",
+      "fg_made_distance",
+      "fg_missed_distance",
+      "fg_blocked_distance",
+      "pat_made",
+      "pat_att",
+      "pat_missed",
+      "pat_blocked",
+      "pat_pct",
+      "gwfg_made",
+      "gwfg_att",
+      "gwfg_missed",
+      "gwfg_blocked",
+      "gwfg_distance",
+      "pt_att",
+      "pt_blocked",
+      "pt_long",
+      "pt_yards",
+      "pt_inside_20",
+      "pt_out_of_bounds",
+      "pt_downed",
+      "pt_touchback",
+      "pt_fair_caught",
+      "pt_returned",
+      "pt_return_yards",
+      "pt_return_tds",
+      "pt_net_yards",
+      "fantasy_points",
+      "fantasy_points_ppr"
+    ],
+    "rows": 19422,
+    "sample": [
+      {
+        "player_id": "00-0023459",
+        "player_name": "A.Rodgers",
+        "player_display_name": "Aaron Rodgers",
+        "position": "QB",
+        "position_group": "QB",
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/dypvakakxhccxs67tb0y",
+        "season": 2025,
+        "week": 1,
+        "season_type": "REG",
+        "game_id": "2025_01_PIT_NYJ",
+        "team": "PIT",
+        "opponent_team": "NYJ",
+        "completions": 22,
+        "attempts": 30,
+        "passing_yards": 244,
+        "passing_tds": 4,
+        "passing_interceptions": 0,
+        "sacks_suffered": 4,
+        "sack_yards_lost": -26,
+        "sack_fumbles": 0,
+        "sack_fumbles_lost": 0,
+        "passing_air_yards": 139,
+        "passing_yards_after_catch": 173,
+        "passing_first_downs": 14,
+        "passing_epa": 10.2047552496334,
+        "passing_cpoe": 6.35038090163264,
+        "passing_2pt_conversions": 0,
+        "pacr": 1.75539568345324,
+        "passing_10": 11,
+        "passing_16": 8,
+        "passing_20": 5,
+        "passing_40": 0,
+        "carries": 1,
+        "rushing_yards": -1,
+        "rushing_tds": 0,
+        "rushing_fumbles": 0,
+        "rushing_fumbles_lost": 0,
+        "rushing_first_downs": 0,
+        "rushing_epa": -1.87390206730925,
+        "rushing_2pt_conversions": 0,
+        "rushing_10": 0,
+        "rushing_12": 0,
+        "rushing_20": 0,
+        "rushing_40": 0,
+        "receptions": 0,
+        "targets": 0,
+        "receiving_yards": 0,
+        "receiving_tds": 0,
+        "receiving_fumbles": 0,
+        "receiving_fumbles_lost": 0,
+        "receiving_air_yards": 0,
+        "receiving_yards_after_catch": 0,
+        "receiving_first_downs": 0,
+        "receiving_epa": "",
+        "receiving_2pt_conversions": 0,
+        "receiving_10": 0,
+        "receiving_16": 0,
+        "receiving_20": 0,
+        "receiving_40": 0,
+        "racr": "",
+        "target_share": 0.0,
+        "air_yards_share": 0.0,
+        "wopr": 0.0,
+        "special_teams_tds": 0,
+        "def_tackles_solo": 0,
+        "def_tackles_with_assist": 0,
+        "def_tackle_assists": 0,
+        "def_tackles_for_loss": 0,
+        "def_tackles_for_loss_yards": 0,
+        "def_fumbles_forced": 0,
+        "def_sacks": 0.0,
+        "def_sack_yards": 0.0,
+        "def_qb_hits": 0,
+        "def_interceptions": 0,
+        "def_interception_yards": 0,
+        "def_pass_defended": 0,
+        "def_tds": 0,
+        "def_fumbles": 0,
+        "def_safeties": 0,
+        "def_punt_blocks": 0,
+        "def_pat_blocks": 0,
+        "def_fg_blocks": 0,
+        "def_2pt_atts": 0,
+        "def_2pt_made": 0,
+        "misc_yards": 0,
+        "fumble_recovery_own": 0,
+        "fumble_recovery_yards_own": 0,
+        "fumble_recovery_opp": 0,
+        "fumble_recovery_yards_opp": 0,
+        "fumble_recovery_tds": 0,
+        "penalties": 0,
+        "penalty_yards": 0,
+        "fumbles_forced_by_opp": 0,
+        "fumbles_not_forced": 0,
+        "fumbles_out_of_bounds": 0,
+        "fumbles_total": 0,
+        "fumbles_lost_total": 0,
+        "punt_returns": 0,
+        "punt_return_yards": 0,
+        "kickoff_returns": 0,
+        "kickoff_return_yards": 0,
+        "fg_made": 0,
+        "fg_att": 0,
+        "fg_missed": 0,
+        "fg_blocked": 0,
+        "fg_long": "",
+        "fg_pct": "",
+        "fg_made_0_19": 0,
+        "fg_made_20_29": 0,
+        "fg_made_30_39": 0,
+        "fg_made_40_49": 0,
+        "fg_made_50_59": 0,
+        "fg_made_60_": 0,
+        "fg_missed_0_19": 0,
+        "fg_missed_20_29": 0,
+        "fg_missed_30_39": 0,
+        "fg_missed_40_49": 0,
+        "fg_missed_50_59": 0,
+        "fg_missed_60_": 0,
+        "fg_made_list": "",
+        "fg_missed_list": "",
+        "fg_blocked_list": "",
+        "fg_made_distance": 0,
+        "fg_missed_distance": 0,
+        "fg_blocked_distance": 0,
+        "pat_made": 0,
+        "pat_att": 0,
+        "pat_missed": 0,
+        "pat_blocked": 0,
+        "pat_pct": "",
+        "gwfg_made": 0,
+        "gwfg_att": 0,
+        "gwfg_missed": 0,
+        "gwfg_blocked": 0,
+        "gwfg_distance": 0,
+        "pt_att": 0,
+        "pt_blocked": 0,
+        "pt_long": "",
+        "pt_yards": 0,
+        "pt_inside_20": 0,
+        "pt_out_of_bounds": 0,
+        "pt_downed": 0,
+        "pt_touchback": 0,
+        "pt_fair_caught": 0,
+        "pt_returned": 0,
+        "pt_return_yards": 0,
+        "pt_return_tds": 0,
+        "pt_net_yards": 0,
+        "fantasy_points": 25.66,
+        "fantasy_points_ppr": 25.66
+      },
+      {
+        "player_id": "00-0023853",
+        "player_name": "M.Prater",
+        "player_display_name": "Matt Prater",
+        "position": "K",
+        "position_group": "SPEC",
+        "headshot_url": "https://static.www.nfl.com/image/upload/f_auto,q_auto/league/pj981bi535y4jwy6skr1",
+        "season": 2025,
+        "week": 1,
+        "season_type": "REG",
+        "game_id": "2025_01_BAL_BUF",
+        "team": "BUF",
+        "opponent_team": "BAL",
+        "completions": 0,
+        "attempts": 0,
+        "passing_yards": 0,
+        "passing_tds": 0,
+        "passing_interceptions": 0,
+        "sacks_suffered": 0,
+        "sack_yards_lost": 0,
+        "sack_fumbles": 0,
+        "sack_fumbles_lost": 0,
+        "passing_air_yards": 0,
+        "passing_yards_after_catch": 0,
+        "passing_first_downs": 0,
+        "passing_epa": "",
+        "passing_cpoe": "",
+        "passing_2pt_conversions": 0,
+        "pacr": "",
+        "passing_10": 0,
+        "passing_16": 0,
+        "passing_20": 0,
+        "passing_40": 0,
+        "carries": 0,
+        "rushing_yards": 0,
+        "rushing_tds": 0,
+        "rushing_fumbles": 0,
+        "rushing_fumbles_lost": 0,
+        "rushing_first_downs": 0,
+        "rushing_epa": "",
+        "rushing_2pt_conversions": 0,
+        "rushing_10": 0,
+        "rushing_12": 0,
+        "rushing_20": 0,
+        "rushing_40": 0,
+        "receptions": 0,
+        "targets": 0,
+        "receiving_yards": 0,
+        "receiving_tds": 0,
+        "receiving_fumbles": 0,
+        "receiving_fumbles_lost": 0,
+        "receiving_air_yards": 0,
+        "receiving_yards_after_catch": 0,
+        "receiving_first_downs": 0,
+        "receiving_epa": "",
+        "receiving_2pt_conversions": 0,
+        "receiving_10": 0,
+        "receiving_16": 0,
+        "receiving_20": 0,
+        "receiving_40": 0,
+        "racr": "",
+        "target_share": 0.0,
+        "air_yards_share": 0.0,
+        "wopr": 0.0,
+        "special_teams_tds": 0,
+        "def_tackles_solo": 0,
+        "def_tackles_with_assist": 0,
+        "def_tackle_assists": 0,
+        "def_tackles_for_loss": 0,
+        "def_tackles_for_loss_yards": 0,
+        "def_fumbles_forced": 0,
+        "def_sacks": 0.0,
+        "def_sack_yards": 0.0,
+        "def_qb_hits": 0,
+        "def_interceptions": 0,
+        "def_interception_yards": 0,
+        "def_pass_defended": 0,
+        "def_tds": 0,
+        "def_fumbles": 0,
+        "def_safeties": 0,
+        "def_punt_blocks": 0,
+        "def_pat_blocks": 0,
+        "def_fg_blocks": 0,
+        "def_2pt_atts": 0,
+        "def_2pt_made": 0,
+        "misc_yards": 0,
+        "fumble_recovery_own": 0,
+        "fumble_recovery_yards_own": 0,
+        "fumble_recovery_opp": 0,
+        "fumble_recovery_yards_opp": 0,
+        "fumble_recovery_tds": 0,
+        "penalties": 0,
+        "penalty_yards": 0,
+        "fumbles_forced_by_opp": 0,
+        "fumbles_not_forced": 0,
+        "fumbles_out_of_bounds": 0,
+        "fumbles_total": 0,
+        "fumbles_lost_total": 0,
+        "punt_returns": 0,
+        "punt_return_yards": 0,
+        "kickoff_returns": 0,
+        "kickoff_return_yards": 0,
+        "fg_made": 3,
+        "fg_att": 3,
+        "fg_missed": 0,
+        "fg_blocked": 0,
+        "fg_long": 43.0,
+        "fg_pct": 1.0,
+        "fg_made_0_19": 0,
+        "fg_made_20_29": 1,
+        "fg_made_30_39": 1,
+        "fg_made_40_49": 1,
+        "fg_made_50_59": 0,
+        "fg_made_60_": 0,
+        "fg_missed_0_19": 0,
+        "fg_missed_20_29": 0,
+        "fg_missed_30_39": 0,
+        "fg_missed_40_49": 0,
+        "fg_missed_50_59": 0,
+        "fg_missed_60_": 0,
+        "fg_made_list": "25;43;32",
+        "fg_missed_list": "",
+        "fg_blocked_list": "",
+        "fg_made_distance": 100,
+        "fg_missed_distance": 0,
+        "fg_blocked_distance": 0,
+        "pat_made": 2,
+        "pat_att": 2,
+        "pat_missed": 0,
+        "pat_blocked": 0,
+        "pat_pct": 1.0,
+        "gwfg_made": 1,
+        "gwfg_att": 1,
+        "gwfg_missed": 0,
+        "gwfg_blocked": 0,
+        "gwfg_distance": 32,
+        "pt_att": 0,
+        "pt_blocked": 0,
+        "pt_long": "",
+        "pt_yards": 0,
+        "pt_inside_20": 0,
+        "pt_out_of_bounds": 0,
+        "pt_downed": 0,
+        "pt_touchback": 0,
+        "pt_fair_caught": 0,
+        "pt_returned": 0,
+        "pt_return_yards": 0,
+        "pt_return_tds": 0,
+        "pt_net_yards": 0,
+        "fantasy_points": 0.0,
+        "fantasy_points_ppr": 0.0
+      }
+    ],
+    "position": {
+      "LB": 3098,
+      "WR": 2636,
+      "CB": 2087,
+      "RB": 1650,
+      "DT": 1604,
+      "SAF": 1533,
+      "DE": 1466,
+      "TE": 1343,
+      "QB": 692,
+      "K": 569,
+      "P": 556,
+      "OT": 493,
+      "DB": 415,
+      "G": 262,
+      "OLB": 218,
+      "FS": 146,
+      "C": 130,
+      "MLB": 82,
+      "NT": 80,
+      "LS": 75
+    },
+    "week": {
+      "2": 1108,
+      "4": 1107,
+      "3": 1103,
+      "16": 1098,
+      "13": 1081,
+      "1": 1072,
+      "18": 1067,
+      "17": 1063,
+      "15": 1055,
+      "7": 1035,
+      "11": 1032,
+      "6": 1014,
+      "14": 974,
+      "12": 967,
+      "10": 963,
+      "5": 961,
+      "9": 948,
+      "8": 892,
+      "19": 398,
+      "20": 280
+    }
+  }
+}
