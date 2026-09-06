@@ -1,131 +1,143 @@
-"""Historical game-block residual worlds and position-neutral salary optimization.
-Statistical scenarios, not exact play-by-play. Reference entries are not observed MM ownership.
+"""Salary-constrained lineups and historically derived joint residual worlds.
+Peer candidate-bank performance is not a learned Millionaire Maker field probability.
 """
-from collections import Counter
-import numpy as np
-import pandas as pd
-from scipy.optimize import milp,LinearConstraint,Bounds
-from model import POS,SEED,estimator,metrics
-SLOTS=['QB','RB','RB','WR','WR','WR','TE','FLEX','DST']
+from __future__ import annotations
+import json,datetime as dt,collections
+import numpy as np,pandas as pd
+from scipy.optimize import milp,Bounds,LinearConstraint
+from forecast import CACHE,POS,normalize,read
+SLOTS=[('QB',1),('RB',1),('RB',2),('RB',3),('WR',1),('WR',2),('WR',3),('WR',4),('WR',5),('TE',1),('TE',2),('TE',3),('DST',1)]
+def discover():
+ g=read('schedule');now=dt.datetime.now(dt.timezone.utc);lobby=json.loads((CACHE/'dk_lobby.json').read_text());found=[]
+ for c in lobby.get('Contests',[]):
+  name=c.get('n','').lower();gid=c.get('dg');path=CACHE/f'dk_pool_{gid}.json'
+  if not ('millionaire' in name and c.get('gameType')=='Classic' and path.exists()):continue
+  obj=json.loads(path.read_text());comps=obj.get('competitions',[])
+  if len(comps)<3:continue
+  starts=[pd.Timestamp(x['startTime']) for x in comps]
+  if min(starts)<=now or min(starts)>pd.Timestamp(now)+pd.Timedelta(days=10):continue
+  if not all(t.tz_convert('America/New_York').dayofweek==6 and 12<=t.tz_convert('America/New_York').hour<=17 for t in starts):continue
+  found.append((min(starts),-int(c.get('m',0)),c,obj))
+ if not found:raise ValueError('No unstarted Sunday NFL Classic Millionaire pool within ten days; stale pools cannot be reused.')
+ _,_,contest,obj=sorted(found,key=lambda x:(x[0],x[1]))[0];bygame={}
+ for x in obj['competitions']:
+  a=x['awayTeam']['abbreviation'];h=x['homeTeam']['abbreviation'];a='LA' if a=='LAR' else a;h='LA' if h=='LAR' else h
+  day=pd.Timestamp(x['startTime']).tz_convert('America/New_York').strftime('%Y-%m-%d');q=g[g.away_team.eq(a)&g.home_team.eq(h)&g.gameday.eq(day)]
+  if len(q)!=1:raise ValueError(f'Pool matchup not found uniquely in schedule: {a}@{h} {day}')
+  bygame[x['competitionId']]={'id':a+'@'+h,'away':a,'home':h,'start':x['startTime'],'game_id':q.iloc[0].game_id,'season':int(q.iloc[0].season),'week':int(q.iloc[0].week),'market_total':float(q.iloc[0].total_line) if pd.notna(q.iloc[0].total_line) else None}
+ return contest,obj,list(bygame.values()),bygame
 
-def team_models(t,season):
-    h=t[t.score.notna()].copy();future=t[t.score.isna()].copy();val=season-3;hold=season-2
-    cols=['score_e4','score_e12','opp_score_e12_x','opp_opp_score_e12','dst_fp_e4','dst_fp_e12','opp_team_fp_e12','home','week']
-    h[cols]=h[cols].fillna(0);future[cols]=future[cols].fillna(0);evaluation=h[h.season>=hold].copy();report={}
-    for target,base in [('score',.5*(h.score_e12+h.opp_opp_score_e12)),('dst_fp',h.dst_fp_e12)]:
-        h['base']=base.fillna(0);tr=h[h.season<val];va=h[h.season==val]
-        fitted=estimator().fit(tr[cols],tr[target]);vp=fitted.predict(va[cols]);use=metrics(va[target],vp)['rmse']<metrics(va[target],va.base)['rmse']
-        if use:
-            m=estimator().fit(h[h.season<hold][cols],h[h.season<hold][target]);ep=m.predict(evaluation[cols]);prod=estimator().fit(h[cols],h[target]);cp=prod.predict(future[cols])
-        else:
-            ep=h.loc[evaluation.index,'base'].values;cp=.5*(future.score_e12+future.opp_opp_score_e12) if target=='score' else future.dst_fp_e12
-        evaluation[target+'_pred']=np.maximum(0,ep);future[target+'_pred']=np.maximum(0,cp)
-        report[target]={'selected':'learned_context' if use else 'historical_baseline','validation_season':val,'holdout':metrics(evaluation[target],ep),'baseline':metrics(evaluation[target],h.loc[evaluation.index,'base'])}
-    return future,evaluation,report
+def player_pool(obj,bygame,d,oof):
+ unique={}
+ for a in obj['draftables']:
+  if not a.get('salary') or a.get('isDisabled'):continue
+  key=str(a['playerId']);p=unique.setdefault(key,dict(a,slot_ids={}));p['slot_ids'][str(a['rosterSlotId'])]=str(a['draftableId'])
+  if a['rosterSlotId']!=70:p.update({k:v for k,v in a.items() if k!='slot_ids'})
+ current=d[d.game_id.isin([x['game_id'] for x in bygame.values()])].copy();names={}
+ for _,r in current.iterrows():names[(normalize(r['name']),r.team)]=r
+ aliases={'kennygainwell':'kennethgainwell','hollywoodbrown':'marquisebrown','jamescook':'jamescook','joshpalmer':'joshuapalmer','nicksingleton':'nicholassingleton'}
+ depth=read('depth_'+str(current.season.max()));depth=depth[depth.dt.eq(depth.dt.max())] if 'dt' in depth else depth;depth_lookup={}
+ if 'dt' in depth:
+  for _,r in depth.iterrows():
+   if pd.notna(r.gsis_id) and r.pos_abb in POS:depth_lookup[(r.gsis_id,r.team)]=min(float(r.pos_rank),depth_lookup.get((r.gsis_id,r.team),999))
+ selected=[];audit=[]
+ for p in unique.values():
+  team=p['teamAbbreviation'];team='LA' if team=='LAR' else team;pos=p['position'];game=bygame.get(p['competition']['competitionId']);reason=None
+  if not game:reason='off-slate'
+  name=normalize(p['displayName']);r=names.get((name,team))
+  if r is None:r=names.get((aliases.get(name,name),team))
+  if pos=='DST':
+   rr=current[current.player_id.eq('DST_'+team)];r=rr.iloc[0] if len(rr)==1 else None
+  if r is None:reason=reason or 'no exact player identity and model row'
+  elif pos!=r.position:reason='position disagreement'
+  elif pos!='DST' and r.status!='ACT':reason='not on active roster: '+str(r.status)
+  elif p.get('status','').upper() in ['OUT','IR','O','D','PUP','SUSP','SUSPENDED']:reason='official unavailable: '+str(p['status'])
+  elif pos=='QB' and depth_lookup.get((r.player_id,team),999)!=1:reason='not confirmed depth-chart QB1'
+  elif not np.isfinite(r['mean']):reason='nonfinite model forecast'
+  if reason:audit.append({'name':p['displayName'],'team':team,'reason':reason});continue
+  mu=max(-1.,float(r['mean']));cal=oof[(oof.position==pos)&(abs(oof.prediction-mu)<=max(2,mu*.25))]
+  if len(cal)<80:
+   same=oof[oof.position==pos];cal=same.loc[(same.prediction-mu).abs().sort_values().index[:80]]
+  sd=float(np.std(cal.residual)) or 1
+  selected.append({'id':str(p['draftableId']),'player_id':str(p['playerId']),'gsis_id':r.player_id,'name':p['displayName'],'pos':pos,'team':team,'game':game['id'],'game_id':game['game_id'],'start':game['start'],'salary':int(p['salary']),'status':p.get('status','None'),'slot_ids':p['slot_ids'],'mean':round(mu,4),'sd':round(sd,4),'q10':round(max(-4,float(mu+cal.residual.quantile(.1))),2),'q90':round(max(0,float(mu+cal.residual.quantile(.9))),2),'depth':depth_lookup.get((r.player_id,team)),'prior_opportunities':round(float(r.prior_opp),2),'prior_games':int(r.prior_rows),'model_source':'independently fitted football outcomes'})
+ for team in {p['team'] for p in selected}:
+  for pos in POS:
+   same=sorted([p for p in selected if p['team']==team and p['pos']==pos],key=lambda p:-p['mean']);cap={'QB':1,'RB':3,'WR':5,'TE':3,'DST':1}[pos]
+   for rank,p in enumerate(same,1):p['role']=SLOTS.index((pos,min(rank,cap)));p['role_rank']=rank
+ return sorted(selected,key=lambda x:(POS.index(x['pos']),-x['mean'],x['id'])),{'official_distinct_players':len(unique),'modeled_active_players':len(selected),'excluded':audit,'questionable':[p['name'] for p in selected if p['status']=='Q']}
 
-def game_templates(oof,te):
-    role=oof.copy();role['rank']=role.groupby(['game_id','team','pos']).pred.rank(method='first',ascending=False).astype(int)
-    role['z']=(role.fpts-role.pred)/np.sqrt(role.pred.clip(lower=0)+3)
-    lookup={(x.game_id,x.team,x.pos,x.rank):float(x.z) for x in role.itertuples()}
-    fallback={p:role[role.pos==p].z.to_numpy() for p in POS};templates=[]
-    for game,q in te.groupby('game_id',sort=True):
-        if len(q)!=2:continue
-        sides=[]
-        for home in [0,1]:
-            x=q[q.home==home].iloc[0]
-            sides.append({'score_residual':float(x.score-x.score_pred),'dst_z':float((x.dst_fp-x.dst_fp_pred)/np.sqrt(max(0,x.dst_fp_pred)+3)),'z':{f'{p}{k}':lookup.get((game,x.team,p,k)) for p in POS for k in range(1,10)}})
-        templates.append({'id':game,'sides':sides,'total':float(q.score_pred.sum())})
-    if len(templates)<100:raise ValueError('Insufficient paired historical game templates')
-    return templates,fallback
+def analog_library(oof,tm):
+ x=oof.copy();x['rnk']=x.groupby(['game_id','team','position']).prediction.rank(ascending=False,method='first').astype(int);scales={pos:float(np.std(x[x.position==pos].residual)) for pos in POS};records=[]
+ for gid,group in x.groupby('game_id',sort=True):
+  teams=tm[tm.game_id.eq(gid)&tm.score_oof.notna()].sort_values('home')
+  if len(teams)!=2:continue
+  residual=np.zeros(26);game_scores=[]
+  for side,(_,team) in enumerate(teams.iterrows()):
+   game_scores.append(float(team.team_score-team.score_oof));tg=group[group.team==team.team]
+   for si,(pos,rank) in enumerate(SLOTS):
+    r=tg[(tg.position==pos)&(tg.rnk==rank)];residual[13*side+si]=float(r.iloc[0].residual/scales[pos]) if len(r) else 0
+  records.append({'source_game':gid,'residual':residual.round(5).tolist(),'score_residual':np.round(game_scores,3).tolist()})
+ if len(records)<200:raise ValueError('Insufficient held-out games for joint residual scenarios')
+ R=np.array([r['residual'] for r in records]);R=(R-R.mean(axis=0))/(R.std(axis=0)+1e-6)
+ for i,r in enumerate(records):r['residual']=R[i].round(5).tolist()
+ return records
 
-def simulate(f,games,templates,fallback,n,seed):
-    rng=np.random.default_rng(seed);points=np.zeros((n,len(f)),dtype=np.float32);scores=np.zeros((n,len(games),2),dtype=np.int16)
-    rank=f.groupby(['team','pos'])['mean'].rank(method='first',ascending=False).astype(int)
-    for gi,g in enumerate(games):
-        chosen=rng.integers(0,len(templates),n)
-        for side,team in enumerate([g['away'],g['home']]):
-            sr=np.array([templates[j]['sides'][side]['score_residual'] for j in chosen])
-            scores[:,gi,side]=np.maximum(0,np.rint(g['means'][side]+sr)).astype(np.int16)
-            for i in f.index[f.team==team]:
-                p=f.loc[i];key=f'{p.pos}{rank[i]}'
-                if p.pos=='DST':z=np.array([templates[j]['sides'][side]['dst_z'] for j in chosen])
-                else:
-                    z=np.array([templates[j]['sides'][side]['z'].get(key,np.nan) for j in chosen],dtype=float)
-                    missing=~np.isfinite(z);z[missing]=rng.choice(fallback[p.pos],int(missing.sum()))
-                lo=-4 if p.pos=='DST' else -3 if p.pos=='QB' else 0
-                raw=np.maximum(lo,p['mean']+np.sqrt(p['mean']+3)*z);denom=float(raw.mean()-lo)
-                points[:,i]=lo+(raw-lo)*(p['mean']-lo)/denom if denom>1e-8 else p['mean']
-    return np.round(points,2),scores
+def simulate(players,games,library,n,seed):
+ rng=np.random.default_rng(seed);scores=np.zeros((n,len(players)),np.float32);gs=np.zeros((n,len(games),2),np.float32);R=np.array([r['residual'] for r in library]);Q=np.array([r['score_residual'] for r in library]);draws=rng.integers(len(library),size=(n,len(games)))
+ for gi,g in enumerate(games):
+  ids=draws[:,gi];gs[:,gi,:]=np.maximum(0,np.round(np.array([g['away_mean'],g['home_mean']])+Q[ids]))
+  for pi,p in enumerate(players):
+   if p['game']!=g['id']:continue
+   side=int(p['team']==g['home']);ri=13*side+p['role'];values=p['mean']+p['sd']*R[ids,ri];cap={'QB':1,'RB':3,'WR':5,'TE':3,'DST':1}[p['pos']]
+   if p['role_rank']>cap:values=p['mean']+p['sd']*(.5*R[ids,ri]+.8660254*rng.standard_normal(n))
+   floor=-4 if p['pos']=='DST' else -3 if p['pos']=='QB' else -1;raw=np.maximum(floor,values)
+   scores[:,pi]=floor+(raw-floor)*max(0.,p['mean']-floor)/max(1e-6,float(raw.mean())-floor)
+ return scores,gs,draws
 
-def validate(ids,f):
-    if len(ids)!=9 or len(set(ids))!=9:return False
-    q=f.loc[list(ids)];c=Counter(q.pos)
-    return bool(q.salary.sum()<=50000 and q.game.nunique()>=2 and c['QB']==1 and c['DST']==1 and 2<=c['RB']<=3 and 3<=c['WR']<=4 and 1<=c['TE']<=2 and c['RB']+c['WR']+c['TE']==7)
+def valid(p,ix):
+ if len(ix)!=9 or len(set(ix))!=9:return False
+ c=collections.Counter(p[i]['pos'] for i in ix)
+ return c['QB']==1 and c['DST']==1 and 2<=c['RB']<=3 and 3<=c['WR']<=4 and 1<=c['TE']<=2 and sum(p[i]['salary'] for i in ix)<=50000 and len({p[i]['team'] for i in ix})>=2
 
-def assign_slots(ids,f):
-    rest=list(ids);counts=Counter(f.loc[rest].pos)
-    options=[i for i in rest if f.loc[i,'pos'] in POS[1:] and counts[f.loc[i,'pos']]>{'RB':2,'WR':3,'TE':1}[f.loc[i,'pos']]]
-    flex=max(options,key=lambda i:(f.loc[i,'start'],f.loc[i,'id']));rest.remove(flex);out=[]
-    for slot in SLOTS:
-        if slot=='FLEX':out.append(flex);continue
-        i=next(i for i in rest if f.loc[i,'pos']==slot);rest.remove(i);out.append(i)
-    return out
+def optimizer(players,objective,flex=None,ban=None):
+ P=len(players);pos=np.array([p['pos'] for p in players]);salary=np.array([p['salary'] for p in players]);A=[np.ones(P),salary];lo=[9,0];hi=[9,50000]
+ for k,minn,maxx in [('QB',1,1),('RB',2,3),('WR',3,4),('TE',1,2),('DST',1,1)]:A.append((pos==k).astype(float));lo.append(minn);hi.append(maxx)
+ if flex:
+  for k in ['RB','WR','TE']:A.append((pos==k).astype(float));base={'RB':2,'WR':3,'TE':1}[k]+(k==flex);lo.append(base);hi.append(base)
+ for team in sorted({p['team'] for p in players}):A.append(np.array([p['team']==team for p in players],float));lo.append(0);hi.append(8)
+ for lineup in ban or []:row=np.zeros(P);row[lineup]=1;A.append(row);lo.append(0);hi.append(8)
+ res=milp(-np.array(objective,float),integrality=np.ones(P),bounds=Bounds(0,1),constraints=LinearConstraint(np.array(A),lo,hi),options={'time_limit':.3,'mip_rel_gap':.01})
+ if res.x is None:return None
+ ix=np.flatnonzero(res.x>.5).tolist()
+ return ix if valid(players,ix) else None
 
-def solve(f,values,flex=None):
-    values=np.asarray(values,float)
-    if values.shape!=(len(f),) or not np.isfinite(values).all():raise ValueError('Invalid optimization objective')
-    n=len(f);rows=[np.ones(n),f.salary.values/100];lo=[9,0];hi=[9,500]
-    for p,a,b in [('QB',1,1),('DST',1,1),('RB',2,3),('WR',3,4),('TE',1,2)]:
-        if flex and p in ['RB','WR','TE']:a=b={'RB':2,'WR':3,'TE':1}[p]+int(flex==p)
-        rows.append((f.pos==p).astype(float).values);lo.append(a);hi.append(b)
-    for game in f.game.unique():rows.append((f.game==game).astype(float).values);lo.append(0);hi.append(8)
-    result=milp(-values,integrality=np.ones(n),bounds=Bounds(np.zeros(n),np.ones(n)),constraints=LinearConstraint(np.array(rows),lo,hi),options={'time_limit':5.,'mip_rel_gap':.001})
-    if result.x is None:raise ValueError('Salary/position constraints have no feasible lineup')
-    ids=tuple(np.flatnonzero(result.x>.5))
-    if not validate(ids,f):raise ValueError('Solver returned invalid roster')
-    return ids,{'optimal':result.status==0,'gap':float(getattr(result,'mip_gap',0))}
+def candidates(players,worlds,n=1200,seed=571):
+ rng=np.random.default_rng(seed);mu=np.array([p['mean'] for p in players]);sd=np.array([p['sd'] for p in players]);seen={};counts=collections.Counter()
+ for k in range(n):
+  flex=['RB','WR','TE'][k%3]
+  if k<3:objective=mu
+  elif k%4==0:objective=worlds[int(rng.integers(len(worlds)))]*.45+mu*.55
+  else:objective=mu+rng.uniform(.1,.9)*sd*rng.normal(size=len(players))
+  ix=optimizer(players,objective,flex)
+  if ix:seen[tuple(ix)]=ix;counts[flex]+=1
+ ix=optimizer(players,mu)
+ if ix:seen[tuple(ix)]=ix
+ return np.array(list(seen.values()),dtype=np.int32),dict(counts)
 
-def candidates(f,worlds,per_flex=140,seed=SEED):
-    rng=np.random.default_rng(seed);out=[];info=[];counts={}
-    for flex in ['RB','WR','TE']:
-        seen=set();attempts=0
-        while len(seen)<per_flex and attempts<per_flex*8:
-            v=f['mean'].values if attempts==0 else .25*f['mean'].values+.75*worlds[rng.integers(0,len(worlds),rng.integers(1,7))].mean(axis=0)
-            ids,receipt=solve(f,v,flex);attempts+=1
-            if ids not in seen:seen.add(ids);out.append(ids);info.append(receipt)
-        counts[flex]={'unique':len(seen),'attempts':attempts}
-    return np.array(out,dtype=int),{'by_flex':counts,'solver_calls':sum(x['attempts'] for x in counts.values()),'max_reported_gap':max(x['gap'] for x in info),'all_feasible':True}
+def lineup_payload(players,ix):
+ by={pos:sorted([i for i in ix if players[i]['pos']==pos],key=lambda i:-players[i]['mean']) for pos in POS};out=[]
+ for pos,qty in [('QB',1),('RB',2),('WR',3),('TE',1)]:
+  for j in range(qty):i=by[pos].pop(0);out.append({'slot':pos if qty==1 else pos+str(j+1),**players[i]})
+ extra=[i for q in by.values() for i in q if players[i]['pos']!='DST'];i=extra[0];out.append({'slot':'FLEX',**players[i]});out.append({'slot':'DST',**players[by['DST'][0]]});return out
 
-def lineup_scores(points,lineups):return np.stack([points[:,ids].sum(axis=1) for ids in lineups],axis=1)
-
-def summary(f,ids,points,scores,games,refmax,rank,selection=None):
-    order=assign_slots(ids,f);x=points[:,order].sum(axis=1);win=x>refmax+.005;ties=np.abs(x-refmax)<=.005;chosen=np.flatnonzero(win);example=None
-    if len(chosen):
-        margins=x[chosen]-refmax[chosen];j=int(chosen[np.argmin(np.abs(margins-np.median(margins)))])
-        example={'world':j,'lineup_points':float(x[j]),'reference_best':float(refmax[j]),'players':[{**{k:f.loc[i,k] for k in ['id','name','pos','team']},'slot':slot,'points':float(points[j,i])} for i,slot in zip(order,SLOTS)],'games':[{'game':g['id'],'away':int(scores[j,k,0]),'home':int(scores[j,k,1])} for k,g in enumerate(games)]}
-    primary=Counter(f.loc[list(ids)].game).most_common(2)
-    return {'rank':rank,'ids':[f.loc[i,'id'] for i in order],'indices':order,'salary':int(f.loc[order].salary.sum()),'mean':float(f.loc[order,'mean'].sum()),'p90':float(np.quantile(x,.90)),'reference_win_rate':float(win.mean()),'reference_tie_rate':float(ties.mean()),'worlds_evaluated':len(x),'selection_reference_win_rate':selection,'flex':f.loc[order[7],'pos'],'game_concentration':dict(primary),'questionable':[f.loc[i,'name'] for i in order if f.loc[i,'status']=='Q'],'newcomers':[f.loc[i,'name'] for i in order if f.loc[i,'history_n']==0],'explanation':f"Its largest game commitments are {primary[0][0]} ({primary[0][1]} roster spots) and {primary[1][0]} ({primary[1][1]}). The example below is one held-out statistical world, not a forecast of that score. Correct game winners alone do not guarantee the fantasy production reaches these players.",'winning_world':example}
-
-def build_lineups(f,oof,t,season,per_flex=140,n=8192):
-    ft,te,team_report=team_models(t,season);ft=ft.set_index('team');f=f.copy()
-    for i,p in f[f.pos=='DST'].iterrows():f.loc[i,'mean']=round(float(ft.loc[p.team,'dst_fp_pred']),3)
-    games=[]
-    for game in sorted(f.game.unique()):
-        away,home=game.split('@');games.append({'id':game,'away':away,'home':home,'means':[float(ft.loc[away,'score_pred']),float(ft.loc[home,'score_pred'])]})
-    templates,fallback=game_templates(oof,te)
-    train,ts=simulate(f,games,templates,fallback,n,SEED);test,vs=simulate(f,games,templates,fallback,n,SEED+1)
-    bank,search=candidates(f,train,per_flex);print('CANDIDATES',len(bank),flush=True)
-    refpoints,_=simulate(f,games,templates,fallback,1024,SEED+88);refs,refsearch=candidates(f,refpoints,50,SEED+89)
-    tr=lineup_scores(train,refs).max(axis=1);vr=lineup_scores(test,refs).max(axis=1)
-    train_scores=lineup_scores(train,bank);test_scores=lineup_scores(test,bank)
-    rate=(train_scores>tr[:,None]+.005).mean(axis=0);se=np.sqrt(rate*(1-rate)/n)
-    order=np.lexsort((-train_scores.mean(axis=0),-(rate-.35*se)))[:20]
-    vrate=(test_scores>vr[:,None]+.005).mean(axis=0);vorder=np.argsort(-vrate)[:20]
-    selected=[summary(f,bank[j],test,vs,games,vr,k+1,float(rate[j])) for k,j in enumerate(order)];flexaudit={}
-    for pos in ['RB','WR','TE']:
-        ix=np.array([j for j,ids in enumerate(bank) if Counter(f.loc[list(ids)].pos)[pos]=={'RB':3,'WR':4,'TE':2}[pos]])
-        best=ix[np.argmax(rate[ix])]
-        flexaudit[pos]={'candidates':len(ix),'selected_in_twenty':sum(x['flex']==pos for x in selected),'highest_mean':float(max(f.loc[list(bank[j]),'mean'].sum() for j in ix)),'selection_best_holdout_reference_win_rate':float(vrate[best])}
-    audit={'candidate_count':len(bank),'reference_entries':len(refs),'selection_worlds':n,'evaluation_worlds':n,'historical_game_blocks':len(templates),'top_twenty_holdout_overlap':len(set(order)&set(vorder)),'flex':flexaudit,'search':search,'reference_search':refsearch,'team_models':team_report,'forecast_mean_alignment_max_error':float(np.max(np.abs(test.mean(axis=0)-f['mean'].values))),'reference_model':'independently sampled strong-model benchmark; not real field ownership or actual contest win probability'}
-    web={'players':f.to_dict('records'),'games':games,'candidates':bank.tolist(),'selection':{'points':np.rint(train[:1024]*10).astype(int).tolist(),'scores':ts[:1024].tolist(),'reference':np.rint(tr[:1024]*10).astype(int).tolist()},'evaluation':{'points':np.rint(test[:1024]*10).astype(int).tolist(),'scores':vs[:1024].tolist(),'reference':np.rint(vr[:1024]*10).astype(int).tolist()},'point_scale':10,'model':'historical-game-residual-v1'}
-    return selected,audit,web,f
+def rank_lineups(players,games,cand,selection,evaluation,gs_eval):
+ cs=np.array([selection[:,ix].sum(axis=1) for ix in cand]);es=np.array([evaluation[:,ix].sum(axis=1) for ix in cand]);best=cs.max(axis=0);tie=np.isclose(cs,best,atol=.005);credit=(tie/np.maximum(1,tie.sum(axis=0))).mean(axis=1);rank=np.argsort(-credit,kind='stable');top=rank[:20];eval_best=es.max(axis=0);etie=np.isclose(es,eval_best,atol=.005);evcredit=(etie/np.maximum(1,etie.sum(axis=0))).mean(axis=1);results=[]
+ for ranknum,ci in enumerate(top,1):
+  ix=cand[ci].tolist();r=es[ci];win=np.flatnonzero(r>=eval_best-.005);wi=int(win[np.argmin(abs(r[win]-np.median(r[win])))]) if len(win) else int(np.argmax(r-eval_best));payload=lineup_payload(players,ix)
+  game_rows=[{'game':g['id'],'away_score':int(gs_eval[wi,gi,0]),'home_score':int(gs_eval[wi,gi,1])} for gi,g in enumerate(games)]
+  for p in payload:p['witness_points']=round(float(evaluation[wi,next(i for i in ix if players[i]['id']==p['id'])]),2)
+  contributors=sorted(payload,key=lambda p:-p['witness_points'])[:3];concentrated=collections.Counter(p['game'] for p in payload).most_common(2)
+  explanation='This sampled world is carried by '+', '.join(p['name']+' ('+str(p['witness_points'])+' points)' for p in contributors)+'. The roster places '+str(concentrated[0][1])+' players in '+concentrated[0][0]+'. A correct game prediction still requires production to reach these players.'
+  results.append({'rank':ranknum,'indices':ix,'players':payload,'salary':sum(p['salary'] for p in payload),'projected_mean':round(sum(p['mean'] for p in payload),2),'simulated_mean':round(float(r.mean()),2),'q90':round(float(np.quantile(r,.9)),2),'selection_peer_first_share':round(float(credit[ci]),6),'evaluation_peer_first_share':round(float(evcredit[ci]),6),'eval_winning_worlds':len(win),'world':{'world_index':wi,'beats_peer_bank':bool(len(win)),'lineup_points':round(float(r[wi]),2),'peer_best':round(float(eval_best[wi]),2),'games':game_rows,'explanation':explanation},'risks':[p['name']+' is marked '+p['status'] for p in payload if p['status'] not in ['None','none','']]+['Joint-residual approximation, not possession-by-possession football.','Peer-bank first share is not Millionaire Maker win probability.']})
+ shapes=collections.Counter(next(p['pos'] for p in x['players'] if p['slot']=='FLEX') for x in results)
+ return results,{'candidate_count':len(cand),'flex_selected':dict(shapes),'selection_worlds':len(selection),'evaluation_worlds':len(evaluation),'top20_holdout_overlap':len(set(top)&set(np.argsort(-evcredit)[:20])),'objective':'first-place share within the fixed own-model candidate bank; no ownership model','maximum_observed_candidate_count':len(cand)}
