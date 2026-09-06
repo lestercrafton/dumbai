@@ -1,7 +1,7 @@
 {
   "status": "failed",
-  "at": "2026-09-06T17:58:01.240599+00:00",
+  "at": "2026-09-06T18:05:22.296830+00:00",
   "previous_release_preserved": true,
   "error": "A source, model, browser or final publication check failed. No staged release is approved.",
-  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/34050173333"
+  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/34050557744"
 }

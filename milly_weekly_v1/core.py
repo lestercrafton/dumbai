@@ -87,7 +87,7 @@ def collect():
  stats=[];rosters=[]
  for y in range(YEAR-7,YEAR+1):
   st=get('stats_'+str(y),f'https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{y}.csv',required=y<YEAR)
-  ro=get('rosters_'+str(y),f'https://github.com/nflverse/nflverse-data/releases/download/rosters_weekly/roster_weekly_{y}.csv',required=y<YEAR)
+  ro=get('rosters_'+str(y),f'https://github.com/nflverse/nflverse-data/releases/download/weekly_rosters/roster_weekly_{y}.csv',required=y<YEAR)
   if st is not None and len(st):stats.append(st)
   if ro is not None and len(ro):rosters.append(ro)
  current=get('current_roster',f'https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_{YEAR}.csv')
