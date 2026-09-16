@@ -1,0 +1,18 @@
+Generated using built-in image_gen tool.
+
+ASSET oshn.png
+Use case: stylized-concept. Asset type: transparent full-body character sprite for an original storybook fantasy browser RPG.
+Subject: Oshn, a young adult bell mender with warm brown skin, short ink-black bob haircut, mustard gold long work coat, a pale blue-green windblown scarf, narrow charcoal trousers and dark ankle boots. Carries a long slim carved staff topped with a small glowing brass bell.
+Pose/composition: complete full body, standing naturally in graceful three-quarter profile facing RIGHT, staff at right, relaxed ready-for-adventure posture, unmistakable elegant readable silhouette. Head, staff, scarf and boots entirely within canvas with generous margin. Single character centered, portrait orientation.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, softly modeled face and folds. Matches refined atmospheric moonlit teal/indigo fantasy landscape paintings with antique brass bells and mist; beautifully designed independent original character.
+Color palette: mustard antique gold coat, pale blue-green scarf, charcoal trousers, warm brown skin, subtle silver moonlight edge.
+Constraints: genuinely transparent background (alpha channel), no solid background, no checkerboard drawn into image, no environment, no scenery, no ground plane, no cast shadow, no text, no lettering, no watermark. Character only. Completely original design, no existing fictional character references.
+
+
+ASSET hush.png
+Use case: stylized-concept. Asset type: transparent full-body final boss character sprite for an original storybook fantasy browser RPG.
+Subject: The Hush, a tall slender masked silver-thread seamstress of forgotten bells, sweeping ink-indigo cloak with graceful tapered trailing cloth, delicate pale silver mask, a branching antique brass bell crown, a hollow opening in the chest carries a suspended glowing brass bell. Fine silver threads arc delicately between one lifted hand and the bell. Restrained gold luminous eyes. Elegant, melancholic, mysterious, never horrific.
+Pose/composition: complete full body in graceful three-quarter profile facing LEFT, imperious quiet floating/standing posture, long robes taper to foot-like hem, readable silhouette with dramatic yet narrow vertical form. Crown, trailing cloth and hem entirely inside canvas with generous margins. Single character centered, portrait orientation.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush and nuanced metal detail. Matches refined atmospheric moonlit indigo fantasy landscape paintings with antique brass bells and mist. Original design with poetic elegance.
+Color palette: ink-indigo and midnight blue cloth, aged brass details, pale silver mask, muted warm gold glows.
+Constraints: genuinely transparent background (alpha channel), no solid background, no checkerboard drawn into image, no environment, no scenery, no ground plane, no cast shadow, no text, no lettering, no watermark. Character only. Completely original design, no existing fictional character references.

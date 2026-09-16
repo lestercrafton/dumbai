@@ -1,0 +1,30 @@
+Generated with the built-in image_gen tool. All environments are original.
+
+ASSET moonlit-bell-garden.png
+Use case: stylized-concept. Asset type: full-screen environment painting for an original fantasy browser RPG, widescreen 16:9.
+Primary request: an exquisite moonlit flooded bell-garden, enormous weathered bell tower on the right bank, a crescent canal curving through ancient garden stone, tiny folded paper boats lit by warm gold flame drifting on water.
+Style/medium: traditional hand-painted watercolor and gouache on textured paper, ink foliage silhouettes, nuanced drybrush, granulated indigo washes, elegant cinematic illustration.
+Composition/framing: very wide side-view environment, tower in the right third, faraway luminous moon through mist; broad softly empty dark teal/indigo sky and mist on the left half suitable for menu text to be added later. Foreground low along bottom edge, generous readable space in middle. Multiple layers of soft atmosphere and depth.
+Lighting/mood: hushed, magical, wistful but inviting; moonlight silver and occasional warm tiny gold lights.
+Color palette: deep teal, indigo, muted moss, antique gold.
+Constraints: all original environment design, no people or creatures or characters, no text, no letters, no logos, no watermark, no UI, no existing game references. Full bleed finished painting.
+
+
+ASSET glass-orchard.png
+Use case: stylized-concept. Asset type: battle environment painting for an original fantasy browser RPG, widescreen 16:9.
+Primary request: an elevated abandoned glass orchard, a fantastical weathered arched greenhouse on an ancient stone platform above jade mist, delicate branches bear translucent suspended bell-shaped fruit, some panes broken open to a rose-lilac evening sky.
+Style/medium: exquisite traditional watercolor and gouache on cold-press textured paper, graceful ink foliage, nuanced drybrush, atmospheric washes, elegant cinematic story illustration.
+Composition/framing: wide side-view battle backdrop, horizontal continuous stone terrace across low quarter of image, flat enough for standing characters to be added later. Strong arch silhouettes on upper sides, soft open midground across center. Layered glass ribs, delicate bell fruits hanging above play space, jade mist below, no extreme perspective. Plenty of uncluttered middle and lower space.
+Lighting/mood: enchanted abandoned conservatory at dusk, luminous rose-lilac sunset filtered through glass and jade mist, gentle golden gleams in bell fruits.
+Color palette: dusty rose, muted lilac, jade mist, deep forest green, tiny antique gold glows.
+Constraints: all original environment design, no people or creatures or characters, no text, no letters, no logos, no watermark, no UI, no existing game references. Full bleed finished painting.
+
+
+ASSET drowned-observatory.png
+Use case: stylized-concept. Asset type: final battle environment painting for an original fantasy browser RPG, widescreen 16:9.
+Primary request: a celestial drowned observatory of ancient brass and stone, an enormous fractured brass bell-shaped arch rising through the upper center, ringed star-mapping apparatus half sunken in still dark water, luminous stars reflected in water as though the lake contains the night sky.
+Style/medium: exquisite traditional watercolor and gouache on textured cold-press paper, foreground ink reeds and foliage at corners, rich granulated washes, restrained drybrush and fine etched metal detail, elegant cinematic illustration.
+Composition/framing: very wide side-view battle backdrop; horizontal low foreground stone causeway spanning bottom quarter with clear standing space for characters added later; huge cracked bell arch frames sky overhead, luminous star reflections beyond causeway; center and lower middle kept calm and open. Distinct layered silhouette depth and atmospheric mist.
+Lighting/mood: climactic, awe-filled and quietly hopeful, starlight glinting along fractured brass, tiny copper illumination within observatory.
+Color palette: deep midnight indigo, aged copper, pale blue stars, restrained warm gold highlights.
+Constraints: all original environment design, no people or creatures or characters, no text, no letters, no logos, no watermark, no UI, no existing game references. Full bleed finished painting.

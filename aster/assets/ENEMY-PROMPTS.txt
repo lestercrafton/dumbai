@@ -1,0 +1,54 @@
+Generated with built-in image_gen. Original enemies and final wizard Vadish.
+The earlier working concept referred to the final character as a seamstress; the final name is Vadish and he is a male wizard. The separate vadish.png asset below follows the corrected final specification.
+
+ASSET sentinel.png
+Use case: stylized-concept. Asset type: transparent full-body enemy sprite for an original fantasy browser RPG.
+Subject: Brasswing Sentinel, an enchanted brass bird automaton, broad folded shield-like feather wings, blue-green patina, rounded antique rivets and articulated bird feet. Beaked avian head with a small blue luminous eye, noble and watchful, no sharp weapon. A sturdy compact full-body bird silhouette.
+Pose/composition: isolated character in three-quarter pose facing LEFT, complete full body, every tip, wing, crown and foot entirely within portrait canvas with comfortable margins, graceful natural battle-ready posture, strong clearly readable silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, detailed antique brass. Matches refined atmospheric moonlit indigo-and-teal fantasy landscape paintings, a gold-coated bell mender and an indigo-cloaked masked bell seamstress. Original poetic storybook illustration, softly modeled and beautifully crafted, not cartoon or glossy 3D.
+Color palette: restrained indigo, blue-green jade, old brass and silver moonlight.
+Constraints: genuinely transparent background with alpha channel. No solid background, no checkerboard drawn into image, no ground plane, no cast shadow, no environment or scenery, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
+
+
+ASSET choir.png
+Use case: stylized-concept. Asset type: transparent full-body enemy sprite for an original fantasy browser RPG.
+Subject: Silt Choir, an eerie graceful floating choir of three hollow driftwood masks linked together in tattered indigo water-and-silt robes. Three distinct weathered carved nonhuman masks, mournful empty eye shapes, trailing layered cloth and gentle dark water ribbons form one grouped creature. Beautiful melancholy, never horrific. Compact coherent full-body silhouette, every trailing hem fully visible.
+Pose/composition: isolated character in three-quarter pose facing LEFT, complete full body, every tip, wing, crown and foot entirely within portrait canvas with comfortable margins, graceful natural battle-ready posture, strong clearly readable silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, detailed antique brass. Matches refined atmospheric moonlit indigo-and-teal fantasy landscape paintings, a gold-coated bell mender and an indigo-cloaked masked bell seamstress. Original poetic storybook illustration, softly modeled and beautifully crafted, not cartoon or glossy 3D.
+Color palette: restrained indigo, blue-green jade, old brass and silver moonlight.
+Constraints: genuinely transparent background with alpha channel. No solid background, no checkerboard drawn into image, no ground plane, no cast shadow, no environment or scenery, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
+
+
+ASSET heron.png
+Use case: stylized-concept. Asset type: transparent full-body enemy sprite for an original fantasy browser RPG.
+Subject: Mirror Heron, an elegant tall long-legged heron made of moonlit mirror glass with jade and aged brass joints, delicate angular translucent silver-blue glass feathers, wings partly spread, long graceful neck, downward-pointing beak and slender articulated feet. Quietly magical avian guardian, full-body long-legged silhouette.
+Pose/composition: isolated character in three-quarter pose facing LEFT, complete full body, every tip, wing, crown and foot entirely within portrait canvas with comfortable margins, graceful natural battle-ready posture, strong clearly readable silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, detailed antique brass. Matches refined atmospheric moonlit indigo-and-teal fantasy landscape paintings, a gold-coated bell mender and an indigo-cloaked masked bell seamstress. Original poetic storybook illustration, softly modeled and beautifully crafted, not cartoon or glossy 3D.
+Color palette: restrained indigo, blue-green jade, old brass and silver moonlight.
+Constraints: genuinely transparent background with alpha channel. No solid background, no checkerboard drawn into image, no ground plane, no cast shadow, no environment or scenery, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
+
+
+ASSET warden.png
+Use case: stylized-concept. Asset type: transparent full-body enemy sprite for an original fantasy browser RPG.
+Subject: Orchard Warden, a walking gnarled garden tree guardian, twig crown, ancient gentle face subtly formed in weathered bark, delicate branches bearing a few glowing translucent bell-shaped glass fruits, braided roots as two feet, long branching arms framing its trunk. Quiet melancholy and ancient dignity, no weapons, no scenery. Entire tree guardian visible.
+Pose/composition: isolated character in three-quarter pose facing LEFT, complete full body, every tip, wing, crown and foot entirely within portrait canvas with comfortable margins, graceful natural battle-ready posture, strong clearly readable silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, detailed antique brass. Matches refined atmospheric moonlit indigo-and-teal fantasy landscape paintings, a gold-coated bell mender and an indigo-cloaked masked bell seamstress. Original poetic storybook illustration, softly modeled and beautifully crafted, not cartoon or glossy 3D.
+Color palette: restrained indigo, blue-green jade, old brass and silver moonlight.
+Constraints: genuinely transparent background with alpha channel. No solid background, no checkerboard drawn into image, no ground plane, no cast shadow, no environment or scenery, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
+
+
+ASSET unrung.png
+Use case: stylized-concept. Asset type: transparent full-body enemy sprite for an original fantasy browser RPG.
+Subject: Unrung, a tall spectral empty bell-shaped indigo robe, hollow hood and faceless darkness, concentric antique brass rings around the robe and a suspended cracked glowing bell in its hollow chest. Sparse abstract silver marks like flowing nonlinguistic strokes in cloth, absolutely NO letters or readable text. Narrow elegant melancholic full-body silhouette, robe tapers to hovering curled hem.
+Pose/composition: isolated character in three-quarter pose facing LEFT, complete full body, every tip, wing, crown and foot entirely within portrait canvas with comfortable margins, graceful natural battle-ready posture, strong clearly readable silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush, detailed antique brass. Matches refined atmospheric moonlit indigo-and-teal fantasy landscape paintings, a gold-coated bell mender and an indigo-cloaked masked bell seamstress. Original poetic storybook illustration, softly modeled and beautifully crafted, not cartoon or glossy 3D.
+Color palette: restrained indigo, blue-green jade, old brass and silver moonlight.
+Constraints: genuinely transparent background with alpha channel. No solid background, no checkerboard drawn into image, no ground plane, no cast shadow, no environment or scenery, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
+
+ASSET vadish.png
+Use case: stylized-concept. Asset type: transparent full-body final wizard character sprite for an original fantasy browser RPG.
+Subject: Vadish, a tall mature MALE wizard with an elegant indigo star-embroidered long cloak, branching antique brass bell crown, pale silver mask with solemn but gentle masculine features, strong straight nose and subtly squared jaw. A long carved staff held in his LEFTWARD outstretched hand is topped with a suspended brass bell. His free hand weaves thin ribbons of gold light. A wise sorrowful wizard who can become loving and peaceful; dignified, calm, mysterious, no evil grimace or horror.
+Pose/composition: single full-body figure facing LEFT in three-quarter profile, staff extended leftward, hands graceful, comfortable welcoming-but-mysterious posture, complete crown, staff, robe hem and feet entirely inside portrait canvas with generous margins. Readable elegant silhouette.
+Style/medium: exquisite traditional hand-painted watercolor and gouache, nuanced expressive fine ink edges, textured paper grain INSIDE painted figure, restrained drybrush, softly modeled antique brass and cloth. Matches refined painterly moonlit indigo-and-teal fantasy landscapes and a mustard-gold-coated bell mender. Luminous restrained brass and silver detail, beautiful independent original storybook character.
+Color palette: midnight indigo and blue cloak, antique gold bells, soft silver mask, warm gold magic.
+Constraints: genuinely TRANSPARENT background with alpha channel, no solid background, no checkerboard drawn into image, no scenery, no environment, no ground plane, no cast shadow, no text, no letters, no logos, no watermark. Character only. Completely original design, no existing fictional character reference.
