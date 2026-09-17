@@ -2,13 +2,13 @@
 
 [Play the complete game](https://last-bell-of-xenaland.sunlightisfree.chatgpt.site)
 
-An original, compact storybook RPG starring **Oshn**, a bell mender, and **Isha**, a paper moth. Three painted locations, six turn-based encounters, a two-phase final boss, optional memories, permanent upgrades, and a complete ending shaped by the memories you choose to carry or release. About 15–25 minutes, depending on reading and battle pace.
+An original, compact storybook RPG starring **Oshn**, a seven-year-old boy, and **Isha**, his sister. A sleepy spell gives Isha a magical moth form until the happy ending. Three painted locations, six turn-based encounters, a two-phase final boss, optional gifts, permanent upgrades, and a happy ending. The early-reader story uses short sentences: collect six notes, help the spellbound guards, and wake the bell with the wizard Vadish. About 15–25 minutes, depending on reading and battle pace.
 
 ## Play
 
-Click or tap actions. Battles wait indefinitely for your decision. Read the enemy's next move, interrupt heavy attacks with Bright chime, restore breath with Needle strike or Shelter, and use Isha's Moth & metal at three resonance. Health and breath refill before each battle. Adventure and gentler Story modes can be switched in Settings.
+Click or tap actions. Battles wait indefinitely for your decision. Read the next move, stop big spells with Ring, get magic with Tap or Shield, heal with Heal, and use Team song at three song lights. Health and magic refill before each battle. Easy play is offered first; More challenge is also available. Change levels in Settings.
 
-Progress saves automatically to the current browser's local storage after every action. It is device/browser-specific. Clearing site data clears the save. A defeated player retries the same encounter with all prior choices preserved.
+Progress saves automatically to the current browser's local storage after every action. It is device/browser-specific. Clearing site data clears the save. A defeated player retries the same encounter with all prior choices preserved. Saves from the first release migrate to the revised family story while keeping progress, upgrades, health, magic, and the damage already shown for the next enemy move.
 
 Keyboard: 1–5 choose actions, Space advances single-choice dialogue, J opens the journal, M toggles audio, Escape closes a dialog. Touch layouts, visible keyboard focus, sound controls, and reduced motion are supported.
 

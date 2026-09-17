@@ -1,113 +1,28 @@
 /** The Last Bell of Xenaland — original, deterministic, JSON-safe adventure engine. */
 export const VERSION = 1;
 
-export const CHAPTERS = [
-  { title: 'I · The Shore of Unsaid Things', location: 'The Drowned Causeway', description: 'Bells lie beneath the water. One of them is still listening.', theme: 'shore' },
-  { title: 'II · A Garden for Tomorrow', location: 'The Glass Orchard', description: 'Every fruit holds a day that someone was afraid to lose.', theme: 'orchard' },
-  { title: 'III · What the Morning Keeps', location: 'The Bell at the End of the Sea', description: 'At the edge of the world, silence has learned your name.', theme: 'tower' },
-];
+import { CHAPTERS, NODES, OPENING, AFTER_BATTLES, ENDING_STORY, endingSummary } from './story.js';
+export { CHAPTERS, RING_INDEX, GIRL_INDEX } from './story.js';
+export const CONTENT_REVISION = 2;
 
 export const ENEMIES = [
-  { id: 'brasswing', name: 'Brasswing Sentinel', subtitle: 'A faithful machine with no one left to guard', maxHp: 64, damage: 11, heavy: 26, heavyName: 'Falling Anchor', special: 'plain', portrait: 'sentinel' },
-  { id: 'choir', name: 'The Silt Choir', subtitle: 'A thousand voices, afraid to sing alone', maxHp: 86, damage: 13, heavy: 29, heavyName: 'Undertow Anthem', special: 'drain', portrait: 'choir' },
-  { id: 'heron', name: 'Mirror Heron', subtitle: 'It remembers every sky except the real one', maxHp: 104, damage: 14, heavy: 33, heavyName: 'Shattering Flight', special: 'armor', portrait: 'heron' },
-  { id: 'warden', name: 'The Orchard Warden', subtitle: 'Love, rooted so deeply it cannot let go', maxHp: 120, damage: 16, heavy: 36, heavyName: 'Winter’s Embrace', special: 'siphon', portrait: 'warden' },
-  { id: 'unrung', name: 'The Unrung', subtitle: 'The shape of every word left unsaid', maxHp: 134, damage: 17, heavy: 39, heavyName: 'Borrowed Thunder', special: 'drain', portrait: 'unrung' },
-  { id: 'vadish', name: 'Vadish', subtitle: 'A wizard who mistook stillness for safety', maxHp: 132, damage: 18, heavy: 42, heavyName: 'The Last Quiet', special: 'boss', portrait: 'vadish' },
+  { id: 'brasswing', name: 'Brass Bird', subtitle: 'A bird caught in a spell', maxHp: 64, damage: 11, heavy: 26, heavyName: 'Wing Flap', special: 'plain', portrait: 'sentinel' },
+  { id: 'choir', name: 'River Singers', subtitle: 'Singers caught in a spell', maxHp: 86, damage: 13, heavy: 29, heavyName: 'Big Splash', special: 'drain', portrait: 'choir' },
+  { id: 'heron', name: 'Glass Heron', subtitle: 'A bird with shiny wings', maxHp: 104, damage: 14, heavy: 33, heavyName: 'Wing Gust', special: 'armor', portrait: 'heron' },
+  { id: 'warden', name: 'Garden Guard', subtitle: 'A tree caught in a spell', maxHp: 120, damage: 16, heavy: 36, heavyName: 'Root Hug', special: 'siphon', portrait: 'warden' },
+  { id: 'unrung', name: 'Cloud Guard', subtitle: 'A cloud caught in a spell', maxHp: 134, damage: 17, heavy: 39, heavyName: 'Big Boom', special: 'drain', portrait: 'unrung' },
+  { id: 'vadish', name: 'Vadish', subtitle: 'A wizard who is scared of storms', maxHp: 132, damage: 18, heavy: 42, heavyName: 'Sleep Spell', special: 'boss', portrait: 'vadish' },
 ];
 
 export const ABILITIES = {
-  strike: { id: 'strike', label: 'Needle strike', description: '12 damage. Gain 1 breath and 1 resonance.', kind: 'attack' },
-  chime: { id: 'chime', label: 'Bright chime', description: '20 damage. Costs 2 breath. Interrupts a heavy attack.', kind: 'magic' },
-  mend: { id: 'mend', label: 'Mend', description: 'Restore 27 health. Costs 2 breath.', kind: 'heal' },
-  guard: { id: 'guard', label: 'Shelter', description: 'Take 70% less damage this turn. Gain 2 breath.', kind: 'defend' },
-  harmony: { id: 'harmony', label: 'Moth & metal', description: 'Spend 3 resonance: 35 damage and restore 15 health.', kind: 'special' },
+  strike: { id: 'strike', label: 'Tap', description: '12 damage. Gain 1 magic and 1 song.', kind: 'attack' },
+  chime: { id: 'chime', label: 'Ring', description: '20 damage. Costs 2 magic. Interrupts a heavy attack.', kind: 'magic' },
+  mend: { id: 'mend', label: 'Heal', description: 'Restore 27 health. Costs 2 magic.', kind: 'heal' },
+  guard: { id: 'guard', label: 'Shield', description: 'Take 70% less damage this turn. Gain 2 magic.', kind: 'defend' },
+  harmony: { id: 'harmony', label: 'Team song', description: 'Spend 3 song: 35 damage and restore 15 health.', kind: 'special' },
 };
 
 const line = (speaker, text) => ({ speaker, text });
-const NODES = [
-  {
-    title: 'The Causeway', description: 'A road of blue stones disappears into a sleeping sea. Above it, a brass bird circles the same empty cradle.',
-    memoryTitle: 'A lunch wrapped in cloth', memory: [
-      line('Oshn', 'Someone left a lunch on the milestone. The bread is still warm.'),
-      line('Isha', 'The bell kept the last moment of every life in Xenaland. Warm bread. An unfinished letter. A goodbye that never arrived.'),
-      line('Oshn', 'My mother used to leave a second slice. She always said that fixing something was hungry work.'),
-    ], choices: ['Keep the warmth', 'Share it with the sea'],
-    kept: 'You wrap the warm bread in your mending cloth. Some small things deserve to travel.', released: 'You leave crumbs for the silver fish. For a moment, the water remembers how to move.',
-    enemyIntro: 'The brass bird lands. Its wings become a shield between you and the road.',
-  },
-  {
-    title: 'The Ferry Without a Shore', description: 'An empty ferry waits beneath a lamp made of sea glass. Voices hum under its hull. They have forgotten where they were going.',
-    memoryTitle: 'A ticket for two', memory: [
-      line('Oshn', 'Two tickets. The date is the day the sea stopped.'),
-      line('Isha', 'Someone waited here for a person who never came.'),
-      line('Oshn', 'You can spend a whole life calling that a betrayal. Or you can leave them a light and take the boat.'),
-    ], choices: ['Carry the spare ticket', 'Light the ferry lamp'],
-    kept: 'You tuck the ticket beside your tools. A place can remain open without keeping you still.', released: 'The lamp wakes. A path of amber shivers over the water, and the ferry turns toward it.',
-    enemyIntro: 'The voices rise together. They ask you to stay. They do not yet know how to ask gently.',
-  },
-  {
-    title: 'The Glass Orchard', description: 'Transparent trees grow out of flooded houses. Within each hanging fruit, an ordinary afternoon repeats forever.',
-    memoryTitle: 'An imperfect afternoon', memory: [
-      line('Oshn', 'That is our kitchen. I broke the green cup. Mother laughed so hard she burned the soup.'),
-      line('Isha', 'You could watch it once more.'),
-      line('Oshn', 'I have watched it in my head for seven years. I always forget the soup.'),
-    ], choices: ['Remember the laughter', 'Open a window in the memory'],
-    kept: 'You keep the whole afternoon, burnt soup and all. The fruit dims; the memory stays yours.', released: 'You turn the glass latch. The afternoon exhales into the orchard, carrying the smell of soup.',
-    enemyIntro: 'A heron steps out of your reflection. In its wings are all the skies you wish you could return to.',
-  },
-  {
-    title: 'The Gardener’s Table', description: 'A stone table holds thousands of names, carefully watered. Roots curl around a single empty chair.',
-    memoryTitle: 'The chair beside hers', memory: [
-      line('Isha', 'This gardener planted memories so that no one would have to be lonely.'),
-      line('Oshn', 'And then nobody could leave.'),
-      line('Isha', 'When I first woke, I thought I was a letter. A little paper moth with nowhere to deliver itself.'),
-      line('Oshn', 'You found somewhere.'),
-    ], choices: ['Carve Isha’s name beside yours', 'Plant an unwritten page'],
-    kept: 'OSHN. ISHA. Two small names among thousands. Isha reads his several times.', released: 'You plant a blank page. A pale shoot unfolds, bearing no memory at all. Only possibility.',
-    enemyIntro: 'The gardener’s roots gather into a towering figure. “Nothing precious leaves this place,” it says.',
-  },
-  {
-    title: 'The Unfinished Stair', description: 'The tower is built from bells that never rang. Between its steps, the entire sea hangs in the air.',
-    memoryTitle: 'The last repair', memory: [
-      line('Oshn', 'Mother’s tools. She came here before the sea rose.'),
-      line('Tamsin’s note', 'Oshn — the great bell is not broken. It is frightened. We asked it to keep our loved ones safe, and it mistook safe for still.'),
-      line('Tamsin’s note', 'I cannot promise to get home. Please do not make a monument of waiting. Make breakfast. Fix the window. Live a little badly, and then try again.'),
-      line('Oshn', 'I was so angry that she left. I think I can be angry and love her at the same time.'),
-    ], choices: ['Fold the note beside your heart', 'Read it aloud to the sleeping sea'],
-    kept: 'You fold the note along its old creases. You will read it on ordinary days, too.', released: 'Your voice shakes, then steadies. Far below, someone sleeping turns toward a sound.',
-    enemyIntro: 'All the words you never said gather on the stair. This time, you will go through them.',
-  },
-  {
-    title: 'The Heart of the Bell', description: 'An immense bell hangs over the horizon. Beneath its rim stands Vadish, a wizard weaving the dawn shut with silver threads of magic.',
-    memoryTitle: 'A loose silver thread', memory: [
-      line('Isha', 'There is something I should tell you. This thread, and the paper in my wings… I am made from the bell’s last unanswered wish.'),
-      line('Oshn', 'Whose wish?'),
-      line('Isha', 'Your mother’s. That you would not have to walk home alone.'),
-      line('Oshn', 'Then it worked. Whatever happens when the bell rings, it worked.'),
-    ], choices: ['Tie a thread around Isha’s wing', 'Teach Isha your mother’s tune'],
-    kept: 'You tie a careful mender’s knot. Not to hold him in place. To help him find his way.', released: 'You hum, badly. Isha hums worse. For the first time, the tower contains a song nobody remembers.',
-    enemyIntro: 'The wizard lowers his staff. “If morning comes,” says Vadish, “you will lose her all over again.”',
-  },
-];
-
-const OPENING = [
-  line('The sea remembers', 'For seven years, morning has waited beneath the sea. The people of Xenaland sleep inside their final happy moment. Nothing grows old. Nothing grows.'),
-  line('Oshn', 'I mend bells. Doorbells, ship bells, the little ones people tie to cats. Mother taught me that anything can ring again if you find the right place to listen.'),
-  line('Oshn', 'She went to repair the great bell on the day the water rose. I have been waiting for her ever since.'),
-  line('Isha', 'Then a paper moth knocked on my window. That is me, by the way. Isha. Please do not confuse me with the enormous, alarming sea.'),
-  line('Isha', 'The great bell is still there. So is the road to it. I could show you, if you are finished waiting.'),
-  line('Oshn', 'I take my needle, my tuning fork, and the coat Mother said I would grow into. It fits now.'),
-];
-
-const AFTER_BATTLES = [
-  [line('Oshn', 'The sentinel folds into a small brass bird. No longer a guard. Just a thing that might learn to fly.'), line('Isha', 'You did not break it.'), line('Oshn', 'You can mend something by helping it stop.')],
-  [line('The Silt Choir', 'One voice finds a melody of its own. Another answers. The ferry begins to move.'), line('Isha', 'The first note of morning. Not bad for a bell mender and some nervous stationery.'), line('Oshn', 'Beyond the water, glass trees catch a light that has no source. We follow it.')],
-  [line('Oshn', 'The heron steps into the sky. For an instant, it casts a reflection in the air.'), line('Isha', 'Did you see what was inside it?'), line('Oshn', 'Tomorrow. I think it had never seen tomorrow before.')],
-  [line('The Warden', '“If they leave,” the gardener whispers, “who will remember me?”'), line('Oshn', 'They will. Some days. While making tea, or hearing a song. You do not have to keep them here to be loved.'), line('The garden', 'A root loosens. Then another. The empty chair remains. Around it, real leaves begin to grow.')],
-  [line('Oshn', 'The unfinished words settle into my hands. I do not say all of them. I only say, “I wish we had more time.”'), line('Isha', 'The stair makes room for us.'), line('Oshn', 'Above, the great bell is silent. A silence so careful it must be afraid.')],
-];
-
 const clone = (state) => JSON.parse(JSON.stringify(state));
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const has = (state, upgrade) => state.upgrades.includes(upgrade);
@@ -135,17 +50,17 @@ function intentFor(state) {
   const scale = state.difficulty === 'story' ? 0.64 : 1;
   if (state.turn % 3 === 0) {
     const damage = Math.round(enemy.heavy * scale);
-    return { name: enemy.heavyName, damage, kind: 'heavy', description: `Gathering a heavy attack: ${damage} damage. Bright chime interrupts it; Shelter reduces it by 70%.` };
+    return { name: enemy.heavyName, damage, kind: 'heavy', description: `Use Ring to stop this big spell!` };
   }
   const damage = Math.round(enemy.damage * scale);
   if (enemy.special === 'drain' && state.turn % 3 === 2) {
-    return { name: 'Borrowed Breath', damage, kind: 'drain', description: `${damage} damage and drains 1 breath. Shelter prevents the breath drain.` };
+    return { name: 'Magic Puff', damage, kind: 'drain', description: `Takes 1 magic. Shield keeps your magic safe.` };
   }
   if (enemy.special === 'siphon' && state.turn % 3 === 2) {
-    return { name: 'Root & Remember', damage, kind: 'siphon', description: `${damage} damage, then restores 6 enemy health. Shelter prevents its healing.` };
+    return { name: 'Root Sip', damage, kind: 'siphon', description: `Heals the Garden Guard. Shield stops the healing.` };
   }
   const armor = enemy.special === 'armor' ? 4 : 0;
-  return { name: enemy.bossPhase === 2 ? 'Daybreak’s Edge' : 'Echoing Blow', damage, kind: 'attack', description: `${damage} damage.${armor ? ' Mirror feathers reduce Needle strike damage by 4 this turn.' : ' Your action resolves first.'}`, armor };
+  return { name: enemy.bossPhase === 2 ? 'Star Spark' : 'Magic Bump', damage, kind: 'attack', description: `${armor ? 'Shiny wings block 4 Tap damage.' : 'You go first. Take your time.'}`, armor };
 }
 
 function beginBattle(state) {
@@ -158,7 +73,7 @@ function beginBattle(state) {
   state.hero.energy = state.hero.maxEnergy;
   state.battleBuff = state.pathBuff;
   state.openingShield = state.battleBuff === 'ward' ? 14 : 0;
-  state.log = [NODES[state.encounter].enemyIntro, 'Your health and breath are restored. Read the enemy’s next move before choosing yours.'];
+  state.log = [NODES[state.encounter].enemyIntro, 'You are ready! Pick a move below.'];
   state.enemy.intent = intentFor(state);
   state.effect = { kind: 'battle', text: definition.name, target: 'enemy' };
 }
@@ -181,33 +96,9 @@ function advanceAfterStory(state) {
     state.phase = 'ending';
     state.enemy = null;
     state.completed = true;
-    state.ending = {
-      title: 'Morning, together.',
-      text: 'Oshn brought courage. Isha brought a song. Vadish opened his heart, and together they brought the morning back to Xenaland.',
-      epilogue: state.memories.kept >= state.memories.released
-        ? 'Oshn hangs her keepsakes above the workbench. Isha hums along as they sway. Outside, the loving wizard Vadish is teaching the village bells a brand-new song.'
-        : 'Oshn leaves the workshop door open. Isha brings songs from the sea, and Vadish brings breakfast. None of them sings quite in tune. All of them sing anyway.',
-      dedication: 'For the courage to change. For the love that lets the morning in.',
-    };
+    state.ending = endingSummary(state);
   }
 }
-
-function endingStory(state) {
-  return [
-    line('Vadish', 'The wizard’s silver spell falls away. He kneels beside his staff. “I thought that if I held the world perfectly still, no one would ever have to lose someone again.”'),
-    line('Oshn', 'You were trying to love them. You can still love them. Let them have a morning.'),
-    line('Isha', 'And a terrible breakfast. And a beautiful mistake. Those are surprisingly important.'),
-    line('Vadish', 'For the first time in seven years, the wizard laughs. He opens his hands. The magic that had bound the sea turns warm and golden. “Then let me help them begin.”'),
-    line('The great bell', 'Vadish rises and gently offers his hand to Oshn. Isha settles on his staff. Together, the three climb into the bell’s heart, where the last note of morning waits.'),
-    line('Vadish', '“For every person I tried to keep,” he says, “and every day I kept from them.” Oshn sets her tuning fork against the brass. Isha fills the hollow with his small, brave song.'),
-    line('The morning returns', 'With Oshn and Isha beside him, Vadish takes the bell’s rope in both hands and rings it himself. Their notes become one. The sea falls like glittering rain. Across Xenaland, windows open and sleepers wake into the sunrise.'),
-    line('Oshn', 'Mother does not come home. I cry, and Vadish sits quietly beside me. He does not try to stop the tears. Isha warms my hand. Love, I begin to understand, can stay without keeping anything still.'),
-    line('A new morning', 'Later, the loving wizard opens the orchard gates and helps the people of Xenaland home. He mends a broken bridge, finds a lost cat, and burns the toast. Nobody has ever been so happy to make a mistake.'),
-    line('Isha', 'I think I would like to see where the boats go.'),
-    line('Oshn', 'I put on my coat. Vadish leaves the workshop door open for our return. Somewhere beyond the window, a bell begins to ring.'),
-  ];
-}
-
 
 function winBattle(state) {
   state.battlesWon += 1;
@@ -217,13 +108,13 @@ function winBattle(state) {
   state.phase = 'reward';
   state.enemy.hp = 0;
   state.reward = {
-    title: state.encounter === 5 ? 'A heart opens' : 'A note returned',
-    text: state.encounter === 5 ? 'Vadish’s spell loosens. Beneath his fear, a loving heart is waiting to be heard.' : 'One more note joins the song. Your health and breath are fully restored.',
+    title: state.encounter === 5 ? 'Vadish smiles' : 'You found a note!',
+    text: state.encounter === 5 ? 'You beat the spell! Vadish is ready to help.' : 'You did it! Your health and magic are full.',
     upgrade: state.encounter === 1 || state.encounter === 3,
   };
-  state.journal.push({ title: ENEMIES[state.encounter].name, text: `You freed ${ENEMIES[state.encounter].name.toLowerCase()} and recovered a note of morning.` });
-  addLog(state, `${ENEMIES[state.encounter].name} is quiet. A note of morning is yours.`);
-  state.effect = { kind: 'victory', text: 'A note returned', target: 'all' };
+  state.journal.push({ title: ENEMIES[state.encounter].name, text: `You helped ${ENEMIES[state.encounter].name}. You found a note!` });
+  addLog(state, `${ENEMIES[state.encounter].name} smiles. You found a note!`);
+  state.effect = { kind: 'victory', text: 'You found a note!', target: 'all' };
 }
 
 function combat(state, id) {
@@ -237,48 +128,48 @@ function combat(state, id) {
   if (id === 'strike') {
     damage = Math.max(1, 12 + power(state) - (intent.armor || 0));
     state.hero.energy += 1;
-    addLog(state, `Oshn’s needle rings against the dark: ${damage} damage. +1 breath.`);
+    addLog(state, `Oshn taps his bell: ${damage} damage. +1 magic.`);
   } else if (id === 'chime') {
     damage = 20 + power(state);
     state.hero.energy -= 2;
     interrupted = intent.kind === 'heavy';
-    addLog(state, `Bright chime deals ${damage} damage.${interrupted ? ` ${intent.name} is interrupted!` : ''}`);
+    addLog(state, `Ring deals ${damage} damage.${interrupted ? ` Big spell stopped!` : ''}`);
   } else if (id === 'mend') {
     state.hero.energy -= 2;
     heal = 27 + (has(state, 'thread') ? 8 : 0);
-    addLog(state, `Oshn stitches a little warmth into the world: +${Math.min(heal, state.hero.maxHp - state.hero.hp)} health.`);
+    addLog(state, `Oshn feels better: +${Math.min(heal, state.hero.maxHp - state.hero.hp)} health.`);
   } else if (id === 'guard') {
     state.hero.energy += 2;
     guarded = true;
-    addLog(state, 'Isha folds his wings around Oshn. Shelter reduces the next hit by 70%. +2 breath.');
+    addLog(state, 'Isha spreads her wings. Shield blocks most of the hit. +2 magic.');
   } else if (id === 'harmony') {
     damage = 35 + power(state) * 2;
     heal = 15 + (has(state, 'thread') ? 8 : 0);
     state.resonance = 0;
-    addLog(state, `Moth & metal sing together: ${damage} damage and +${Math.min(heal, state.hero.maxHp - state.hero.hp)} health.`);
+    addLog(state, `Oshn and Isha sing: ${damage} damage and +${Math.min(heal, state.hero.maxHp - state.hero.hp)} health.`);
   }
   state.hero.hp = clamp(state.hero.hp + heal, 0, state.hero.maxHp);
   state.hero.energy = clamp(state.hero.energy, 0, state.hero.maxEnergy);
   if (id !== 'harmony') state.resonance = Math.min(3, state.resonance + 1);
   enemy.hp = Math.max(0, enemy.hp - damage);
-  state.effect = { kind: id, text: damage ? `−${damage}` : heal ? `+${heal}` : 'Sheltered', target: damage ? 'enemy' : 'hero' };
+  state.effect = { kind: id, text: damage ? `−${damage}` : heal ? `+${heal}` : 'Shielded', target: damage ? 'enemy' : 'hero' };
 
   if (enemy.hp === 0) {
     if (enemy.special === 'boss' && enemy.bossPhase === 1) {
       enemy.bossPhase = 2;
-      enemy.name = 'Vadish · Unbound';
-      enemy.subtitle = 'A frightened heart beneath the spell';
+      enemy.name = 'Vadish';
+      enemy.subtitle = 'His last spell is fading';
       enemy.maxHp = 96;
       enemy.hp = 96;
       enemy.damage = 20;
       enemy.heavy = 44;
-      enemy.heavyName = 'Unmaking the Dawn';
+      enemy.heavyName = 'Big Sleep Spell';
       state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + 24);
       state.hero.energy = Math.min(state.hero.maxEnergy, state.hero.energy + 2);
       state.turn = 1;
       enemy.intent = intentFor(state);
-      addLog(state, 'The silver shell breaks. “If you wake them, they will grieve.” Vadish becomes a storm. Isha restores 24 health and 2 breath.');
-      state.effect = { kind: 'transform', text: 'The silence breaks open', target: 'all' };
+      addLog(state, 'Vadish tries one last spell! Isha helps her brother: +24 health and +2 magic.');
+      state.effect = { kind: 'transform', text: 'One last spell!', target: 'all' };
       return;
     }
     winBattle(state);
@@ -291,24 +182,24 @@ function combat(state, id) {
       const absorbed = Math.min(incoming, state.openingShield);
       incoming -= absorbed;
       state.openingShield -= absorbed;
-      if (absorbed) addLog(state, `The memory you released shelters you from ${absorbed} damage.`);
+      if (absorbed) addLog(state, `Your gift blocks ${absorbed} damage.`);
     }
     state.hero.hp = Math.max(0, state.hero.hp - incoming);
-    addLog(state, `${enemy.name} uses ${intent.name}: ${incoming} damage${guarded ? ' after Shelter' : ''}.`);
+    addLog(state, `${enemy.name} uses ${intent.name}: ${incoming} damage${guarded ? ' after Shield' : ''}.`);
     if (intent.kind === 'drain' && !guarded) {
       state.hero.energy = Math.max(0, state.hero.energy - 1);
-      addLog(state, 'An echo carries away 1 breath.');
+      addLog(state, 'You lose 1 magic.');
     }
     if (intent.kind === 'siphon' && !guarded) {
       enemy.hp = Math.min(enemy.maxHp, enemy.hp + 6);
-      addLog(state, 'The roots recover 6 health. Shelter can prevent this.');
+      addLog(state, 'The roots heal 6 health. Shield can stop this.');
     }
-  } else addLog(state, `${enemy.name} loses its turn. The heavy attack dissolves into sparks.`);
+  } else addLog(state, `The big spell is gone! You are safe.`);
 
   if (state.hero.hp === 0) {
     state.phase = 'defeat';
-    state.effect = { kind: 'defeat', text: 'Even a small light can begin again', target: 'hero' };
-    addLog(state, 'Isha catches the loose thread. Your progress and choices are safe.');
+    state.effect = { kind: 'defeat', text: 'You can try again!', target: 'hero' };
+    addLog(state, 'Isha helps Oshn up. Try again from here.');
     return;
   }
   state.turn += 1;
@@ -320,35 +211,35 @@ export function actions(state) {
   if (!state || state.version !== VERSION) return [];
   if (state.phase === 'story') {
     if (state.storyIndex === state.story.length - 1 && state.storyChoices) return state.storyChoices;
-    return [{ id: 'next', label: state.storyIndex === state.story.length - 1 ? 'Continue' : 'Listen', description: '', kind: 'story' }];
+    return [{ id: 'next', label: state.storyIndex === state.story.length - 1 ? 'Go on' : 'Next', description: '', kind: 'story' }];
   }
   if (state.phase === 'explore') {
     const choices = [];
-    if (!state.explored) choices.push({ id: 'investigate', label: NODES[state.encounter].memoryTitle, description: 'Find a memory. Choose how to carry it, and gain a gift for the coming battle.', kind: 'memory' });
-    choices.push({ id: 'travel', label: state.encounter === 5 ? 'Approach the great bell' : 'Follow the next note', description: `${state.explored ? '' : 'You may leave this memory behind. ' }Face ${ENEMIES[state.encounter].name}. Health and breath are restored before battle.`, kind: 'travel' });
+    if (!state.explored) choices.push({ id: 'investigate', label: NODES[state.encounter].memoryTitle, description: 'Look here! Find a small gift.', kind: 'memory' });
+    choices.push({ id: 'travel', label: state.encounter === 5 ? 'Go to the bell' : 'Go on', description: `${state.explored ? '' : '' }Face ${ENEMIES[state.encounter].name}. Start with full health and magic.`, kind: 'travel' });
     return choices;
   }
   if (state.phase === 'battle') {
     const extra = power(state);
     return [
-      { ...ABILITIES.strike, description: `${12 + extra} damage. Gain 1 breath and 1 resonance.` },
-      { ...ABILITIES.chime, description: `${20 + extra} damage · 2 breath. Interrupts a heavy attack.`, disabled: state.hero.energy < 2 },
-      { ...ABILITIES.mend, description: `Restore ${27 + (has(state, 'thread') ? 8 : 0)} health · 2 breath. Gain 1 resonance.`, disabled: state.hero.energy < 2 || state.hero.hp === state.hero.maxHp },
-      { ...ABILITIES.guard, description: 'Take 70% less damage. Gain 2 breath and 1 resonance.' },
-      { ...ABILITIES.harmony, description: `${35 + extra * 2} damage + ${15 + (has(state, 'thread') ? 8 : 0)} health · 3 resonance.`, disabled: state.resonance < 3 },
+      { ...ABILITIES.strike, description: `${12 + extra} damage. Get 1 magic.` },
+      { ...ABILITIES.chime, description: `${20 + extra} damage. Stops big spells! Costs 2 magic.`, disabled: state.hero.energy < 2 },
+      { ...ABILITIES.mend, description: `+${27 + (has(state, 'thread') ? 8 : 0)} health. Costs 2 magic.`, disabled: state.hero.energy < 2 || state.hero.hp === state.hero.maxHp },
+      { ...ABILITIES.guard, description: 'Block most of a hit. Get 2 magic.' },
+      { ...ABILITIES.harmony, description: `${35 + extra * 2} damage. +${15 + (has(state, 'thread') ? 8 : 0)} health. Needs 3 song lights.`, disabled: state.resonance < 3 },
     ];
   }
   if (state.phase === 'reward') {
     if (state.reward.upgrade) {
       return [
-        { id: 'upgrade-heart', label: 'A wider heart', description: '+20 maximum health, permanently.', kind: 'upgrade', disabled: has(state, 'heart') },
-        { id: 'upgrade-voice', label: 'A clearer voice', description: '+3 Needle strike and Bright chime damage; +6 Moth & metal damage.', kind: 'upgrade', disabled: has(state, 'voice') },
-        { id: 'upgrade-thread', label: 'A stronger thread', description: '+8 healing from Mend and Moth & metal. Begin battles with 1 resonance.', kind: 'upgrade', disabled: has(state, 'thread') },
+        { id: 'upgrade-heart', label: 'More health', description: '+20 health for the whole game.', kind: 'upgrade', disabled: has(state, 'heart') },
+        { id: 'upgrade-voice', label: 'Stronger song', description: 'Tap and Ring hit harder. So does Team song.', kind: 'upgrade', disabled: has(state, 'voice') },
+        { id: 'upgrade-thread', label: 'More healing', description: 'Heal more. Start each battle with 1 song light.', kind: 'upgrade', disabled: has(state, 'thread') },
       ];
     }
-    return [{ id: 'continue', label: state.encounter === 5 ? 'Ring the bell together' : 'Carry the note onward', description: state.encounter === 5 ? 'Join Vadish and Isha. Let the morning come.' : 'The road continues.', kind: 'continue' }];
+    return [{ id: 'continue', label: state.encounter === 5 ? 'Ring the bell together' : 'Go on', description: state.encounter === 5 ? 'Help Vadish bring back the sun.' : 'The road continues.', kind: 'continue' }];
   }
-  if (state.phase === 'defeat') return [{ id: 'retry', label: 'Pick up the thread', description: 'Retry this battle with full health and breath. All story progress is kept.', kind: 'retry' }];
+  if (state.phase === 'defeat') return [{ id: 'retry', label: 'Try again', description: 'Start this battle again. Your health is full.', kind: 'retry' }];
   return [];
 }
 
@@ -363,11 +254,11 @@ function finish(state) {
 export function createGame(difficulty = 'normal') {
   const maxHp = difficulty === 'story' ? 124 : 96;
   const state = {
-    version: VERSION, difficulty: difficulty === 'story' ? 'story' : 'normal',
+    version: VERSION, contentRevision: CONTENT_REVISION, difficulty: difficulty === 'story' ? 'story' : 'normal',
     phase: 'story', chapter: 0, encounter: 0, story: OPENING, storyIndex: 0,
     storyAfter: 'explore', storyChoices: null,
-    hero: { name: 'Oshn', hp: maxHp, maxHp, energy: 5, maxEnergy: 5 },
-    companion: { name: 'Isha', description: 'A paper moth with an unfinished wish.' },
+    hero: { name: 'Oshn', age: 7, pronouns: 'he/him', hp: maxHp, maxHp, energy: 5, maxEnergy: 5 },
+    companion: { name: 'Isha', pronouns: 'she/her', relationship: 'sister', description: 'Oshn’s sister. A girl with a magical moth form.' },
     enemy: null, turn: 0, resonance: 0, shards: 0, battlesWon: 0,
     upgrades: [], journal: [], log: [], options: [], memories: { kept: 0, released: 0 },
     explored: false, rested: false, pathBuff: null, battleBuff: null, openingShield: 0,
@@ -396,15 +287,15 @@ export function act(previous, action) {
       state.explored = true;
       const text = kept ? node.kept : node.released;
       state.journal.push({ title: node.memoryTitle, text });
-      setStory(state, [line('A small choice', text), line('The gift of remembering', kept ? 'A warm note settles in your tuning fork. This battle, Needle strike and Bright chime deal 2 extra damage, and Moth & metal deals 4 extra.' : 'A silver thread follows you. This battle, it will absorb the first 14 damage you take.')], 'explore');
-      state.effect = { kind: 'memory', text: kept ? 'Courage remembered' : 'A sheltering thread', target: 'all' };
+      setStory(state, [line('Oshn and Isha', text), line('Your gift', kept ? 'Your bell glows! It hits a little harder.' : 'A soft light keeps you safe from 14 damage.')], 'explore');
+      state.effect = { kind: 'memory', text: kept ? 'A stronger bell' : 'A little shield', target: 'all' };
     }
   } else if (state.phase === 'explore') {
     if (id === 'investigate') {
       const node = NODES[state.encounter];
       setStory(state, node.memory, 'explore', [
-        { id: 'choice-keep', label: node.choices[0], description: 'Carry it with you. Gain +2 strike and chime damage, +4 harmony damage this battle.', kind: 'choice' },
-        { id: 'choice-release', label: node.choices[1], description: 'Let it change. Gain a shield that absorbs the first 14 damage this battle.', kind: 'choice' },
+        { id: 'choice-keep', label: node.choices[0], description: 'Get a stronger bell for this battle.', kind: 'choice' },
+        { id: 'choice-release', label: node.choices[1], description: 'Get a little shield for this battle.', kind: 'choice' },
       ]);
     } else if (id === 'travel') {
       setStory(state, [line(ENEMIES[state.encounter].name, NODES[state.encounter].enemyIntro)], 'battle');
@@ -418,13 +309,13 @@ export function act(previous, action) {
       state.reward.upgrade = false;
       state.effect = { kind: 'upgrade', text: available.label, target: 'hero' };
     } else if (id === 'continue') {
-      if (state.encounter === 5) setStory(state, endingStory(state), 'ending');
+      if (state.encounter === 5) setStory(state, ENDING_STORY, 'ending');
       else setStory(state, AFTER_BATTLES[state.encounter], 'next-encounter');
     }
   } else if (state.phase === 'defeat' && id === 'retry') {
     state.resonance = 0;
     beginBattle(state);
-    addLog(state, 'A fresh beginning. Chime interrupts heavy attacks; Shelter buys breath; Moth & metal heals while dealing damage.');
+    addLog(state, 'Try again! Ring stops big spells. Shield gives you magic.');
   }
   return finish(state);
 }
@@ -458,4 +349,64 @@ export function isValidSave(state) {
   if (state.phase === 'reward' && (!state.reward || typeof state.reward.upgrade !== 'boolean')) return false;
   if (state.phase === 'ending' && (!state.completed || state.battlesWon !== 6 || !state.ending || typeof state.ending.title !== 'string')) return false;
   return true;
+}
+
+/** Refresh story copy in older saves without changing earned progress or battle numbers. */
+export function migrateSave(previous) {
+  if (!isValidSave(previous)) return null;
+  const state = clone(previous);
+  if (state.contentRevision === CONTENT_REVISION) return state;
+  state.contentRevision = CONTENT_REVISION;
+  Object.assign(state.hero, {name: 'Oshn', age: 7, pronouns: 'he/him'});
+  state.companion = {name: 'Isha', pronouns: 'she/her', relationship: 'sister', description: 'Oshn’s sister. A girl with a magical moth form.'};
+  const node = NODES[state.encounter];
+  state.scene = {title: node.title, description: node.description, memoryTitle: node.memoryTitle};
+  const oldFinds = ['A lunch wrapped in cloth', 'A ticket for two', 'An imperfect afternoon', 'The chair beside hers', 'The last repair', 'A loose silver thread'];
+  const oldFoes = ['Brasswing Sentinel', 'The Silt Choir', 'Mirror Heron', 'The Orchard Warden', 'The Unrung', 'Vadish'];
+  state.journal = state.journal.map(entry => {
+    const find = oldFinds.indexOf(entry.title), foe = oldFoes.indexOf(entry.title);
+    if (find >= 0) return {title: NODES[find].memoryTitle, text: 'Oshn and Isha found a gift here. It helped them on their way.'};
+    if (foe >= 0) return {title: ENEMIES[foe].name, text: `You helped ${ENEMIES[foe].name}. You found a note!`};
+    return {title: 'Our adventure', text: 'Oshn and Isha helped their friends in Xenaland.'};
+  });
+  state.log = ['Oshn and his sister Isha are ready. Let’s go!'];
+  state.effect = null;
+  if (state.enemy) {
+    const definition = ENEMIES[state.encounter];
+    state.enemy.name = definition.name;
+    state.enemy.subtitle = definition.subtitle;
+    state.enemy.heavyName = state.enemy.bossPhase === 2 ? 'Big Sleep Spell' : definition.heavyName;
+    if (state.enemy.intent) {
+      const shownDamage = state.enemy.intent.damage;
+      state.enemy.intent = {...intentFor(state), damage: shownDamage};
+    }
+  }
+  if (state.reward) {
+    state.reward.title = state.encounter === 5 ? 'Vadish smiles' : 'You found a note!';
+    state.reward.text = state.encounter === 5 ? 'You beat the spell! Vadish is ready to help.' : 'You did it! Your health and magic are full.';
+  }
+  if (state.phase === 'story') {
+    const oldIndex = state.storyIndex;
+    if (state.storyAfter === 'ending') state.story = ENDING_STORY;
+    else if (state.storyAfter === 'next-encounter') state.story = AFTER_BATTLES[state.encounter];
+    else if (state.storyAfter === 'battle') state.story = [line(ENEMIES[state.encounter].name, node.enemyIntro)];
+    else if (state.storyChoices) {
+      state.story = node.memory;
+      state.storyChoices = [
+        {id: 'choice-keep', label: node.choices[0], description: 'Get a stronger bell for this battle.', kind: 'choice'},
+        {id: 'choice-release', label: node.choices[1], description: 'Get a little shield for this battle.', kind: 'choice'},
+      ];
+    } else if (state.explored) {
+      const kept = state.pathBuff === 'courage';
+      state.story = [line('Oshn and Isha', kept ? node.kept : node.released), line('Your gift', kept ? 'Your bell glows! It hits a little harder.' : 'A soft light keeps you safe from 14 damage.')];
+    } else state.story = OPENING;
+    // Restart revised opening/ending so returning readers get the new family context.
+    state.storyIndex = state.story === OPENING || state.story === ENDING_STORY ? 0 : Math.min(oldIndex, state.story.length - 1);
+  } else {
+    state.story = [];
+    state.storyIndex = 0;
+    state.storyChoices = null;
+  }
+  if (state.phase === 'ending') state.ending = endingSummary(state);
+  return finish(state);
 }

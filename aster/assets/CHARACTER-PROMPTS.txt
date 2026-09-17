@@ -16,3 +16,27 @@ Pose/composition: complete full body in graceful three-quarter profile facing LE
 Style/medium: exquisite traditional hand-painted watercolor and gouache with expressive fine ink edges, textured paper grain INSIDE painted character shapes, subtle drybrush and nuanced metal detail. Matches refined atmospheric moonlit indigo fantasy landscape paintings with antique brass bells and mist. Original design with poetic elegance.
 Color palette: ink-indigo and midnight blue cloth, aged brass details, pale silver mask, muted warm gold glows.
 Constraints: genuinely transparent background (alpha channel), no solid background, no checkerboard drawn into image, no environment, no scenery, no ground plane, no cast shadow, no text, no lettering, no watermark. Character only. Completely original design, no existing fictional character references.
+
+
+September 17, 2026 — Oshn corrected to a seven-year-old boy:
+Created with built-in image_gen, using current oshn.webp as edit target and visual style reference.
+
+Use case: precise-object-edit. Asset type: transparent full-body hero sprite for an original storybook fantasy browser RPG.
+Input image 1 is the edit target and style reference: the existing Oshn sprite. Replace its adult-looking feminine character with Oshn as a clearly SEVEN-YEAR-OLD BOY.
+Change: a young elementary-school-age little boy, age 7, childlike round cheeks, small chin, bright curious eyes, short tousled black hair, friendly brave curious expression, child body proportions with a larger head relative to body and short small limbs. Preserve the reference's warm medium-brown skin tone closely. He wears a small mustard-gold adventure coat fitted to a child, pale teal scarf fluttering gently behind, comfortable charcoal trousers and sensible ankle boots. One small rounded brass bell hangs from the top of a simple wooden walking stick he carries on the right. The walking stick is a gentle exploration tool, not a weapon. No jewelry other than the bell and simple fastenings.
+Preserve: the original exquisite hand-painted watercolor/gouache storybook style with fine expressive ink edges, paper grain inside painted shapes, nuanced fabric texture, the mustard-gold / pale-teal / charcoal palette, and natural three-quarter profile facing RIGHT. Match the game paintings already represented by the reference.
+Composition: full body, one isolated character centered, comfortably framed portrait canvas with entire head, scarf, walking stick and both boots fully inside the image with generous clear margins. Natural standing pose, small child-sized frame and sturdy balanced feet. Age must read unmistakably as a 7-year-old child, not teenager or miniature adult.
+Background: genuinely transparent PNG alpha, no background painting, no gradient glow behind character, no drawn checkerboard, no scenery, no floor or cast shadow.
+Constraints: original character only, fully clothed, no text, no letters, no logo, no watermark. Keep facial skin tone as warm medium-brown as the reference.
+
+
+September 17, 2026 — Isha as Oshn’s sister in the ending:
+Created with built-in image_gen, using oshn-boy.png as a visual style and family-resemblance reference.
+
+Use case: stylized-concept. Asset type: original transparent full-body child character sprite for a storybook fantasy browser RPG.
+Input image 1 is a STYLE AND FAMILY RESEMBLANCE REFERENCE only: Oshn, the brother. Create his sister Isha as a separate original child girl for their happy ending, when a spell releases her from a moth form. Show ONLY Isha; do not reproduce the boy.
+Subject: a youthful friendly CHILD girl with warm medium-brown skin closely matching her brother, rounded child cheeks, bright expressive dark eyes, dark wavy hair tied back in a practical small ponytail, a few soft loose curls framing her face. Clearly a child, with child body proportions rather than an adult body. She wears a soft muted teal long-sleeved tunic dress over charcoal leggings, comfortable brown boots, and a small amber scarf secured by a tiny moth-shaped brass clasp. Gentle practical storybook clothing with subtle fine embroidery.
+Pose/composition: full-body three-quarter profile facing LEFT toward her brother, joyful welcoming expression and one small open hand reaching left in greeting, balanced natural standing pose. Head, hands, scarf and both boots entirely within the portrait canvas, generous clear margins. One isolated girl only.
+Style/medium: preserve the reference's exquisite hand-painted watercolor and gouache storybook style, expressive fine ink edges, textured paper grain inside painted shapes, subtle drybrush and refined cloth details. Match the reference's warm medium-brown skin and coherent gold/teal/charcoal fantasy palette. No wings on the girl; the tiny moth clasp is the only moth motif.
+Background: genuinely transparent PNG with real alpha channel, no solid background, no drawn checkerboard, no scene, no floor, no cast shadow, no gradient background.
+Constraints: fully clothed child, original design, no weapons, no text, no letters, no logos, no watermark. Friendly happy ending mood.

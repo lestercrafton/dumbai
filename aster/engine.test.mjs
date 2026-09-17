@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createGame, act, actions, isValidSave, VERSION, ENEMIES } from './engine.js';
+import { createGame, act, actions, isValidSave, VERSION, ENEMIES, migrateSave, CONTENT_REVISION } from './engine.js';
 
 function choose(state, id) {
   const choice = actions(state).find((a) => a.id === id);
@@ -83,7 +83,7 @@ test('release choices and each alternative upgrade combination also complete nor
   for (const upgrades of [['heart', 'thread'], ['thread', 'voice'], ['voice', 'heart']]) {
     const { state } = playThrough('normal', 'choice-release', upgrades);
     assert.equal(state.memories.released, 6);
-    assert.match(state.ending.epilogue, /door open/);
+    assert.match(state.ending.epilogue, /share songs/);
   }
 });
 
@@ -118,7 +118,7 @@ test('strike grants breath, chime spends it, and only heavy attacks are interrup
   const beforeHeavy = state.hero.hp;
   state = choose(state, 'chime');
   assert.equal(state.hero.hp, beforeHeavy);
-  assert.ok(state.log.some((entry) => entry.includes('interrupted')));
+  assert.ok(state.log.some((entry) => entry.includes('Big spell stopped')));
   assert.equal(state.turn, 4);
 });
 
@@ -186,4 +186,47 @@ test('save validation rejects damaged/incompatible saves', () => {
   for (const invalid of [null, {}, { ...state, version: 0 }, { ...state, encounter: 20 }, { ...state, resonance: 8 }, { ...state, storyIndex: 100 }, { ...state, storyAfter: 'unknown' }, { ...state, storyChoices: 'broken' }, { ...state, upgrades: ['heart', 'heart'] }, { ...state, phase: 'battle' }, { ...state, hero: { ...state.hero, hp: -1 } }]) {
     assert.equal(isValidSave(invalid), false);
   }
+});
+
+
+test('older saves retain earned progress and visible damage while refreshing family story', () => {
+  let old = firstBattle('normal', true);
+  old = choose(old, 'strike');
+  old = choose(old, 'strike');
+  delete old.contentRevision;
+  delete old.hero.age;
+  old.difficulty = 'story'; // A player changed level after this move was announced.
+  old.companion.description = 'Old story copy';
+  const before = JSON.stringify(old);
+  const migrated = migrateSave(old);
+  assert.equal(JSON.stringify(old), before);
+  assert.ok(isValidSave(migrated));
+  assert.equal(migrated.contentRevision, CONTENT_REVISION);
+  assert.equal(migrated.hero.age, 7);
+  assert.equal(migrated.companion.relationship, 'sister');
+  assert.equal(migrated.companion.pronouns, 'she/her');
+  assert.equal(migrated.enemy.intent.damage, old.enemy.intent.damage);
+  for (const field of ['encounter','phase','turn','resonance','shards','battlesWon','upgrades','memories','pathBuff','battleBuff','openingShield']) assert.deepEqual(migrated[field],old[field]);
+  for (const field of ['hp','maxHp','energy','maxEnergy']) assert.equal(migrated.hero[field],old.hero[field]);
+  assert.equal(migrated.enemy.hp,old.enemy.hp);
+  assert.deepEqual(migrateSave(migrated),migrated);
+  assert.equal(migrateSave({version: 0}),null);
+});
+
+test('saved story choices and completed endings survive the story update', () => {
+  let old = createGame();
+  while(old.phase==='story') old=choose(old,'next');
+  old=choose(old,'investigate');
+  delete old.contentRevision;
+  old.storyIndex=old.story.length-1;
+  const migrated=migrateSave(old);
+  assert.deepEqual(actions(migrated).map(a=>a.id),['choice-keep','choice-release']);
+  assert.ok(isValidSave(choose(migrated,'choice-release')));
+  const ended=playThrough('story').state;
+  delete ended.contentRevision;
+  ended.ending.text='Old ending';
+  const restored=migrateSave(ended);
+  assert.ok(isValidSave(restored));
+  assert.match(restored.ending.text,/Mom has made pancakes/);
+  assert.equal(restored.battlesWon,6);
 });
