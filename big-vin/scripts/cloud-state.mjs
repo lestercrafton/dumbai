@@ -125,7 +125,8 @@ export async function ensureBaseballHistory({dataDir=process.env.BIG_VIN_MLB_DAT
  try{return {...await verifyBaseball({dataDir,publishedStatus,floors}),bootstrapped:false};}catch(error){
   if(publishedStatus!==null&&(!publishedStatus||!Number.isSafeInteger(publishedStatus.games)))throw error;
  }
- const args=[path.join(checkout,'scripts/baseball/collect.py'),'--mode','history','--seasons','2024,2025,2026','--as-of',dayAt(now),'--pitchers','--skip-current','--data-dir',dataDir];
+ const seasons=Array.from({length:Math.max(1,Number(dayAt(now).slice(0,4))-2024+1)},(_,i)=>2024+i).join(',');
+ const args=[path.join(checkout,'scripts/baseball/collect.py'),'--mode','history','--seasons',seasons,'--as-of',dayAt(now),'--pitchers','--skip-current','--data-dir',dataDir];
  if(runHistory)await runHistory(args);
  else await promisify(execFile)(process.env.BIG_VIN_PYTHON||'python3',args,{maxBuffer:4*1024*1024,timeout:55*60*1000});
  return {...await verifyBaseball({dataDir,publishedStatus,floors}),bootstrapped:true};
@@ -155,11 +156,20 @@ export function compactCollegeRegistry(collectionRoot){
  return [...entries.values()].sort((a,b)=>a.payload.events[0].id.localeCompare(b.payload.events[0].id));
 }
 
-export function packCheckpoint({stateRoot=defaultRoot(),output}={}){
+export function packCheckpoint({stateRoot=defaultRoot(),output,now=new Date()}={}){
  if(!output)throw new Error('An empty checkpoint output directory is required.');
  if(fs.existsSync(output)&&fs.readdirSync(output).length)throw new Error('Checkpoint output directory must be empty.');
  fs.mkdirSync(output,{recursive:true,mode:0o700});let files=0;
- for(const subtree of ['daily-experiment','collections'])for(const directory of directories(path.join(stateRoot,subtree)))for(const name of subtree==='daily-experiment'?['state.json','report.json']:['report.json']){
+ const cutoff=dayAt(new Date(now.getTime()-35*86400000),'America/Chicago'),referenced=new Set();
+ const daily=directories(path.join(stateRoot,'daily-experiment')).filter(directory=>{
+  const file=path.join(stateRoot,'daily-experiment',directory,'state.json');
+  const state=fs.existsSync(file)?read(file):null;
+  if(directory<cutoff&&state?.status==='completed')return false;
+  for(const stage of Object.values(state?.collections||{}))if(stage.artifact)referenced.add(path.basename(stage.artifact));
+  return true;
+ });
+ const collections=directories(path.join(stateRoot,'collections')).filter(directory=>!/^\d{4}-\d{2}-\d{2}/.test(directory)||directory.slice(0,10)>=cutoff||referenced.has(directory));
+ for(const subtree of ['daily-experiment','collections'])for(const directory of subtree==='daily-experiment'?daily:collections)for(const name of subtree==='daily-experiment'?['state.json','report.json']:['report.json']){
   const source=path.join(stateRoot,subtree,directory,name);if(!fs.existsSync(source)||!fs.lstatSync(source).isFile())continue;
   const destination=path.join(output,subtree,directory,name);fs.mkdirSync(path.dirname(destination),{recursive:true,mode:0o700});fs.copyFileSync(source,destination);files++;
  }

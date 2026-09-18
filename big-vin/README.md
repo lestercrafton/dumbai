@@ -23,9 +23,9 @@ No GitHub personal access token or permanent Site secret is stored in this repos
 
 The existing Site database retains canonical forecasts, first observed prices, outcomes, bankroll records, and append-only learning entries. Moving this runner does not replace that database.
 
-Small Actions artifacts preserve frozen daily journal bodies, retry checkpoints, collection reports and a compact college-football schedule registry. They are saved even on partial failures, retained for 14 days, and restored across runs. No credentials or private config are included. Artifacts in this public repository contain only public sporting data and the already-public paper experiment.
+Small Actions artifacts preserve frozen daily journal bodies, retry checkpoints, collection reports and a compact college-football schedule registry. They are saved even on partial failures, retained for 14 days, and restored across runs. Each checkpoint carries the last 35 days of completed snapshots plus any unresolved work; the canonical full history remains in the Site database. No credentials or private config are included. Artifacts in this public repository contain only public sporting data and the already-public paper experiment.
 
-Baseball's larger source/normalized data use the Actions cache. Cache loss triggers a historical rebuild from the free MLB Stats API, with season/count/date checks against migration floors and published coverage. A cold seven-day download must never replace the cumulative research history. CFB bootstrap observations preserve verified schedule group membership so omitted games can be recovered individually.
+Baseball's larger source/normalized data use the Actions cache. Cache loss triggers a historical rebuild from the free MLB Stats API, with season/count/date checks against migration floors and published coverage. A cold seven-day download must never replace the cumulative research history. Cold rebuilds include every season from 2024 through the current year. Baseball research retries independently, so a source failure cannot prevent the other sports from collecting and journaling results. CFB bootstrap observations preserve verified schedule group membership so omitted games can be recovered individually.
 
 Expired or missing checkpoints can recover the exact daily entry from the public learning log before safely repeating collection. Original forecasts, sides, odds, capture times and model versions are never overwritten. Machine-specific locks/PIDs are not carried between runners.
 
@@ -46,3 +46,7 @@ node scripts/weekly-review.mjs --apply
 ```
 
 The source was extracted from the deployed Big Vin project at commit `03bcf588b4f5230e7c5b5bb054ed6267d7e5c0ae`. Cloud-specific recovery and coverage checks live alongside the original collector logic.
+
+## Migration verification
+
+The first GitHub-hosted run [completed successfully on September 18, 2026](https://github.com/lestercrafton/dumbai/actions/runs/35398579094): all seven sports collected with zero unresolved failures, 7,243 baseball games rebuilt from free sources, and checkpoint/cache uploads succeeded. It reused the already-published daily journal rather than duplicating it.

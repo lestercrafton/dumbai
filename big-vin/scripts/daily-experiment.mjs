@@ -58,7 +58,7 @@ function defaultDependencies({config,runDir,onChild,signal}){
    return report;
   },
   async collectBaseball(){
-   const r=await child('collect-mlb-stats.mjs',[],{},'baseball-research',660000);
+   const r=await child('collect-mlb-stats.mjs',[],{},'baseball-research',process.env.GITHUB_ACTIONS==='true'?70*60000:660000);
    if(r.code!==0)throw new Error('Baseball research refresh failed; forecast collection is preserved.');
    const value=JSON.parse(r.output.trim().split('\n').at(-1));if(value.completedThrough===undefined)throw new Error('Missing baseball research summary.');return value;
   },

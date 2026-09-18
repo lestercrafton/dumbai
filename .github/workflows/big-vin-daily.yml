@@ -79,15 +79,18 @@ jobs:
           key: big-vin-baseball-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             big-vin-baseball-v1-${{ runner.os }}-
-      - name: Prepare portable state and verify cumulative baseball coverage
+      - name: Prepare portable checkpoints
         id: prepare
-        run: node scripts/cloud-state.mjs prepare
+        run: node scripts/cloud-state.mjs prepare --skip-history
       - name: Verify fresh collection on demand
         if: inputs.task == 'refresh' || github.event_name == 'push'
         run: node scripts/collect-results.mjs --results-only
       - name: Collect all sports and publish the daily journal
         if: inputs.task != 'weekly' && github.event.schedule != '17 9 * * 2'
         run: node scripts/daily-experiment.mjs
+      - name: Verify baseball refresh on demand
+        if: inputs.task == 'refresh' || github.event_name == 'push'
+        run: node scripts/collect-mlb-stats.mjs
       - name: Publish Tuesday results review
         if: inputs.task == 'weekly' || github.event.schedule == '17 9 * * 2'
         run: node scripts/weekly-review.mjs --apply

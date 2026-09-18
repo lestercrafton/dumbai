@@ -1,4 +1,4 @@
-import {verifyBaseball} from './cloud-state.mjs';
+import {verifyBaseball,ensureBaseballHistory} from './cloud-state.mjs';
 import {collectorConfig,collectorAuthorization} from '../lib/collector-access.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -10,6 +10,7 @@ import {baseballDataStatus} from '../lib/baseball-data-status.mjs';
 const exec=promisify(execFile);
 const dataDir=process.env.BIG_VIN_MLB_DATA_DIR||path.join(os.homedir(),'.local/share/big-vin/baseball-stats');
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
+if(process.env.GITHUB_ACTIONS==='true')await ensureBaseballHistory({dataDir,siteUrl:process.env.BIG_VIN_SITE_URL});
 if(!process.argv.includes('--publish-only')){
  const asOf=new Date().toLocaleDateString('en-CA',{timeZone:'America/New_York'});
  const script=fileURLToPath(new URL('./baseball/collect.py',import.meta.url));

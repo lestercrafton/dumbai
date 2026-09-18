@@ -69,6 +69,11 @@ test('failed bootstrap and unavailable remote floor cannot permit publication',a
  await assert.rejects(ensureBaseballHistory({dataDir:root,floors,fetchImpl:response({collection:publicStatus}),runHistory:async()=>history(root,{count:2})}),/at least 3/);
  await assert.rejects(ensureBaseballHistory({dataDir:root,floors,fetchImpl:async()=>({ok:false,status:503}),runHistory:()=>assert.fail('network failure is not missing history')}),/publishing remains blocked/);
 });
+test('a cold rebuild includes new seasons after the migration year',async t=>{
+ const root=temporary(t);let args;
+ await ensureBaseballHistory({dataDir:root,floors,now:new Date('2027-06-01T18:00:00Z'),fetchImpl:response({collection:publicStatus}),runHistory:async value=>{args=value;history(root);}});
+ assert.equal(args[args.indexOf('--seasons')+1],'2024,2025,2026,2027');
+});
 
 test('compact registry retains all archives and only verified group membership',t=>{
  const root=temporary(t);
@@ -90,4 +95,18 @@ test('bootstrap seeds only missing checkpoints and archive identities',async t=>
  const root=temporary(t),stateRoot=path.join(root,'state'),bootstrapDir=path.join(root,'bootstrap');
  json(path.join(bootstrapDir,'daily-experiment/2026-01-01/state.json'),{value:'bootstrap'});json(path.join(stateRoot,'daily-experiment/2026-01-01/state.json'),{value:'restored'});json(path.join(bootstrapDir,'cfb-archive/cfb-99.json'),board(99));
  await prepareCloudState({stateRoot,bootstrapDir,skipHistory:true,fetchImpl:response({entries:[]})});assert.equal(read(path.join(stateRoot,'daily-experiment/2026-01-01/state.json')).value,'restored');assert.equal(compactCollegeRegistry(path.join(stateRoot,'collections')).length,1);
+});
+test('checkpoint retention drops old completed snapshots while preserving unresolved work and CFB membership',t=>{
+ const root=temporary(t),stateRoot=path.join(root,'state'),output=path.join(root,'packed');
+ json(path.join(stateRoot,'daily-experiment/2026-06-01/state.json'),{status:'completed'});
+ json(path.join(stateRoot,'daily-experiment/2026-06-02/state.json'),{status:'partial',collections:{cfb:{artifact:path.join(stateRoot,'collections/2026-06-02-run')}}});
+ json(path.join(stateRoot,'collections/2026-06-01-run/report.json'),{finished:true});
+ json(path.join(stateRoot,'collections/2026-06-01-run/cfb-old.json'),board(123));
+ json(path.join(stateRoot,'collections/2026-06-02-run/report.json'),{finished:false});
+ packCheckpoint({stateRoot,output,now:new Date('2026-09-18T18:00:00Z')});
+ assert.equal(fs.existsSync(path.join(output,'daily-experiment/2026-06-01')),false);
+ assert.equal(fs.existsSync(path.join(output,'collections/2026-06-01-run/report.json')),false);
+ assert.equal(fs.existsSync(path.join(output,'daily-experiment/2026-06-02/state.json')),true);
+ assert.equal(fs.existsSync(path.join(output,'collections/2026-06-02-run/report.json')),true);
+ assert.equal(compactCollegeRegistry(path.join(output,'collections')).length,1);
 });
