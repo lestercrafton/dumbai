@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-17",
+  "gameCount": 9,
+  "pitchRows": 2628,
+  "terminalPA": 683,
+  "xwobaSupportedTerminalPA": 671,
+  "sourceUrl": "https://baseballsavant.mlb.com/statcast_search/csv?all=true&type=details&game_date_gt=2026-09-17&game_date_lt=2026-09-17&hfGT=R%7C",
+  "sourceFetchedAt": "2026-09-18T12:03:57.570219Z",
+  "sourceSha256": "ac65e059b7f213325cb544481f4064ba0942518643bd6c60237cba4bc140ced1",
+  "gameTypes": "regular season only",
+  "excludedFutureFields": [
+    "pitcher_days_until_next_game",
+    "batter_days_until_next_game"
+  ],
+  "excludedCoordinateFields": [
+    "plate_x",
+    "plate_z",
+    "sz_top",
+    "sz_bot"
+  ],
+  "coordinateCaveat": "2026 plate and strike-zone definitions changed; raw values retained but omitted from normalized research fields.",
+  "publicationCaveat": "Current historical download does not prove these values were available before a historical forecast. Use prior-game lag and freeze future observations."
+}

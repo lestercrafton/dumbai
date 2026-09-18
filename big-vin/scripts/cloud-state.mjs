@@ -22,7 +22,7 @@ function seedTree(source,target){
  fs.mkdirSync(target,{recursive:true,mode:0o700});
  for(const item of fs.readdirSync(source,{withFileTypes:true})){
   if(item.isDirectory())seedTree(path.join(source,item.name),path.join(target,item.name));
-  else if(item.isFile()&&item.name.endsWith('.json')&&!fs.existsSync(path.join(target,item.name)))fs.copyFileSync(path.join(source,item.name),path.join(target,item.name));
+  else if(item.isFile()&&/\.jsonl?$/.test(item.name)&&!fs.existsSync(path.join(target,item.name)))fs.copyFileSync(path.join(source,item.name),path.join(target,item.name));
  }
 }
 
@@ -175,12 +175,35 @@ export function packCheckpoint({stateRoot=defaultRoot(),output,now=new Date()}={
  }
  const entries=compactCollegeRegistry(path.join(stateRoot,'collections'));
  for(const board of entries){write(path.join(output,'collections/zz-cfb-registry',`cfb-${board.payload.events[0].id}.json`),board);files++;}
+ // Small Statcast aggregates and provenance remain durable even if the larger
+ // disposable raw-pitch cache is evicted.
+ const statcastRoot=path.join(stateRoot,'baseball-stats/statcast');
+ for(const date of directories(statcastRoot))for(const name of ['manifest.json','team-game-contact.jsonl']){
+  const source=path.join(statcastRoot,date,name);if(!fs.existsSync(source))continue;
+  const destination=path.join(output,'baseball-stats/statcast',date,name);
+  fs.mkdirSync(path.dirname(destination),{recursive:true,mode:0o700});fs.copyFileSync(source,destination);files++;
+ }
  return {files,collegeEvents:entries.length,output};
+}
+
+export async function verifyStatcastCoverage({dataDir=process.env.BIG_VIN_MLB_DATA_DIR||path.join(defaultRoot(),'baseball-stats'),siteUrl=defaultSite(),fetchImpl=fetch,publishedStatus}={}){
+ const published=publishedStatus===undefined?(await publicJson(siteUrl,'/api/baseball-data',fetchImpl)).collection:publishedStatus;
+ if(!published||!Number.isSafeInteger(published.statcastPitches))throw new Error('Published Statcast coverage is unavailable.');
+ let pitches=0;
+ for(const date of directories(path.join(dataDir,'statcast'))){
+  const folder=path.join(dataDir,'statcast',date),file=path.join(folder,'manifest.json');if(!fs.existsSync(file))continue;
+  const manifest=read(file),rows=fs.readFileSync(path.join(folder,'team-game-contact.jsonl'),'utf8').trim().split('\n').filter(Boolean).map(JSON.parse);
+  if(!Number.isSafeInteger(manifest.pitchRows)||manifest.pitchRows<0||rows.some(r=>r.date!==date||r.sourceSha256!==manifest.sourceSha256)||rows.reduce((n,r)=>n+r.pitchRows,0)!==manifest.pitchRows)throw new Error('Statcast aggregates do not match their source receipt.');
+  pitches+=manifest.pitchRows;
+ }
+ if(pitches<published.statcastPitches)throw new Error('Statcast archive coverage would shrink; restore the previous checkpoint before publishing.');
+ return {pitches};
 }
 
 export async function prepareCloudState({stateRoot=defaultRoot(),bootstrapDir=path.join(checkout,'bootstrap'),siteUrl=defaultSite(),fetchImpl=fetch,skipHistory=false,historyOptions={}}={}){
  seedTree(path.join(bootstrapDir,'daily-experiment'),path.join(stateRoot,'daily-experiment'));
  seedTree(path.join(bootstrapDir,'cfb-archive'),path.join(stateRoot,'collections/zz-cfb-registry'));
+ seedTree(path.join(bootstrapDir,'statcast'),path.join(stateRoot,'baseball-stats/statcast'));
  const normalized=normalizeRestoredState({stateRoot});
  const journal=await recoverTodayJournal({stateRoot,siteUrl,fetchImpl});
  const baseball=skipHistory?{skipped:true}:await ensureBaseballHistory({...historyOptions,dataDir:process.env.BIG_VIN_MLB_DATA_DIR||path.join(stateRoot,'baseball-stats'),siteUrl,fetchImpl});

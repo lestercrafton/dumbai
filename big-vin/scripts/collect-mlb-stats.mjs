@@ -1,4 +1,4 @@
-import {verifyBaseball,ensureBaseballHistory} from './cloud-state.mjs';
+import {verifyBaseball,ensureBaseballHistory,verifyStatcastCoverage} from './cloud-state.mjs';
 import {collectorConfig,collectorAuthorization} from '../lib/collector-access.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -24,6 +24,7 @@ const statcastPitches=fs.existsSync(statcastRoot)?fs.readdirSync(statcastRoot).r
 const status=baseballDataStatus({schemaVersion:1,collectedAt:manifest.completedAt,completedThrough:summary.dateMax,seasons:Object.keys(summary.seasons).map(Number),games:summary.cumulativeGames,teamGames:summary.cumulativeGames*2,pitcherGames:manifest.pitcherAudit?.pitcherAppearances||0,statcastPitches,probablePitchers:manifest.currentSnapshots?.pregameProbableRows||0,rosterPlayers:manifest.currentSnapshots?.rosterRows||0,playerSeasonStats:manifest.currentSnapshots?.playerSeasonRows||0,sourceResponses:Object.keys(read(path.join(dataDir,'cache/index.json'))).length,sourceDisagreements:summary.sourceDisagreementWarningCount,warnings:summary.sourceDisagreementWarningCount?[`${summary.sourceDisagreementWarningCount} fielding-error discrepancies retained; these fields are excluded from the current experiment.`]:[]});
 if(!process.argv.includes('--no-publish')){
  await verifyBaseball({dataDir,siteUrl:process.env.BIG_VIN_SITE_URL});
+ await verifyStatcastCoverage({dataDir,siteUrl:process.env.BIG_VIN_SITE_URL});
  const config=collectorConfig();
  const response=await fetch((process.env.BIG_VIN_SITE_URL||config.url)+'/api/baseball-data',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await collectorAuthorization(config)},body:JSON.stringify(status),signal:AbortSignal.timeout(30000)});
  if(!response.ok)throw new Error(`Baseball status publication failed: HTTP ${response.status}`);

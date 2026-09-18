@@ -25,6 +25,8 @@ The existing Site database retains canonical forecasts, first observed prices, o
 
 Small Actions artifacts preserve frozen daily journal bodies, retry checkpoints, collection reports and a compact college-football schedule registry. They are saved even on partial failures, retained for 14 days, and restored across runs. Each checkpoint carries the last 35 days of completed snapshots plus any unresolved work; the canonical full history remains in the Site database. No credentials or private config are included. Artifacts in this public repository contain only public sporting data and the already-public paper experiment.
 
+Compact Statcast team/game aggregates and source receipts are included in checkpoints and checked against published coverage. Their larger individual-pitch files remain in the disposable cache and can be fetched again from the dated source URLs.
+
 Baseball's larger source/normalized data use the Actions cache. Cache loss triggers a historical rebuild from the free MLB Stats API, with season/count/date checks against migration floors and published coverage. A cold seven-day download must never replace the cumulative research history. Cold rebuilds include every season from 2024 through the current year. Baseball research retries independently, so a source failure cannot prevent the other sports from collecting and journaling results. CFB bootstrap observations preserve verified schedule group membership so omitted games can be recovered individually.
 
 Expired or missing checkpoints can recover the exact daily entry from the public learning log before safely repeating collection. Original forecasts, sides, odds, capture times and model versions are never overwritten. Machine-specific locks/PIDs are not carried between runners.

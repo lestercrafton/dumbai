@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {normalizeRestoredState,relocatePaths,recoverTodayJournal,verifyBaseball,ensureBaseballHistory,compactCollegeRegistry,packCheckpoint,prepareCloudState} from './cloud-state.mjs';
+import {normalizeRestoredState,relocatePaths,recoverTodayJournal,verifyBaseball,ensureBaseballHistory,compactCollegeRegistry,packCheckpoint,prepareCloudState,verifyStatcastCoverage} from './cloud-state.mjs';
 
 const json=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(value));};
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
@@ -109,4 +109,14 @@ test('checkpoint retention drops old completed snapshots while preserving unreso
  assert.equal(fs.existsSync(path.join(output,'daily-experiment/2026-06-02/state.json')),true);
  assert.equal(fs.existsSync(path.join(output,'collections/2026-06-02-run/report.json')),true);
  assert.equal(compactCollegeRegistry(path.join(output,'collections')).length,1);
+});
+test('Statcast aggregates survive raw-cache loss and cannot understate published coverage',async t=>{
+ const root=temporary(t),stateRoot=path.join(root,'state'),dataDir=path.join(stateRoot,'baseball-stats'),day=path.join(dataDir,'statcast/2026-09-16');
+ json(path.join(day,'manifest.json'),{pitchRows:42,sourceSha256:'verified-source'});
+ fs.writeFileSync(path.join(day,'team-game-contact.jsonl'),JSON.stringify({date:'2026-09-16',sourceSha256:'verified-source',pitchRows:42})+'\n');
+ fs.writeFileSync(path.join(day,'pitches.jsonl'),'large disposable cache');
+ const output=path.join(root,'packed');packCheckpoint({stateRoot,output});
+ assert.equal(fs.existsSync(path.join(output,'baseball-stats/statcast/2026-09-16/pitches.jsonl')),false);
+ assert.deepEqual(await verifyStatcastCoverage({dataDir:path.join(output,'baseball-stats'),publishedStatus:{statcastPitches:42}}),{pitches:42});
+ await assert.rejects(verifyStatcastCoverage({dataDir,publishedStatus:{statcastPitches:43}}),/would shrink/);
 });
