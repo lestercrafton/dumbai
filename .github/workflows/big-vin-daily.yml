@@ -1,0 +1,126 @@
+name: Big Vin daily sports experiment
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: Daily forecasts/results or Tuesday descriptive review
+        type: choice
+        options: [daily, weekly, refresh]
+        default: daily
+  push:
+    paths:
+      - 'big-vin/**'
+      - '.github/workflows/big-vin-daily.yml'
+  schedule:
+    - cron: '17 7,8 * * *'
+      timezone: America/Chicago
+    - cron: '17 9 * * 2'
+      timezone: America/Chicago
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+concurrency:
+  group: big-vin-experiment
+  cancel-in-progress: false
+
+jobs:
+  experiment:
+    if: github.repository == 'lestercrafton/dumbai' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      BIG_VIN_SITE_URL: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site
+    defaults:
+      run:
+        working-directory: big-vin
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify checkpoint, grading and retry behavior
+        run: npm test
+      - name: Verify personal workflow identity with the Site
+        run: node scripts/check-cloud-access.mjs
+      - name: Restore the most recent checkpoint, including failed runs
+        id: checkpoint
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {
+              ...context.repo, name: 'big-vin-checkpoint', per_page: 100
+            });
+            const previous = artifacts.filter(a => !a.expired && a.workflow_run?.head_branch === 'main')
+              .sort((a,b) => b.id-a.id)[0];
+            if (!previous) { core.info('No cloud checkpoint yet; preparing from bootstrap and verified public history.'); return; }
+            const response = await github.rest.actions.downloadArtifact({
+              ...context.repo, artifact_id: previous.id, archive_format: 'zip'
+            });
+            fs.writeFileSync('big-vin/cloud-state.zip', Buffer.from(response.data));
+            core.info(`Restored checkpoint artifact ${previous.id} from run ${previous.workflow_run.id}.`);
+      - name: Extract checkpoint
+        run: |
+          mkdir -p "$HOME/.local/share/big-vin"
+          if test -f cloud-state.zip; then unzip -oq cloud-state.zip -d "$HOME/.local/share/big-vin"; fi
+      - name: Restore baseball source cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.local/share/big-vin/baseball-stats
+          key: big-vin-baseball-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            big-vin-baseball-v1-${{ runner.os }}-
+      - name: Prepare portable state and verify cumulative baseball coverage
+        id: prepare
+        run: node scripts/cloud-state.mjs prepare
+      - name: Verify fresh collection on demand
+        if: inputs.task == 'refresh' || github.event_name == 'push'
+        run: node scripts/collect-results.mjs --results-only
+      - name: Collect all sports and publish the daily journal
+        if: inputs.task != 'weekly' && github.event.schedule != '17 9 * * 2'
+        run: node scripts/daily-experiment.mjs
+      - name: Publish Tuesday results review
+        if: inputs.task == 'weekly' || github.event.schedule == '17 9 * * 2'
+        run: node scripts/weekly-review.mjs --apply
+      - name: Preserve retry checkpoints even after a partial run
+        if: always() && steps.prepare.outcome != 'skipped'
+        run: node scripts/cloud-state.mjs pack --output checkpoint
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.prepare.outcome != 'skipped'
+        with:
+          name: big-vin-checkpoint
+          path: big-vin/checkpoint/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 9
+      - name: Preserve baseball cache for the next runner
+        if: always() && steps.prepare.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.local/share/big-vin/baseball-stats
+          key: big-vin-baseball-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Write visible run status
+        if: always()
+        env:
+          RUN_STATUS: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import os,pathlib
+          summary=['## Big Vin cloud experiment', 'Status: '+os.environ['RUN_STATUS'],
+            '', 'Personal repository: lestercrafton/dumbai.',
+            'Scheduled for 7:17 a.m. Central, with an 8:17 retry; Tuesday review at 9:17.',
+            'All seven sports use saved pregame forecasts and original captured prices.',
+            'Each formula/sport/cohort keeps its separate $500 paper bankroll; risk is 2% of the Eastern day\'s opening balance.',
+            'Site: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/learning-log',
+            'A failed or partial run requires attention; it is not a successful fresh report.']
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('\n\n'.join(summary)+'\n')
+          PY

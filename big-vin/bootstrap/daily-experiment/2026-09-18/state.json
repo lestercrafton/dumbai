@@ -1,0 +1,44 @@
+{
+  "experiment": "daily-all-sports-v1",
+  "runDate": "2026-09-18",
+  "today": "2026-09-18",
+  "gameDate": "2026-09-17",
+  "startedAt": "2026-09-18T18:17:47.932Z",
+  "status": "completed",
+  "entry": {
+    "id": "daily-all-sports-v1-2026-09-18",
+    "sport": "all",
+    "weekKey": "2026-09-14",
+    "kind": "review",
+    "modelVersion": "Separate recorded versions; daily-all-sports-v1",
+    "title": "Daily experiment \u00b7 2026-09-17 results",
+    "learned": "The automatic daily run checked NFL, college football, NBA, WNBA, men's college basketball, NHL and MLB. Each line remains attached to its original pregame capture and model version. This entry records the observed results as of 2026-09-18T18:20:12.139Z; pending games, later corrections and missing coverage are not assumed away.",
+    "decision": "Continue the experiment under the existing sport-specific priors. New completed games can update future fitted team ratings. Daily wins and losses do not trigger parameter changes. Each sport and formula retains its own $500 starting-bankroll simulation and stakes of 2% of the Eastern day\u2019s opening balance; balances and returns are never pooled.",
+    "priors": [
+      {
+        "name": "Sport-specific priors",
+        "before": "Existing recorded parameters",
+        "after": "Unchanged",
+        "note": "This daily function measures outcomes and refreshes data. Any algorithm adjustment requires separate evidence, a dated learning entry and a new model version."
+      }
+    ],
+    "evidence": [
+      "NFL \u00b7 Tuned \u00b7 settings selected Sep 14 \u00b7 2026-09-17: 0\u20131\u20130; 1/1 finals; 0 pending; 0 finals without a usable saved price/selection. 1 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 7.08 vs market 6.50 points across 1 finals. Bankroll-sized profit \u2212$10.00; balance $490.00. Today's stake no recorded card.",
+      "NFL \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: 1\u20130\u20130; 1/1 finals; 0 pending; 0 finals without a usable saved price/selection. 1 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 6.63 vs market 7.00 points across 1 finals. Bankroll-sized profit +$7.93; balance $463.80. Today's stake no recorded card.",
+      "College football \u00b7 Tuned \u00b7 settings selected Sep 14 \u00b7 2026-09-17: 0\u20131\u20130; 1/1 finals; 0 pending; 0 finals without a usable saved price/selection. 1 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 4.69 vs market 3.50 points across 1 finals. Bankroll-sized profit \u2212$10.00; balance $490.00. Today's stake $9.80.",
+      "College football \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: 1\u20130\u20130; 1/1 finals; 0 pending; 0 finals without a usable saved price/selection. 1 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 5.01 vs market 4.00 points across 1 finals. Bankroll-sized profit +$8.93; balance $508.93. Today's stake $10.18.",
+      "NBA \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: No saved forecasts on this date. 0 known games; missing pregame captures 0; schedule completeness remains unverified. Bankroll-sized profit unavailable; balance $500.00. Today's stake no recorded card.",
+      "WNBA \u00b7 WNBA v1 \u00b7 experimental \u00b7 2026-09-17: 0\u20132\u20130; 2/2 finals; 0 pending; 0 finals without a usable saved price/selection. 5 known games; missing pregame captures 3; schedule completeness remains unverified. Same-game error: model 17.72 vs market 13.50 points across 2 finals. Bankroll-sized profit \u2212$20.00; balance $480.00. Today's stake $9.60.",
+      "Men's college basketball \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: No saved forecasts on this date. 0 known games; missing pregame captures 0; schedule completeness remains unverified. Bankroll-sized profit unavailable; balance $500.00. Today's stake no recorded card.",
+      "NHL \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: No saved forecasts on this date. 0 known games; missing pregame captures 0; schedule completeness remains unverified. Bankroll-sized profit unavailable; balance $500.00. Today's stake no recorded card.",
+      "MLB \u00b7 Tuned \u00b7 settings selected Sep 14 \u00b7 2026-09-17: 5\u20134\u20130; 9/9 finals; 0 pending; 0 finals without a usable saved price/selection. 9 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 3.50 vs market 3.61 runs across 9 finals. Bankroll-sized profit \u2212$5.34; balance $559.97. Today's stake $11.20.",
+      "MLB \u00b7 Ridge v1 \u00b7 original benchmark \u00b7 2026-09-17: 6\u20133\u20130; 9/9 finals; 0 pending; 0 finals without a usable saved price/selection. 9 known games; missing pregame captures 0; schedule completeness remains unverified. Same-game error: model 3.43 vs market 3.61 runs across 9 finals. Bankroll-sized profit +$14.08; balance $536.62. Today's stake $10.73.",
+      "Free-source collection completed for 7 sports. 7243 MLB research games through 2026-09-17.",
+      "Provider warnings are retained in the collection audit, including college schedule caps. Empty off-season feeds are not treated as successful predictions. No default prices or post-start forecasts are manufactured."
+    ],
+    "nextTest": "Capture the next eligible full card and grade verified finals. Review line error, original-price outcomes, coverage and bankroll-sized returns in the Tuesday research review. These are prospective measurements, not evidence that a profitable edge has been established."
+  },
+  "completedAt": "2026-09-18T18:20:12.604Z",
+  "collections": {},
+  "attempts": 1
+}

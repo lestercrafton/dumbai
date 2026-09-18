@@ -1,0 +1,13 @@
+{
+  "name": "big-vin-cloud-experiment",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test scripts/*.test.mjs lib/*.test.mjs",
+    "daily": "node scripts/daily-experiment.mjs",
+    "weekly": "node scripts/weekly-review.mjs --apply"
+  }
+}
