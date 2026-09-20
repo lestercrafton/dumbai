@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: Daily forecasts/results or Tuesday descriptive review
+        description: Recent scores, full daily collection, or weekly review
         type: choice
-        options: [daily, weekly, refresh]
+        options: [daily, weekly, refresh, results]
         default: daily
   push:
     paths:
@@ -16,6 +16,8 @@ on:
     - cron: '17 7,8 * * *'
       timezone: America/Chicago
     - cron: '17 9 * * 2'
+      timezone: America/Chicago
+    - cron: '37 * * * *'
       timezone: America/Chicago
 
 permissions:
@@ -47,6 +49,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Select score, journal and research tasks
+        id: plan
+        env:
+          BIG_VIN_TASK: ${{ inputs.task }}
+          BIG_VIN_SCHEDULE: ${{ github.event.schedule }}
+        run: node scripts/runner-plan.mjs
       - name: Verify checkpoint, grading and retry behavior
         run: npm test
       - name: Verify personal workflow identity with the Site
@@ -73,6 +81,7 @@ jobs:
           mkdir -p "$HOME/.local/share/big-vin"
           if test -f cloud-state.zip; then unzip -oq cloud-state.zip -d "$HOME/.local/share/big-vin"; fi
       - name: Restore baseball source cache
+        if: steps.plan.outputs.baseball == 'true'
         uses: actions/cache/restore@v4
         with:
           path: ~/.local/share/big-vin/baseball-stats
@@ -82,17 +91,20 @@ jobs:
       - name: Prepare portable checkpoints
         id: prepare
         run: node scripts/cloud-state.mjs prepare --skip-history
-      - name: Verify fresh collection on demand
-        if: inputs.task == 'refresh' || github.event_name == 'push'
+      - name: Refresh all sports with the full daily window
+        if: steps.plan.outputs.collection == 'full'
         run: node scripts/collect-results.mjs --results-only
+      - name: Refresh recent scores and today's markets
+        if: steps.plan.outputs.collection == 'recent'
+        run: node scripts/collect-results.mjs --results-only --recent
       - name: Collect all sports and publish the daily journal
-        if: inputs.task != 'weekly' && github.event.schedule != '17 9 * * 2'
+        if: steps.plan.outputs.journal == 'true'
         run: node scripts/daily-experiment.mjs
       - name: Verify baseball refresh on demand
-        if: inputs.task == 'refresh' || github.event_name == 'push'
+        if: steps.plan.outputs.refresh_baseball == 'true'
         run: node scripts/collect-mlb-stats.mjs
       - name: Publish Tuesday results review
-        if: inputs.task == 'weekly' || github.event.schedule == '17 9 * * 2'
+        if: steps.plan.outputs.weekly == 'true'
         run: node scripts/weekly-review.mjs --apply
       - name: Preserve retry checkpoints even after a partial run
         if: always() && steps.prepare.outcome != 'skipped'
@@ -106,7 +118,7 @@ jobs:
           retention-days: 14
           compression-level: 9
       - name: Preserve baseball cache for the next runner
-        if: always() && steps.prepare.outcome != 'skipped'
+        if: always() && steps.prepare.outcome != 'skipped' && steps.plan.outputs.baseball == 'true'
         uses: actions/cache/save@v4
         with:
           path: ~/.local/share/big-vin/baseball-stats
@@ -115,12 +127,14 @@ jobs:
         if: always()
         env:
           RUN_STATUS: ${{ job.status }}
+          RUN_TASK: ${{ steps.plan.outputs.task }}
         run: |
           python3 - <<'PY'
           import os,pathlib
-          summary=['## Big Vin cloud experiment', 'Status: '+os.environ['RUN_STATUS'],
+          summary=['## Big Vin cloud experiment', 'Status: '+os.environ['RUN_STATUS'], 'Task: '+os.environ['RUN_TASK'],
             '', 'Personal repository: lestercrafton/dumbai.',
-            'Scheduled for 7:17 a.m. Central, with an 8:17 retry; Tuesday review at 9:17.',
+            'Scores refresh hourly at minute 37. Full daily collection runs at 7:17 and 8:17 a.m. Central; Tuesday review at 9:17.',
+            'Hourly score refreshes do not create or rewrite the daily journal. GitHub may delay scheduled starts.',
             'All seven sports use saved pregame forecasts and original captured prices.',
             'Each formula/sport/cohort keeps its separate $500 paper bankroll; risk is 2% of the Eastern day\'s opening balance.',
             'Site: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/learning-log',

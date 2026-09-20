@@ -8,11 +8,12 @@ import {fileURLToPath} from 'node:url';
 import {SPORT_PATHS} from '../lib/feeds/adapter.mjs';
 import {collectSourceRange,boardBatches,rangeDates} from '../lib/collector-sources.mjs';
 import {knownCollegeEvents,recoverCollegeEvents} from '../lib/collector-summary.mjs';
+import {collectionWindow} from './runner-plan.mjs';
 const exec=promisify(execFile);
 const config=collectorConfig();
 const site=process.env.BIG_VIN_SITE_URL||config.url;
 const startedAt=Date.now();
-const date=n=>new Date(startedAt+n*86400000).toLocaleDateString('en-CA',{timeZone:'America/New_York'});
+const recent=process.argv.includes('--recent');
 const requested=process.argv.find(a=>a.startsWith('--sport='))?.slice(8);
 const sports=requested?[requested]:Object.keys(SPORT_PATHS);
 if(sports.some(sport=>!Object.hasOwn(SPORT_PATHS,sport)))throw new Error('Unsupported sport.');
@@ -23,12 +24,12 @@ async function post(body){const r=await fetch(site+'/api/collector',{method:'POS
 async function read(url){const {stdout}=await exec('curl',['--fail','--silent','--show-error','--max-time','30','--retry','1',url],{maxBuffer:32*1024*1024});return JSON.parse(stdout);}
 const reports=[],failures=[],sourceAttempts=[],recoveries=[];let baseballStats=null,finished=false;
 const initialization=await post({action:'initialize'});
-function saveReport(){const file=path.join(outputDir,'report.json');fs.writeFileSync(file+'.tmp',JSON.stringify({finished,completedAt:new Date().toISOString(),initialization,reports,failures,sourceAttempts,recoveries,baseballStats},null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);}
+function saveReport(){const file=path.join(outputDir,'report.json');fs.writeFileSync(file+'.tmp',JSON.stringify({finished,window:recent?'recent':'full',completedAt:new Date().toISOString(),initialization,reports,failures,sourceAttempts,recoveries,baseballStats},null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);}
 for(const sport of sports){
  const archive=board=>{const url=new URL(board.sourceUrl);const suffix=url.searchParams.get('event')||url.searchParams.get('groups')||'all';fs.writeFileSync(path.join(outputDir,`${sport}-${board.date}-${board.endDate||board.date}-${suffix}.json`),JSON.stringify({url:board.sourceUrl,...board}),{mode:0o600});};
  // Finish historical training/grades before capturing any new future forecasts.
  for(const historicalOnly of [true,false]){try{
-  const start=historicalOnly?date(sport==='cbb'?-7:-21):date(0),end=historicalOnly?date(-1):date(sport==='cbb'?0:6);
+  const {start,end}=collectionWindow(sport,historicalOnly,{recent,now:startedAt});
   const ranges=sport==='cbb'?rangeDates(start,end).map(date=>({date})):[{date:start,endDate:end}];
   const boards=[];
   for(const range of ranges){
@@ -49,6 +50,6 @@ for(const sport of sports){
   }
  }catch(e){failures.push({sport,historicalOnly,error:e.message});console.error(JSON.stringify({sport,historicalOnly,error:e.message}));}saveReport();}
 }
-if(sports.includes('mlb')&&!process.argv.includes('--results-only')){try{const {stdout}=await exec(process.execPath,[fileURLToPath(new URL('./collect-mlb-stats.mjs',import.meta.url))],{maxBuffer:2*1024*1024,timeout:660000});baseballStats=JSON.parse(stdout.trim());console.log(JSON.stringify({sport:'mlb',stage:'stats',games:baseballStats.games,collectedAt:baseballStats.collectedAt}));}catch(e){failures.push({sport:'mlb',stage:'stats',error:e.message});}}
+if(sports.includes('mlb')&&!recent&&!process.argv.includes('--results-only')){try{const {stdout}=await exec(process.execPath,[fileURLToPath(new URL('./collect-mlb-stats.mjs',import.meta.url))],{maxBuffer:2*1024*1024,timeout:660000});baseballStats=JSON.parse(stdout.trim());console.log(JSON.stringify({sport:'mlb',stage:'stats',games:baseballStats.games,collectedAt:baseballStats.collectedAt}));}catch(e){failures.push({sport:'mlb',stage:'stats',error:e.message});}}
 finished=true;saveReport();console.log(JSON.stringify({artifact:outputDir,failures:failures.length,recoveredSourceFailures:sourceAttempts.length}));
 if(failures.length)process.exitCode=1;

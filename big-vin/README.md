@@ -7,9 +7,10 @@ The scheduled runner lives in **Lester's personal `lestercrafton/dumbai` reposit
 ## Schedule and behavior
 
 - Every day at **7:17 a.m. America/Chicago**, collect NFL, college football, NBA, WNBA, men's college basketball, NHL, and MLB schedules/results; capture eligible upcoming forecasts; grade saved predictions; refresh baseball research data; and publish a dated daily learning entry.
-- **8:17 a.m.** retries incomplete work. A completed date is a no-op. Runs share one concurrency group.
+- **8:17 a.m.** collects fresh scores again and retries incomplete daily work. The daily journal is written once; its completed checkpoint never skips the separate fresh collection. Runs share one concurrency group.
+- **Every hour at minute 37**, refresh all seven sports using the previous three Eastern calendar dates and today's card. These lightweight runs grade saved forecasts and capture available pregame offers without publishing a daily journal or refreshing the baseball research cache.
 - **Tuesday at 9:17 a.m.**, publish descriptive weekly results and the existing paired shadow-model comparison. This deterministic review does not independently invent or promote new formulas.
-- The Actions page also has **Run workflow** for a manual daily or weekly run. Code changes trigger the tested daily runner.
+- The Actions page also has **Run workflow**: `results` runs the lightweight score refresh, `daily` performs the full daily collection and journal check, `refresh` additionally forces baseball research refresh, and `weekly` runs the descriptive review. Code changes trigger the full refresh route.
 
 These are scheduled times, not a real-time SLA. GitHub can delay scheduled runs and disables public-repository schedules after 60 days without repository activity. A disabled workflow can be re-enabled from Actions. [GitHub scheduling documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
@@ -18,6 +19,8 @@ These are scheduled times, not a real-time SLA. GitHub can delay scheduled runs 
 GitHub's short-lived OpenID Connect identity tokens authenticate this exact workflow in `lestercrafton/dumbai` on `main`. The Site verifies GitHub's RSA signature, issuer, audience, numeric repository and owner IDs, branch, workflow path, subject, event and expiration. Other repositories, fork/PR jobs and other workflows are rejected. The runner renews tokens before expiration.
 
 No GitHub personal access token or permanent Site secret is stored in this repository. The job requests `id-token: write` to obtain its own identity, with read-only repository and Actions access. Local runs can still use the original private collector config. The `refresh` manual task performs a fresh all-sports collection before the daily journal check.
+
+Hourly and manual `results` runs restore and save the shared checkpoint and verified CFB schedule registry, but skip the large baseball source cache and research pipeline. The normal daily history window remains 21 prior days plus seven upcoming dates (CBB uses seven prior single dates and today); older unresolved scores are checked by those full morning collections. Source dates use Eastern calendar days, including across daylight-saving changes. A midnight hourly run cannot freeze the morning journal early.
 
 ## Durable results and recoverable local data
 
@@ -43,6 +46,7 @@ Requires Node 22+, Python 3.10+, and curl; the runner has no npm packages to ins
 cd big-vin
 npm test
 node scripts/cloud-state.mjs prepare
+node scripts/collect-results.mjs --results-only --recent
 node scripts/daily-experiment.mjs
 node scripts/weekly-review.mjs --apply
 ```
