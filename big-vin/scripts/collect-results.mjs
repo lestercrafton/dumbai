@@ -21,7 +21,17 @@ const root=path.join(os.homedir(),'.local/share/big-vin/collections');
 const outputDir=process.env.BIG_VIN_COLLECTION_DIR||path.join(root,new Date().toISOString().replaceAll(':','-'));
 fs.mkdirSync(outputDir,{recursive:true,mode:0o700});
 async function post(body){const r=await fetch(site+'/api/collector',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await collectorAuthorization(config)},body:JSON.stringify(body),signal:AbortSignal.timeout(120000)});const text=await r.text();let value;try{value=JSON.parse(text)}catch{throw new Error(`Site response ${r.status} was not JSON.`)}if(!r.ok)throw new Error(value.error+': '+(value.detail||r.status));return value;}
-async function read(url){const {stdout}=await exec('curl',['--fail','--silent','--show-error','--max-time','30','--retry','1',url],{maxBuffer:32*1024*1024});return JSON.parse(stdout);}
+async function read(url){
+ for(let attempt=0;attempt<3;attempt++){
+  try{const {stdout}=await exec('curl',['--fail','--silent','--show-error','--max-time','30','--retry','1',url],{maxBuffer:32*1024*1024});return JSON.parse(stdout);}
+  catch(e){
+   // curl's normal retry list omits TLS handshake failures. Keep certificate
+   // verification enabled and let exhausted failures reach the source audit.
+   if(Number(e.code)!==35||attempt===2)throw e;
+   await new Promise(resolve=>setTimeout(resolve,1000*2**attempt));
+  }
+ }
+}
 const reports=[],failures=[],sourceAttempts=[],recoveries=[];let baseballStats=null,finished=false;
 const initialization=await post({action:'initialize'});
 function saveReport(){const file=path.join(outputDir,'report.json');fs.writeFileSync(file+'.tmp',JSON.stringify({finished,window:recent?'recent':'full',completedAt:new Date().toISOString(),initialization,reports,failures,sourceAttempts,recoveries,baseballStats},null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);}

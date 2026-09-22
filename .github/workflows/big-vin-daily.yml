@@ -98,7 +98,7 @@ jobs:
         if: steps.plan.outputs.collection == 'recent'
         run: node scripts/collect-results.mjs --results-only --recent
       - name: Collect all sports and publish the daily journal
-        if: steps.plan.outputs.journal == 'true'
+        if: steps.plan.outputs.journal == 'true' && !cancelled() && steps.prepare.outcome == 'success'
         run: node scripts/daily-experiment.mjs
       - name: Verify baseball refresh on demand
         if: steps.plan.outputs.refresh_baseball == 'true'

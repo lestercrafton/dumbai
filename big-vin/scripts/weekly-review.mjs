@@ -6,7 +6,7 @@ import path from 'node:path';
 const config=collectorConfig();
 const site=process.env.BIG_VIN_SITE_URL||config.url;
 const apply=process.argv.includes('--apply');
-async function api(route,body){const r=await fetch(site+route,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',Authorization:await collectorAuthorization(config)},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(60000)});const v=await r.json();if(!r.ok)throw new Error(v.error||`Site error ${r.status}`);return v;}
+async function api(route,body){const r=await fetch(site+route,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(body?{Authorization:await collectorAuthorization(config)}:{})},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(60000)});const v=await r.json();if(!r.ok)throw new Error(v.error||`Site error ${r.status}`);return v;}
 const fmt=(v,n=2)=>typeof v==='number'?v.toFixed(n):'unavailable';
 const today=new Date().toISOString().slice(0,10);const log=(await api('/api/learning')).entries;
 const output=[];const allPaired=[];
