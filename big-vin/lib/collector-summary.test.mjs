@@ -61,6 +61,15 @@ test('incomplete core enumeration is audited and does not create an unverified g
  assert.equal(invalid.events.length,0);assert.match(invalid.failures[0].error,/identity/);
 });
 
+test('ESPN core zero-game dates use page index zero without causing a collection failure',async()=>{
+ const empty={count:0,pageCount:0,pageIndex:0,items:[]};
+ const observed=await discoverCollegeEvents([],[],date,date,async()=>empty);
+ assert.deepEqual(observed.failures,[]);assert.equal(observed.enumerated,0);assert.equal(observed.discovered,0);assert.deepEqual(observed.events,[]);
+ const malformed=await discoverCollegeEvents([],[],date,date,async()=>({...empty,items:list(['2']).items}));
+ assert.equal(malformed.failures.length,2);
+ assert.ok(malformed.failures.every(f=>f.error==='Malformed core event index.'));
+});
+
 test('later hourly refreshes reuse verified archive teams and still request current scores',async()=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'vin-core-archive-'));
  try{

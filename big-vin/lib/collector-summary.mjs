@@ -29,7 +29,10 @@ export async function discoverCollegeEvents(boards,known,startDate,endDate,read)
    try{
     do{
      const url=coreListUrl(date,group,page),data=await read(url);
-     if(!Array.isArray(data?.items)||!Number.isInteger(data.count)||data.count<0||!Number.isInteger(data.pageCount)||data.pageCount<0||data.pageCount>20||data.pageIndex!==page)throw new Error('Malformed core event index.');
+     // ESPN reports an empty date as pageIndex 0/pageCount 0, even though
+     // populated indexes start at page 1. Accept only that exact empty shape.
+     const empty=page===1&&data?.count===0&&data.pageCount===0&&data.pageIndex===0&&Array.isArray(data.items)&&data.items.length===0;
+     if(!empty&&(!Array.isArray(data?.items)||!Number.isInteger(data.count)||data.count<0||!Number.isInteger(data.pageCount)||data.pageCount<0||data.pageCount>20||data.pageIndex!==page))throw new Error('Malformed core event index.');
      if(expected===null)expected=data.count;
      if(data.count!==expected)throw new Error('Core event index changed during pagination.');
      for(const item of data.items){
@@ -38,7 +41,7 @@ export async function discoverCollegeEvents(boards,known,startDate,endDate,read)
       if(previous?.sourceGroup==='80'&&group==='81')continue;
       listed.set(id,{id,date,sourceGroup:group,scheduleSourceUrl:url,scheduleObservedAt:new Date().toISOString()});
      }
-     if(page===data.pageCount||(data.pageCount===0&&data.count===0))break;
+     if(page===data.pageCount||empty)break;
      page++;
     }while(page<=20);
     if(seen!==expected)throw new Error(`Core event index returned ${seen} of ${expected} events.`);
