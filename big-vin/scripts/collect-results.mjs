@@ -7,7 +7,7 @@ import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {SPORT_PATHS} from '../lib/feeds/adapter.mjs';
 import {collectSourceRange,boardBatches,rangeDates} from '../lib/collector-sources.mjs';
-import {knownCollegeEvents,recoverCollegeEvents} from '../lib/collector-summary.mjs';
+import {knownCollegeEvents,discoverCollegeEvents,recoverCollegeEvents} from '../lib/collector-summary.mjs';
 import {collectionWindow} from './runner-plan.mjs';
 const exec=promisify(execFile);
 const config=collectorConfig();
@@ -50,8 +50,10 @@ for(const sport of sports){
   }
   if(sport==='cfb'){
    const known=knownCollegeEvents(root,start,end);
-   const recovered=await recoverCollegeEvents(boards,known,read,archive);boards.push(...recovered.boards);
-   recoveries.push({sport,historicalOnly,knownGames:recovered.knownGames,summaryRequests:recovered.requested,summaryRecovered:recovered.boards.length});
+   const discovered=await discoverCollegeEvents(boards,known,start,end,read);
+   const recovered=await recoverCollegeEvents(boards,discovered.events,read,archive);boards.push(...recovered.boards);
+   recoveries.push({sport,historicalOnly,coreReferences:discovered.enumerated,coreDistinctGames:discovered.discovered,coreVerifiedGames:discovered.coreVerified,knownGames:recovered.knownGames,summaryRequests:recovered.requested,summaryRecovered:recovered.boards.length});
+   failures.push(...discovered.failures.map(f=>({sport,historicalOnly,stage:'core-event-discovery',...f})));
    failures.push(...recovered.failures.map(f=>({sport,historicalOnly,...f})));
   }
   for(const batch of boardBatches(boards)){
