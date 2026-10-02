@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {SPORT_PATHS} from '../lib/feeds/adapter.mjs';
 import {collectSourceRange,boardBatches,rangeDates} from '../lib/collector-sources.mjs';
 import {knownCollegeEvents,discoverCollegeEvents,recoverCollegeEvents} from '../lib/collector-summary.mjs';
+import {captureCurrentCollegeMarkets} from '../lib/collector-current-markets.mjs';
 import {collectionWindow} from './runner-plan.mjs';
 const exec=promisify(execFile);
 const config=collectorConfig();
@@ -36,7 +37,11 @@ const reports=[],failures=[],sourceAttempts=[],recoveries=[];let baseballStats=n
 const initialization=await post({action:'initialize'});
 function saveReport(){const file=path.join(outputDir,'report.json');fs.writeFileSync(file+'.tmp',JSON.stringify({finished,window:recent?'recent':'full',completedAt:new Date().toISOString(),initialization,reports,failures,sourceAttempts,recoveries,baseballStats},null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);}
 for(const sport of sports){
- const archive=board=>{const url=new URL(board.sourceUrl);const suffix=url.searchParams.get('event')||url.searchParams.get('groups')||'all';fs.writeFileSync(path.join(outputDir,`${sport}-${board.date}-${board.endDate||board.date}-${suffix}.json`),JSON.stringify({url:board.sourceUrl,...board}),{mode:0o600});};
+ const archive=board=>{
+  const url=new URL(board.sourceUrl),oddsId=url.pathname.match(/\/events\/(\d+)\/competitions\/\d+\/odds$/)?.[1];
+  const suffix=url.searchParams.get('event')||(oddsId?'odds-'+oddsId:url.searchParams.get('groups')||'all');
+  fs.writeFileSync(path.join(outputDir,`${sport}-${board.date}-${board.endDate||board.date}-${suffix}.json`),JSON.stringify({url:board.sourceUrl,...board}),{mode:0o600});
+ };
  // Finish historical training/grades before capturing any new future forecasts.
  for(const historicalOnly of [true,false]){try{
   const {start,end}=collectionWindow(sport,historicalOnly,{recent,now:startedAt});
@@ -55,9 +60,14 @@ for(const sport of sports){
    recoveries.push({sport,historicalOnly,coreReferences:discovered.enumerated,coreDistinctGames:discovered.discovered,coreVerifiedGames:discovered.coreVerified,knownGames:recovered.knownGames,summaryRequests:recovered.requested,summaryRecovered:recovered.boards.length});
    failures.push(...discovered.failures.map(f=>({sport,historicalOnly,stage:'core-event-discovery',...f})));
    failures.push(...recovered.failures.map(f=>({sport,historicalOnly,...f})));
+   if(!historicalOnly){
+    const markets=await captureCurrentCollegeMarkets(boards,read,archive);boards.push(...markets.boards);
+    recoveries.push({sport,historicalOnly,currentMarketRequests:markets.requested,currentMarketCaptured:markets.boards.length,currentMarketUnavailable:markets.unavailable.length});
+    failures.push(...markets.failures.map(f=>({sport,historicalOnly,stage:'current-pregame-market',...f})));
+   }
   }
   for(const batch of boardBatches(boards)){
-   const report=await post({sport,historicalOnly,boards:batch.map(({rawSummary,...b})=>b)});reports.push(report);saveReport();
+   const report=await post({sport,historicalOnly,boards:batch.map(({rawSummary,rawOdds,...b})=>b)});reports.push(report);saveReport();
    console.log(JSON.stringify({sport,historicalOnly,inserted:report.inserted,marketCaptures:report.marketCaptures,graded:report.graded,sourceGames:report.sourceGames,warnings:report.warnings}));
   }
  }catch(e){failures.push({sport,historicalOnly,error:e.message});console.error(JSON.stringify({sport,historicalOnly,error:e.message}));}saveReport();}
