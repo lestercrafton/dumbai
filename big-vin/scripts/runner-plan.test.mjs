@@ -29,12 +29,12 @@ test('unknown triggers cannot accidentally create an early daily journal',()=>{
  for(const input of [{eventName:'schedule',schedule:'0 * * * *'},{eventName:'workflow_dispatch',task:'other'},{eventName:'pull_request'}])assert.throws(()=>runnerPlan(input),/Unsupported/);
 });
 
-test('recent mode uses exactly three prior Eastern dates and today for every sport',()=>{
+test('recent mode grades three prior Eastern dates and previews the next seven CFB dates',()=>{
  // UTC has crossed midnight, while Eastern is still September 19.
  const now='2026-09-20T02:00:00Z';
  for(const sport of Object.keys(SPORT_PATHS)){
   assert.deepEqual(collectionWindow(sport,true,{recent:true,now}),{start:'2026-09-16',end:'2026-09-18'});
-  assert.deepEqual(collectionWindow(sport,false,{recent:true,now}),{start:'2026-09-19',end:'2026-09-19'});
+  assert.deepEqual(collectionWindow(sport,false,{recent:true,now}),{start:'2026-09-19',end:sport==='cfb'?'2026-09-26':'2026-09-19'});
  }
 });
 
@@ -47,13 +47,13 @@ test('normal daily collection retains 21 past dates and seven upcoming dates, wi
 });
 
 test('recent date arithmetic handles the midnight after both DST changes and year rollover',()=>{
- for(const [now,start,end,today] of [
-  ['2026-03-09T04:37:00Z','2026-03-06','2026-03-08','2026-03-09'],
-  ['2026-11-02T05:37:00Z','2026-10-30','2026-11-01','2026-11-02'],
-  ['2027-01-01T05:37:00Z','2026-12-29','2026-12-31','2027-01-01'],
+ for(const [now,start,end,today,cfbEnd] of [
+  ['2026-03-09T04:37:00Z','2026-03-06','2026-03-08','2026-03-09','2026-03-16'],
+  ['2026-11-02T05:37:00Z','2026-10-30','2026-11-01','2026-11-02','2026-11-09'],
+  ['2027-01-01T05:37:00Z','2026-12-29','2026-12-31','2027-01-01','2027-01-08'],
  ]){
   assert.deepEqual(collectionWindow('cfb',true,{recent:true,now}),{start,end});
-  assert.deepEqual(collectionWindow('cfb',false,{recent:true,now}),{start:today,end:today});
+  assert.deepEqual(collectionWindow('cfb',false,{recent:true,now}),{start:today,end:cfbEnd});
  }
 });
 

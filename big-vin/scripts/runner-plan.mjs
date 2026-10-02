@@ -26,7 +26,8 @@ const offsetDay=(date,days)=>new Date(Date.parse(date+'T12:00:00Z')+days*8640000
 export function collectionWindow(sport,historicalOnly,{recent=false,now=Date.now()}={}){
  const today=easternDay(now);
  const back=recent?3:sport==='cbb'?7:21;
- return historicalOnly?{start:offsetDay(today,-back),end:offsetDay(today,-1)}:{start:today,end:offsetDay(today,recent||sport==='cbb'?0:6)};
+ const forward=recent?(sport==='cfb'?7:0):sport==='cbb'?0:6;
+ return historicalOnly?{start:offsetDay(today,-back),end:offsetDay(today,-1)}:{start:today,end:offsetDay(today,forward)};
 }
 
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url){
