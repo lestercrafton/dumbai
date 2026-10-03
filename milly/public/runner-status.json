@@ -1,10 +1,10 @@
 {
   "state": "failed",
-  "finished_at": "2026-09-30T18:27:39.311282+00:00",
+  "finished_at": "2026-10-03T17:18:20.356022+00:00",
   "error": "Refresh failed a source, model or validation check. Consult this Actions run. Last release is not automatically current.",
   "last_release_preserved": true,
   "publication": "committed_by_weekly_workflow",
-  "workflow_run_id": "36758669875",
-  "source_commit": "b4146ede9dc3751299c608fbea91aa8235c8abbf",
-  "publication_attempted_at": "2026-09-30T18:27:39.795214+00:00"
+  "workflow_run_id": "37139993183",
+  "source_commit": "17b9bdf4ad1947558a337d224f07c9ac3bbe7fd9",
+  "publication_attempted_at": "2026-10-03T17:18:20.938019+00:00"
 }
