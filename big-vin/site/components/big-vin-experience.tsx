@@ -15,6 +15,7 @@ import {liveScorePresentation} from '@/lib/board-discovery.mjs';
 import {liveGameProgress} from '@/lib/live-game-progress.mjs';
 import {livePickStatus} from '@/lib/live-pick-status.mjs';
 import {espnGamecastUrl} from '@/lib/gamecast.mjs';
+import {pregameComparison} from '@/lib/pregame-comparison.mjs';
 import {SITE_CONFIG} from '@/lib/site-config';
 import research from '@/lib/research.json';
 
@@ -96,6 +97,9 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
     const progress = liveGameProgress(game,{offline,refreshFailed,now});
     const livePick = livePickStatus(game,{offline,refreshFailed,now});
     const moneyline = moneylineComparison(game, sport);
+    const pregame = pregameComparison(game,{now});
+    const comparisonLine = pregame ? pregame.marketLine : lines.marketLine;
+    const comparisonEdge = pregame ? pregame.edge : lines.edge;
     const synthetic = game.paperWager?.kind === 'synthetic-winner-even';
     const settled = !synthetic && ['win','loss','push','void'].includes(decision.outcome);
     const liveResult = !settled && livePick.provisional;
@@ -114,9 +118,9 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
        {score.kind==='live'&&<>{!livePick.provisional&&<div className={`vin-live-pick-status ${livePick.isWinning?'vin-live-pick-winning':''}`}><strong>{livePick.label}</strong><span>{livePick.provisional?'Against the displayed line · provisional':livePick.reason==='stale-score'?'Live pick status unavailable · refresh needed':livePick.reason==='stale-line'?'Price is stale':livePick.reason==='no-ats-pick'?'No displayed ATS pick':'Complete score needed'}</span></div>}<p>{score.updatedAt?'Feed checked '+centralTime(score.updatedAt):'Feed check time unavailable.'} · Reported clock, not a countdown.{score.freshness!=='live'?' Refresh for the latest score.':''}{!score.completeScore?' Score unavailable for one or both teams.':''}</p></>}
        {gamecast&&<span className="vin-gamecast-label">ESPN Gamecast <ArrowUpRight size={13} aria-hidden="true"/></span>}
       </ScorePanel>}
-      <div className="vin-game-lines" role="group" aria-label={`Spread comparison for ${lines.teamName}`}><div><span className="vin-label">{synthetic ? 'PAPER CONTRACT' : 'VEGAS LINE'}</span><strong>{synthetic ? 'Synthetic winner · +100' : lines.marketLine!=null?`${lines.teamShort} ${handicap(lines.marketLine)}`:'No market spread'}</strong><small>{synthetic ? 'No sportsbook quote' : 'Spread'}</small></div><div><span className="vin-label">BIG VIN LINE</span><strong>{lines.fairLine!=null?`${lines.teamShort} ${handicap(lines.fairLine)}`:'No projection'}</strong><small>Fair spread</small></div><div><span className="vin-label">VALUE</span><strong>{decision.pick && lines.edge!=null?pointValue(lines.edge):'—'}</strong><small>{shortScoreUnit(sport)} of edge</small></div></div>
+      <div className="vin-game-lines" role="group" aria-label={`Spread comparison for ${lines.teamName}`}><div><span className="vin-label">{synthetic ? 'PAPER CONTRACT' : pregame ? 'VEGAS LINE (LATEST)' : 'VEGAS LINE'}</span><strong>{synthetic ? 'Synthetic winner · +100' : comparisonLine!=null?`${lines.teamShort} ${handicap(comparisonLine)}`:'No market spread'}</strong><small>{synthetic ? 'No sportsbook quote' : 'Spread'}</small>{pregame&&pregame.savedLine!=null&&<small>Saved: {lines.teamShort} {handicap(pregame.savedLine)}</small>}</div><div><span className="vin-label">BIG VIN LINE</span><strong>{lines.fairLine!=null?`${lines.teamShort} ${handicap(lines.fairLine)}`:'No projection'}</strong><small>Fair spread</small></div><div><span className="vin-label">{pregame?'VALUE (LATEST)':'VALUE'}</span><strong>{decision.pick && comparisonEdge!=null?pointValue(comparisonEdge):'—'}</strong><small>{shortScoreUnit(sport)} of edge</small>{pregame&&comparisonEdge!=null&&comparisonEdge<=0&&<small>No current spread edge</small>}</div></div>
       {moneyline && <dl className="vin-moneyline" aria-label={`Moneyline comparison for ${moneyline.teamName}`}><div><dt>{moneyline.quote?.label || 'Vegas ML'}</dt><dd>{moneyline.team} <strong aria-label={moneyline.quote ? undefined : 'Unavailable'}>{moneyline.vegas}</strong></dd></div><div><dt>BV ML <span>(est.)</span></dt><dd>{moneyline.team} <strong>{moneyline.implied}</strong></dd></div><div className="vin-ml-ev"><dt>ML EV <span>(est.)</span></dt><dd><strong aria-label={moneyline.evPer100 === null ? 'Unavailable' : `${moneyline.ev.replace(/u$/, ' units')} estimated net profit or loss per 100 units wagered`}>{moneyline.ev}</strong><small>per 100 units wagered</small>{moneyline.evPer100 !== null && moneyline.evPer100 < 0 && <small>No ML edge</small>}</dd></div></dl>}
-      <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK</span><strong>{lines.pick || 'No ATS pick'}</strong></div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : 'Against the spread'}</span></div>
+      <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK</span><strong>{lines.pick || 'No ATS pick'}</strong></div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : pregame&&game.archived ? 'Saved pick · Against the spread' : 'Against the spread'}</span></div>
       <div className={`vin-game-status vin-visible-result ${settled?'vin-result-settled':liveResult?'vin-result-live':''}`}>
         {(settled || liveResult) && <span className="vin-result-heading">{settled ? decision.outcome==='void'?'SETTLED':'FINAL' : 'LIVE'} · AGAINST THE SPREAD</span>}
         <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:decision.outcome}`}>{liveResult ? livePick.label : visibleOutcome(decision, synthetic)}</strong>
@@ -128,6 +132,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       <details className="vin-game-details"><summary>Behind the line <CfbNewsFlag gameId={game.id} sport={sport}/><ChevronDown size={15}/></summary><div>
         <p>{game.modelLabel || 'Experimental ratings'} · results before {game.modelAsOf || 'the model cutoff'}.</p>
         <p>Source: {game.market?.provider || 'No market provider returned'}.{game.market?.observedAt ? ' Price observed ' + centralTime(game.market.observedAt) + '.' : ''}</p>
+        {pregame&&<p>Latest pregame spread: {pregame.provider}, checked {centralTime(pregame.observedAt)}. The saved pick and grading line remain unchanged.</p>}
         {game.forecastCapturedAt && <p>{game.forecastOrigin === 'cfb-reconstructed-2026-09-26' ? 'Reconstructed' : 'Forecast saved'} {centralTime(game.forecastCapturedAt)}.</p>}
         {game.historyRankBasis && <p>Board rank: {game.rank?`#${game.rank}`:'unranked'} · Saved-card rank: {game.historyCardRank?`#${game.historyCardRank}`:'unranked'}. Tracked Top cards use the saved-card rank; search keeps the board rank unchanged.</p>}
         {game.firstMarket && <p>First price captured {centralTime(game.firstMarket.observedAt)}. Saved forecasts retain their grading price.</p>}
