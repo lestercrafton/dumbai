@@ -342,6 +342,10 @@ body,
 .vin-live-pick-status,
 .vin-live-pick-status > span { color: var(--fiji-muted); }
 .vin-scoreboard-teams strong { color: var(--fiji-ink); }
+.vin-scoreboard-link { display: block; color: inherit; text-decoration: none; }
+.vin-scoreboard-link:hover { box-shadow: 0 0 0 1px currentColor; }
+.vin-scoreboard-link:focus-visible { outline: 3px solid var(--fiji-purple); outline-offset: 3px; }
+.vin-gamecast-label { display: flex; align-items: center; gap: 4px; width: fit-content; margin-top: 12px; font-size: 11px; font-weight: 600; color: var(--fiji-purple); }
 .vin-live-pick-status { border-color: #ded2e5; }
 .vin-scoreboard-covering { background: var(--fiji-green-tint); border-color: var(--fiji-green-line); }
 .vin-scoreboard-not-covering { background: var(--fiji-yellow-tint); border-color: var(--fiji-yellow-line); }

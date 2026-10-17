@@ -5,6 +5,7 @@
  */
 import {postseasonMetadata} from '../postseason.mjs';
 import {providerSeasonContext,mergeSeasonContexts} from '../provider-season.mjs';
+import {espnGamecastUrl} from '../gamecast.mjs';
 export const SPORT_PATHS = Object.freeze({
   nfl: 'football/nfl', cfb: 'football/college-football',
   nba: 'basketball/nba', wnba: 'basketball/wnba', cbb: 'basketball/mens-college-basketball',
@@ -164,6 +165,7 @@ export function normalizeScoreboard(payload, sport, { retrievedAt = new Date().t
     const markets = (Array.isArray(competition.odds) ? competition.odds : []).map(o => normalizeOdds(o, completed, retrievedAt)).filter(Boolean);
     return [{
       id: String(event.id), sport, sportLabel: SPORT_LABELS[sport],
+      gamecastUrl: espnGamecastUrl({...event,sport,source:'ESPN scoreboard'}),
       season: event.season?.year ?? payload.season?.year ?? payload.leagues?.[0]?.season?.year ?? null,
       seasonType, exhibition, modelExcludedReason,
       postseason:postseasonMetadata({...event,season:{year:event.season?.year??payload.season?.year,type:seasonType}},sport,{sourceUrl,observedAt:retrievedAt}),
