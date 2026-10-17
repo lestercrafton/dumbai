@@ -118,7 +118,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
         <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:decision.outcome}`}>{liveResult ? livePick.label : visibleOutcome(decision, synthetic)}</strong>
         {decision.score && <span className="vin-final-score">Final · {teamCode(game.away)} {decision.score.split('–')[0]} – {decision.score.split('–')[1]} {teamCode(game.home)}</span>}
         <span>{game.archived ? 'Uses the saved pregame line' : game.stale ? 'Stale price' : 'Feed observation'}{liveResult?' · provisional':decision.outcome==='pending'?' · awaiting final':''}</span>
-        {liveResult && livePick.state==='not-covering' && <span>Net points needed to move past the spread.</span>}
+        {liveResult && livePick.state==='not-covering' && <span>Net {scoreUnit(sport)} needed to move past the spread.</span>}
       </div>
       {(game.stale || game.lowEvidence || (!game.rank && game.rankReason)) && <p className="vin-data-note">{game.stale ? 'Stale market snapshot. Excluded from ranked picks.' : game.lowEvidence ? 'Limited rating evidence. Included in full-card results; outside ranked picks.' : game.rankReason}</p>}
       <details className="vin-game-details"><summary>Behind the line <CfbNewsFlag gameId={game.id} sport={sport}/><ChevronDown size={15}/></summary><div>
