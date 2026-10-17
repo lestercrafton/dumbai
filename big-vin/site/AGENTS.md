@@ -21,6 +21,10 @@ Keep the original saved sides, prices, grades, capture times and formula ownersh
 
 Game-card BV ML uses the existing fair-spread conversion and is labeled an estimate. Vegas ML must use actual same-team bookmaker odds from `moneylineMarket`, retaining its own provider and observation time. This feed quote is separate from the frozen ATS market; missing ML stays unavailable. ML Value is the BV estimated win chance minus the quoted price’s break-even chance, in percentage points (pp), including book margin; missing quotes also leave value unavailable. Never substitute ATS juice, derive a quote from the Vegas spread, or call historical feed prices verified pregame odds.
 
+Brand assets `public/bv-logo.svg` and `bv-wordmark.svg` preserve the original header's Geist glyphs, weight, spacing and proportions as paths. Use those exact assets for sharing and icons; do not redraw the mark in another font. `big-vin-share.svg` is the editable share-image source, with a versioned PNG referenced by root Open Graph and Twitter metadata. Icon metadata uses the same original mark.
+
+The user chose FIJI purple and white: `app/fiji-theme.css` owns the light theme using #520975 and #7d4798 from phigam.org's stylesheet. Logo shapes remain unchanged when recolored. Keep the green/yellow ATS status outlines distinct from the purple brand palette, and neutral styling for uncertain scores.
+
 ## Publish from any connected agent environment
 
 A GitHub push runs source checks; it does **not** automatically publish the existing Site. A cloud agent can publish without using Lester's Mac when its Sites connector and build environment are available:

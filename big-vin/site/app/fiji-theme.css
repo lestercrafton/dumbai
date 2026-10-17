@@ -1,0 +1,800 @@
+/* FIJI purple and white. This layer changes presentation colors only;
+   live ATS and settled-result colors retain their separate meanings. */
+:root,
+.dark,
+.vin-site,
+.vin-modal,
+.vin-paper-modal {
+  --fiji-purple: #520975;
+  --fiji-secondary: #7d4798;
+  --fiji-ink: #25172e;
+  --fiji-muted: #6b5b73;
+  --fiji-line: #dfd2e5;
+  --fiji-surface: #faf7fc;
+  --fiji-tint: #f1e8f7;
+  --fiji-green: #236b3d;
+  --fiji-green-line: #33864e;
+  --fiji-green-tint: #edf8ef;
+  --fiji-ochre: #775600;
+  --fiji-yellow-line: #b58a12;
+  --fiji-yellow-tint: #fff7d9;
+  --background: #fff;
+  --foreground: #25172e;
+  --card: #fff;
+  --card-foreground: #25172e;
+  --popover: #fff;
+  --popover-foreground: #25172e;
+  --primary: #520975;
+  --primary-foreground: #fff;
+  --secondary: #f1e8f7;
+  --secondary-foreground: #520975;
+  --muted: #f5f0f8;
+  --muted-foreground: #6b5b73;
+  --accent: #f1e8f7;
+  --accent-foreground: #520975;
+  --destructive: #a52e43;
+  --border: #dfd2e5;
+  --input: #9b7aaa;
+  --ring: #7d4798;
+  --chart-1: #520975;
+  --chart-2: #7d4798;
+  --chart-3: #b58a12;
+  --chart-4: #236b3d;
+  --chart-5: #a52e43;
+  --vin-bg: #fff;
+  --vin-panel: #faf7fc;
+  --vin-ink: #25172e;
+  --vin-muted: #6b5b73;
+  --vin-line: #dfd2e5;
+  --vin-lime: #520975;
+  color-scheme: light;
+}
+
+body,
+.vin-site {
+  background: #fff;
+  color: var(--fiji-ink);
+}
+
+::selection { background: #e4cfef; color: #3d0757; }
+.vin-site :is(a, button, input, select, summary):focus-visible,
+.vin-modal :is(button, a, input, select):focus-visible,
+.vin-paper-modal :is(button, a, input, select):focus-visible {
+  outline-color: var(--fiji-purple);
+}
+.vin-skip-link { color: #fff !important; }
+
+/* Header, hero and editorial feature. Glyph dimensions remain original. */
+.vin-wordmark,
+.vin-mark,
+.vin-footer-brand { color: var(--fiji-purple) !important; }
+.vin-mark > span { color: var(--fiji-secondary); }
+.vin-mark i { background: var(--fiji-secondary); }
+.vin-wordmark-sub,
+.vin-header nav { color: var(--fiji-muted); }
+.vin-header nav a:hover { color: var(--fiji-purple); }
+.vin-button,
+.vin-feature-action {
+  background: var(--fiji-purple);
+  border-color: var(--fiji-purple);
+  color: #fff;
+}
+.vin-button:hover,
+.vin-feature-action:hover {
+  background: #6b218a;
+  border-color: #6b218a;
+  color: #fff;
+}
+.vin-button-outline {
+  background: #fff;
+  border-color: #ad90bc;
+  color: var(--fiji-purple);
+}
+.vin-button-outline:hover { color: #fff; }
+.vin-signal { box-shadow: 0 0 0 4px #52097512; }
+.vin-hero:before {
+  background: radial-gradient(ellipse at 67% 40%, #7d47980d, transparent 60%);
+}
+.vin-hero-description,
+.vin-hero-footnote { color: var(--fiji-muted); }
+.vin-hero-link { border-color: #a587b5; }
+.vin-hero-link:hover { color: var(--fiji-purple); }
+.vin-feature {
+  background: linear-gradient(145deg, #faf6fd, #fff 70%);
+  border-color: #cdb5da;
+  box-shadow: 0 20px 65px #5209750b;
+}
+.vin-feature:before {
+  background-image: linear-gradient(#7d479830 1px, transparent 1px),
+    linear-gradient(90deg, #7d479830 1px, transparent 1px);
+}
+.vin-feature-top {
+  background: var(--fiji-tint);
+  border-color: #d6c2e1;
+  color: var(--fiji-purple);
+}
+.vin-feature-top > span:last-child,
+.vin-feature-meta,
+.vin-feature-matchup small,
+.vin-feature-bottom > div:first-child > small,
+.vin-feature-edge > span,
+.vin-feature-disclaimer,
+.vin-feature-placeholder p { color: var(--fiji-muted); }
+.vin-feature-bottom { border-color: var(--fiji-line); }
+.vin-label { color: var(--fiji-muted); }
+.vin-orbit { border-color: #ad89bf; box-shadow: 0 0 50px #52097508; }
+.vin-orbit:before,
+.vin-orbit:after { border-color: #ceb5dc; }
+.vin-orbit:after { background: #f0e5f6; }
+.vin-orbit i { border-color: #ad89bf; background: #fff; }
+.vin-feature-warning { border-color: #e0c983; color: var(--fiji-ochre); background: #fffaf0; }
+.vin-feature-leagues button {
+  background: #fff;
+  border-color: #cdb6da;
+  color: var(--fiji-purple);
+}
+.vin-feature-leagues button small { color: var(--fiji-muted); }
+.vin-feature-leagues button[aria-pressed=true] {
+  background: var(--fiji-purple);
+  border-color: var(--fiji-purple);
+  color: #fff;
+}
+.vin-feature-leagues button[aria-pressed=true] small { color: #f0e4f6; }
+.vin-feature-leagues button:hover { border-color: var(--fiji-secondary); }
+
+/* League, card and date controls. */
+.vin-board-heading > p,
+.vin-board-tabs > a,
+.vin-scope-note,
+.vin-board-motto,
+.vin-card-heading h3 > span,
+.vin-card-heading > span { color: var(--fiji-muted); }
+.vin-view-tabs [data-slot=tabs-trigger] { color: var(--fiji-muted); }
+.vin-view-tabs [data-slot=tabs-trigger][data-active],
+.vin-view-tabs [data-slot=tabs-trigger][aria-selected=true] { color: var(--fiji-purple); }
+.vin-primary-controls {
+  background: var(--fiji-surface);
+  border-color: #c5acd3;
+}
+.vin-league-tabs > button:not([data-slot]) {
+  background: #fff;
+  border-color: #d6c7df;
+  color: #65526e;
+}
+.vin-league-tabs > button[aria-pressed=true] {
+  background: var(--fiji-purple);
+  border-color: var(--fiji-purple);
+  color: #fff;
+}
+.vin-league-tabs > button:not([data-slot]):hover { border-color: var(--fiji-secondary); }
+.vin-primary-controls [data-slot=select-trigger] { color: var(--fiji-purple); }
+.vin-primary-controls [data-slot=select-trigger]:hover { color: #390650; }
+.vin-card-navigation { background: #fff; border-color: #d1bedd; }
+.vin-card-navigation > button:not([data-slot]) { color: var(--fiji-muted); }
+.vin-card-navigation > button[aria-pressed=true],
+.vin-card-navigation > button[aria-pressed=true]:hover {
+  background: var(--fiji-purple);
+  color: #fff;
+}
+.vin-card-navigation > button:not([data-slot]):hover {
+  background: var(--fiji-tint);
+  color: var(--fiji-purple);
+}
+.vin-card-navigation > button[aria-pressed=true]:hover { background: #6b218a; color: #fff; }
+.vin-secondary-controls [data-slot=select-trigger],
+.vin-secondary-controls input {
+  background: #fff;
+  color: var(--fiji-ink);
+  border-color: #9b7aaa;
+  color-scheme: light;
+}
+.vin-quick-dates button { color: var(--fiji-muted); }
+.vin-quick-dates button:hover { color: var(--fiji-purple); }
+.vin-icon-button { border-color: #c7b4d1; color: var(--fiji-secondary); }
+.vin-icon-button:hover { background: var(--fiji-tint); color: var(--fiji-purple); }
+.vin-discovery { background: var(--fiji-surface); border-color: #bfa3cd; }
+.vin-discovery-heading > p,
+.vin-discovery label,
+.vin-time-range > span,
+.vin-search-help,
+.vin-date-range > span { color: var(--fiji-muted); }
+.vin-discovery input,
+.vin-discovery select {
+  background: #fff;
+  color: var(--fiji-ink);
+  border-color: #9b7aaa;
+  color-scheme: light;
+}
+.vin-discovery input::placeholder { color: #7a6b82; }
+.vin-discovery-actions > button { color: var(--fiji-purple); border-color: #bda2cb; }
+.vin-time-presets button,
+.vin-discovery .vin-quick-dates button {
+  background: #fff;
+  border-color: #c5b1d1;
+  color: var(--fiji-purple);
+}
+.vin-time-presets button[aria-pressed=true],
+.vin-discovery .vin-quick-dates button[aria-pressed=true] {
+  background: var(--fiji-purple);
+  border-color: var(--fiji-purple);
+  color: #fff;
+}
+.vin-discovery .vin-quick-dates .vin-weekend-shortcut {
+  border-color: var(--fiji-secondary);
+  color: var(--fiji-purple);
+}
+.vin-discovery .vin-quick-dates .vin-weekend-shortcut[aria-pressed=true] { color: #fff; }
+.vin-discovery .vin-quick-dates button:focus-visible,
+.vin-feed-status summary:focus-visible { outline-color: var(--fiji-purple); }
+.vin-date-range { color: var(--fiji-ink); }
+.vin-search-count { border-color: var(--fiji-line); color: var(--fiji-purple); }
+.vin-results-callout strong { color: var(--fiji-purple); }
+.vin-results-callout p,
+.vin-results-heading > p:not(.vin-kicker) { color: var(--fiji-muted); }
+.vin-site .vin-sport-records > section,
+.vin-league-section + .vin-league-section { border-color: var(--fiji-line); }
+.vin-record-disclosure > summary { color: var(--fiji-ink); }
+.vin-record-disclosure > summary > span:first-child > span,
+.vin-record-disclosure > summary > span:last-child,
+.vin-model-update { color: var(--fiji-muted); }
+.vin-model-update a { color: var(--fiji-purple); }
+
+/* Cards: six matching comparison boxes and the emphasized selection. */
+.vin-game-card,
+.vin-game-card.vin-game-neutral { background: #fff; border-color: #d0bfd9; }
+.vin-game-card:hover,
+.vin-game-card.vin-game-neutral:hover { background: #fdfbff; border-color: var(--fiji-secondary); }
+.vin-game-top,
+.vin-game-rank > span,
+.vin-game-matchup h3 > span,
+.vin-game-league,
+.vin-game-score span,
+.vin-game-limited .vin-game-rank { color: var(--fiji-muted); }
+.vin-game-rank,
+.vin-game-score { color: var(--fiji-purple); }
+.vin-game-neutral .vin-game-top,
+.vin-game-neutral .vin-game-rank,
+.vin-game-neutral .vin-game-rank > span { color: var(--fiji-muted); }
+.vin-game-lines,
+.vin-moneyline { border-color: var(--fiji-line); background: #fff; }
+.vin-game-lines > div,
+.vin-game-lines > div + div,
+.vin-moneyline > div,
+.vin-moneyline > div + div {
+  background: var(--fiji-surface);
+  border-color: #d9cae2;
+}
+.vin-game-lines .vin-label,
+.vin-game-lines small,
+.vin-moneyline dt,
+.vin-moneyline dd { color: var(--fiji-muted); }
+.vin-game-lines strong,
+.vin-game-lines > div:last-child > strong,
+.vin-moneyline strong { color: var(--fiji-ink); }
+.vin-game-lines > div:nth-child(2) strong,
+.vin-moneyline > div:nth-child(2) strong { color: var(--fiji-purple); }
+.vin-game-pick,
+.vin-game-neutral .vin-game-pick {
+  background: var(--fiji-tint);
+  border-color: #b994cc;
+}
+.vin-game-pick .vin-label,
+.vin-game-neutral .vin-game-pick .vin-label { color: var(--fiji-secondary); }
+.vin-game-pick > div:first-child > strong,
+.vin-game-neutral .vin-game-pick > div:first-child > strong,
+.vin-card-edge,
+.vin-game-neutral .vin-card-edge { color: var(--fiji-purple); }
+.vin-pick-kind,
+.vin-card-edge small { color: var(--fiji-muted); }
+.vin-visible-result,
+.vin-game-neutral .vin-visible-result { background: var(--fiji-surface); border-color: var(--fiji-line); }
+.vin-game-status,
+.vin-visible-result > span,
+.vin-game-neutral .vin-visible-result > span,
+.vin-visible-result > .vin-result-heading { color: var(--fiji-muted); }
+.vin-visible-result > .vin-final-score { color: var(--fiji-ink); }
+.vin-outcome-badge,
+.vin-game-neutral .vin-outcome-pending,
+.vin-game-neutral .vin-outcome-ungraded,
+.vin-outcome-no-line,
+.vin-outcome-no-pick,
+.vin-outcome-void {
+  background: #f0ebf3;
+  color: #615168;
+  border-color: #cbbbd4;
+}
+.vin-data-note { color: var(--fiji-ochre); border-color: #b49438; }
+.vin-game-details { border-color: var(--fiji-line); background: #fcfafd; }
+.vin-game-details summary,
+.vin-game-details p { color: var(--fiji-muted); }
+.vin-game-details .news-review { border-color: var(--fiji-line); }
+.vin-text-button,
+.vin-text-link { color: var(--fiji-purple) !important; }
+.vin-text-button:hover,
+.vin-text-link:hover { color: #7d4798 !important; }
+.vin-board-warning { background: #fff9e9; color: var(--fiji-ochre); border-color: #b49438; }
+.vin-empty { border-color: #c7b3d2; background: var(--fiji-surface); }
+.vin-empty p,
+.vin-loading { color: var(--fiji-muted); }
+.vin-skeletons i {
+  background-image: linear-gradient(100deg, #f8f3fb 30%, #eee3f4, #f8f3fb 70%);
+  border-color: var(--fiji-line);
+}
+.vin-board-provenance,
+.vin-board-links,
+.vin-feed-status { color: var(--fiji-muted); border-color: var(--fiji-line); }
+.vin-board-provenance a { color: var(--fiji-purple); }
+
+/* Score observations remain neutral unless a fresh ATS comparison qualifies. */
+.vin-scoreboard,
+.vin-scoreboard-final {
+  background: #faf8fc;
+  border-color: #d2c4dc;
+}
+.vin-scoreboard-top,
+.vin-scoreboard-top > span,
+.vin-scoreboard-teams span,
+.vin-scoreboard p,
+.vin-score-neutral,
+.vin-live-pick-status,
+.vin-live-pick-status > span { color: var(--fiji-muted); }
+.vin-scoreboard-teams strong { color: var(--fiji-ink); }
+.vin-live-pick-status { border-color: #ded2e5; }
+.vin-scoreboard-covering { background: var(--fiji-green-tint); border-color: var(--fiji-green-line); }
+.vin-scoreboard-covering .vin-scoreboard-top,
+.vin-live-pick-winning > strong { color: var(--fiji-green); }
+.vin-live { color: var(--fiji-green); }
+.vin-game-card.vin-game-covering,
+.vin-game-card.vin-game-covering:hover,
+.vin-game-card.vin-game-win,
+.vin-game-card.vin-game-win:hover {
+  border-color: var(--fiji-green-line);
+  outline-color: var(--fiji-green-line);
+}
+.vin-game-card.vin-game-not-covering,
+.vin-game-card.vin-game-not-covering:hover,
+.vin-game-card.vin-game-learn,
+.vin-game-card.vin-game-learn:hover {
+  border-color: var(--fiji-yellow-line);
+  outline-color: var(--fiji-yellow-line);
+}
+.vin-game-not-covering .vin-live-pick-status > strong { color: var(--fiji-ochre); }
+.vin-game-win .vin-visible-result { background: var(--fiji-green-tint); border-color: #a2c6ad; }
+.vin-game-learn .vin-visible-result { background: var(--fiji-yellow-tint); border-color: #cfb968; }
+.vin-game-learn .vin-visible-result > span { color: #735e20; }
+.vin-outcome-win,
+.vin-result-settled .vin-outcome-win {
+  color: #205d35;
+  background: #e8f5ea;
+  border-color: #5d9b70;
+}
+.vin-outcome-loss,
+.vin-result-settled .vin-outcome-loss {
+  color: #705000;
+  background: #fff2bd;
+  border-color: #b88c16;
+}
+.vin-outcome-push { color: #695426; background: #f7f1e5; border-color: #c7b58d; }
+
+/* The three record cards use stable semantic selectors across CSS modules. */
+section[aria-label$="saved pick record"] { color: var(--fiji-ink); }
+section[aria-label$="saved pick record"] > div:first-child p,
+section[aria-label$="saved pick record"] article :is(p, span) { color: var(--fiji-muted); }
+section[aria-label$="saved pick record"] > div:first-child > a,
+section[aria-label$="saved pick record"] article h3,
+section[aria-label$="saved pick record"] article > strong,
+section[aria-label$="saved pick record"] details a { color: var(--fiji-purple); }
+section[aria-label$="saved pick record"] article {
+  background: var(--fiji-surface);
+  border-color: #d1bcde;
+}
+section[aria-label$="saved pick record"] article > b { color: var(--fiji-ink); }
+section[aria-label$="saved pick record"] > div[role=note] {
+  color: #715b22;
+  border-color: #bb9b36;
+}
+section[aria-label$="saved pick record"] > div[role=note] strong { color: #705000; }
+section[aria-label$="saved pick record"] details,
+section[aria-label$="saved pick record"] details summary { color: var(--fiji-muted); }
+section[aria-label$="saved pick record"] > p:is([role=alert], [role=status]) { color: #805d08; }
+
+/* Model, story, pledge and footer. */
+.vin-section-heading > p,
+.vin-process-number,
+.vin-process p,
+.vin-method-details,
+.vin-method-details summary,
+.vin-story-copy > p:not(.vin-kicker),
+.vin-pledge-copy,
+.vin-split small,
+.vin-ambassadors p,
+.vin-ambassadors > span:last-child,
+.vin-risk,
+.vin-footer { color: var(--fiji-muted); }
+.vin-process li + li,
+.vin-equation,
+.vin-equation small,
+.vin-ambassadors,
+.vin-footer { border-color: var(--fiji-line); }
+.vin-source-tag { background: var(--fiji-tint); border-color: #d3bce0; color: var(--fiji-purple); }
+.vin-equation { background: var(--fiji-surface); color: var(--fiji-muted); }
+.vin-equation b,
+.vin-equation small { color: #806a8b; }
+.vin-story-art {
+  background: #faf5fd;
+  border-color: #c8afd5;
+  color: var(--fiji-secondary);
+  box-shadow: 0 25px 50px #5209750c;
+}
+.vin-story-art:after { background: linear-gradient(0deg, #f6edf9 7%, transparent 85%); }
+.vin-sheet-top,
+.vin-sheet-grid > span,
+.vin-sheet-grid i { border-color: #d1bbdc; }
+.vin-sheet-grid i:before { background: #9b72b0; }
+.vin-sheet-note { color: var(--fiji-purple); }
+.vin-story-stamp { color: var(--fiji-secondary); border-color: #9f75b1; }
+.vin-pledge h2 { color: var(--fiji-purple); }
+.vin-pledge h2 > span { color: #b79bc5; }
+.vin-pledge h2 > .vin-period,
+.vin-split > span { color: var(--fiji-purple); }
+.vin-footer-brand > span { color: var(--fiji-secondary); }
+
+/* Portaled Radix controls and donation/paper-play dialogs. */
+[data-slot=dialog-overlay] { background: #25132f80; }
+[data-slot=select-content],
+[data-slot=popover-content],
+[data-slot=dropdown-menu-content],
+.filter-bubble-menu[data-slot=select-content] {
+  background: #fff;
+  color: var(--fiji-ink);
+  border-color: #cab3d7;
+  box-shadow: 0 16px 50px #3b10452b;
+}
+[data-slot=select-item],
+.filter-bubble-menu [data-slot=select-item] { color: var(--fiji-ink); }
+[data-slot=select-item][data-highlighted],
+.filter-bubble-menu [data-slot=select-item][data-highlighted] {
+  background: var(--fiji-tint);
+  color: var(--fiji-purple);
+}
+[data-slot=select-item][aria-selected=true],
+.filter-bubble-menu [data-slot=select-item][aria-selected=true] {
+  background: #eadbf2;
+  color: var(--fiji-purple);
+}
+[data-slot=select-label],
+.filter-menu-label { color: var(--fiji-muted); }
+.vin-modal,
+.vin-paper-modal {
+  background: #fff !important;
+  border-color: #c4a9d1 !important;
+  color: var(--fiji-ink);
+}
+.vin-modal-icon { background: var(--fiji-tint); }
+.vin-modal-description { color: var(--fiji-muted) !important; }
+.vin-modal [data-slot=dialog-close],
+.vin-paper-modal [data-slot=dialog-close] { color: var(--fiji-muted); }
+.vin-paper-modal [data-slot=dialog-description],
+.vin-paper-modal .muted,
+.vin-paper-modal .fine,
+.vin-paper-modal .field,
+.vin-paper-modal .field small,
+.vin-paper-modal .result-note,
+.vin-paper-modal .result-panel .result-offer { color: var(--fiji-muted); }
+.vin-paper-modal .panel { background: var(--fiji-surface); border-color: var(--fiji-line); }
+.vin-paper-modal .field input,
+.vin-paper-modal .field [data-slot=select-trigger] {
+  background: #fff;
+  color: var(--fiji-ink);
+  border-color: #9b7aaa;
+}
+.vin-paper-modal .result-panel { background: var(--fiji-tint); border-color: #c4a6d4; }
+.vin-paper-modal .result-rule { border-color: #d3bbdf; }
+.vin-paper-modal .result-panel .result-projection { color: var(--fiji-purple); }
+
+/* Existing research and table-based views share the same light palette. */
+.mast { background: #fff; }
+.brand span,
+.private,
+.edition,
+.edition span,
+footer,
+.subline,
+.at,
+.fine,
+.field,
+.field small,
+.result-note,
+.legacy-output small,
+.source-grid p,
+.source-list small,
+.finding,
+.research-nav a,
+.record-context,
+.comparison-pair span,
+.record-details p,
+.research-policy p,
+.entry-meta,
+.entry-body p,
+.prior-changes dt,
+.prior-changes dd span,
+.prior-changes small,
+.evidence-list,
+.research-method,
+.next-test p { color: var(--fiji-muted); }
+.panel,
+.vin-site .panel,
+.vin-site .empty,
+.board,
+.vin-site .board,
+.stats-grid,
+.vin-site .stats-grid,
+.record-card,
+.vin-site .record-card,
+.record-latest,
+.vin-site .record-latest {
+  background: #fff;
+  border-color: var(--fiji-line);
+}
+.vin-site .panel p,
+.vin-site .toolbar .muted,
+.vin-site .subline,
+.vin-site .fine,
+.vin-site .record-context { color: var(--fiji-muted); }
+.field input,
+.field [data-slot=select-trigger],
+.toolbar input,
+.toolbar [data-slot=select-trigger] {
+  background: #fff;
+  border-color: #9b7aaa;
+  color: var(--fiji-ink);
+  color-scheme: light;
+}
+.toolbar input[type=date] { color-scheme: light; }
+.tag { color: var(--fiji-purple); border-color: #c6aad5; background: #f5edf9; }
+.result-panel,
+.record-card-overall,
+.vin-site .record-card-overall {
+  background: linear-gradient(135deg, #f4eaf9, #fff);
+  border-color: #c1a2d0;
+}
+.result-panel > p:not(.result-note),
+.model-value,
+.model-winner,
+.result-panel .result-projection,
+.ml-line.fair,
+.edge-value,
+.lean,
+.decision-board .decision-model > .spread-line,
+.decision-board .decision-pick > .spread-line.lean { color: var(--fiji-purple); }
+.result-rule,
+.stats-grid > div,
+.vin-site .stats-grid > div,
+.record-card-status,
+.vin-site .record-card-status,
+.record-latest,
+.vin-site .record-latest { border-color: var(--fiji-line); }
+.result-panel .result-offer,
+.stats-grid :is(span, small, em),
+.vin-site .stats-grid :is(span, small),
+.vin-site .record-summary-heading p span,
+.record-summary-heading p span,
+.record-card-heading > span,
+.vin-site .record-card-heading > span,
+.record-metric-label,
+.vin-site .record-metric-label,
+.record-price-count,
+.vin-site .record-price-count,
+.record-summary-footnote,
+.vin-site .record-summary-footnote,
+.vin-site .record-card-status { color: var(--fiji-muted); }
+.record-summary-heading b,
+.vin-site .record-summary-heading b,
+.record-latest :is(b, strong),
+.vin-site .record-latest :is(b, strong),
+.market-offer,
+.score-line,
+.finding b,
+.entry-body h3,
+.prior-changes dd { color: var(--fiji-ink); }
+.vin-site .record-summary-heading a,
+.vin-site .record-card-heading h2,
+.vin-site .record-win-learn { color: var(--fiji-purple); }
+.bankroll-strip,
+.vin-site .bankroll-strip { background: var(--fiji-surface); border-color: var(--fiji-line); }
+.bankroll-strip :is(span, small),
+.vin-site .bankroll-strip :is(span, small) { color: var(--fiji-muted); }
+.bankroll-strip strong,
+.vin-site .bankroll-strip strong { color: var(--fiji-ink); }
+.board [data-slot=table-head] { background: #f3edf7; }
+[data-slot=table-head],
+.vin-site [data-slot=table-head],
+.decision-board th { color: var(--fiji-muted); }
+[data-slot=table-row],
+.vin-site [data-slot=table-cell] { border-color: var(--fiji-line); }
+.rank { color: var(--fiji-muted); }
+.rank.top { color: var(--fiji-purple); background: var(--fiji-tint); border-color: #cab0d9; }
+.green,
+.vin-site .green,
+.vin-site .vin-game-status .green,
+.record-latest .green,
+.bankroll-strip .green { color: var(--fiji-green); }
+.red,
+.vin-site .red,
+.vin-site .vin-game-status .red,
+.record-latest .red,
+.bankroll-strip .red { color: #9c3545; }
+.amber,
+.vin-site .amber,
+.news-flag { color: var(--fiji-ochre) !important; }
+.loading,
+.empty { color: var(--fiji-muted); background: var(--fiji-surface); border-color: #c7b2d2; }
+.empty p,
+.empty > svg { color: var(--fiji-muted); }
+.error { background: #fff0f2; color: #922d3f; border-color: #d5a2ad; }
+.feedback { background: var(--fiji-green-tint); color: var(--fiji-green); border-color: #a1c9ad; }
+.note-strip,
+.formula,
+.next-test,
+.update-note {
+  background: var(--fiji-surface);
+  color: var(--fiji-muted);
+  border-color: #c9afd8;
+}
+.formula { color: var(--fiji-purple); }
+.learning-entry,
+.baseball-decision { border-left-color: var(--fiji-secondary); }
+.bar-track { background: #e9dfee; }
+.latest-estimate { border-color: var(--fiji-line); color: var(--fiji-ink); }
+.latest-estimate .subline { color: var(--fiji-muted); }
+.coverage-warning { color: var(--fiji-ochre); background: #fff8e4; border-color: #c3a04a; }
+.baseball-decision p { color: var(--fiji-muted); }
+.difference-badge { color: var(--fiji-purple); background: var(--fiji-tint); border-color: #c7aad6; }
+.decision-analysis summary,
+.news-review a { color: var(--fiji-purple); }
+.news-review { border-color: var(--fiji-line); }
+.picks-section-title span,
+.picks-section-heading h3 span { color: var(--fiji-muted); }
+.limited-picks .picks-section-heading h3 { color: var(--fiji-ochre); }
+.limited-picks .decision-board { border-color: #c4ab60; }
+
+/* College experiment remains visually distinct without a dark legacy island. */
+.college-experiment-intro { background: var(--fiji-surface); border-color: #ceb7dc; }
+.college-experiment-intro p,
+.college-experiment-intro .fine,
+.college-date-control,
+.college-experiment-source,
+.college-experiment-label,
+.college-experiment-late-market { color: var(--fiji-muted); }
+.college-date-step,
+.college-refresh { background: #fff; color: var(--fiji-purple); border-color: #c5acd2; }
+.college-date-step:hover,
+.college-refresh:hover { border-color: var(--fiji-secondary); }
+.college-experiment-board,
+.college-experiment-game,
+.college-experiment-late-market { border-color: var(--fiji-line); }
+.college-experiment-game { background: #fff; }
+.college-experiment-game:nth-child(even) { background: var(--fiji-surface); }
+.college-experiment-pick { color: var(--fiji-purple); }
+.college-experiment-late-market b { color: var(--fiji-ochre); }
+.college-experiment-late-market .green { color: var(--fiji-green); }
+.college-experiment-late-market .red { color: #9c3545; }
+.college-fixed-date { color: var(--fiji-ink); }
+.college-experiment-coverage > span,
+.college-category { color: var(--fiji-purple); background: var(--fiji-tint); border-color: #c8add7; }
+.college-experiment-coverage b { color: var(--fiji-ink); }
+.college-experiment-late-summary { color: var(--fiji-ochre); background: #fff8e4; border-color: #c3a04a; }
+
+/* Period scorecards and the sport ticker are module-styled semantic regions. */
+section[aria-label="Against-the-spread results by period"] article {
+  background: var(--fiji-surface);
+  border-color: #cbb1da;
+  border-top-color: var(--fiji-purple);
+  color: var(--fiji-ink);
+}
+section[aria-label="Against-the-spread results by period"] article > strong,
+section[aria-label="Against-the-spread results by period"] article > div:first-child :is(span, h3) { color: var(--fiji-purple); }
+section[aria-label="Against-the-spread results by period"] article :is(small, p),
+section[aria-label="Against-the-spread results by period"] article > div > span { color: var(--fiji-muted); }
+section[aria-label="Against-the-spread results by period"] article > div { border-color: var(--fiji-line); }
+nav[aria-label="Results by sport"] {
+  background: linear-gradient(105deg, #f4ebf9, #fff);
+  border-color: #c8acd7;
+  border-top-color: var(--fiji-purple);
+  box-shadow: 0 12px 30px #52097508;
+}
+nav[aria-label="Results by sport"] > div:first-child > span:first-child { color: var(--fiji-purple); }
+nav[aria-label="Results by sport"] > div:first-child > span:last-child { color: var(--fiji-muted); }
+nav[aria-label="Results by sport"] > div:first-child span span { color: var(--fiji-purple); }
+nav[aria-label="Results by sport"] > div + div { scrollbar-color: #b293c2 #f3edf7; }
+nav[aria-label="Results by sport"] a { background: #fff; border-color: #d0bddb; color: var(--fiji-ink); }
+nav[aria-label="Results by sport"] a:hover { background: var(--fiji-tint); border-color: var(--fiji-secondary); }
+nav[aria-label="Results by sport"] a span:first-child { color: var(--fiji-purple); }
+nav[aria-label="Results by sport"] a span:nth-child(2) { color: var(--fiji-muted); }
+nav[aria-label="Results by sport"] a[aria-current=page] {
+  background: var(--fiji-purple);
+  border-color: var(--fiji-purple);
+  box-shadow: inset 0 0 0 1px #ffffff30;
+}
+nav[aria-label="Results by sport"] a[aria-current=page] span:first-child,
+nav[aria-label="Results by sport"] a[aria-current=page] span:nth-child(2) { color: #fff; }
+nav[aria-label="Results by sport"] a[aria-current=page] span:last-child {
+  background: #e3ceef;
+  box-shadow: 0 0 0 3px #ffffff20;
+}
+nav[aria-label="Results by sport"] a:focus-visible { outline-color: var(--fiji-secondary); }
+
+/* Saved pick history: use its unique controls and outcome attributes. */
+.workspace:has([aria-label="History sport"]) .page-heading > a { color: var(--fiji-purple); }
+.workspace:has([aria-label="History sport"]) > div:has(> label) label { color: var(--fiji-muted); }
+.workspace:has([aria-label="History sport"]) > div:has(> label) :is(select, button) {
+  background: #fff;
+  color: var(--fiji-ink);
+  border-color: #9b7aaa;
+  color-scheme: light;
+}
+.workspace:has([aria-label="History sport"]) > div:has(> div > strong) {
+  background: var(--fiji-surface);
+  border-color: #cbb3d9;
+}
+.workspace:has([aria-label="History sport"]) > div:has(> div > strong) > div { border-color: var(--fiji-line); }
+.workspace:has([aria-label="History sport"]) > div:has(> div > strong) :is(span, small) { color: var(--fiji-muted); }
+.workspace:has([aria-label="History sport"]) > div:has(> div > strong) strong { color: var(--fiji-purple); }
+.workspace:has([aria-label="History sport"]) > p:not([role]),
+.workspace:has([aria-label="History sport"]) > details { color: var(--fiji-muted); border-color: #bc9d4b; }
+.workspace:has([aria-label="History sport"]) > p[role=alert] { color: var(--fiji-ochre); }
+.workspace:has([aria-label="History sport"]) details a { color: var(--fiji-purple); }
+.workspace article:has([data-outcome]) { background: #fff; border-color: #d0bddc; }
+.workspace article:has([data-outcome]) p,
+.workspace article:has([data-outcome]) details,
+.workspace article:has([data-outcome]) details summary,
+.workspace article:has([data-outcome]) > div + div > span { color: var(--fiji-muted); }
+.workspace article:has([data-outcome]) > div:first-child > span:first-child { color: var(--fiji-purple); }
+.workspace [data-outcome] { background: #f0eaf4; color: #65536e; }
+.workspace [data-outcome=win] { background: #e9f6ed; color: var(--fiji-green); }
+.workspace [data-outcome=loss] { background: #fff3c5; color: var(--fiji-ochre); }
+
+/* Paper ledger uses its existing tokens; selectors avoid CSS-module hashes. */
+div:has(> main#ledger) {
+  --ledger-bg: #fff;
+  --ledger-surface: #faf7fc;
+  --ledger-text: #25172e;
+  --ledger-muted: #6b5b73;
+  --ledger-line: #dfd2e5;
+  --ledger-accent: #520975;
+}
+div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
+#ledger [aria-labelledby^="play-"] > div:first-child > span {
+  background: #f2eaf6;
+  border-color: #cbb7d7;
+  color: var(--fiji-purple);
+}
+#ledger button:first-child:not(:only-child) { color: #fff; }
+#ledger button:first-child:not(:only-child):hover:enabled { background: #6b218a; }
+#ledger button:not(:first-child):hover:enabled { background: var(--fiji-tint); color: var(--fiji-purple); }
+#ledger select { background: #fff; border-color: #9b7aaa; color-scheme: light; }
+#ledger [role=alert] { background: #fff3f4; color: #8f3040; border-color: #d4a6ae; }
+#ledger output { background: var(--fiji-surface); border-color: #c7add5; }
+
+/* Retained legacy filter bar, should an auxiliary route render it. */
+.board-filter-bar { background: #fffffff0; border-color: var(--fiji-line); box-shadow: 0 8px 28px #5209750b; }
+.board-filter-bar .filter-bubble,
+.board-filter-bar .filter-date,
+.board-filter-bar .filter-bubble[aria-label="Card filter"] {
+  background: #fff;
+  color: var(--fiji-purple);
+  border-color: #c6acd4;
+  box-shadow: 0 2px 5px #52097508;
+  color-scheme: light;
+}
+.board-filter-bar .filter-bubble > svg,
+.board-filter-bar .filter-bubble[aria-label="Card filter"] > svg:first-child { color: var(--fiji-secondary); }
+.board-filter-bar .filter-bubble:hover,
+.board-filter-bar .filter-date:hover { background: var(--fiji-surface); border-color: var(--fiji-secondary); }
+.board-filter-bar .filter-bubble[aria-expanded=true] { border-color: var(--fiji-purple); box-shadow: 0 0 0 3px #52097512; }
+.quick-date-pills { background: var(--fiji-surface); border-color: #d2bfdd; }
+.quick-date-pills button { color: var(--fiji-muted); }
+.quick-date-pills button:hover { background: var(--fiji-tint); color: var(--fiji-purple); }
+.quick-date-pills button[aria-pressed=true] { background: var(--fiji-purple); color: #fff; }
+.board-filter-actions button[data-slot=button] { color: var(--fiji-secondary); }
+.board-filter-actions button[data-slot=button]:hover { background: var(--fiji-tint); color: var(--fiji-purple); }
