@@ -25,7 +25,7 @@ export const fairAmericanOdds = (probability) => {
   return Math.abs(rounded) < 100 ? (rounded < 0 ? -100 : 100) : rounded;
 };
 const signedOdds = (v) => v === null ? '—' : `${v > 0 ? '+' : ''}${v}`;
-/** Estimated net dollars won/lost per $100 staked at the actual ML quote.
+/** Estimated net units won/lost per 100 units staked at the actual ML quote.
  * Keep the probability and result unrounded until presentation. The quoted
  * payout already reflects the book's price; do not remove its margin or
  * force a favorable spread pick to have positive moneyline EV. */
@@ -78,7 +78,7 @@ export function moneylineComparison(record, sport) {
   return {
     team: lines.teamShort, teamName: lines.teamName, side: lines.side,
     implied: signedOdds(implied), vegas: signedOdds(vegas),
-    evPer100, ev: displayedEV === null ? '—' : `${displayedEV > 0 ? '+' : displayedEV < 0 ? '-' : ''}$${Math.abs(displayedEV).toFixed(2)}`,
+    evPer100, ev: displayedEV === null ? '—' : `${displayedEV > 0 ? '+' : displayedEV < 0 ? '-' : ''}${Math.abs(displayedEV).toFixed(2)}u`,
     quote: vegas === null ? null : {
       provider: quote?.provider || 'Feed provider', observedAt: quote?.observedAt || null,
       providerUpdatedAt: quote?.providerUpdatedAt || null,

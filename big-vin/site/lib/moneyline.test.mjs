@@ -10,7 +10,7 @@ test('a pick-em margin is a coin flip and fair odds are -100', () => {
   assert.equal(fairAmericanOdds(0.25), 300);
 });
 
-test('ML EV uses net win/loss payoffs for $100 staked at positive and negative prices', () => {
+test('ML EV uses net win/loss payoffs for 100 units staked at positive and negative prices', () => {
   assert.equal(moneylineExpectedValue(0.6, -150), 0);
   assert.ok(Math.abs(moneylineExpectedValue(0.65, -150) - 8.333333333333334) < 1e-10);
   assert.equal(moneylineExpectedValue(0.35, 150), -12.5);
@@ -72,17 +72,17 @@ test('a positive spread edge can retain negative ML EV without changing the pick
   assert.equal(result.team, 'KC');
   assert.equal(result.side, 'home');
   assert.equal(result.vegas, '-400');
-  assert.equal(result.ev, '-$14.11');
+  assert.equal(result.ev, '-14.11u');
   assert.ok(result.evPer100 < 0);
   assert.deepEqual(game, before);
 });
 
-test('EV dollars keep their sign and normalize rounded near-zero amounts', () => {
+test('EV units keep their sign and normalize rounded near-zero amounts', () => {
   const positive = moneylineComparison({...quotedGame, market: {...quotedGame.market, homeMoneyline: 150}}, 'nfl');
-  assert.match(positive.ev, /^\+\$\d+\.\d{2}$/);
+  assert.match(positive.ev, /^\+\d+\.\d{2}u$/);
   for (const fairHomeSpread of [0, -0.00001, 0.00001]) {
     const result = moneylineComparison({...quotedGame, projection: {...quotedGame.projection, fairHomeSpread}, market: {...quotedGame.market, homeMoneyline: 100}}, 'nfl');
-    assert.equal(result.ev, '$0.00');
+    assert.equal(result.ev, '0.00u');
   }
 });
 
