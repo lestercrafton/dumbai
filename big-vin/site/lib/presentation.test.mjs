@@ -55,7 +55,7 @@ test('availability retains completed, unranked and limited-data games and distin
   assert.equal(availability.length,7);
 });
 test('result labels expose wins, losses and pushes without changing settlement', () => {
-  assert.equal(visibleOutcome({outcome:'win'}),'Win');
+  assert.equal(visibleOutcome({outcome:'win'}),'Big Vin Wins.');
   assert.equal(visibleOutcome({outcome:'loss'}),'Loss · Learn');
   assert.equal(visibleOutcome({outcome:'push'}),'Push');
   assert.equal(visibleOutcome({outcome:'pending'}),'Pending');
@@ -68,7 +68,7 @@ test('visible results still come from saved spread settlement, never an in-progr
   assert.equal(visibleOutcome(spreadDecision(record)),'Pending');
   assert.equal(spreadDecision(record).score,null);
   const completed={...record,result:{status:'completed',homeScore:21,awayScore:10}};
-  assert.equal(visibleOutcome(spreadDecision(completed)),'Win');
+  assert.equal(visibleOutcome(spreadDecision(completed)),'Big Vin Wins.');
   assert.equal(spreadDecision(completed).score,'10–21');
 });
 
