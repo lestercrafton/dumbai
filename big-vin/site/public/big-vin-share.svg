@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b0f09"/>
+  <rect x="28" y="28" width="1144" height="574" rx="28" fill="#171d13" stroke="#3b4532" stroke-width="2"/>
+  <g transform="translate(60 0)" font-family="Arial,Helvetica,sans-serif">
+    <text x="122" y="393" font-size="300" font-weight="800" letter-spacing="-64" fill="#f1f2e9">b<tspan fill="#c9ef75">v</tspan></text>
+    <circle cx="374" cy="185" r="14" fill="#c9ef75"/>
+    <text x="540" y="299" font-size="102" font-weight="700" letter-spacing="-4" fill="#f1f2e9">BIG VIN</text>
+    <text x="546" y="357" font-size="23" letter-spacing="5" fill="#c9ef75">AN INDEPENDENT EDGE.</text>
+    <text x="546" y="421" font-size="28" fill="#b7c5aa">Our line. The Vegas line.</text>
+  </g>
+</svg>
