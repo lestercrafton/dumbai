@@ -1,0 +1,22 @@
+.summary{margin:8px 0 24px;color:#dce6cf;min-width:0}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+.heading h2{font-size:17px;margin:0 0 6px;font-weight:600}
+.heading p{font-size:12px;color:#a1ad94;margin:0;line-height:1.5}
+.heading>a{font-size:12px;color:#d0ef86;min-height:44px;display:flex;align-items:center;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.card{padding:20px;border:1px solid #37432c;border-radius:9px;background:#12190f;min-width:0}
+.card h3{font-size:13px;color:#d0e7ae;margin:0 0 6px}
+.caption{color:#9dab90;font-size:12px;line-height:1.4;min-height:34px;margin:0}
+.rate{display:block;font-size:36px;font-variant-numeric:tabular-nums;margin:10px 0;color:#e6f1d9;line-height:1.1;letter-spacing:-1px}
+.score{display:block;font-size:20px;font-variant-numeric:tabular-nums;font-weight:600}
+.scoreLabel{display:block;color:#a4b296;font-size:11px;margin:5px 0 12px}
+.status{font-size:11px;color:#9aaa8b;line-height:1.5;margin:2px 0}
+.coverage{margin:12px 0 4px;border-left:2px solid #c6ba70;padding:6px 12px;color:#b6b69a;font-size:12px;line-height:1.6}
+.coverage strong{color:#e1d7a7;font-weight:600;margin-right:6px}
+.details{font-size:12px;color:#a5b395;line-height:1.7}
+.details summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:#bacba4;list-style:none;gap:8px}
+.details summary::after{content:'+';font-size:16px}.details[open] summary::after{content:'−'}
+.details p{margin:0 0 12px}.details a{color:#d0ef86;text-decoration:underline;text-underline-offset:3px}
+.warning{color:#e6d28d;font-size:12px;line-height:1.6;margin:10px 0}
+@media(max-width:600px){.heading{gap:12px;align-items:flex-start;margin-bottom:12px}.heading h2{font-size:16px}.heading p{font-size:11px}.heading>a{font-size:11px}.grid{gap:6px}.card{padding:12px 8px;border-radius:7px}.card h3{font-size:11px;line-height:1.4;min-height:30px;margin-bottom:3px}.caption{font-size:10px;min-height:30px}.rate{font-size:clamp(23px,6.5vw,32px);letter-spacing:-.8px;margin:8px 0}.score{font-size:clamp(13px,3.8vw,18px);white-space:nowrap}.scoreLabel{font-size:9px;line-height:1.5;min-height:26px;margin:5px 0 8px}.status{font-size:10px;line-height:1.5}.coverage{font-size:11px;padding:6px 10px}.details{font-size:11px}}
+@media(max-width:600px){.card h3{min-height:28px}.caption{min-height:28px}.status{font-size:11px}.scoreLabel{min-height:22px}.rate{margin:7px 0}.coverage strong{display:block;margin-bottom:2px}}

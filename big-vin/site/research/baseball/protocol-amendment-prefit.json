@@ -1,0 +1,12 @@
+{
+  "amendedAt": "2026-09-17T18:54:18.513965+00:00",
+  "reason": "Implementation clarification before any model fitting or metric inspection.",
+  "originalProtocolSha256": "792aa8d65a016c7b29422a40ee23340304d856ef9013608b333d4d21c8ca254d",
+  "clarification": "Three-day staff workload means three eligible calendar dates ending D\u22122 (D\u22124,D\u22123,D\u22122); seven-day game count similarly uses D\u22128 throughD\u22122. Yesterday remains embargoed. This specifies implementation before fitting.",
+  "additionalClarifications": [
+    "Pitching staff workload uses total prior outs/pitches because exact relief splits are unavailable. No bullpen-specific feature is inferred.",
+    "Fielding errors excluded because collector discovered conflicting fielding-error sources; no outcomes used to choose this exclusion.",
+    "Missing stat ratios remain null if any contributing game lacks numerator or denominator; train-only medians and missing indicators handle them.",
+    "All known resume/reschedule flags conservatively excluded; no target starter, final weather or attendance feature."
+  ]
+}

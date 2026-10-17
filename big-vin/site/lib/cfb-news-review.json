@@ -1,0 +1,189 @@
+{
+  "checkedAt": "2026-10-03T05:17:33Z",
+  "weekKey": "2026-09-28",
+  "sport": "cfb",
+  "method": "Read current-week X searches for all ten eligible ranked matchups through the signed-in browser, then checked dated official team notes and conference availability reports. Generic posts, older seasons and unsupported injury claims were not used. This is a dated manual review, not continuous injury monitoring.",
+  "policy": "The official saved forecasts and selections remain fixed. News flags add context; no unvalidated point deduction or retrospective line change is applied. No matching report does not prove a healthy roster.",
+  "records": [
+    {
+      "gameId": "401862787",
+      "rankAtReview": 1,
+      "status": "flag",
+      "summary": "Charlotte has used three quarterbacks, and Memphis\u2019s scouting notes say running back Chance Williams was removed from the roster. Weather also moved kickoff earlier. These are roster and conditions risks that the margin model does not include.",
+      "sources": [
+        {
+          "label": "Memphis official matchup notes",
+          "url": "https://gotigersgo.com/news/2026/9/29/football-memphis-set-to-open-american-conference-play-at-charlotte-saturday",
+          "publishedDate": "2026-09-29"
+        },
+        {
+          "label": "Memphis official kickoff update",
+          "url": "https://gotigersgo.com/news/2026/10/1/football-memphis-charlotte-kickoff-moved-to-10-am-ct-saturday",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "gameId": "401856807",
+      "rankAtReview": 2,
+      "status": "reported",
+      "summary": "Jayhawks on KCSN reports injury-related roster additions during the bye. Official matchup notes describe Isaiah Marshall and Roman Gagliano\u2019s recent play, but do not establish either team\u2019s complete game-day availability. No verified quarterback-out designation was found in the sources checked.",
+      "sources": [
+        {
+          "label": "KCSN roster report on X",
+          "url": "https://x.com/jayhawks_kcsn/status/2104905305859530888",
+          "publishedDate": "2026-09-29"
+        },
+        {
+          "label": "Kansas official game preview",
+          "url": "https://kuathletics.com/news/2026/9/28/football-jayhawks-welcome-blue-raiders-for-family-weekend-matchup",
+          "publishedDate": "2026-09-28"
+        },
+        {
+          "label": "MTSU official game preview",
+          "url": "https://goblueraiders.com/news/2026/10/2/football-blue-raiders-face-jayhawks-for-first-time-saturday",
+          "publishedDate": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "gameId": "401866432",
+      "rankAtReview": 3,
+      "status": "flag",
+      "summary": "Buffalo\u2019s official preview identifies Jason Wright as the starting quarterback after Elijah Holmes missed the second half at FIU. Wright started the next two games. This confirms a quarterback change, not a complete current injury report.",
+      "sources": [
+        {
+          "label": "Buffalo official Week 5 notes",
+          "url": "https://ubbulls.com/news/2026/9/29/untitled-story",
+          "publishedDate": "2026-09-29"
+        }
+      ]
+    },
+    {
+      "gameId": "401858473",
+      "rankAtReview": 4,
+      "status": "flag",
+      "summary": "The October 1 Big Ten update lists Iowa defensive back Tyler Brown out and Ohio State corner Jay Timmons and offensive lineman Phillip Daniels questionable. The listed quarterbacks are available in that dated update; game-day availability may change.",
+      "sources": [
+        {
+          "label": "Big Ten official availability reports",
+          "url": "https://bigten.org/sports/2026/9/10/FB_Availability_Reports.aspx",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "gameId": "401858252",
+      "rankAtReview": 5,
+      "status": "reported",
+      "summary": "WAER\u2019s current X preview reports Steve Angeli remains Syracuse\u2019s starter with Amari Odom competing for snaps. UConn\u2019s official preview discusses Kalieb Osborne\u2019s recent performance. This is a quarterback-role question; no verified quarterback-out designation was found.",
+      "sources": [
+        {
+          "label": "WAER quarterback report on X",
+          "url": "https://x.com/WAERSports/status/2106051992636576149",
+          "publishedDate": "2026-10-02"
+        },
+        {
+          "label": "UConn official game preview",
+          "url": "https://uconnhuskies.com/news/2026/10/1/football-syracuse-comes-to-the-rent-this-saturday",
+          "publishedDate": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "gameId": "401858250",
+      "rankAtReview": 6,
+      "status": "flag",
+      "summary": "Notre Dame\u2019s October 1 game notes list eight players out for this game, including offensive linemen Charles Jagusah and Chris Terek, plus receiver Quincy Porter out for the season. These absences are not included in the score-margin formula. Full UNC game-day availability remains unverified.",
+      "sources": [
+        {
+          "label": "Notre Dame official October 1 game notes",
+          "url": "https://fightingirish.com/documents/c0401295-5324-4947-9669-dd85eef35a57.pdf",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "gameId": "401858477",
+      "rankAtReview": 7,
+      "status": "flag",
+      "summary": "The October 1 Big Ten update lists Indiana running backs Sean Cuono and Lee Beebe Jr. questionable and Khobie Martin out; Rutgers running back Antwan Raymond is questionable. Quarterbacks are listed available in that dated report, not guaranteed for kickoff.",
+      "sources": [
+        {
+          "label": "Big Ten official availability reports",
+          "url": "https://bigten.org/sports/2026/9/10/FB_Availability_Reports.aspx",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "gameId": "401856705",
+      "rankAtReview": 8,
+      "status": "flag",
+      "summary": "The October 1 SEC report lists Vanderbilt quarterback Jared Curtis questionable, with Georgia running back Nate Frazier and receiver Isiah Canion questionable. A newer Tennessean X post also flags a pregame Curtis decision. Do not interpret questionable as out.",
+      "sources": [
+        {
+          "label": "SEC official availability reports",
+          "url": "https://www.secsports.com/fbreports",
+          "publishedDate": "2026-10-01"
+        },
+        {
+          "label": "Tennessean Curtis report on X",
+          "url": "https://x.com/Tennessean/status/2106138456984350920",
+          "publishedDate": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "gameId": "401860900",
+      "rankAtReview": 9,
+      "status": "flag",
+      "summary": "The October 2 Pac-12 third report lists 32 San Diego State players: 11 out, five doubtful, four questionable and 12 probable. Running back Lucky Sutton and backup quarterback Stone Saunders are out; running back Javion Kinnard is doubtful. Newspaper posts on X report a mumps outbreak, but the official report does not identify diagnoses. These availability risks are missing from the saved margin model.",
+      "sources": [
+        {
+          "label": "Pac-12 official third availability report \u00b7 Oct 2, 7:24 PM PT",
+          "url": "https://pac-12.com/news/2026/9/11/2026-football-reports.aspx",
+          "publishedDate": "2026-10-02"
+        },
+        {
+          "label": "SDSU official coach press conference",
+          "url": "https://goaztecs.com/news/2026/09/28/monday-sept-28-press-conference",
+          "publishedDate": "2026-09-28"
+        },
+        {
+          "label": "O.C. Register availability report on X",
+          "url": "https://x.com/ocregister/status/2106083936019304707",
+          "publishedDate": "2026-10-02"
+        },
+        {
+          "label": "Texas State official preview",
+          "url": "https://txst.com/news/2026/10/1/football-game-preview-txst-at-san-diego-state.aspx",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "gameId": "401860899",
+      "rankAtReview": 10,
+      "status": "flag",
+      "summary": "The October 2 Pac-12 third report lists Colorado State quarterback Hauss Hejny doubtful, corroborating the downgrade reported by James Crepea on X. The earlier team article called him a game-time decision and noted K\u2019saan Farrar\u2019s previous start. Doubtful does not mean confirmed out, and the saved model does not account for a possible quarterback change.",
+      "sources": [
+        {
+          "label": "Pac-12 official third availability report \u00b7 Oct 2, 7:03 PM PT",
+          "url": "https://pac-12.com/news/2026/9/11/2026-football-reports.aspx",
+          "publishedDate": "2026-10-02"
+        },
+        {
+          "label": "Colorado State official team update",
+          "url": "https://csurams.com/news/2026/10/2/football-setting-the-stage-spreading-the-love",
+          "publishedDate": "2026-10-02"
+        },
+        {
+          "label": "James Crepea availability update on X",
+          "url": "https://x.com/JamesCrepea/status/2105858826155307124",
+          "publishedDate": "2026-10-01"
+        }
+      ]
+    }
+  ]
+}

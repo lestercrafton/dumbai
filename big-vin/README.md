@@ -30,13 +30,13 @@ Small Actions artifacts preserve frozen daily journal bodies, retry checkpoints,
 
 Compact Statcast team/game aggregates and source receipts are included in checkpoints and checked against published coverage. Their larger individual-pitch files remain in the disposable cache and can be fetched again from the dated source URLs.
 
-Baseball's larger source/normalized data use the Actions cache. Cache loss triggers a historical rebuild from the free MLB Stats API, with season/count/date checks against migration floors and published coverage. A cold seven-day download must never replace the cumulative research history. Cold rebuilds include every season from 2024 through the current year. Baseball research retries independently, so a source failure cannot prevent the other sports from collecting and journaling results. CFB bootstrap observations preserve verified schedule group membership so omitted games can be recovered individually.
+Baseball's larger source/normalized data use the Actions cache. Cache loss triggers a historical rebuild from the public MLB Stats API, with season/count/date checks against migration floors and published coverage. A cold seven-day download must never replace the cumulative research history. Cold rebuilds include every season from 2024 through the current year. Baseball research retries independently, so a source failure cannot prevent the other sports from collecting and journaling results. CFB bootstrap observations preserve verified schedule group membership so omitted games can be recovered individually.
 
 Expired or missing checkpoints can recover the exact daily entry from the public learning log before safely repeating collection. Original forecasts, sides, odds, capture times and model versions are never overwritten. Machine-specific locks/PIDs are not carried between runners.
 
 ## Experiment rules
 
-All data sources are free. No wagers are placed. Every sport/formula/cohort is a separate hypothetical $500 bankroll. Each priced full-card pick risks 2% of its Eastern day's opening bankroll, compounded only across settled days, using original saved odds. Missing prices stay missing; retrospective fits do not become pregame predictions. Automatic results collection does not authorize changing model priors after seeing outcomes.
+The collector uses public source endpoints; this does not establish that all project data, plugins, AI or hosting are free. No wagers are placed. Every sport/formula/cohort is a separate hypothetical $500 bankroll. Each priced full-card pick risks 2% of its Eastern day's opening bankroll, compounded only across settled days, using original saved odds. Missing prices stay missing; retrospective fits do not become pregame predictions. Automatic results collection does not authorize changing model priors after seeing outcomes.
 
 ## Local verification
 
@@ -56,3 +56,7 @@ The source was extracted from the deployed Big Vin project at commit `03bcf588b4
 ## Migration verification
 
 The first GitHub-hosted run [completed successfully on September 18, 2026](https://github.com/lestercrafton/dumbai/actions/runs/35398579094): all seven sports collected with zero unresolved failures, 7,243 baseball games rebuilt from free sources, and checkpoint/cache uploads succeeded. It reused the already-published daily journal rather than duplicating it.
+
+## Website source for agents
+
+The full website source is in [site/](site/README.md); read [site/AGENTS.md](site/AGENTS.md) before editing it. It is a separate Node package, so do not replace this collector package or its scripts. Site-only changes use their own check/build workflow and do not launch a full sports/research collection. The existing public URL and hosted database stay in place. GitHub checks do not publish the Site automatically; use the Sites publication step in the agent guide.

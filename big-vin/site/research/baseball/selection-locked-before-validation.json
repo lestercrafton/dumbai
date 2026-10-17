@@ -1,0 +1,626 @@
+{
+  "lockedAt": "2026-09-17T18:56:45.233504+00:00",
+  "protocolSha256": "0c8fc88afad5a031b636bdb4894a61bb3d12e6764c89d4e35edfcee7f8de1b06",
+  "inputSha256": "405a762145a027bc4e219302e9b79fc232813a702b1835864dbb183c4c4c70e5",
+  "developmentOnly": true,
+  "selected": {
+    "spec": {
+      "id": "active-unadjusted",
+      "name": "Active September14 score ratings",
+      "family": "unchanged",
+      "window": 20,
+      "alpha": null,
+      "columns": []
+    },
+    "metrics": {
+      "games": 790,
+      "weeks": 9,
+      "mae": 3.4860844115619654,
+      "rmse": 4.4650548156817536,
+      "bias": -0.011549889407364386,
+      "winnerSignAccuracy": 0.5721518987341773
+    }
+  },
+  "candidates": [
+    {
+      "spec": {
+        "id": "active-unadjusted",
+        "name": "Active September14 score ratings",
+        "family": "unchanged",
+        "window": 20,
+        "alpha": null,
+        "columns": []
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4860844115619654,
+        "rmse": 4.4650548156817536,
+        "bias": -0.011549889407364386,
+        "winnerSignAccuracy": 0.5721518987341773
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last60-ridge1000",
+        "name": "Active + runs,last60 games,ridge1000",
+        "family": "runs",
+        "window": 60,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.493027988836094,
+        "rmse": 4.474938310711202,
+        "bias": -0.026606801893223047,
+        "winnerSignAccuracy": 0.569620253164557
+      }
+    },
+    {
+      "spec": {
+        "id": "calibration-ridge1000",
+        "name": "Active + calibration (ridge1000)",
+        "family": "calibration",
+        "window": 20,
+        "alpha": 1000,
+        "columns": [
+          0
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4948833127464285,
+        "rmse": 4.476762943246607,
+        "bias": -0.02507249702262416,
+        "winnerSignAccuracy": 0.5734177215189873
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last60-ridge1000",
+        "name": "Active + boxscore,last60 games,ridge1000",
+        "family": "boxscore",
+        "window": 60,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.495361153451293,
+        "rmse": 4.473922345234413,
+        "bias": -0.021646509103138464,
+        "winnerSignAccuracy": 0.5569620253164557
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last60-ridge100",
+        "name": "Active + runs,last60 games,ridge100",
+        "family": "runs",
+        "window": 60,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4967670142397944,
+        "rmse": 4.47687168829899,
+        "bias": -0.029418157905364024,
+        "winnerSignAccuracy": 0.5544303797468354
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last60-ridge10",
+        "name": "Active + runs,last60 games,ridge10",
+        "family": "runs",
+        "window": 60,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.497925723304783,
+        "rmse": 4.4781583654590955,
+        "bias": -0.030154086792048087,
+        "winnerSignAccuracy": 0.5569620253164557
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last20-ridge1000",
+        "name": "Active + runs,last20 games,ridge1000",
+        "family": "runs",
+        "window": 20,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4980088252364894,
+        "rmse": 4.475720314876021,
+        "bias": -0.024953058746529432,
+        "winnerSignAccuracy": 0.5708860759493671
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last20-ridge1000",
+        "name": "Active + boxscore,last20 games,ridge1000",
+        "family": "boxscore",
+        "window": 20,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4986023025452244,
+        "rmse": 4.467700299523094,
+        "bias": -0.02531410693497323,
+        "winnerSignAccuracy": 0.569620253164557
+      }
+    },
+    {
+      "spec": {
+        "id": "calibration-ridge100",
+        "name": "Active + calibration (ridge100)",
+        "family": "calibration",
+        "window": 20,
+        "alpha": 100,
+        "columns": [
+          0
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.49897888550434,
+        "rmse": 4.480349928804115,
+        "bias": -0.02581509169524873,
+        "winnerSignAccuracy": 0.5734177215189873
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last60-ridge1000",
+        "name": "Active + context,last60 games,ridge1000",
+        "family": "context",
+        "window": 60,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.499415110602791,
+        "rmse": 4.476510210179911,
+        "bias": 0.0012968420422299859,
+        "winnerSignAccuracy": 0.5582278481012658
+      }
+    },
+    {
+      "spec": {
+        "id": "calibration-ridge10",
+        "name": "Active + calibration (ridge10)",
+        "family": "calibration",
+        "window": 20,
+        "alpha": 10,
+        "columns": [
+          0
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4996116448519214,
+        "rmse": 4.4808294382054985,
+        "bias": -0.025912024122332452,
+        "winnerSignAccuracy": 0.5734177215189873
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last60-ridge100",
+        "name": "Active + boxscore,last60 games,ridge100",
+        "family": "boxscore",
+        "window": 60,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.5003406763701244,
+        "rmse": 4.475512610201343,
+        "bias": -0.024183003361899057,
+        "winnerSignAccuracy": 0.5556962025316455
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last20-ridge1000",
+        "name": "Active + context,last20 games,ridge1000",
+        "family": "context",
+        "window": 20,
+        "alpha": 1000,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.500830258747766,
+        "rmse": 4.468870846263096,
+        "bias": -0.0028904049928487503,
+        "winnerSignAccuracy": 0.5670886075949367
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last20-ridge100",
+        "name": "Active + runs,last20 games,ridge100",
+        "family": "runs",
+        "window": 20,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.502151096386581,
+        "rmse": 4.478909274845479,
+        "bias": -0.026610273900157286,
+        "winnerSignAccuracy": 0.5734177215189873
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last60-ridge10",
+        "name": "Active + boxscore,last60 games,ridge10",
+        "family": "boxscore",
+        "window": 60,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.502227852177072,
+        "rmse": 4.4773078644722615,
+        "bias": -0.024911321468809873,
+        "winnerSignAccuracy": 0.5531645569620253
+      }
+    },
+    {
+      "spec": {
+        "id": "runs-last20-ridge10",
+        "name": "Active + runs,last20 games,ridge10",
+        "family": "runs",
+        "window": 20,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.5028223899427924,
+        "rmse": 4.479446447323282,
+        "bias": -0.026899869929674407,
+        "winnerSignAccuracy": 0.5746835443037974
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last20-ridge100",
+        "name": "Active + boxscore,last20 games,ridge100",
+        "family": "boxscore",
+        "window": 20,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.502901700573204,
+        "rmse": 4.469089123066565,
+        "bias": -0.030133163093098075,
+        "winnerSignAccuracy": 0.5721518987341773
+      }
+    },
+    {
+      "spec": {
+        "id": "boxscore-last20-ridge10",
+        "name": "Active + boxscore,last20 games,ridge10",
+        "family": "boxscore",
+        "window": 20,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.503572005781128,
+        "rmse": 4.469532527542057,
+        "bias": -0.031120370590645395,
+        "winnerSignAccuracy": 0.5721518987341773
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last60-ridge100",
+        "name": "Active + context,last60 games,ridge100",
+        "family": "context",
+        "window": 60,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.5079793923095517,
+        "rmse": 4.480025087170745,
+        "bias": 0.004722076362476408,
+        "winnerSignAccuracy": 0.5556962025316455
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last20-ridge100",
+        "name": "Active + context,last20 games,ridge100",
+        "family": "context",
+        "window": 20,
+        "alpha": 100,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.5092215714913517,
+        "rmse": 4.4716467375960685,
+        "bias": -0.0006012923672178265,
+        "winnerSignAccuracy": 0.579746835443038
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last60-ridge10",
+        "name": "Active + context,last60 games,ridge10",
+        "family": "context",
+        "window": 60,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.510949463772807,
+        "rmse": 4.4823192705044255,
+        "bias": 0.004861470223839814,
+        "winnerSignAccuracy": 0.5531645569620253
+      }
+    },
+    {
+      "spec": {
+        "id": "context-last20-ridge10",
+        "name": "Active + context,last20 games,ridge10",
+        "family": "context",
+        "window": 20,
+        "alpha": 10,
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.5109561658512503,
+        "rmse": 4.472446806276039,
+        "bias": -0.00048091979429974404,
+        "winnerSignAccuracy": 0.5772151898734177
+      }
+    }
+  ]
+}

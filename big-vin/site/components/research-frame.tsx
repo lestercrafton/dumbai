@@ -1,0 +1,4 @@
+import type {ReactNode} from 'react';
+export default function ResearchFrame({active,children}:{active:'results'|'learning'|'baseball',children:ReactNode}){
+ return <main><header className="mast"><a className="brand" href="/"><b className="monogram">BV</b><div><strong>BIG VIN</strong><span>GRIND TO WIN</span></div></a><div className="private"><span className="dot"/>Every week counts</div></header><div className="workspace"><nav className="research-nav" aria-label="Big Vin pages"><a href="/">Game board</a><a href="/weekly-results" aria-current={active==='results'?'page':undefined}>Weekly results</a><a href="/learning-log" aria-current={active==='learning'?'page':undefined}>Learning log</a><a href="/baseball-research" aria-current={active==='baseball'?'page':undefined}>Baseball research</a><a href="/paper-ledger">Paper ledger</a></nav>{children}<footer>Big Vin & Stan · Independent thinking, visible assumptions, honest results.</footer></div></main>;
+}

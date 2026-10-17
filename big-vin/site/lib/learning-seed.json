@@ -1,0 +1,333 @@
+[
+  {
+    "id": "2026-10-02-cfb-limited-data-rankings-news",
+    "publishedAt": "2026-10-03T05:17:33Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-28",
+    "kind": "correction",
+    "title": "Thin-history picks leave the top rankings; saved lines stay fixed.",
+    "learned": "All ten current college games with model\u2013market differences of at least 20 points were flagged sparseSample by the rating model. Seven were technically both-rated, so the earlier ranking guard for unrated priors missed them. The incumbent history mostly contains FBS games; FCS opponents often have only one or two heavily discounted results, which the team penalty pulls toward zero. These are coverage artifacts, not a sign-convention bug. Many affected schools are FCS Division I, so school division alone is not the quality rule.",
+    "decision": "Use the model\u2019s existing less-than-five time-weighted-games flag, along with unrated priors, to classify Picks with limited data. Show them in a separate section while retaining every forecast, actual spread, ATS grade and sheet-sized bankroll result in the full card. They receive no main-card rank or Top 3, Easy 8 or Top 10 position. Keep the tuned formula and each saved forecast and pick fixed. Remove the automatically recomputed latest estimate from the game board; schedule and score refreshes continue. Put Game, Spread, Big Vin Spread, Pick and ATS Win/Loss first, with handicap and point difference displayed separately. Detailed timestamps, stakes, news and provenance live in expandable Details.",
+    "priors": [],
+    "evidence": [
+      "The September 28 week contains 114 saved projections: 58 have sparse history and 56 have sufficient history. All ten 20-plus-point discrepancies belong to the limited-data group. The old main top eight were all sparse; 42 sparse, both-rated games with spreads had bypassed the prior-only guard.",
+      "The point-sign audit passed: a home team offered +5.5 and projected to win by 5.7 has a fair model line of \u22125.7 and an 11.2-point ATS difference. A projected winner and an ATS pick can be different teams.",
+      "Current-week X searches were read for all ten eligible top picks in the signed-in browser. Official team notes and SEC/Big Ten availability reports corroborate player and roster risks. An inaccessible public X endpoint was overcome with the existing browser session. No lack of search results was treated as proof that a roster is healthy.",
+      "Material checks include Colorado State quarterback uncertainty, Buffalo\u2019s quarterback change, Vanderbilt quarterback Jared Curtis questionable, Notre Dame offensive-line absences, and San Diego State running-back uncertainty plus current press reports of an illness outbreak. Dated findings and source links appear in each reviewed game\u2019s Details.",
+      "These news findings are context for the frozen experiment. The model has no calibrated quarterback, injury or illness adjustment, and a news flag is not evidence that an entire point difference is explained. No numerical deductions or retrospective replacements were applied.",
+      "The official October 2 Pac-12 third reports confirm CSU quarterback Hauss Hejny doubtful. SDSU has 32 listed players: 11 out, five doubtful, four questionable and 12 probable; Lucky Sutton and Stone Saunders are out and Javion Kinnard doubtful. Listed players must not all be called unavailable. The official feed supplies no diagnosis, so X reports of mumps remain separately attributed."
+    ],
+    "nextTest": "Collect full pregame FCS game histories and validate an expanded-history model on later held-out weeks before activating it. Continue reviewing the highest ranked games against dated official availability and X reports. Compare full-card and limited-data results without deleting weak picks or rewriting their saved lines.",
+    "modelVersion": "cfb-weekly-tuned-2026-09-14"
+  },
+  {
+    "id": "2026-10-02-football-full-week-refresh",
+    "publishedAt": "2026-10-02T20:15:00Z",
+    "sport": "all",
+    "weekKey": "2026-09-28",
+    "kind": "correction",
+    "title": "Full football slates and current sportsbook coverage refreshed.",
+    "learned": "The personal GitHub schedule was still running, but the college board defaulted to one day and 15 upcoming college games lacked a numerical rating because one or both teams were unrated. The ESPN presentation feed also omitted late games and their sportsbook offers. Exact core schedule discovery and verified current odds recovered the omitted coverage.",
+    "decision": "Show the full college week and the full NFL week by default, including Monday night for the NFL. Save the 15 remaining college projections before kickoff using the separately flagged prior rule. Preserve the 99 earlier college forecasts and the tuned formula. Use only explicit, reciprocal current spread numbers with actual American prices, exact event/team references, and a retrieval time before kickoff; do not substitute totals or moneylines for a spread. Starting October 2, the active live college full card retains the sheet stake of 2% of the day\u2019s opening balance as a paper simulation even when total planned exposure exceeds the balance. This records no cash deposit or actual wager and does not bypass unresolved earlier results or allow negative future stakes.",
+    "priors": [],
+    "evidence": [
+      "Live API verification: 114 college projections, zero missing projections, and 112 saved sportsbook spreads for the September 28 week. Every forecast was captured before kickoff.",
+      "Cloud run 37057522696 on personal lestercrafton/dumbai completed successfully with all seven sports refreshed and zero collector failures. It captured 56 additional college sportsbook markets; the cloud test suite passed 66 checks.",
+      "NFL current week: all 16 games have saved projections and sportsbook spreads. The full-week board runs Tuesday through Monday, so Monday-night games remain with the Sunday slate.",
+      "Northwestern State at Lamar and Colgate at Harvard have no explicit current spread number in the provider response. Their model projections remain on the full board; they cannot receive a sportsbook ATS grade until a real spread is captured.",
+      "Bankroll audit: every priced final was already included. Stale unneeded playoff game placeholders inflate pending counts but have no saved price and do not change profit.",
+      "NBA games currently returned for October 3\u20134 are preseason and remain outside the existing model policy. No regular-season NBA or college-basketball games are scheduled today.",
+      "The October 3 card currently contains 106 priced games and therefore 212% simulated exposure. The prior exact-date funding rule would otherwise pause the ongoing experiment after October 2 settles.",
+      "Five exact archived playoff slots are now eligible for void settlement only after a server-fetched 404 or 410 and a separately verified completed 2\u20130 best-of-three series with matching season, teams, round, and game dates. Three MLB slots retain explicit archived Game 3 If Necessary notes. Two WNBA legacy slots use the exact audited event/opponent/date plus the verified first-round completion; no missing archived note is claimed. New forecasts preserve the provider\u2019s postseason notes for future checks. These voids are neither ATS wins nor losses.",
+      "Validation: 88 site tests and 66 cloud tests passed. NFL single-date recovery returned all 16 games including Monday night; all five real completed-series payloads passed the conservative void checks."
+    ],
+    "nextTest": "Keep the daily full refresh and hourly score checks running on GitHub. The hourly college refresh now scans the upcoming seven days as well, preserving each first valid pregame spread. Review prior-only college estimates separately after finals and verify that unneeded playoff games leave the pending count without becoming wins or losses.",
+    "modelVersion": "Sport-specific active formulas"
+  },
+  {
+    "id": "2026-10-02-cfb-prospective-unrated-priors",
+    "publishedAt": "2026-10-02T19:28:00Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-28",
+    "kind": "correction",
+    "modelVersion": "cfb-weekly-tuned-2026-09-14",
+    "title": "Unrated college teams now receive a flagged pregame prior line.",
+    "learned": "ESPN's October 1\u20133 Division I schedule contains 114 unique games across FBS and FCS groups, including three games listed in both groups. Ninety-nine had saved forecasts, while 15 October 3 games could not receive a numerical line because one or both teams had no result in the incumbent pre-cutoff training set. Ten of those games already had a sportsbook spread. The available archived FCS results include some history for many of these teams, but adding that group to the tuned model would change the incumbent ratings without a separate validation.",
+    "decision": "For future captures only, use a zero-centered team rating when the incumbent model has no completed pre-cutoff result for that team. Keep fitted ratings for observed teams, keep the tuned parameters and version, and record whether one or both teams used the prior on each saved forecast. Do not alter a previously frozen forecast or create a line after kickoff. A market spread affects the ATS comparison, not the model's projected margin.",
+    "priors": [
+      {
+        "name": "Unrated college team strength",
+        "before": "No numerical line or saved forecast",
+        "after": "Zero-centered rating prior, marked one-prior or both-prior",
+        "note": "Low evidence. This coverage rule is prospective; it does not refit the September 14 ratings or imply a validated edge."
+      }
+    ],
+    "evidence": [
+      "October 1\u20133 ESPN core groups 80 and 81: 114 unique event IDs; 99 existing saved forecasts; 15 Saturday events without a rated-team projection.",
+      "The 15 missing games are all present in the site schedule. Existing forecasts remain frozen because inserts use their original event/version ID and do not overwrite on conflict.",
+      "A zero prior can create a large apparent difference from a sportsbook spread. Rank and paper stake results from these games should be read as low-confidence exploratory measurements, not evidence of a profitable edge."
+    ],
+    "nextTest": "Save each remaining October 3 line before kickoff, verify full 114-event coverage, then compare prior-only and both-rated forecast errors and ATS outcomes separately after finals. Evaluate FCS supplemental history as a separately versioned model before changing the incumbent training population."
+  },
+  {
+    "id": "2026-09-27-cfb-ats-scoreboard",
+    "publishedAt": "2026-09-27T02:11:00Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-21",
+    "kind": "correction",
+    "modelVersion": "cfb-weekly-tuned-2026-09-14",
+    "title": "Spread results now drive the day, week, and overall percentages.",
+    "learned": "A projected-winner call and a spread pick can have different outcomes. The prior headline used winner accuracy and an error comparison limited to the originally saved lines, obscuring the archived opening-spread results. The September 26 card has 36 saved sportsbook spreads and 77 archived DraftKings opening spreads; three winner-only paper contracts have no verifiable sportsbook spread.",
+    "decision": "Show against-the-spread wins, losses, pushes, and win percentage for the selected Eastern day, week, and overall record. The percentage is wins divided by wins plus losses; pushes are excluded. Count saved and archived opening sportsbook spreads. Mark the three synthetic winner-only contracts N/A in the spread column and exclude them from the ATS percentage, while retaining them in the separately labeled paper bankroll and winner-correct column. Remove the model-versus-market error panel from the scorecard.",
+    "priors": [
+      {
+        "name": "Tuned model parameters",
+        "before": "September 14 settings",
+        "after": "September 14 settings",
+        "note": "This is a reporting correction; the model did not change"
+      }
+    ],
+    "evidence": [
+      "September 26: 116 projected games; 113 sportsbook spread selections (36 saved and 77 archived opening quotes) plus three synthetic winner-only contracts.",
+      "Spread grading uses the chosen side, its saved or opening home spread, and the verified final margin. It does not use the model's projected winner grade or the payout amount."
+    ],
+    "nextTest": "Track future college cards with a complete pregame price capture and compare their ATS percentages with this retrospective opening-line paper card."
+  },
+  {
+    "id": "2026-09-26-cfb-opening-odds-paper-ledger",
+    "publishedAt": "2026-09-27T01:39:00Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-21",
+    "kind": "correction",
+    "modelVersion": "cfb-weekly-tuned-2026-09-14",
+    "title": "All September 26 college lines now enter the paper bankroll; missed-line pricing is explicit.",
+    "learned": "The complete 116-game September 26 card has 36 forecasts saved before kickoff and 80 lines entered later after a missed run. For 77 of the 80 missed games, ESPN's archive carries a DraftKings opening point spread and American price for both sides. The other three had no verified sportsbook offer, so their projected-winner plays use an expressly synthetic pick'em contract at even money. The saved rating model was trained through September 25 and did not use September 26 scores or later market spreads to produce these margins. The model snapshot and numerical entries were made at their real late timestamps, never backdated.",
+    "decision": "Replay all 116 September 26 model picks in the simulated bankroll at 2% of that day's opening paper bankroll per game. Compare the 77 missed games with archived opening spreads and prices; use synthetic even-money winner contracts for the other three. Keep the opening-quote and synthetic assumptions distinct in the audit log. This is a 232% gross paper stake commitment across the 116-game card, not a claim that wagers were placed or that the whole slate could have been funded concurrently at those offers. Do not use the later reference spreads to choose sides, grade plays, or set payout prices. Keep the September 14 model formula unchanged.",
+    "priors": [
+      {
+        "name": "Tuned home advantage",
+        "before": "4 points",
+        "after": "4 points",
+        "note": "No model parameter was changed after seeing September 26 results"
+      }
+    ],
+    "evidence": [
+      "80 late-entered model lines: 77 complete reciprocal DraftKings opening-spread contracts from ESPN core odds, and three events without an archived sportsbook contract.",
+      "116 games x 2% of the day's opening paper bankroll = 232% gross paper stake exposure. Each game remains separately graded when its final score is verified.",
+      "The 80 numerical lines were entered September 27 at 00:38 UTC using a model captured at 00:30 UTC; 71 of their games had already kicked off by model capture. Neither September 26 finals nor later reference spreads entered that model.",
+      {
+        "label": "ESPN core archived opening odds example",
+        "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/events/401866647/competitions/401866647/odds?lang=en&region=us"
+      }
+    ],
+    "nextTest": "Capture the full card, every model line, and the available price before kickoff on future Saturdays. Compare those forward-saved bankroll results with this explicitly retrospective paper replay."
+  },
+  {
+    "id": "2026-09-26-cfb-missed-full-card",
+    "publishedAt": "2026-09-27T00:32:00Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-21",
+    "kind": "correction",
+    "modelVersion": "cfb-weekly-tuned-2026-09-14",
+    "title": "I missed the full September 26 college card; every game now has a model line in the winner record.",
+    "learned": "I failed to run and save the complete college-football card before kickoff. The saved board had 79 games, including 33 labeled no market spread. ESPN's two Division I event groups contained 116 distinct games: 37 were omitted from that board, and 10 more were priced on it but had no saved forecast. The 80 missed games now have reconstructed model margins alongside 36 genuinely saved before kickoff. The frozen rating model used 1,221 games through September 25 and never received a September 26 final score or a later market spread when producing a margin. The model was captured at 00:30 UTC September 27, after 71 of the 80 missed games had kicked off. Fifteen margins use an explicit zero-centered prior for an unrated team. These are late-entered reconstructions, not claims that the lines were saved before kickoff.",
+    "decision": "Count every one of the 80 reconstructed event IDs once in the official inclusive college winner-and-margin evaluation, for 116 of 116 September 26 Division I events including the 36 truly saved before kickoff. Preserve the true reconstruction timestamp and prior flag. Keep against-the-spread and bankroll results restricted to verified saved offers and prices. The 77 spreads found later have unverified pregame timing and do not turn these rows into priced bets. Keep the September 14 formula unchanged; do not tune it to these results.",
+    "priors": [
+      {
+        "name": "Unrated-team strength in this reconstruction",
+        "before": "No numerical projection",
+        "after": "Zero-centered prior for 15 of 80 reconstructed games",
+        "note": "Introduced for the late-entered worksheet; marked low confidence, not backdated as a pregame rule"
+      },
+      {
+        "name": "Tuned home advantage",
+        "before": "4 points",
+        "after": "4 points",
+        "note": "No parameter change from this card"
+      }
+    ],
+    "evidence": [
+      "116 distinct events: 36 saved before kickoff, 33 on the board without a displayed market spread, 37 absent from the board, and 10 priced but without a saved forecast. Of the 80 reconstructions, the model snapshot came after kickoff for 71 and before kickoff for 9; the numerical lines were entered later.",
+      "Frozen rating model: training cutoff September 26, latest included game September 25, 1,221 training games, 244 rated teams; late market spreads excluded from projection inputs.",
+      {
+        "label": "ESPN college-football event directory, group 80",
+        "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/events?dates=20260926&limit=1000&groups=80"
+      },
+      {
+        "label": "ESPN college-football event directory, group 81",
+        "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/events?dates=20260926&limit=1000&groups=81"
+      }
+    ],
+    "nextTest": "Capture the complete core event union and each model margin before the first kickoff on future college Saturdays. Continue to count this late-entered card for winner and margin accuracy, but evaluate future timestamped pregame captures separately to check whether the reconstruction behaves like a true forward test."
+  },
+  {
+    "id": "2026-09-13-cfb-home-shadow",
+    "publishedAt": "2026-09-13T17:11:56.804045Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-07",
+    "kind": "experiment",
+    "modelVersion": "ridge-v1",
+    "title": "Home field is tangled up with weak-opponent coverage.",
+    "learned": "The original college history has 241 teams, including 93 seen only as visitors and 101 with three or fewer games. Home teams won by an average 33.46 points against visitor-only opponents, versus 6.20 in other non-neutral games. Sparse opponent ratings can therefore shift some matchup strength into the home coefficient. This is a data and modeling concern, not evidence that actual home advantage is ten points.",
+    "decision": "Test a challenger that fixes home advantage at the original 2.5-point prior and refits team strengths. Do not promote it: it improved average error by 1.48 points on 623 earlier development games, but worsened error by 2.47 on 94 early-2026 games. Yesterday\u2019s outcomes were excluded from this screening.",
+    "evidence": [
+      "2025 development: fixed-home MAE 12.917; incumbent 14.396, on 623 paired games across 15 weekly blocks.",
+      "Early 2026 season: fixed-home MAE 24.706; incumbent 22.232, on 94 paired games across only two blocks. Five games with unknown teams were excluded.",
+      "A descriptive refit excluding teams never seen both home and away lowers the learned coefficient from 10.115 to 5.724. That supports the coverage concern, but is not an independent forecast test."
+    ],
+    "priors": [
+      {
+        "name": "Official CFB home prior",
+        "before": "2.5 points",
+        "after": "2.5 points",
+        "note": "Incumbent unchanged"
+      },
+      {
+        "name": "Challenger home effect",
+        "before": "Estimated from games",
+        "after": "Fixed at 2.5 points",
+        "note": "Separate shadow; refit team ratings"
+      }
+    ],
+    "nextTest": "Freeze the fixed-home challenger alongside new college forecasts beginning September 14. Make one promotion review after the 2026 regular season, no earlier than January 12, 2027, with at least eight weeks and 200 paired finals. Require at least 0.50 points lower MAE, a paired weekly 95% bootstrap interval entirely below zero, and no worse RMSE. Investigate fuller weak-opponent history as a separate future hypothesis."
+  },
+  {
+    "id": "2026-09-13-cfb-september12-results",
+    "publishedAt": "2026-09-13T17:10:50.272607Z",
+    "sport": "cfb",
+    "weekKey": "2026-09-07",
+    "kind": "review",
+    "modelVersion": "ridge-v1",
+    "title": "Saturday\u2019s college card: 23 wins, 29 losses. The market was better.",
+    "learned": "All 80 September 12 games on the saved FBS card now have final scores. The original model had enough prior data for 78 forecasts, and 52 games had an original market line and price. Those 52 selections went 23\u201329, returning \u22127.89 hypothetical units at one unit per selection. Average line error on the same 52 games was 16.31 points for Big Vin versus 11.18 for the market. Across all 78 modeled games, error was 18.93 points.",
+    "decision": "Keep this losing card visible and unchanged. Treat college football as experimental. The saved fit\u2019s 10.115-point home coefficient needs investigation: many weak visiting teams have very little history, which can distort both their ratings and the estimate of home advantage. Do not claim that changing one coefficient would have fixed Saturday after seeing its results.",
+    "priors": [
+      {
+        "name": "CFB home prior",
+        "before": "2.50 points",
+        "after": "2.50 points",
+        "note": "No prior change from this card alone"
+      },
+      {
+        "name": "CFB fitted home coefficient",
+        "before": "10.115 points",
+        "after": "Under investigation",
+        "note": "This is a learned coefficient, not the prior"
+      },
+      {
+        "name": "CFB team penalty",
+        "before": "6",
+        "after": "6",
+        "note": "Investigate shrinkage and opponent coverage"
+      }
+    ],
+    "evidence": [
+      "80/80 original FBS card event IDs matched final scores. Sacred Heart at UMass and Southern Utah at Colorado State have no original model forecast because the visiting teams were unseen.",
+      "52 original priced selections; 28 games without saved markets. Never substitute postgame prices.",
+      "The single-date college endpoint returned only 25 games. An explicit same-day date range returned all 80 original FBS games; the data adapter now uses that form.",
+      {
+        "label": "ESPN September 12 Division I finals",
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=20260912-20260912&limit=1000&groups=90"
+      }
+    ],
+    "nextTest": "Screen a fixed home-advantage challenger using only earlier dates and record the failed tests too. Investigate weak-opponent coverage and the pull toward average. Use future college cards for a new registered comparison; Saturday\u2019s observed outcomes are diagnostic evidence, not a fresh test for a formula selected afterward."
+  },
+  {
+    "id": "2026-09-13-nfl-rest-shadow",
+    "publishedAt": "2026-09-13T16:59:41.868855Z",
+    "sport": "nfl",
+    "weekKey": "2026-W01",
+    "kind": "experiment",
+    "modelVersion": "ridge-v1",
+    "title": "Test the rest adjustment before trusting it.",
+    "learned": "Removing the rest adjustment lowered average line error from 10.195 to 10.154 points across 803 games in 2018\u201320, and from 10.114 to 10.087 across 569 games in 2021\u201322. Those are small gains on development data. A robust fit that reduced the influence of large residuals performed worse in the earlier period and gave mixed results later. Neither earns a production change.",
+    "decision": "Keep Ridge v1 and all its priors. Save a rest-free challenger alongside each new NFL forecast. The 2023\u201325 historical test was not used to select this challenger. Today\u2019s 14 remaining forecasts and both model versions were archived locally before kickoff; publication followed later.",
+    "priors": [
+      {
+        "name": "Recent-game half-life",
+        "before": "120 days",
+        "after": "120 days",
+        "note": "Unchanged"
+      },
+      {
+        "name": "Team-strength prior",
+        "before": "0 points",
+        "after": "0 points",
+        "note": "Ridge penalty 6, unchanged"
+      },
+      {
+        "name": "Home-advantage prior",
+        "before": "2.00 points",
+        "after": "2.00 points",
+        "note": "Penalty 30, unchanged"
+      },
+      {
+        "name": "Rest coefficient prior",
+        "before": "0.00",
+        "after": "0.00",
+        "note": "Penalty 100, unchanged"
+      }
+    ],
+    "evidence": [
+      "2018\u201320: rest-free minus incumbent MAE \u22120.041 points; weekly bootstrap 95% interval \u22120.077 to \u22120.006. Development evidence only.",
+      "2021\u201322: difference \u22120.027 points; interval \u22120.057 to \u22120.003. Reused validation data.",
+      "Robust fit, 2018\u201320: error increased 0.068 points. Do not promote.",
+      {
+        "label": "nflverse game data",
+        "url": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv"
+      }
+    ],
+    "nextTest": "Primary paired forecasts begin NFL Week 2, 2026. Make one promotion decision after the 2026 regular season, no earlier than January 12, 2027, with at least 12 eligible weeks and 200 paired finals. Require MAE improvement of at least 0.10 points, the paired weekly bootstrap 95% interval entirely below zero, and no worse RMSE. Missing coverage delays the decision. Week 1 stays exploratory."
+  },
+  {
+    "id": "2026-09-13-nfl-opening-observations",
+    "publishedAt": "2026-09-13T16:59:41.868855Z",
+    "sport": "nfl",
+    "weekKey": "2026-W01",
+    "kind": "retained",
+    "modelVersion": "ridge-v1",
+    "title": "Two finals update the ratings, not the formula.",
+    "learned": "Seattle beat New England 13\u201310; the recovered Seattle \u22123 selection pushed. San Francisco beat the Rams 27\u20137; the recovered San Francisco +3.5 selection won. The model badly understated the San Francisco margin. Two results are too few to tell whether that miss reflects roster changes, random game variation, or a weakness in the formula.",
+    "decision": "Keep the priors unchanged. New final scores and the passage of time update fitted strengths for future forecasts: San Francisco rises about 1.82 points and the Rams fall about 1.84 compared with the September 9 fit. The original September 9 lines stay fixed in their own recovered-results record.",
+    "priors": [
+      {
+        "name": "Fitted home advantage",
+        "before": "2.057 points",
+        "after": "2.039 points",
+        "note": "Learned coefficient, not a prior change"
+      },
+      {
+        "name": "Fitted rest coefficient",
+        "before": "0.420",
+        "after": "0.426",
+        "note": "Learned coefficient, not a prior change"
+      }
+    ],
+    "evidence": [
+      "Recovered card: 1 win, 0 losses, 1 push from 2 finals; 14 games still pending at this review.",
+      "Model error 11.805 points; market 11.750 on the same two games. This is not evidence of an edge.",
+      {
+        "label": "ESPN opening-week scores",
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260909-20260915&limit=1000"
+      }
+    ],
+    "nextTest": "After the remaining Week 1 games finish, report the complete recovered card separately from the 14 forecasts archived before Sunday kickoff. Investigate large misses using dated team and game information, and keep any new hypothesis separate from the test used to evaluate it."
+  },
+  {
+    "id": "2026-09-09-nfl-baseline",
+    "publishedAt": "2026-09-13T16:59:41.868855Z",
+    "sport": "nfl",
+    "weekKey": "2023\u201325 test",
+    "kind": "review",
+    "modelVersion": "ridge-v1",
+    "title": "A transparent starting point, with the market ahead.",
+    "learned": "The original Big Vin blended several power-rating margins, compared them with the market, and ranked the biggest discrepancies. The replacement learns opponent-adjusted strengths directly from free scores. Across 855 historical NFL games, it averaged 10.352 points of error versus 9.786 for the market and 10.368 for the simple ratings baseline.",
+    "decision": "Use Ridge v1 as the measured starting point. Its 0.015-point improvement over the simple baseline is inconclusive; the weekly uncertainty interval crosses zero. Do not infer a calibrated win probability or profitability from an edge size.",
+    "evidence": [
+      "Parameters chosen on 2021\u201322; weekly retrospective evaluation on 2023\u201325.",
+      "Historical spread comparison: 411 wins, 425 losses, 19 pushes. Exact historical spread prices unavailable.",
+      "Original analysis completed September 9; this journal entry was reconstructed September 13 from that saved analysis."
+    ],
+    "nextTest": "Freeze future forecasts with model versions, source times and available prices. Grade them against verified finals and compare the same games with the market. Record unchanged decisions and failed experiments as well as improvements."
+  }
+]

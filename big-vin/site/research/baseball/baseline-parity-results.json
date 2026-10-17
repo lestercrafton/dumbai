@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-09-17T18:58:28.301Z",
+  "fixtureFile": "baseline-parity-fixtures.json",
+  "sourceModuleSha256": "42516f6acaf344f783cd8c19d78e24cf61e0f2d5885f3b28144a9ce8fa8487b9",
+  "cutoffs": [
+    {
+      "date": "2025-08-01",
+      "coefficientDifference": 1.887379141862766e-15,
+      "predictionDifference": 1.3322676295501878e-15,
+      "activeTrainingGames": 3994,
+      "ridgeV1TrainingGames": 3994,
+      "lastTrainingDate": "2025-07-30"
+    },
+    {
+      "date": "2025-09-01",
+      "coefficientDifference": 3.552713678800501e-15,
+      "predictionDifference": 2.220446049250313e-15,
+      "activeTrainingGames": 4398,
+      "ridgeV1TrainingGames": 4398,
+      "lastTrainingDate": "2025-08-30"
+    },
+    {
+      "date": "2026-04-01",
+      "coefficientDifference": 1.7763568394002505e-15,
+      "predictionDifference": 1.3322676295501878e-15,
+      "activeTrainingGames": 4792,
+      "ridgeV1TrainingGames": 4792,
+      "lastTrainingDate": "2026-03-30"
+    },
+    {
+      "date": "2026-09-01",
+      "coefficientDifference": 2.6645352591003757e-15,
+      "predictionDifference": 1.8318679906315083e-15,
+      "activeTrainingGames": 4812,
+      "ridgeV1TrainingGames": 4812,
+      "lastTrainingDate": "2026-08-30"
+    },
+    {
+      "date": "2026-09-16",
+      "coefficientDifference": 3.774758283725532e-15,
+      "predictionDifference": 1.9984014443252818e-15,
+      "activeTrainingGames": 4803,
+      "ridgeV1TrainingGames": 4803,
+      "lastTrainingDate": "2026-09-14"
+    }
+  ],
+  "maxCoefficientDifference": 3.774758283725532e-15,
+  "maxPredictionDifference": 2.220446049250313e-15,
+  "bothActiveAndRidgeV1Verified": true
+}

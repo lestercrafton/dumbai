@@ -1,0 +1,44 @@
+name: Big Vin website checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'big-vin/site/**'
+      - '.github/workflows/big-vin-site.yml'
+  pull_request:
+    paths:
+      - 'big-vin/site/**'
+      - '.github/workflows/big-vin-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: big-vin-site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: big-vin/site
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: big-vin/site/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
+# Production stays on the existing Sites Worker/D1 project. Publish via the
+# authorized Sites connector as documented in big-vin/site/AGENTS.md.
+# Collector OIDC is deliberately not granted to this read-only build job.

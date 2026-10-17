@@ -11,6 +11,7 @@ on:
   push:
     paths:
       - 'big-vin/**'
+      - '!big-vin/site/**'
       - '.github/workflows/big-vin-daily.yml'
   schedule:
     - cron: '17 7,8 * * *'

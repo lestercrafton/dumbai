@@ -1,0 +1,104 @@
+{
+  "registeredAt": "2026-09-17T18:42:26.810015+00:00",
+  "id": "mlb-lagged-form-residual-ridge-2026-09-17",
+  "status": "Registered before any feature-model fit. Explicitly retrospective; no prospective holdout claimed.",
+  "sources": "Free official MLB StatsAPI 2024\u201326 regular-season schedules plus team game logs supplied by sibling collector. No paid calls or historical odds.",
+  "baseline": {
+    "name": "Active September14 score-rating formula, same collected history",
+    "parameters": {
+      "lookbackDays": 730,
+      "halfLifeDays": 480,
+      "ratingPenalty": 12,
+      "homePenalty": 120,
+      "restPenalty": 100,
+      "homePrior": 0.4,
+      "useRest": false
+    },
+    "interpretation": "These settings were selected after2026 outcomes in earlier work. Their later-period performance is a descriptive same-period comparator, not a baseline that was historically frozen in2025."
+  },
+  "secondaryBaseline": "Original Ridge v1 MLB settings:halfLife120,penalty6,homePrior0.2,homePenalty30,lookback730,no rest. Same eligible source history and cutoffs.",
+  "dates": {
+    "sourceStart": "2024-03-01",
+    "firstLearnerRows": "2024-05-01",
+    "developmentStart": "2025-08-01",
+    "developmentEnd": "2025-09-30",
+    "validationStart": "2026-04-01",
+    "validationEnd": "2026-09-16",
+    "pastInspection": "Much ofJune\u2013September2026 was inspected in prior tuning/reviews. Later-date validation is retrospective temporal validation, not a new independent holdout."
+  },
+  "eligibility": "Regular-season completed non-tied MLB games only. Exclude known suspended/resumed games if exact time of stat availability cannot be established. Require both teams>=10 eligible prior completed games. Report every missing/unmatched/excluded game. Do not exclude games for large errors or absent prices.",
+  "chronology": {
+    "day": "UTC date of game start.",
+    "embargo": "For a target on UTC dateD, every input result/stat must come from a game with UTC start date<=D\u22122. This full-day buffer avoids ordinary overnight-completion ambiguity. Known suspension/resumption cases excluded unless availability established. No same-day doubleheader input.",
+    "baselineFit": "Daily prequential score-rating refit on the same embargoed historical rows, asOfD, no future team coefficients.",
+    "residualLabels": "Each historical target residual equals actual margin minus its own genuinely prequential active prediction, not an in-sample full-history fitted value.",
+    "residualFit": "At each Monday UTC block cutoffC, fit only historical labeled rows with target date<=C\u22122, within730 days, minimum500 eligible labels. During later validation coefficients may refit under the frozen rule using only then-past outcomes; feature family/window/penalty never retuned.",
+    "standardization": "Fit feature medians, means and standard deviations from only the same prior residual-training rows. Missing values imputed by those training medians with missingness indicators. Intercept unpenalized; other standardized coefficients ridge-penalized."
+  },
+  "features": {
+    "common": [
+      "active prequential predicted margin, allowing a fitted calibration slope correction"
+    ],
+    "runs": [
+      "home-minus-away rolling runs scored per game",
+      "away-minus-home rolling runs allowed per game"
+    ],
+    "boxscore": [
+      "home-minus-away batting hits,walks,strikeouts,home-runs per plate appearance",
+      "away-minus-home pitching hits,walks,strikeouts,home-runs allowed per recorded out"
+    ],
+    "context": [
+      "home-minus-away pitching staff workload:outs and pitches in prior3 calendar days, under the same embargo",
+      "home-minus-away prior7 calendar day game count",
+      "prior730-day venue total-run environment relative to league total runs,smoothed by100 venue games,and its interaction with active margin"
+    ],
+    "venueLimit": "This is an empirical venue run-environment proxy,not an official causal park factor. It uses only past dates; no full-season park factors.",
+    "bullpenLimit": "Use exact historical relief innings/pitches only if collector provides defensible splits. Otherwise staff workload is explicitly a proxy and never called bullpen innings. No costly inferred starter splits.",
+    "starterPolicy": "No target starter/player identity from retroactively fetched final probablePitcher or actual starter fields. No historical pregame snapshots exist here; no target starter feature.",
+    "excludedFutureFeatures": [
+      "days_until_next_game",
+      "season-end totals or future-season averages",
+      "current full-season park factors",
+      "pitch locations or strike zones with2026 definition breaks"
+    ]
+  },
+  "candidates": {
+    "unadjustedBaseline": 1,
+    "calibrationOnly": 3,
+    "families": [
+      "runs",
+      "runs+boxscore",
+      "runs+boxscore+context"
+    ],
+    "windows": [
+      20,
+      60
+    ],
+    "ridgePenalties": [
+      10,
+      100,
+      1000
+    ],
+    "total": "21 residual specifications plus the unadjusted active baseline. Calibration-only has no rolling-window duplication.",
+    "selection": "Lowest development MAE, thenRMSE,then fewer feature columns,then stable ID. Baseline participates, so no change can win. Freeze selection before scoring later-period outcomes. No post-validation reselection."
+  },
+  "metrics": {
+    "primary": "Home-minus-away run margin MAE on common eligible games",
+    "secondary": [
+      "RMSE",
+      "mean actual-minus-predicted bias",
+      "winner sign accuracy"
+    ],
+    "uncertainty": "Paired Monday-week block bootstrap of selected-minus-active MAE,5000 draws,seed20260917; exploratory intervals, preserve complete within-week pairs.",
+    "probabilities": "No probability calibration model is fit,so no Brier/confidence claims.",
+    "profit": "No ATS,units or ROI claims without original historical offers. Better sign accuracy cannot override worse primary MAE."
+  },
+  "recommendation": "Retain active model unless later MAE improves credibly with no worse RMSE and adequate paired coverage; any useful candidate may be recommended for a separate prospective shadow,not automatically activated. No new arbitrary calendar lock.",
+  "integrityChecks": [
+    "Future/same-day outcome poison must not alter earlier features or predictions",
+    "No team stats from target game or same date enter predictors",
+    "Runtime score-rating parity against actual Site module",
+    "Source IDs/hashes,dates,missingness and exclusions retained",
+    "Candidate selection artifact written before later validation metrics are computed"
+  ]
+}

@@ -1,0 +1,837 @@
+{
+  "source": {
+    "url": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+    "local_sha256": "afb530f533a36fb83344badfb877805b145f66e1d8398a15f4e560983d3feda9",
+    "retrieved_date": "2026-09-09",
+    "spread_sign": "nflverse spread_line is expected home score margin; sportsbook home spread is its negative."
+  },
+  "method": {
+    "training": "2015 onward, last 1460 days for candidate; only completed scores dated before first game of prediction week. Each team coefficient is opponent-adjusted expected points relative to league mean.",
+    "validation_seasons": [
+      2021,
+      2022
+    ],
+    "test_seasons": [
+      2023,
+      2024,
+      2025
+    ],
+    "objective": "Minimize validation MAE; choose once before evaluating test years.",
+    "candidate": "Weighted least-squares margin = home strength - away strength + fitted home advantage (0 on neutral field) + fitted clipped rest-days difference. Exponential calendar-time decay; ridge prior team strength 0, home advantage 2, rest 0. Off-season decay reduces total data weight and increases shrinkage toward priors.",
+    "baseline": "Equal-weight trailing 365-day ridge ratings, fixed 2.5 home advantage, no rest feature.",
+    "limitations": [
+      "Free historical CSV can be revised; no time-of-publication archive of individual fields was available.",
+      "Odds compared as dataset market benchmark; do not claim exact timestamp or achievable price for every record.",
+      "No injury, QB, weather or roster features. Calendar decay alone may miss offseason team changes.",
+      "Historical test years were not used to select parameters. Future seasons remain genuinely unseen.",
+      "Probability conversion is provisional; no cover probability is treated as calibrated."
+    ]
+  },
+  "validation_ranking": [
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 120,
+        "lookback_days": 1460,
+        "rating_penalty": 6,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.114268053536275,
+        "rmse": 12.997228949428376,
+        "mean_error_actual_minus_predicted": 0.6248302900965783,
+        "winner_accuracy": 0.6236749116607774
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 240,
+        "lookback_days": 1460,
+        "rating_penalty": 6,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.143255466824604,
+        "rmse": 13.0274521771018,
+        "mean_error_actual_minus_predicted": 0.8143436737734892,
+        "winner_accuracy": 0.6342756183745583
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 240,
+        "lookback_days": 1460,
+        "rating_penalty": 12,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.152251682124495,
+        "rmse": 13.069671818316207,
+        "mean_error_actual_minus_predicted": 0.8263950848710684,
+        "winner_accuracy": 0.6378091872791519
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 120,
+        "lookback_days": 1460,
+        "rating_penalty": 2,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.156820212275298,
+        "rmse": 13.024679687402928,
+        "mean_error_actual_minus_predicted": 0.5923182248382897,
+        "winner_accuracy": 0.6378091872791519
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 120,
+        "lookback_days": 1460,
+        "rating_penalty": 12,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.206073704437733,
+        "rmse": 13.125618327501384,
+        "mean_error_actual_minus_predicted": 0.6511316856270312,
+        "winner_accuracy": 0.6183745583038869
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 240,
+        "lookback_days": 1460,
+        "rating_penalty": 2,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.224382682594882,
+        "rmse": 13.082701667348067,
+        "mean_error_actual_minus_predicted": 0.8040850904572802,
+        "winner_accuracy": 0.6342756183745583
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 365,
+        "lookback_days": 1460,
+        "rating_penalty": 12,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.241586908873478,
+        "rmse": 13.137599150064027,
+        "mean_error_actual_minus_predicted": 0.8925334037826043,
+        "winner_accuracy": 0.6307420494699647
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 365,
+        "lookback_days": 1460,
+        "rating_penalty": 6,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.280908851724485,
+        "rmse": 13.142721913095764,
+        "mean_error_actual_minus_predicted": 0.8838240225301622,
+        "winner_accuracy": 0.6289752650176679
+      }
+    },
+    {
+      "config": {
+        "name": "Recency-weighted ridge",
+        "half_life_days": 365,
+        "lookback_days": 1460,
+        "rating_penalty": 2,
+        "fit_home": true,
+        "use_rest": true,
+        "fixed_home": 2.5,
+        "home_prior": 2.0,
+        "home_penalty": 30.0,
+        "rest_penalty": 100.0
+      },
+      "metrics": {
+        "games": 569,
+        "mae": 10.36877350845904,
+        "rmse": 13.205808458376692,
+        "mean_error_actual_minus_predicted": 0.8769528221629679,
+        "winner_accuracy": 0.6289752650176679
+      }
+    }
+  ],
+  "chosen_config": {
+    "name": "Recency-weighted ridge",
+    "half_life_days": 120,
+    "lookback_days": 1460,
+    "rating_penalty": 6,
+    "fit_home": true,
+    "use_rest": true,
+    "fixed_home": 2.5,
+    "home_prior": 2.0,
+    "home_penalty": 30.0,
+    "rest_penalty": 100.0
+  },
+  "baseline_config": {
+    "name": "Equal-weight rating baseline",
+    "half_life_days": null,
+    "lookback_days": 365,
+    "rating_penalty": 4.0,
+    "fit_home": false,
+    "use_rest": false,
+    "fixed_home": 2.5,
+    "home_prior": 2.0,
+    "home_penalty": 30.0,
+    "rest_penalty": 100.0
+  },
+  "test": {
+    "all_games": {
+      "candidate": {
+        "games": 855,
+        "mae": 10.35230439954015,
+        "rmse": 13.285988078419868,
+        "mean_error_actual_minus_predicted": 0.25216974420729127,
+        "winner_accuracy": 0.6217798594847775
+      },
+      "baseline": {
+        "games": 855,
+        "mae": 10.36768158952548,
+        "rmse": 13.38368468387599,
+        "mean_error_actual_minus_predicted": -0.10757069638307976,
+        "winner_accuracy": 0.6428571428571429
+      }
+    },
+    "same_games_with_market": {
+      "candidate": {
+        "games": 855,
+        "mae": 10.35230439954015,
+        "rmse": 13.285988078419868,
+        "mean_error_actual_minus_predicted": 0.25216974420729127,
+        "winner_accuracy": 0.6217798594847775
+      },
+      "baseline": {
+        "games": 855,
+        "mae": 10.36768158952548,
+        "rmse": 13.38368468387599,
+        "mean_error_actual_minus_predicted": -0.10757069638307976,
+        "winner_accuracy": 0.6428571428571429
+      },
+      "market": {
+        "games": 855,
+        "mae": 9.785964912280702,
+        "rmse": 12.718752559377302,
+        "mean_error_actual_minus_predicted": 0.8058479532163743,
+        "winner_accuracy": 0.6791569086651054
+      }
+    },
+    "by_season": {
+      "2023": {
+        "candidate": {
+          "games": 285,
+          "mae": 10.489391528212172,
+          "rmse": 13.580162868370017,
+          "mean_error_actual_minus_predicted": 0.6108668799994513,
+          "winner_accuracy": 0.6175438596491228
+        },
+        "baseline": {
+          "games": 285,
+          "mae": 10.491264111322257,
+          "rmse": 13.655198938139348,
+          "mean_error_actual_minus_predicted": 0.2889158429686716,
+          "winner_accuracy": 0.6140350877192983
+        },
+        "market": {
+          "games": 285,
+          "mae": 9.98421052631579,
+          "rmse": 13.173970880942838,
+          "mean_error_actual_minus_predicted": 1.131578947368421,
+          "winner_accuracy": 0.6736842105263158
+        }
+      },
+      "2024": {
+        "candidate": {
+          "games": 285,
+          "mae": 10.382598245218764,
+          "rmse": 13.346618841632942,
+          "mean_error_actual_minus_predicted": 0.43770217314390664,
+          "winner_accuracy": 0.6350877192982456
+        },
+        "baseline": {
+          "games": 285,
+          "mae": 10.428292081133756,
+          "rmse": 13.509056687592421,
+          "mean_error_actual_minus_predicted": -0.33077873493917564,
+          "winner_accuracy": 0.6596491228070176
+        },
+        "market": {
+          "games": 285,
+          "mae": 9.703508771929824,
+          "rmse": 12.72051113394316,
+          "mean_error_actual_minus_predicted": 0.6789473684210526,
+          "winner_accuracy": 0.7052631578947368
+        }
+      },
+      "2025": {
+        "candidate": {
+          "games": 285,
+          "mae": 10.18492342518951,
+          "rmse": 12.922823980247404,
+          "mean_error_actual_minus_predicted": -0.2920598205214846,
+          "winner_accuracy": 0.6126760563380281
+        },
+        "baseline": {
+          "games": 285,
+          "mae": 10.18348857612043,
+          "rmse": 12.9772869477215,
+          "mean_error_actual_minus_predicted": -0.2808491971787357,
+          "winner_accuracy": 0.6549295774647887
+        },
+        "market": {
+          "games": 285,
+          "mae": 9.670175438596491,
+          "rmse": 12.24479839439173,
+          "mean_error_actual_minus_predicted": 0.6070175438596491,
+          "winner_accuracy": 0.6584507042253521
+        }
+      }
+    },
+    "candidate_minus_baseline_mae": {
+      "point_estimate": -0.015377189985332657,
+      "weekly_bootstrap_95pct_interval": [
+        -0.19787890163561192,
+        0.17098932803724345
+      ],
+      "interpretation": "Negative favors candidate. An interval spanning zero does not establish a clear improvement."
+    }
+  },
+  "latest_model": {
+    "as_of": "2026-09-09",
+    "config": {
+      "name": "Recency-weighted ridge",
+      "half_life_days": 120,
+      "lookback_days": 1460,
+      "rating_penalty": 6,
+      "fit_home": true,
+      "use_rest": true,
+      "fixed_home": 2.5,
+      "home_prior": 2.0,
+      "home_penalty": 30.0,
+      "rest_penalty": 100.0
+    },
+    "training_games": 1138,
+    "effective_weighted_games": 57.42697668122691,
+    "last_training_date": "2026-02-08",
+    "home_advantage": 2.056698923130739,
+    "rest_points_per_day": 0.4199467717873828,
+    "team_ratings": {
+      "ARI": -2.5917292721698906,
+      "ATL": -0.9315873471914994,
+      "BAL": 1.1275994906005986,
+      "BUF": 2.6946805731535797,
+      "CAR": -1.6391968748181367,
+      "CHI": 0.5080194733304972,
+      "CIN": -0.988686536177237,
+      "CLE": -2.220925735081338,
+      "DAL": -1.3535410940752146,
+      "DEN": 1.4354081805277366,
+      "DET": 1.3867194123412936,
+      "GB": 0.548201074415048,
+      "HOU": 2.4871835259813198,
+      "IND": 0.4086064469621409,
+      "JAX": 2.581040015364299,
+      "KC": 0.23442647780808226,
+      "LAC": 0.27040688193689727,
+      "LAR": 3.3918963437303846,
+      "LV": -3.71523387466798,
+      "MIA": -1.604269079458598,
+      "MIN": 0.5991898654803478,
+      "NE": 2.826816548308648,
+      "NO": -1.1387289929887305,
+      "NYG": -1.1556220629968,
+      "NYJ": -4.24477298975333,
+      "PHI": 1.4034567911588731,
+      "PIT": -0.32158242299353157,
+      "SEA": 4.80060199337831,
+      "SF": 0.811972496271099,
+      "TB": -0.4118595739001093,
+      "TEN": -3.5300770340272556,
+      "WAS": -1.6684127004495088
+    },
+    "next_games": [
+      {
+        "game_id": "2026_01_NE_SEA",
+        "date": "2026-09-09",
+        "week": 1,
+        "home": "SEA",
+        "away": "NE",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 4.030484368200401,
+        "fair_home_spread": -4.030484368200401,
+        "market_home_spread": -3.0,
+        "home_edge_points": 1.0304843682004012
+      },
+      {
+        "game_id": "2026_01_SF_LA",
+        "date": "2026-09-10",
+        "week": 1,
+        "home": "LAR",
+        "away": "SF",
+        "neutral": true,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.579923847459286,
+        "fair_home_spread": -2.579923847459286,
+        "market_home_spread": -3.5,
+        "home_edge_points": -0.9200761525407142
+      },
+      {
+        "game_id": "2026_01_ARI_LAC",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "LAC",
+        "away": "ARI",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 4.918835077237526,
+        "fair_home_spread": -4.918835077237526,
+        "market_home_spread": -9.5,
+        "home_edge_points": -4.581164922762474
+      },
+      {
+        "game_id": "2026_01_ATL_PIT",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "PIT",
+        "away": "ATL",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.666703847328707,
+        "fair_home_spread": -2.666703847328707,
+        "market_home_spread": -3.5,
+        "home_edge_points": -0.8332961526712932
+      },
+      {
+        "game_id": "2026_01_BAL_IND",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "IND",
+        "away": "BAL",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 1.3377058794922811,
+        "fair_home_spread": -1.3377058794922811,
+        "market_home_spread": 3.5,
+        "home_edge_points": 4.837705879492281
+      },
+      {
+        "game_id": "2026_01_BUF_HOU",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "HOU",
+        "away": "BUF",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 1.849201875958479,
+        "fair_home_spread": -1.849201875958479,
+        "market_home_spread": 1.5,
+        "home_edge_points": 3.349201875958479
+      },
+      {
+        "game_id": "2026_01_CHI_CAR",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "CAR",
+        "away": "CHI",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": -0.09051742501789484,
+        "fair_home_spread": 0.09051742501789484,
+        "market_home_spread": 3.0,
+        "home_edge_points": 2.909482574982105
+      },
+      {
+        "game_id": "2026_01_CLE_JAX",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "JAX",
+        "away": "CLE",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 6.858664673576376,
+        "fair_home_spread": -6.858664673576376,
+        "market_home_spread": -8.5,
+        "home_edge_points": -1.641335326423624
+      },
+      {
+        "game_id": "2026_01_DAL_NYG",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "NYG",
+        "away": "DAL",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.2546179542091536,
+        "fair_home_spread": -2.2546179542091536,
+        "market_home_spread": 3.0,
+        "home_edge_points": 5.254617954209154
+      },
+      {
+        "game_id": "2026_01_GB_MIN",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "MIN",
+        "away": "GB",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.1076877141960386,
+        "fair_home_spread": -2.1076877141960386,
+        "market_home_spread": -1.5,
+        "home_edge_points": 0.6076877141960386
+      },
+      {
+        "game_id": "2026_01_MIA_LV",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "LV",
+        "away": "MIA",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": -0.054265872078643085,
+        "fair_home_spread": 0.054265872078643085,
+        "market_home_spread": -3.5,
+        "home_edge_points": -3.554265872078643
+      },
+      {
+        "game_id": "2026_01_NO_DET",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "DET",
+        "away": "NO",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 4.5821473284607634,
+        "fair_home_spread": -4.5821473284607634,
+        "market_home_spread": -7.0,
+        "home_edge_points": -2.4178526715392366
+      },
+      {
+        "game_id": "2026_01_NYJ_TEN",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "TEN",
+        "away": "NYJ",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.7713948788568135,
+        "fair_home_spread": -2.7713948788568135,
+        "market_home_spread": -1.5,
+        "home_edge_points": 1.2713948788568135
+      },
+      {
+        "game_id": "2026_01_TB_CIN",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "CIN",
+        "away": "TB",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 1.479871960853611,
+        "fair_home_spread": -1.479871960853611,
+        "market_home_spread": -3.5,
+        "home_edge_points": -2.020128039146389
+      },
+      {
+        "game_id": "2026_01_WAS_PHI",
+        "date": "2026-09-13",
+        "week": 1,
+        "home": "PHI",
+        "away": "WAS",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 5.128568414739121,
+        "fair_home_spread": -5.128568414739121,
+        "market_home_spread": -5.5,
+        "home_edge_points": -0.37143158526087916
+      },
+      {
+        "game_id": "2026_01_DEN_KC",
+        "date": "2026-09-14",
+        "week": 1,
+        "home": "KC",
+        "away": "DEN",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 0.8557172204110846,
+        "fair_home_spread": -0.8557172204110846,
+        "market_home_spread": -2.5,
+        "home_edge_points": -1.6442827795889154
+      },
+      {
+        "game_id": "2026_02_DET_BUF",
+        "date": "2026-09-17",
+        "week": 2,
+        "home": "BUF",
+        "away": "DET",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 3.3646600839430247,
+        "fair_home_spread": -3.3646600839430247,
+        "market_home_spread": -3.0,
+        "home_edge_points": 0.36466008394302474
+      },
+      {
+        "game_id": "2026_02_CAR_ATL",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "ATL",
+        "away": "CAR",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.764308450757376,
+        "fair_home_spread": -2.764308450757376,
+        "market_home_spread": -1.5,
+        "home_edge_points": 1.264308450757376
+      },
+      {
+        "game_id": "2026_02_CIN_HOU",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "HOU",
+        "away": "CIN",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 5.532568985289296,
+        "fair_home_spread": -5.532568985289296,
+        "market_home_spread": -2.5,
+        "home_edge_points": 3.032568985289296
+      },
+      {
+        "game_id": "2026_02_CLE_TB",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "TB",
+        "away": "CLE",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 3.8657650843119673,
+        "fair_home_spread": -3.8657650843119673,
+        "market_home_spread": -6.5,
+        "home_edge_points": -2.6342349156880327
+      },
+      {
+        "game_id": "2026_02_GB_NYJ",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "NYJ",
+        "away": "GB",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": -2.7362751410376394,
+        "fair_home_spread": 2.7362751410376394,
+        "market_home_spread": 5.5,
+        "home_edge_points": 2.7637248589623606
+      },
+      {
+        "game_id": "2026_02_IND_KC",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "KC",
+        "away": "IND",
+        "neutral": false,
+        "rest_diff": -1.0,
+        "predicted_home_margin": 1.4625721821892974,
+        "fair_home_spread": -1.4625721821892974,
+        "market_home_spread": -6.5,
+        "home_edge_points": -5.037427817810703
+      },
+      {
+        "game_id": "2026_02_JAX_DEN",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "DEN",
+        "away": "JAX",
+        "neutral": false,
+        "rest_diff": -1.0,
+        "predicted_home_margin": 0.49112031650679366,
+        "fair_home_spread": -0.49112031650679366,
+        "market_home_spread": -3.0,
+        "home_edge_points": -2.5088796834932063
+      },
+      {
+        "game_id": "2026_02_LV_LAC",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "LAC",
+        "away": "LV",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 6.0423396797356155,
+        "fair_home_spread": -6.0423396797356155,
+        "market_home_spread": -8.5,
+        "home_edge_points": -2.4576603202643845
+      },
+      {
+        "game_id": "2026_02_MIA_SF",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "SF",
+        "away": "MIA",
+        "neutral": false,
+        "rest_diff": 3.0,
+        "predicted_home_margin": 5.7327808142225845,
+        "fair_home_spread": -5.7327808142225845,
+        "market_home_spread": -10.5,
+        "home_edge_points": -4.7672191857774155
+      },
+      {
+        "game_id": "2026_02_MIN_CHI",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "CHI",
+        "away": "MIN",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 1.9655285309808883,
+        "fair_home_spread": -1.9655285309808883,
+        "market_home_spread": -3.0,
+        "home_edge_points": -1.0344714690191117
+      },
+      {
+        "game_id": "2026_02_NO_BAL",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "BAL",
+        "away": "NO",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 4.323027406720068,
+        "fair_home_spread": -4.323027406720068,
+        "market_home_spread": -7.5,
+        "home_edge_points": -3.176972593279932
+      },
+      {
+        "game_id": "2026_02_PHI_TEN",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "TEN",
+        "away": "PHI",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": -2.87683490205539,
+        "fair_home_spread": 2.87683490205539,
+        "market_home_spread": 5.5,
+        "home_edge_points": 2.62316509794461
+      },
+      {
+        "game_id": "2026_02_PIT_NE",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "NE",
+        "away": "PIT",
+        "neutral": false,
+        "rest_diff": 4.0,
+        "predicted_home_margin": 6.8848849815824495,
+        "fair_home_spread": -6.8848849815824495,
+        "market_home_spread": -4.5,
+        "home_edge_points": 2.3848849815824495
+      },
+      {
+        "game_id": "2026_02_SEA_ARI",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "ARI",
+        "away": "SEA",
+        "neutral": false,
+        "rest_diff": -4.0,
+        "predicted_home_margin": -7.015419429566993,
+        "fair_home_spread": 7.015419429566993,
+        "market_home_spread": 10.0,
+        "home_edge_points": 2.984580570433007
+      },
+      {
+        "game_id": "2026_02_WAS_DAL",
+        "date": "2026-09-20",
+        "week": 2,
+        "home": "DAL",
+        "away": "WAS",
+        "neutral": false,
+        "rest_diff": 0.0,
+        "predicted_home_margin": 2.371570529505033,
+        "fair_home_spread": -2.371570529505033,
+        "market_home_spread": -4.5,
+        "home_edge_points": -2.128429470494967
+      },
+      {
+        "game_id": "2026_02_NYG_LA",
+        "date": "2026-09-21",
+        "week": 2,
+        "home": "LAR",
+        "away": "NYG",
+        "neutral": false,
+        "rest_diff": 3.0,
+        "predicted_home_margin": 7.864057645220072,
+        "fair_home_spread": -7.864057645220072,
+        "market_home_spread": -9.5,
+        "home_edge_points": -1.635942354779928
+      }
+    ]
+  }
+}

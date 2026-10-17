@@ -11,4 +11,6 @@ A complete original turn-based adventure starring Oshn and Isha, with painted wo
 
 [Live lines and results](https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/) · [Runner and schedule](big-vin/README.md) · [GitHub Actions](https://github.com/lestercrafton/dumbai/actions/workflows/big-vin-daily.yml)
 
-Daily all-sports collection and weekly results reviews on GitHub-hosted machines, using free data and the separate bankroll formula for each sport and model.
+Daily all-sports collection and weekly results reviews on GitHub-hosted machines, using public source endpoints and the separate bankroll formula for each sport and model.
+
+Website agents: edit [big-vin/site/](big-vin/site/README.md) and follow its [agent guide](big-vin/site/AGENTS.md). The current [public Big Vin link](https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/) remains the live address.

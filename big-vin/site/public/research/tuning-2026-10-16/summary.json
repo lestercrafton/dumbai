@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-10-16T20:36:19.328Z",
+  "reports": {
+    "nfl": {
+      "sport": "nfl",
+      "decision": "activate-new-version",
+      "sample": "64 graded priced saved forecasts · 2026-10-16 to 2026-09-20",
+      "candidates": 20,
+      "baselineParams": {
+        "lookbackDays": 1460,
+        "halfLifeDays": 480,
+        "ratingPenalty": 1,
+        "homePenalty": 120,
+        "restPenalty": 100,
+        "homePrior": 0.5,
+        "useRest": true
+      },
+      "baseline": {
+        "games": 64,
+        "wins": 31,
+        "losses": 31,
+        "pushes": 2,
+        "netUnits": -2.788754431229179,
+        "roi": -0.04357428798795592,
+        "mae": 9.606984815008643,
+        "rmse": 12.340816617478835
+      },
+      "selectedParams": {
+        "lookbackDays": 1460,
+        "halfLifeDays": 120,
+        "ratingPenalty": 6,
+        "homePenalty": 120,
+        "restPenalty": 100,
+        "homePrior": 0.5,
+        "useRest": true
+      },
+      "selected": {
+        "games": 64,
+        "wins": 38,
+        "losses": 24,
+        "pushes": 2,
+        "netUnits": 10.674875904523912,
+        "roi": 0.16679493600818612,
+        "mae": 9.193990840407624,
+        "rmse": 12.15722468745757
+      },
+      "sigma": 12.340816617478835,
+      "method": "Refit at each saved trainingCutoff on seed history plus finals from saved records before that cutoff (fitRatings only uses pre-cutoff games). Candidate side graded at the original saved price; opposite-side prices were not saved. Neutral-site flags and NFL rest differences for target games were unavailable in saved records and treated as home/0. Hindsight selection: future games are the test."
+    },
+    "cfb": {
+      "sport": "cfb",
+      "decision": "activate-new-version",
+      "sample": "367 graded priced saved forecasts · 2026-10-15 to 2026-09-19",
+      "candidates": 25,
+      "baselineParams": {
+        "halfLifeDays": 180,
+        "ratingPenalty": 9,
+        "lookbackDays": 1460,
+        "homePrior": 4,
+        "homePenalty": 30,
+        "fixedHomeAdvantage": 4,
+        "useRest": false
+      },
+      "baseline": {
+        "games": 367,
+        "wins": 202,
+        "losses": 161,
+        "pushes": 4,
+        "netUnits": 21.954359340657746,
+        "roi": 0.05982114261759604,
+        "mae": 14.688854041992416,
+        "rmse": 19.307176791957037
+      },
+      "selectedParams": {
+        "halfLifeDays": 180,
+        "ratingPenalty": 3,
+        "lookbackDays": 1460,
+        "homePrior": 4,
+        "homePenalty": 30,
+        "fixedHomeAdvantage": 4,
+        "useRest": false
+      },
+      "selected": {
+        "games": 367,
+        "wins": 208,
+        "losses": 155,
+        "pushes": 4,
+        "netUnits": 33.76509719903825,
+        "roi": 0.092002989643156,
+        "mae": 13.720121917915138,
+        "rmse": 18.093800043562947
+      },
+      "sigma": 19.307176791957037,
+      "method": "Refit at each saved trainingCutoff on seed history plus finals from saved records before that cutoff (fitRatings only uses pre-cutoff games). Candidate side graded at the original saved price; opposite-side prices were not saved. Neutral-site flags and NFL rest differences for target games were unavailable in saved records and treated as home/0. Hindsight selection: future games are the test."
+    },
+    "nba": {
+      "sport": "nba",
+      "decision": "retain",
+      "reason": "Only 0 graded priced saved forecasts; too few to tune."
+    },
+    "wnba": {
+      "sport": "wnba",
+      "decision": "activate-new-version",
+      "sample": "43 graded priced saved forecasts · 2026-10-09 to 2026-09-20",
+      "candidates": 16,
+      "baselineParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 120,
+        "ratingPenalty": 6,
+        "homePenalty": 30,
+        "restPenalty": 100,
+        "homePrior": 2,
+        "useRest": false
+      },
+      "baseline": {
+        "games": 43,
+        "wins": 25,
+        "losses": 18,
+        "pushes": 0,
+        "netUnits": 4.558786848147024,
+        "roi": 0.10601829879411684,
+        "mae": 10.650981591912503,
+        "rmse": 13.25773417044317
+      },
+      "selectedParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 240,
+        "ratingPenalty": 3,
+        "homePenalty": 30,
+        "restPenalty": 100,
+        "homePrior": 2,
+        "useRest": false
+      },
+      "selected": {
+        "games": 43,
+        "wins": 27,
+        "losses": 16,
+        "pushes": 0,
+        "netUnits": 8.46354875290893,
+        "roi": 0.19682671518392858,
+        "mae": 10.53702608044778,
+        "rmse": 13.214779004821636
+      },
+      "sigma": 13.25773417044317,
+      "method": "Refit at each saved trainingCutoff on seed history plus finals from saved records before that cutoff (fitRatings only uses pre-cutoff games). Candidate side graded at the original saved price; opposite-side prices were not saved. Neutral-site flags and NFL rest differences for target games were unavailable in saved records and treated as home/0. Hindsight selection: future games are the test."
+    },
+    "cbb": {
+      "sport": "cbb",
+      "decision": "retain",
+      "reason": "Only 0 graded priced saved forecasts; too few to tune."
+    },
+    "nhl": {
+      "sport": "nhl",
+      "decision": "retain-current",
+      "sample": "118 graded priced saved forecasts · 2026-10-12 to 2026-10-03",
+      "candidates": 16,
+      "baselineParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 120,
+        "ratingPenalty": 6,
+        "homePenalty": 30,
+        "restPenalty": 100,
+        "homePrior": 0.2,
+        "useRest": false
+      },
+      "baseline": {
+        "games": 118,
+        "wins": 78,
+        "losses": 40,
+        "pushes": 0,
+        "netUnits": 0.5876280993853358,
+        "roi": 0.004979899147333354,
+        "mae": 2.1573790519829807,
+        "rmse": 2.6182139047963027
+      },
+      "selectedParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 120,
+        "ratingPenalty": 6,
+        "homePenalty": 30,
+        "restPenalty": 100,
+        "homePrior": 0.2,
+        "useRest": false
+      },
+      "selected": {
+        "games": 118,
+        "wins": 78,
+        "losses": 40,
+        "pushes": 0,
+        "netUnits": 0.5876280993853358,
+        "roi": 0.004979899147333354,
+        "mae": 2.1573790519829807,
+        "rmse": 2.6182139047963027
+      },
+      "sigma": 2.6182139047963027,
+      "method": "Refit at each saved trainingCutoff on seed history plus finals from saved records before that cutoff (fitRatings only uses pre-cutoff games). Candidate side graded at the original saved price; opposite-side prices were not saved. Neutral-site flags and NFL rest differences for target games were unavailable in saved records and treated as home/0. Hindsight selection: future games are the test."
+    },
+    "mlb": {
+      "sport": "mlb",
+      "decision": "retain-current",
+      "sample": "208 graded priced saved forecasts · 2026-10-15 to 2026-09-20",
+      "candidates": 16,
+      "baselineParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 480,
+        "ratingPenalty": 12,
+        "homePenalty": 120,
+        "restPenalty": 100,
+        "homePrior": 0.4,
+        "useRest": false
+      },
+      "baseline": {
+        "games": 208,
+        "wins": 121,
+        "losses": 87,
+        "pushes": 0,
+        "netUnits": -8.755908766910991,
+        "roi": -0.04209571522553361,
+        "mae": 3.0768521623349665,
+        "rmse": 3.803918109745105
+      },
+      "selectedParams": {
+        "lookbackDays": 730,
+        "halfLifeDays": 480,
+        "ratingPenalty": 3,
+        "homePenalty": 120,
+        "restPenalty": 100,
+        "homePrior": 0.4,
+        "useRest": false
+      },
+      "selected": {
+        "games": 208,
+        "wins": 122,
+        "losses": 86,
+        "pushes": 0,
+        "netUnits": -7.570451446823761,
+        "roi": -0.0363964011866527,
+        "mae": 3.072011048498193,
+        "rmse": 3.7989663558788282
+      },
+      "sigma": 3.803918109745105,
+      "method": "Refit at each saved trainingCutoff on seed history plus finals from saved records before that cutoff (fitRatings only uses pre-cutoff games). Candidate side graded at the original saved price; opposite-side prices were not saved. Neutral-site flags and NFL rest differences for target games were unavailable in saved records and treated as home/0. Hindsight selection: future games are the test.",
+      "reason": "Best tested candidate still lost money in hindsight (-7.57u vs -8.76u baseline on 208 games). No change made; chasing a losing grid winner would not be an improvement claim."
+    }
+  }
+}

@@ -1,0 +1,932 @@
+{
+  "createdAt": "2026-09-17T18:56:52.005978+00:00",
+  "protocol": {
+    "registeredAt": "2026-09-17T18:42:26.810015+00:00",
+    "id": "mlb-lagged-form-residual-ridge-2026-09-17",
+    "status": "Registered before any feature-model fit. Explicitly retrospective; no prospective holdout claimed.",
+    "sources": "Free official MLB StatsAPI 2024\u201326 regular-season schedules plus team game logs supplied by sibling collector. No paid calls or historical odds.",
+    "baseline": {
+      "name": "Active September14 score-rating formula, same collected history",
+      "parameters": {
+        "lookbackDays": 730,
+        "halfLifeDays": 480,
+        "ratingPenalty": 12,
+        "homePenalty": 120,
+        "restPenalty": 100,
+        "homePrior": 0.4,
+        "useRest": false
+      },
+      "interpretation": "These settings were selected after2026 outcomes in earlier work. Their later-period performance is a descriptive same-period comparator, not a baseline that was historically frozen in2025."
+    },
+    "secondaryBaseline": "Original Ridge v1 MLB settings:halfLife120,penalty6,homePrior0.2,homePenalty30,lookback730,no rest. Same eligible source history and cutoffs.",
+    "dates": {
+      "sourceStart": "2024-03-01",
+      "firstLearnerRows": "2024-05-01",
+      "developmentStart": "2025-08-01",
+      "developmentEnd": "2025-09-30",
+      "validationStart": "2026-04-01",
+      "validationEnd": "2026-09-16",
+      "pastInspection": "Much ofJune\u2013September2026 was inspected in prior tuning/reviews. Later-date validation is retrospective temporal validation, not a new independent holdout."
+    },
+    "eligibility": "Regular-season completed non-tied MLB games only. Exclude known suspended/resumed games if exact time of stat availability cannot be established. Require both teams>=10 eligible prior completed games. Report every missing/unmatched/excluded game. Do not exclude games for large errors or absent prices.",
+    "chronology": {
+      "day": "UTC date of game start.",
+      "embargo": "For a target on UTC dateD, every input result/stat must come from a game with UTC start date<=D\u22122. This full-day buffer avoids ordinary overnight-completion ambiguity. Known suspension/resumption cases excluded unless availability established. No same-day doubleheader input.",
+      "baselineFit": "Daily prequential score-rating refit on the same embargoed historical rows, asOfD, no future team coefficients.",
+      "residualLabels": "Each historical target residual equals actual margin minus its own genuinely prequential active prediction, not an in-sample full-history fitted value.",
+      "residualFit": "At each Monday UTC block cutoffC, fit only historical labeled rows with target date<=C\u22122, within730 days, minimum500 eligible labels. During later validation coefficients may refit under the frozen rule using only then-past outcomes; feature family/window/penalty never retuned.",
+      "standardization": "Fit feature medians, means and standard deviations from only the same prior residual-training rows. Missing values imputed by those training medians with missingness indicators. Intercept unpenalized; other standardized coefficients ridge-penalized.",
+      "workloadWindowClarification": "Three-day staff workload means three eligible calendar dates ending D\u22122 (D\u22124,D\u22123,D\u22122); seven-day game count similarly uses D\u22128 throughD\u22122. Yesterday remains embargoed. This specifies implementation before fitting."
+    },
+    "features": {
+      "common": [
+        "active prequential predicted margin, allowing a fitted calibration slope correction"
+      ],
+      "runs": [
+        "home-minus-away rolling runs scored per game",
+        "away-minus-home rolling runs allowed per game"
+      ],
+      "boxscore": [
+        "home-minus-away batting hits,walks,strikeouts,home-runs per plate appearance",
+        "away-minus-home pitching hits,walks,strikeouts,home-runs allowed per recorded out"
+      ],
+      "context": [
+        "home-minus-away pitching staff workload:outs and pitches in prior3 calendar days, under the same embargo",
+        "home-minus-away prior7 calendar day game count",
+        "prior730-day venue total-run environment relative to league total runs,smoothed by100 venue games,and its interaction with active margin"
+      ],
+      "venueLimit": "This is an empirical venue run-environment proxy,not an official causal park factor. It uses only past dates; no full-season park factors.",
+      "bullpenLimit": "Use exact historical relief innings/pitches only if collector provides defensible splits. Otherwise staff workload is explicitly a proxy and never called bullpen innings. No costly inferred starter splits.",
+      "starterPolicy": "No target starter/player identity from retroactively fetched final probablePitcher or actual starter fields. No historical pregame snapshots exist here; no target starter feature.",
+      "excludedFutureFeatures": [
+        "days_until_next_game",
+        "season-end totals or future-season averages",
+        "current full-season park factors",
+        "pitch locations or strike zones with2026 definition breaks"
+      ]
+    },
+    "candidates": {
+      "unadjustedBaseline": 1,
+      "calibrationOnly": 3,
+      "families": [
+        "runs",
+        "runs+boxscore",
+        "runs+boxscore+context"
+      ],
+      "windows": [
+        20,
+        60
+      ],
+      "ridgePenalties": [
+        10,
+        100,
+        1000
+      ],
+      "total": "21 residual specifications plus the unadjusted active baseline. Calibration-only has no rolling-window duplication.",
+      "selection": "Lowest development MAE, thenRMSE,then fewer feature columns,then stable ID. Baseline participates, so no change can win. Freeze selection before scoring later-period outcomes. No post-validation reselection."
+    },
+    "metrics": {
+      "primary": "Home-minus-away run margin MAE on common eligible games",
+      "secondary": [
+        "RMSE",
+        "mean actual-minus-predicted bias",
+        "winner sign accuracy"
+      ],
+      "uncertainty": "Paired Monday-week block bootstrap of selected-minus-active MAE,5000 draws,seed20260917; exploratory intervals, preserve complete within-week pairs.",
+      "probabilities": "No probability calibration model is fit,so no Brier/confidence claims.",
+      "profit": "No ATS,units or ROI claims without original historical offers. Better sign accuracy cannot override worse primary MAE."
+    },
+    "recommendation": "Retain active model unless later MAE improves credibly with no worse RMSE and adequate paired coverage; any useful candidate may be recommended for a separate prospective shadow,not automatically activated. No new arbitrary calendar lock.",
+    "integrityChecks": [
+      "Future/same-day outcome poison must not alter earlier features or predictions",
+      "No team stats from target game or same date enter predictors",
+      "Runtime score-rating parity against actual Site module",
+      "Source IDs/hashes,dates,missingness and exclusions retained",
+      "Candidate selection artifact written before later validation metrics are computed"
+    ],
+    "prefitAmendment": {
+      "amendedAt": "2026-09-17T18:54:18.513965+00:00",
+      "file": "protocol-amendment-prefit.json",
+      "sha256": "9a61e993f3d850fa5cefabb30a424b15838c39e8e323f37471c80894d37c0aa2"
+    }
+  },
+  "protocolSha256": "0c8fc88afad5a031b636bdb4894a61bb3d12e6764c89d4e35edfcee7f8de1b06",
+  "sources": {
+    "file": "games.jsonl (local research archive)",
+    "sha256": "db29e503407eec169f95894ec3285ef72f972490795edc8e15b54247b4636e5b",
+    "sourceRows": 7234,
+    "perSeason": {
+      "2024": 2472,
+      "2025": 2477,
+      "2026": 2285
+    },
+    "sources": [
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2024&sportIds=1&gameType=R&startDate=2024-01-01&endDate=2024-12-31&limit=10000&offset=0",
+        "sha256": "e16550b5b7fc9e746d9aa4e40e999ad048fee18f5ac8d4ae618f853e14e0168e",
+        "fetchedAt": "2026-09-17T18:48:03.299071Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=2024-01-01&endDate=2024-12-31&gameTypes=R,F,D,L,W&hydrate=team,probablePitcher,linescore,decisions,gameInfo,venue,weather",
+        "sha256": "5b1796ee9c6ff805486663d7fddb24015535e6123761bf67eefb22103fdcc0c5",
+        "fetchedAt": "2026-09-17T18:47:55.385553Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2024&sportIds=1&gameType=F&startDate=2024-01-01&endDate=2024-12-31&limit=10000&offset=0",
+        "sha256": "0f1a0981566bb9bdf8cbacc65ec19a5bb6e544c51d6b8704a084fca72ce1f207",
+        "fetchedAt": "2026-09-17T18:48:04.636080Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2024&sportIds=1&gameType=D&startDate=2024-01-01&endDate=2024-12-31&limit=10000&offset=0",
+        "sha256": "ba7904e006d35378aa164fcb96837fe06d2c20751c656ab1b8b5c6bbe42bc2e7",
+        "fetchedAt": "2026-09-17T18:48:05.283074Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2024&sportIds=1&gameType=L&startDate=2024-01-01&endDate=2024-12-31&limit=10000&offset=0",
+        "sha256": "f15d4d5c0aaf7eb7a4c5c1723002fd3769d2a20875ea43c16374e9d4aded8c05",
+        "fetchedAt": "2026-09-17T18:48:06.210942Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2024&sportIds=1&gameType=W&startDate=2024-01-01&endDate=2024-12-31&limit=10000&offset=0",
+        "sha256": "5938b776149f22133184e21dc8aa23d0deeacea20f47ac18982f1add122965c0",
+        "fetchedAt": "2026-09-17T18:48:06.777343Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2025&sportIds=1&gameType=R&startDate=2025-01-01&endDate=2025-12-31&limit=10000&offset=0",
+        "sha256": "663d26f281289cbc2d6183bc35b974493cf7006d7ce71a84c99dd9824fffe55b",
+        "fetchedAt": "2026-09-17T18:52:07.814714Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=2025-01-01&endDate=2025-12-31&gameTypes=R,F,D,L,W&hydrate=team,probablePitcher,linescore,decisions,gameInfo,venue,weather",
+        "sha256": "af76a032a5bb9f497d4155ab80d64dc65d4760e8958ef1bbf4dfa9340e9469b2",
+        "fetchedAt": "2026-09-17T18:51:54.351176Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2025&sportIds=1&gameType=F&startDate=2025-01-01&endDate=2025-12-31&limit=10000&offset=0",
+        "sha256": "b9098b45f2fb3a827a9ec026827d857c2d0fa3c2e8f6aa18b96baec407b7c0a3",
+        "fetchedAt": "2026-09-17T18:52:09.313483Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2025&sportIds=1&gameType=D&startDate=2025-01-01&endDate=2025-12-31&limit=10000&offset=0",
+        "sha256": "cefcddfbf5187e965cc4b735fc7845b8eba2975bb4cab95cc5b71ea08b9d48e5",
+        "fetchedAt": "2026-09-17T18:52:10.027296Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2025&sportIds=1&gameType=L&startDate=2025-01-01&endDate=2025-12-31&limit=10000&offset=0",
+        "sha256": "d99da0b4407869fde7ee32db5d27d0bfb6bead60ffb24705bee8ae44d618efee",
+        "fetchedAt": "2026-09-17T18:52:10.739771Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2025&sportIds=1&gameType=W&startDate=2025-01-01&endDate=2025-12-31&limit=10000&offset=0",
+        "sha256": "e8da602732a17ac2cb02b8376bbe7b52ce914bf162313e18fb66a351d494e6d0",
+        "fetchedAt": "2026-09-17T18:52:11.221897Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/teams/stats?stats=gameLog&group=hitting,pitching,fielding&season=2026&sportIds=1&gameType=R&startDate=2026-01-01&endDate=2026-09-16&limit=10000&offset=0",
+        "sha256": "388ef664e52e50e0ff703aa0472a57448c245d4672dbc532154383826b1dc305",
+        "fetchedAt": "2026-09-17T18:52:54.886458Z"
+      },
+      {
+        "url": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=2026-01-01&endDate=2026-09-16&gameTypes=R,F,D,L,W&hydrate=team,probablePitcher,linescore,decisions,gameInfo,venue,weather",
+        "sha256": "ccdbdb4b5ef6b6d11cfb1a326a8573d0b9f8e859e1070d58aada4b1edb4ace52",
+        "fetchedAt": "2026-09-17T18:52:35.904747Z"
+      }
+    ],
+    "timing": "Retrospective final data; UTC full-day embargo and conservative flagged-game exclusions. Original officialDate retained for auditing but chronology uses startTime UTC date.",
+    "parkPolicy": "Venue ID as recorded in official historical schedule; not a timestamped pregame capture. Every rating/rolling run-environment estimate uses only older results.",
+    "neutralPolicy": "Official designated home/away role used, matching current MLB score-rating feed behavior; no inferred neutral adjustment.",
+    "excludedFields": [
+      "target actual/final starter or probablePitcher",
+      "final weather",
+      "attendance",
+      "fielding errors",
+      "future-next-game fields",
+      "season totals"
+    ]
+  },
+  "coverage": {
+    "sourceGames": 7234,
+    "eligibleHistoricalGames": 7041,
+    "featureRows": 6606,
+    "sourceDateRange": [
+      "2024-03-20",
+      "2026-09-16"
+    ],
+    "sourceExclusions": {
+      "Suspended/resumed/rescheduled metadata:conservative availability exclusion.": 98,
+      "Postseason/non-regular season excluded by protocol.": 90,
+      "Outside registered UTC source/target dates.": 5
+    },
+    "warmupExclusions": 0,
+    "targetStatMissingnessCounts60GameWindow": {
+      "active_margin": 0,
+      "runs_for_diff_60": 0,
+      "runs_allowed_advantage_60": 0,
+      "batting_hits_rate_diff_60": 0,
+      "batting_baseOnBalls_rate_diff_60": 0,
+      "batting_strikeOuts_rate_diff_60": 0,
+      "batting_homeRuns_rate_diff_60": 0,
+      "pitching_hits_rate_advantage_60": 0,
+      "pitching_baseOnBalls_rate_advantage_60": 0,
+      "pitching_strikeOuts_rate_advantage_60": 0,
+      "pitching_homeRuns_rate_advantage_60": 0,
+      "staff_outs_prior3_diff": 0,
+      "staff_pitches_prior3_diff": 0,
+      "games_prior7_diff": 0,
+      "venue_run_environment": 0,
+      "venue_environment_x_active": 0
+    },
+    "starterFeatures": 0,
+    "exactBullpenFeatures": 0,
+    "workloadInterpretation": "Lagged total pitching-staff workload proxy; exact bullpen workload unavailable."
+  },
+  "development": {
+    "range": [
+      "2025-08-01",
+      "2025-09-30"
+    ],
+    "grid": [
+      {
+        "spec": {
+          "id": "active-unadjusted",
+          "name": "Active September14 score ratings",
+          "family": "unchanged",
+          "window": 20,
+          "alpha": null,
+          "columns": []
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4860844115619654,
+          "rmse": 4.4650548156817536,
+          "bias": -0.011549889407364386,
+          "winnerSignAccuracy": 0.5721518987341773
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last60-ridge1000",
+          "name": "Active + runs,last60 games,ridge1000",
+          "family": "runs",
+          "window": 60,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.493027988836094,
+          "rmse": 4.474938310711202,
+          "bias": -0.026606801893223047,
+          "winnerSignAccuracy": 0.569620253164557
+        }
+      },
+      {
+        "spec": {
+          "id": "calibration-ridge1000",
+          "name": "Active + calibration (ridge1000)",
+          "family": "calibration",
+          "window": 20,
+          "alpha": 1000,
+          "columns": [
+            0
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4948833127464285,
+          "rmse": 4.476762943246607,
+          "bias": -0.02507249702262416,
+          "winnerSignAccuracy": 0.5734177215189873
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last60-ridge1000",
+          "name": "Active + boxscore,last60 games,ridge1000",
+          "family": "boxscore",
+          "window": 60,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.495361153451293,
+          "rmse": 4.473922345234413,
+          "bias": -0.021646509103138464,
+          "winnerSignAccuracy": 0.5569620253164557
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last60-ridge100",
+          "name": "Active + runs,last60 games,ridge100",
+          "family": "runs",
+          "window": 60,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4967670142397944,
+          "rmse": 4.47687168829899,
+          "bias": -0.029418157905364024,
+          "winnerSignAccuracy": 0.5544303797468354
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last60-ridge10",
+          "name": "Active + runs,last60 games,ridge10",
+          "family": "runs",
+          "window": 60,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.497925723304783,
+          "rmse": 4.4781583654590955,
+          "bias": -0.030154086792048087,
+          "winnerSignAccuracy": 0.5569620253164557
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last20-ridge1000",
+          "name": "Active + runs,last20 games,ridge1000",
+          "family": "runs",
+          "window": 20,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4980088252364894,
+          "rmse": 4.475720314876021,
+          "bias": -0.024953058746529432,
+          "winnerSignAccuracy": 0.5708860759493671
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last20-ridge1000",
+          "name": "Active + boxscore,last20 games,ridge1000",
+          "family": "boxscore",
+          "window": 20,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4986023025452244,
+          "rmse": 4.467700299523094,
+          "bias": -0.02531410693497323,
+          "winnerSignAccuracy": 0.569620253164557
+        }
+      },
+      {
+        "spec": {
+          "id": "calibration-ridge100",
+          "name": "Active + calibration (ridge100)",
+          "family": "calibration",
+          "window": 20,
+          "alpha": 100,
+          "columns": [
+            0
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.49897888550434,
+          "rmse": 4.480349928804115,
+          "bias": -0.02581509169524873,
+          "winnerSignAccuracy": 0.5734177215189873
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last60-ridge1000",
+          "name": "Active + context,last60 games,ridge1000",
+          "family": "context",
+          "window": 60,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.499415110602791,
+          "rmse": 4.476510210179911,
+          "bias": 0.0012968420422299859,
+          "winnerSignAccuracy": 0.5582278481012658
+        }
+      },
+      {
+        "spec": {
+          "id": "calibration-ridge10",
+          "name": "Active + calibration (ridge10)",
+          "family": "calibration",
+          "window": 20,
+          "alpha": 10,
+          "columns": [
+            0
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.4996116448519214,
+          "rmse": 4.4808294382054985,
+          "bias": -0.025912024122332452,
+          "winnerSignAccuracy": 0.5734177215189873
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last60-ridge100",
+          "name": "Active + boxscore,last60 games,ridge100",
+          "family": "boxscore",
+          "window": 60,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.5003406763701244,
+          "rmse": 4.475512610201343,
+          "bias": -0.024183003361899057,
+          "winnerSignAccuracy": 0.5556962025316455
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last20-ridge1000",
+          "name": "Active + context,last20 games,ridge1000",
+          "family": "context",
+          "window": 20,
+          "alpha": 1000,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.500830258747766,
+          "rmse": 4.468870846263096,
+          "bias": -0.0028904049928487503,
+          "winnerSignAccuracy": 0.5670886075949367
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last20-ridge100",
+          "name": "Active + runs,last20 games,ridge100",
+          "family": "runs",
+          "window": 20,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.502151096386581,
+          "rmse": 4.478909274845479,
+          "bias": -0.026610273900157286,
+          "winnerSignAccuracy": 0.5734177215189873
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last60-ridge10",
+          "name": "Active + boxscore,last60 games,ridge10",
+          "family": "boxscore",
+          "window": 60,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.502227852177072,
+          "rmse": 4.4773078644722615,
+          "bias": -0.024911321468809873,
+          "winnerSignAccuracy": 0.5531645569620253
+        }
+      },
+      {
+        "spec": {
+          "id": "runs-last20-ridge10",
+          "name": "Active + runs,last20 games,ridge10",
+          "family": "runs",
+          "window": 20,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.5028223899427924,
+          "rmse": 4.479446447323282,
+          "bias": -0.026899869929674407,
+          "winnerSignAccuracy": 0.5746835443037974
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last20-ridge100",
+          "name": "Active + boxscore,last20 games,ridge100",
+          "family": "boxscore",
+          "window": 20,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.502901700573204,
+          "rmse": 4.469089123066565,
+          "bias": -0.030133163093098075,
+          "winnerSignAccuracy": 0.5721518987341773
+        }
+      },
+      {
+        "spec": {
+          "id": "boxscore-last20-ridge10",
+          "name": "Active + boxscore,last20 games,ridge10",
+          "family": "boxscore",
+          "window": 20,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.503572005781128,
+          "rmse": 4.469532527542057,
+          "bias": -0.031120370590645395,
+          "winnerSignAccuracy": 0.5721518987341773
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last60-ridge100",
+          "name": "Active + context,last60 games,ridge100",
+          "family": "context",
+          "window": 60,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.5079793923095517,
+          "rmse": 4.480025087170745,
+          "bias": 0.004722076362476408,
+          "winnerSignAccuracy": 0.5556962025316455
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last20-ridge100",
+          "name": "Active + context,last20 games,ridge100",
+          "family": "context",
+          "window": 20,
+          "alpha": 100,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.5092215714913517,
+          "rmse": 4.4716467375960685,
+          "bias": -0.0006012923672178265,
+          "winnerSignAccuracy": 0.579746835443038
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last60-ridge10",
+          "name": "Active + context,last60 games,ridge10",
+          "family": "context",
+          "window": 60,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.510949463772807,
+          "rmse": 4.4823192705044255,
+          "bias": 0.004861470223839814,
+          "winnerSignAccuracy": 0.5531645569620253
+        }
+      },
+      {
+        "spec": {
+          "id": "context-last20-ridge10",
+          "name": "Active + context,last20 games,ridge10",
+          "family": "context",
+          "window": 20,
+          "alpha": 10,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        "metrics": {
+          "games": 790,
+          "weeks": 9,
+          "mae": 3.5109561658512503,
+          "rmse": 4.472446806276039,
+          "bias": -0.00048091979429974404,
+          "winnerSignAccuracy": 0.5772151898734177
+        }
+      }
+    ],
+    "selected": {
+      "spec": {
+        "id": "active-unadjusted",
+        "name": "Active September14 score ratings",
+        "family": "unchanged",
+        "window": 20,
+        "alpha": null,
+        "columns": []
+      },
+      "metrics": {
+        "games": 790,
+        "weeks": 9,
+        "mae": 3.4860844115619654,
+        "rmse": 4.4650548156817536,
+        "bias": -0.011549889407364386,
+        "winnerSignAccuracy": 0.5721518987341773
+      }
+    },
+    "selectedVsActive": {
+      "candidateMinusActiveMae": 0.0,
+      "weeklyBlockBootstrap95Pct": [
+        0.0,
+        0.0
+      ],
+      "weeks": 9,
+      "draws": 5000,
+      "seed": 20260917
+    }
+  },
+  "selectionLockedAt": "2026-09-17T18:56:45.233504+00:00",
+  "validationStartedAt": "2026-09-17T18:56:45.244084+00:00",
+  "validation": {
+    "range": [
+      "2026-04-01",
+      "2026-09-16"
+    ],
+    "label": "Later-date retrospective validation. These outcomes were partly inspected in earlier research; no fresh holdout or profitability claim.",
+    "selected": {
+      "games": 2182,
+      "weeks": 25,
+      "mae": 3.51480493650463,
+      "rmse": 4.58174101752135,
+      "bias": 0.03783880364726612,
+      "winnerSignAccuracy": 0.5472043996333639
+    },
+    "activeSameHistory": {
+      "games": 2182,
+      "weeks": 25,
+      "mae": 3.51480493650463,
+      "rmse": 4.58174101752135,
+      "bias": 0.03783880364726612,
+      "winnerSignAccuracy": 0.5472043996333639
+    },
+    "ridgeV1SameHistory": {
+      "games": 2182,
+      "weeks": 25,
+      "mae": 3.525388819282389,
+      "rmse": 4.584546111137773,
+      "bias": 0.04128426155496281,
+      "winnerSignAccuracy": 0.5472043996333639
+    },
+    "paired": {
+      "candidateMinusActiveMae": 0.0,
+      "weeklyBlockBootstrap95Pct": [
+        0.0,
+        0.0
+      ],
+      "weeks": 25,
+      "draws": 5000,
+      "seed": 20260917
+    }
+  },
+  "decision": "Retain active production model; later validation does not establish a credible margin-error improvement. No activation.",
+  "productionVersionRetained": "mlb-weekly-tuned-2026-09-14",
+  "verification": {
+    "allRollingInputsAtLeastTwoUtcDatesEarlier": true,
+    "weeklyLearnerTrainingDatesAtLeastTwoUtcDatesEarlier": true,
+    "futureOutcomeAndBoxStatPoisonInvariance": true,
+    "selectionSavedBeforeLaterValidationScoring": true,
+    "noTargetActualStarterOrFuturePitcherFields": true,
+    "noHistoricalPricesInvented": true
+  }
+}
