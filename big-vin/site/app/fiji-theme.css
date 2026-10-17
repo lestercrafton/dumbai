@@ -255,6 +255,9 @@ body,
 .vin-game-neutral .vin-game-top,
 .vin-game-neutral .vin-game-rank,
 .vin-game-neutral .vin-game-rank > span { color: var(--fiji-muted); }
+.vin-game-top > span:last-child { color: var(--fiji-ink); font-size: 12px; font-weight: 550; }
+.vin-game-top .vin-live,
+.vin-game-top .vin-score-neutral { font-size: 10px; }
 .vin-game-lines,
 .vin-moneyline { border-color: var(--fiji-line); background: #fff; }
 .vin-game-lines > div,
@@ -342,6 +345,7 @@ body,
 .vin-live-pick-status,
 .vin-live-pick-status > span { color: var(--fiji-muted); }
 .vin-scoreboard-teams strong { color: var(--fiji-ink); }
+.vin-scoreboard-teams > div > span { color: var(--fiji-ink); font-size: 18px; font-weight: 650; line-height: 1.25; }
 .vin-scoreboard-link { display: block; color: inherit; text-decoration: none; }
 .vin-scoreboard-link:hover { box-shadow: 0 0 0 1px currentColor; }
 .vin-scoreboard-link:focus-visible { outline: 3px solid var(--fiji-purple); outline-offset: 3px; }
@@ -856,6 +860,8 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-donation-note { margin: 0; }
 .vin-donation-modal [data-slot=dialog-close] { min-width: 44px; min-height: 44px; }
 @media(max-width:700px) {
+  .vin-scoreboard-teams > div > span { font-size: 16px; }
+  .vin-game-top > span:last-child { font-size: 11px; }
   .vin-support-action { flex-direction: column; align-items: flex-start; padding: 22px; gap: 18px; }
   .vin-support-action .vin-button { width: 100%; justify-content: center; }
   .vin-donation-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 20px; }
