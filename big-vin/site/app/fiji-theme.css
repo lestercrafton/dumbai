@@ -344,6 +344,8 @@ body,
 .vin-scoreboard-teams strong { color: var(--fiji-ink); }
 .vin-live-pick-status { border-color: #ded2e5; }
 .vin-scoreboard-covering { background: var(--fiji-green-tint); border-color: var(--fiji-green-line); }
+.vin-scoreboard-not-covering { background: var(--fiji-yellow-tint); border-color: var(--fiji-yellow-line); }
+.vin-scoreboard-not-covering .vin-scoreboard-top { color: var(--fiji-ochre); }
 .vin-scoreboard-covering .vin-scoreboard-top,
 .vin-live-pick-winning > strong { color: var(--fiji-green); }
 .vin-live { color: var(--fiji-green); }
@@ -362,6 +364,11 @@ body,
   outline-color: var(--fiji-yellow-line);
 }
 .vin-game-not-covering .vin-live-pick-status > strong { color: var(--fiji-ochre); }
+.vin-game-covering .vin-visible-result { background: var(--fiji-green-tint); border-color: #a2c6ad; }
+.vin-game-not-covering .vin-visible-result { background: var(--fiji-yellow-tint); border-color: #cfb968; }
+.vin-result-live .vin-outcome-badge { max-width: 100%; white-space: normal; overflow-wrap: anywhere; font-size: 20px; line-height: 1.3; }
+.vin-outcome-covering { color: #205d35; background: #e8f5ea; border-color: #5d9b70; }
+.vin-outcome-not-covering { color: #705000; background: #fff2bd; border-color: #b88c16; }
 .vin-game-win .vin-visible-result { background: var(--fiji-green-tint); border-color: #a2c6ad; }
 .vin-game-learn .vin-visible-result { background: var(--fiji-yellow-tint); border-color: #cfb968; }
 .vin-game-learn .vin-visible-result > span { color: #735e20; }

@@ -36,7 +36,9 @@ export async function persistBoard(sport:string,board:any,startDate:string,endDa
 export async function scoreboard(sport:string,startDate:string,endDate=startDate){
  try{
   const version=sport==='cfb'?'board:v5-supported-limit':isThreeDayScoreboardWindow({startDate,endDate})?'board:v4-daily':'board:v3';
-  const board:any=await cached(`${version}:${sport}:${startDate}:${endDate}`,300,()=>fetchScoreboard(sport,{startDate,endDate}));
+  const today=sportsDay();
+  const cacheSeconds=startDate<=today&&endDate>=today?60:300;
+  const board:any=await cached(`${version}:${sport}:${startDate}:${endDate}`,cacheSeconds,()=>fetchScoreboard(sport,{startDate,endDate}));
   if(!board.partialLiveCoverage)return board;
   const keys=rangeDates(startDate,endDate).map(date=>`trusted-board:${sport}:${date}`);
   try{const saved=await db().prepare(`SELECT payload FROM feed_cache WHERE key IN (${keys.map(()=>'?').join(',')})`).bind(...keys).all<{payload:string}>();

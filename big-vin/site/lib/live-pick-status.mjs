@@ -32,7 +32,8 @@ export function livePickStatus(game = {}, options = {}) {
   const coverMargin = Math.abs(margin) < 1e-9 ? 0 : margin;
   const state = coverMargin > 0 ? 'covering' : coverMargin < 0 ? 'not-covering' : 'push';
   return {...base, state,
-    label:state === 'covering' ? 'Currently covering' : state === 'not-covering' ? 'Not covering' : 'Currently a push',
+    label:state === 'covering' ? `Covering by ${coverMargin.toFixed(1)}`
+      : state === 'not-covering' ? `Needs ${(Math.floor(-coverMargin) + 1).toFixed(1)} to Cover` : 'Currently a push',
     isWinning:state === 'covering', tone:state === 'covering' ? 'winning' : 'neutral',
     provisional:true, coverMargin, reason:null};
 }

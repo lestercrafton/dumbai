@@ -46,6 +46,16 @@ test('ties and pushes depend on spread; all non-winning states have a neutral to
   assert.equal(floatingPush.coverMargin,0);
 });
 
+test('live copy shows the cover margin or the whole net points needed to beat the line', () => {
+  assert.equal(status({marketHomeSpread:-3.5,liveHomeScore:24,liveAwayScore:20}).label,'Covering by 0.5');
+  assert.equal(status({marketHomeSpread:-3.5,liveHomeScore:21,liveAwayScore:20}).label,'Needs 3.0 to Cover');
+  // Two points would only push the whole-number spread; three are needed to cover.
+  assert.equal(status({marketHomeSpread:-3,liveHomeScore:21,liveAwayScore:20}).label,'Needs 3.0 to Cover');
+  // A team can trail outright while still covering as an underdog.
+  assert.equal(status({side:'away',marketHomeSpread:-3.5,liveHomeScore:20,liveAwayScore:17}).label,'Covering by 0.5');
+  assert.equal(status({marketHomeSpread:-7,market:{homeSpread:-1},liveHomeScore:24,liveAwayScore:20}).label,'Needs 4.0 to Cover');
+});
+
 test('saved and archived original lines take precedence over a changed current market', () => {
   const saved = status({marketHomeSpread:-7,market:{homeSpread:-1},liveHomeScore:24,liveAwayScore:20});
   assert.equal(saved.line,-7);
