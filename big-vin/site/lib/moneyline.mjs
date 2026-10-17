@@ -1,11 +1,10 @@
 import {displayLines} from './board-presentation.mjs';
 
-/** Spread-to-moneyline conversion for the board.
- * Vegas does not post a moneyline for every game we list, and Big Vin only
- * forecasts a margin. Both moneylines below are therefore derived from a
- * spread with one sport-specific margin standard deviation (normal CDF):
- * the Vegas spread implies one win chance; Big Vin's fair spread implies
- * the other. This is a transparent conversion, not a calibrated probability
+/** Spread-to-moneyline conversion for the board's model estimate.
+ * Big Vin forecasts a margin; its fair spread implies an estimated win chance
+ * using one sport-specific margin standard deviation (normal CDF).
+ * moneylineComparison uses an actual sportsbook quote for Vegas ML.
+ * This is a transparent conversion, not a calibrated probability
  * model. Sigmas are the frozen model's residual RMSE on saved 2026 season
  * forecasts (Oct 16 backtest) where available; NBA/CBB use league-typical
  * margin SDs until those sports have graded saved forecasts. */
@@ -26,13 +25,16 @@ export const fairAmericanOdds = (probability) => {
   return Math.abs(rounded) < 100 ? (rounded < 0 ? -100 : 100) : rounded;
 };
 const signedOdds = (v) => v === null ? '—' : `${v > 0 ? '+' : ''}${v}`;
-/** Estimated win chance minus the quoted price's break-even chance, in pp.
- * The bookmaker's margin remains included; this is not an expected return. */
-export function moneylineValuePoints(probability, odds) {
+/** Estimated net dollars won/lost per $100 staked at the actual ML quote.
+ * Keep the probability and result unrounded until presentation. The quoted
+ * payout already reflects the book's price; do not remove its margin or
+ * force a favorable spread pick to have positive moneyline EV. */
+export function moneylineExpectedValue(probability, odds) {
   if (!Number.isFinite(probability) || probability <= 0 || probability >= 1
     || !Number.isInteger(odds) || Math.abs(odds) < 100) return null;
-  const breakEven = odds < 0 ? -odds / (-odds + 100) : 100 / (odds + 100);
-  return Number(((probability - breakEven) * 100).toFixed(1)) || 0;
+  const profitIfWin = odds > 0 ? odds : 10000 / -odds;
+  const ev = probability * profitIfWin - (1 - probability) * 100;
+  return Math.abs(ev) < 1e-10 ? 0 : ev;
 }
 /** Moneyline pair for the board's pick team: what the Vegas spread implies
  * for that team, and what Big Vin's line says it should be. */
@@ -70,12 +72,13 @@ export function moneylineComparison(record, sport) {
   const quote = Object.hasOwn(record, 'moneylineMarket') ? record.moneylineMarket : record.market;
   const price = lines.side === 'home' ? quote?.homeMoneyline : quote?.awayMoneyline;
   const vegas = typeof price === 'number' && Number.isInteger(price) && Math.abs(price) >= 100 ? price : null;
-  const valuePoints = moneylineValuePoints(probability, vegas);
+  const evPer100 = moneylineExpectedValue(probability, vegas);
+  const displayedEV = evPer100 === null ? null : Number(evPer100.toFixed(2)) || 0;
   const historical = quote?.timing === 'historical-display-time-unverified' || record.completed || record.status === 'completed';
   return {
     team: lines.teamShort, teamName: lines.teamName, side: lines.side,
     implied: signedOdds(implied), vegas: signedOdds(vegas),
-    valuePoints, value: valuePoints === null ? '—' : `${valuePoints > 0 ? '+' : ''}${valuePoints.toFixed(1)}`,
+    evPer100, ev: displayedEV === null ? '—' : `${displayedEV > 0 ? '+' : displayedEV < 0 ? '-' : ''}$${Math.abs(displayedEV).toFixed(2)}`,
     quote: vegas === null ? null : {
       provider: quote?.provider || 'Feed provider', observedAt: quote?.observedAt || null,
       providerUpdatedAt: quote?.providerUpdatedAt || null,

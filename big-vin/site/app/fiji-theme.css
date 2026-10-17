@@ -273,6 +273,9 @@ body,
 .vin-moneyline strong { color: var(--fiji-ink); }
 .vin-game-lines > div:nth-child(2) strong,
 .vin-moneyline > div:nth-child(2) strong { color: var(--fiji-purple); }
+.vin-ml-ev dd > strong { font-variant-numeric: tabular-nums; }
+.vin-ml-ev dd > small { display: block; margin-top: 4px; font-size: 10px; line-height: 1.4; }
+.vin-ml-ev dd > small + small { font-weight: 600; }
 .vin-game-pick,
 .vin-game-neutral .vin-game-pick {
   background: var(--fiji-tint);
