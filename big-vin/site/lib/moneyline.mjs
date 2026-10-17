@@ -1,3 +1,5 @@
+import {displayLines} from './board-presentation.mjs';
+
 /** Spread-to-moneyline conversion for the board.
  * Vegas does not post a moneyline for every game we list, and Big Vin only
  * forecasts a margin. Both moneylines below are therefore derived from a
@@ -44,5 +46,30 @@ export function moneylinePair(record, sport) {
     team: teamName, side,
     vegasImplied: signedOdds(fairAmericanOdds(vegasProb)), bigVinFair: signedOdds(fairAmericanOdds(bigVinProb)),
     vegasProb, bigVinProb,
+  };
+}
+
+/** A compact comparison for the displayed ATS team. Only the model price is
+ * converted. The book price must be a real American-odds quote and retains its
+ * own snapshot metadata; a saved ATS price is never substituted for it. */
+export function moneylineComparison(record, sport) {
+  const lines = displayLines(record);
+  if (!lines.side || !Number.isFinite(lines.fairLine)
+    || record.paperWager?.kind === 'synthetic-winner-even') return null;
+  const implied = fairAmericanOdds(winProbability(-lines.fairLine, sport));
+  if (implied === null) return null;
+  const quote = Object.hasOwn(record, 'moneylineMarket') ? record.moneylineMarket : record.market;
+  const price = lines.side === 'home' ? quote?.homeMoneyline : quote?.awayMoneyline;
+  const vegas = typeof price === 'number' && Number.isInteger(price) && Math.abs(price) >= 100 ? price : null;
+  const historical = quote?.timing === 'historical-display-time-unverified' || record.completed || record.status === 'completed';
+  return {
+    team: lines.teamShort, teamName: lines.teamName, side: lines.side,
+    implied: signedOdds(implied), vegas: signedOdds(vegas),
+    quote: vegas === null ? null : {
+      provider: quote?.provider || 'Feed provider', observedAt: quote?.observedAt || null,
+      providerUpdatedAt: quote?.providerUpdatedAt || null,
+      historical: !!historical,
+      label: historical ? 'Vegas ML (feed)' : record.archived ? 'Vegas ML (latest)' : 'Vegas ML',
+    },
   };
 }

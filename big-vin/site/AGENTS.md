@@ -19,6 +19,8 @@ For a local preview, initialize only the local database with `npx wrangler d1 mi
 
 Keep the original saved sides, prices, grades, capture times and formula ownership. Live provisional ATS color is separate from settled grading. Search/time filters must retain original board ranks. Sports remain separate. Read `TRACKED-HISTORY.md` and `CFB-FEED-FIX.md` before changing records or feeds. Operating-cost claims were removed; do not restore invented free/zero-cost figures or publish private billing records.
 
+Game-card implied ML uses the existing fair-spread conversion and is labeled an estimate. Vegas ML must use actual same-team bookmaker odds from `moneylineMarket`, retaining its own provider and observation time. This feed quote is separate from the frozen ATS market; missing ML stays unavailable. Never substitute ATS juice, derive a quote from the Vegas spread, or call historical feed prices verified pregame odds.
+
 ## Publish from any connected agent environment
 
 A GitHub push runs source checks; it does **not** automatically publish the existing Site. A cloud agent can publish without using Lester's Mac when its Sites connector and build environment are available:
