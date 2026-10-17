@@ -158,6 +158,7 @@ export default function Home(){
   <div className="vin-shell"><SiteHeader onBoard={()=>setTab('slate')} onResults={()=>setTab('records')}/>
    <section id="board" className="vin-board-section" aria-label="Game board and records">
     <div className="vin-board-heading"><div><p className="vin-kicker">THE BOARD / ALL SIGNAL</p><h2>Find your game.</h2></div><p>Ranked within each sport.<br/>Every result on the record.</p></div>
+    <p className="vin-board-motto">We never lose; we either win or learn.</p>
     <Tabs value={tab} onValueChange={v=>setTab(String(v))}>
      <div className="vin-board-tabs"><TabsList className="vin-view-tabs" variant="line"><TabsTrigger value="slate"><Radio size={16}/>Game board</TabsTrigger><TabsTrigger value="records"><Activity size={16}/>Results</TabsTrigger><TabsTrigger value="results"><ClipboardList size={16}/>Paper ledger</TabsTrigger></TabsList><a href={sport==='all'?'#results-records':'/tracked-results?sport='+sport} onClick={event=>{if(sport==='all'){event.preventDefault();setTab('records');}}}>All results <ArrowRight size={15}/></a></div>
      <TabsContent value="slate">

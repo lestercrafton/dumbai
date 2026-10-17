@@ -160,3 +160,17 @@
 .vin-pick-kind{font-size:10px;line-height:1.5;color:#b7c5aa;max-width:60px;text-align:right}
 .vin-game-neutral .vin-game-pick{border-color:#7d8973;background:#ffffff05}
 @media(max-width:560px){.vin-game-lines{padding:14px 20px 8px;gap:6px}.vin-moneyline{padding:0 20px 16px;gap:6px}.vin-game-lines>div,.vin-game-lines>div+div,.vin-moneyline>div,.vin-moneyline>div+div{padding:10px 7px}.vin-game-lines strong{font-size:14px}.vin-moneyline dd{font-size:13px}.vin-game-pick{margin:16px 20px 18px;padding:16px 13px}.vin-game-pick>div:first-child>strong{font-size:28px}.vin-pick-kind{font-size:10px;max-width:54px}}
+
+/* Live ATS status is provisional; settled colors come only from the grader. */
+.vin-game-card.vin-game-covering,.vin-game-card.vin-game-win{border-color:#a9d66b;outline:1px solid #a9d66b;outline-offset:0}
+.vin-game-card.vin-game-not-covering,.vin-game-card.vin-game-learn{border-color:#e6c65a;outline:1px solid #e6c65a;outline-offset:0}
+.vin-game-not-covering .vin-live-pick-status>strong{color:#efd477}
+.vin-game-win .vin-visible-result{background:#1b2b13;border-top-color:#718d4b}
+.vin-game-learn .vin-visible-result{background:#2d2816;border-top-color:#aa923d}
+.vin-result-settled .vin-outcome-badge{font-size:20px;padding:7px 12px;font-weight:700}
+.vin-result-settled .vin-outcome-win{background:#294419;color:#d6f9ad;border-color:#a9d66b}
+.vin-result-settled .vin-outcome-loss{background:#453b18;color:#ffe69a;border-color:#e6c65a}
+.vin-visible-result>.vin-result-heading{font-size:10px;letter-spacing:1px;color:#c4cdbd;font-weight:600}
+.vin-game-learn .vin-visible-result>span{color:#dfd3aa}
+.vin-board-motto{margin:16px 0 0;color:#c8dbad;font-size:15px;line-height:1.6;font-style:italic}
+@media(max-width:560px){.vin-board-motto{font-size:13px;max-width:290px;margin-top:14px}.vin-result-settled .vin-outcome-badge{font-size:21px}}
