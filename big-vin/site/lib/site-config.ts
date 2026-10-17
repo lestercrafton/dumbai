@@ -9,6 +9,7 @@ type SiteConfig = {
   tagline: string;
   pledge: string;
   ambassadors: string;
+  donation: {cashtag: string; href: string; qrImage: string};
   dataSources: DataSource[];
 };
 
@@ -16,6 +17,11 @@ type SiteConfig = {
 export const SITE_CONFIG: SiteConfig = {
   name: 'Big Vin',
   tagline: 'Grind to Win',
+  donation: {
+    cashtag: '$bigvinsports',
+    href: 'https://cash.app/$bigvinsports',
+    qrImage: '/cash-app-bigvinsports.png',
+  },
   pledge:
     '50/50. Everything we earn above what it costs to run this site gets split down the middle. Half goes to the owners and creators. Half goes into more data and better models, to build a line better than Vegas, so everyone wins together.',
   ambassadors: 'Grateful to our college ambassadors for working with us to build the knowledge we need to finally beat Vegas.',

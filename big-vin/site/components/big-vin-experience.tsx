@@ -1,8 +1,9 @@
 'use client';
 
 import {useCallback, useEffect, useState} from 'react';
-import {ArrowDown, ArrowRight, ArrowUpRight, ChevronDown, Database, Heart, Radio, RefreshCw, Scale, TrendingUp} from 'lucide-react';
-import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
+import {ArrowDown, ArrowRight, ArrowUpRight, ChevronDown, Database, Radio, RefreshCw, Scale, TrendingUp} from 'lucide-react';
+import {DonateButton} from '@/components/donate-button';
+export {DonateButton} from '@/components/donate-button';
 import {useRefreshingResource} from '@/components/use-refreshing-resource';
 import CfbNewsReview, {CfbNewsFlag} from '@/components/cfb-news-review';
 import {handicap, spreadDecision} from '@/lib/spread-display.mjs';
@@ -30,20 +31,6 @@ function stakeNote(game: Row) {
   if (bankroll.status === 'waiting-prior') return `${label}: awaiting ${bankroll.blockedBy} results`;
   if (bankroll.status === 'bankroll-depleted') return `${label}: bankroll depleted`;
   return `${label}: full-card funding required`;
-}
-
-export function DonateButton({className = ''}: {className?: string}) {
-  const [open, setOpen] = useState(false);
-  return <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={`vin-button ${className}`}>Donate to our project <ArrowUpRight size={17}/></DialogTrigger>
-      <DialogContent className="vin-modal">
-        <span className="vin-modal-icon" aria-hidden="true"><Heart size={26}/></span>
-        <p className="vin-kicker">A little support. A better line.</p>
-        <DialogTitle className="vin-modal-title">Coming soon.</DialogTitle>
-        <DialogDescription className="vin-modal-description">We’re getting the details right. Donations aren’t open yet, and no payment will be collected. Thanks for being part of Big Vin.</DialogDescription>
-        <button className="vin-button" type="button" onClick={() => setOpen(false)}>Back to the board <ArrowRight size={17}/></button>
-      </DialogContent>
-    </Dialog>;
 }
 
 export function SiteHeader({onBoard, onResults}: {onBoard: () => void; onResults: () => void}) {
@@ -173,6 +160,7 @@ export function StorySection() {
 export function SupportSection() {
   return <section id="support" className="vin-section vin-support" aria-labelledby="pledge-title">
     <div className="vin-pledge"><p className="vin-kicker">03 / BUILT TOGETHER</p><h2 id="pledge-title">50<span>/</span>50<span className="vin-period">.</span></h2><p className="vin-pledge-copy">{SITE_CONFIG.pledge}</p><div className="vin-split" aria-hidden="true"><span>50%<small>OWNERS + CREATORS</small></span><span>50%<small>DATA + BETTER MODELS</small></span></div></div>
+    <div className="vin-support-action"><div><h3>Help build the next edge.</h3><p>Support Big Vin’s data and model research.</p></div><DonateButton/></div>
     <div className="vin-ambassadors"><span className="vin-ambassador-icon" aria-hidden="true">↗</span><p>{SITE_CONFIG.ambassadors}</p><span>THE NEXT GENERATION<br/>OF INDEPENDENT THINKING.</span></div>
   </section>;
 }

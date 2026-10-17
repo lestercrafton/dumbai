@@ -25,6 +25,8 @@ Brand assets `public/bv-logo.svg` and `bv-wordmark.svg` preserve the original he
 
 The user chose FIJI purple and white: `app/fiji-theme.css` owns the light theme using #520975 and #7d4798 from phigam.org's stylesheet. Logo shapes remain unchanged when recolored. Keep the green/yellow ATS status outlines distinct from the purple brand palette, and neutral styling for uncertain scores.
 
+Contributions use the owner-confirmed Cash App profile `https://cash.app/$bigvinsports` (public profile name: Big Vin). `lib/site-config.ts` owns the destination; both current and legacy donation buttons share `components/donate-button.tsx`. The local QR asset encodes that exact URL. If the receiving profile changes, regenerate and independently decode the QR before publishing. Cash App handles payment; never infer payment success from a click or collect payment details in the site.
+
 ## Publish from any connected agent environment
 
 A GitHub push runs source checks; it does **not** automatically publish the existing Site. A cloud agent can publish without using Lester's Mac when its Sites connector and build environment are available:

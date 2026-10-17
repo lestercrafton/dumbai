@@ -1,63 +1,10 @@
 'use client';
 
-import { useId, useRef, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import {DonateButton} from '@/components/donate-button';
+export {DonateButton} from '@/components/donate-button';
 import { SITE_CONFIG } from '@/lib/site-config';
 import styles from './project-sections.module.css';
-
-type DonateButtonProps = {
-  className?: string;
-  children?: ReactNode;
-};
-
-/** A presentation-only donation action. There is no payment flow. */
-export function DonateButton({ className, children }: DonateButtonProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const id = useId();
-
-  return (
-    <>
-      <button
-        ref={triggerRef}
-        type="button"
-        className={[styles.donateButton, className].filter(Boolean).join(' ')}
-        aria-haspopup="dialog"
-        onClick={() => dialogRef.current?.showModal()}
-      >
-        {children ?? 'Donate to our project'}
-        <ArrowUpRight aria-hidden="true" size={19} strokeWidth={1.7} />
-      </button>
-      <dialog
-        ref={dialogRef}
-        className={styles.dialog}
-        aria-labelledby={`${id}-title`}
-        aria-describedby={`${id}-description`}
-        onClose={() => triggerRef.current?.focus({ preventScroll: true })}
-      >
-        <button
-          type="button"
-          className={styles.dialogClose}
-          aria-label="Close donation message"
-          onClick={() => dialogRef.current?.close()}
-        >
-          <X size={20} aria-hidden="true" strokeWidth={1.5} />
-        </button>
-        <span className={styles.eyebrow}>BIG VIN · GRIND TO WIN</span>
-        <h2 id={`${id}-title`}>Coming soon.</h2>
-        <p id={`${id}-description`}>
-          Thanks for being in our corner. Donations to the project will open soon.
-        </p>
-        <form method="dialog">
-          <button type="submit" autoFocus className={styles.dialogAction}>
-            Got it
-            <ArrowRight size={18} aria-hidden="true" />
-          </button>
-        </form>
-      </dialog>
-    </>
-  );
-}
 
 export default function ProjectSections() {
   const pledgeOpening = '50/50.';
