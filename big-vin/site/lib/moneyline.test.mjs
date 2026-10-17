@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {winProbability, fairAmericanOdds, moneylinePair, moneylineComparison} from './moneyline.mjs';
+import {winProbability, fairAmericanOdds, moneylinePair, moneylineComparison, moneylineValuePoints} from './moneyline.mjs';
 import {sortBoard, boardConferences, filterByConference} from './board-sort.mjs';
 
 test('a pick-em margin is a coin flip and fair odds are -100', () => {
@@ -8,6 +8,17 @@ test('a pick-em margin is a coin flip and fair odds are -100', () => {
   assert.equal(fairAmericanOdds(0.5), -100);
   assert.equal(fairAmericanOdds(0.75), -300);
   assert.equal(fairAmericanOdds(0.25), 300);
+});
+
+test('ML value compares win chance with the quoted price break-even chance in pp', () => {
+  assert.equal(moneylineValuePoints(0.6, -150), 0);
+  assert.equal(moneylineValuePoints(0.65, -150), 5);
+  assert.equal(moneylineValuePoints(0.35, 150), -5);
+  assert.equal(moneylineValuePoints(0.65, 150), 25);
+  assert.equal(moneylineValuePoints(0.5, 100), 0);
+  assert.equal(Object.is(moneylineValuePoints(0.49999, 100), -0), false);
+  for (const odds of [null, undefined, '-150', 0, 99, Infinity, -110.5]) assert.equal(moneylineValuePoints(0.6, odds), null);
+  for (const p of [null, NaN, 0, 1]) assert.equal(moneylineValuePoints(p, -150), null);
 });
 
 test('moneyline pair prices the pick team from both spreads', () => {
@@ -35,6 +46,8 @@ test('comparison uses actual quoted ML for the same team as the fair line', () =
   assert.equal(away.team, 'BUF');
   assert.equal(away.vegas, '+135');
   assert.equal(away.implied, '+' + fairAmericanOdds(winProbability(-6, 'nfl')));
+  assert.equal(away.valuePoints, moneylineValuePoints(winProbability(-6, 'nfl'), 135));
+  assert.equal(pair.valuePoints, moneylineValuePoints(winProbability(6, 'nfl'), -155));
 });
 
 test('missing or invalid moneyline stays unavailable, never converted from a spread or ATS juice', () => {
@@ -42,6 +55,8 @@ test('missing or invalid moneyline stays unavailable, never converted from a spr
     const pair = moneylineComparison({...quotedGame, odds: -110, market: {...quotedGame.market, homeMoneyline: price, homeSpreadPrice: -110}}, 'nfl');
     assert.equal(pair.vegas, '—');
     assert.equal(pair.quote, null);
+    assert.equal(pair.value, '—');
+    assert.equal(pair.valuePoints, null);
   }
   assert.equal(moneylineComparison({...quotedGame, market: {...quotedGame.market, homeMoneyline: 100}}, 'nfl').vegas, '+100');
   assert.equal(moneylineComparison({...quotedGame, moneylineMarket: null}, 'nfl').vegas, '—');
