@@ -27,6 +27,8 @@ The user chose FIJI purple and white: `app/fiji-theme.css` owns the light theme 
 
 Contributions use the owner-confirmed Cash App profile `https://cash.app/$bigvinsports` (public profile name: Big Vin). `lib/site-config.ts` owns the destination; both current and legacy donation buttons share `components/donate-button.tsx`. The local QR asset encodes that exact URL. If the receiving profile changes, regenerate and independently decode the QR before publishing. Cash App handles payment; never infer payment success from a click or collect payment details in the site.
 
+The contribution pledge pays operating fees first, then allocates remaining profit 50% to data/compute, 25% to Big Vin’s Big Men on Campus, and 25% to the founder. Keep the page and dialog consistent using `SITE_CONFIG.profitAllocation`. The contribution trigger reads “Boost your karma; support our project.” Keep the help link and responsible-play copy in the long dialog. Automatic recurring donations are not enabled by the public Cashtag link; a verified merchant checkout and donor authorization are required before promising them.
+
 ## Publish from any connected agent environment
 
 A GitHub push runs source checks; it does **not** automatically publish the existing Site. A cloud agent can publish without using Lester's Mac when its Sites connector and build environment are available:

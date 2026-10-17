@@ -7,8 +7,8 @@ import { SITE_CONFIG } from '@/lib/site-config';
 import styles from './project-sections.module.css';
 
 export default function ProjectSections() {
-  const pledgeOpening = '50/50.';
-  const pledgeBody = SITE_CONFIG.pledge.slice(pledgeOpening.length).trimStart();
+  const pledgeOpening = '50/25/25.';
+  const pledgeBody = SITE_CONFIG.pledge;
 
   return (
     <div className={styles.sections}>

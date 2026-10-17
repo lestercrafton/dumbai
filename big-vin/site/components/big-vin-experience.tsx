@@ -159,8 +159,8 @@ export function StorySection() {
 
 export function SupportSection() {
   return <section id="support" className="vin-section vin-support" aria-labelledby="pledge-title">
-    <div className="vin-pledge"><p className="vin-kicker">03 / BUILT TOGETHER</p><h2 id="pledge-title">50<span>/</span>50<span className="vin-period">.</span></h2><p className="vin-pledge-copy">{SITE_CONFIG.pledge}</p><div className="vin-split" aria-hidden="true"><span>50%<small>OWNERS + CREATORS</small></span><span>50%<small>DATA + BETTER MODELS</small></span></div></div>
-    <div className="vin-support-action"><div><h3>Help build the next edge.</h3><p>Support Big Vin’s data and model research.</p></div><DonateButton/></div>
+    <div className="vin-pledge"><p className="vin-kicker">03 / BUILT TOGETHER</p><h2 id="pledge-title" className="vin-profit-ratio">50<span>/</span>25<span>/</span>25<span className="vin-period">.</span></h2><p className="vin-pledge-copy">{SITE_CONFIG.pledge}</p><div className="vin-split vin-profit-split" aria-hidden="true">{SITE_CONFIG.profitAllocation.map(item => <span key={item.label}>{item.percent}%<small>{item.label}</small></span>)}</div></div>
+    <div className="vin-support-action"><div><h3>Help build the next edge.</h3><p>A project our community keeps going.</p></div><DonateButton/></div>
     <div className="vin-ambassadors"><span className="vin-ambassador-icon" aria-hidden="true">↗</span><p>{SITE_CONFIG.ambassadors}</p><span>THE NEXT GENERATION<br/>OF INDEPENDENT THINKING.</span></div>
   </section>;
 }
