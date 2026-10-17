@@ -1,0 +1,10 @@
+{
+  "name": "big-vin",
+  "title": "Big Vin - Grind to Win",
+  "description": "Read-only sports board: games, betting lines, edge rankings, model inputs and graded results.",
+  "version": "1.0.0",
+  "transport": { "stdio": { "command": "node", "args": ["big-vin/mcp/server.mjs"] }, "streamableHttp": { "path": "/mcp", "start": "node big-vin/mcp/server.mjs --http 8787" } },
+  "tools": ["get_rankings", "get_slate", "get_lines", "get_game", "get_model_inputs", "get_methodology", "get_track_record"],
+  "auth": "none",
+  "dataSource": "https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/api"
+}

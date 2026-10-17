@@ -1,0 +1,11 @@
+# Big Vin - Grind to Win
+> Free sports model that compares its own fair point spread with the sportsbook line. Edge = the gap in points. Picks are saved before kickoff and graded honestly on paper bankrolls; no real wagers.
+
+## Data
+- Site: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/
+- Board: /api/slate?sport=nfl|cfb|nba|wnba|cbb|nhl|mlb[&date=YYYY-MM-DD]
+- Results: /api/results?sport=...
+- Learning log: /api/learning
+
+## MCP
+- Read-only server: big-vin/mcp/server.mjs (stdio, or --http for /mcp). See big-vin/mcp/README.md.
