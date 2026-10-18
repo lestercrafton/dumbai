@@ -53,17 +53,18 @@ export function RecordSummary({sport,sportLabel,date,refreshKey,card='all',rankP
  const href='/tracked-results?'+new URLSearchParams({...Object.fromEntries(params),card});
  const checked=current?.liveCheck?.checkedAt||current?.lastCollectionAt;
  return <section className={styles.summary} aria-label={`${sportLabel} saved pick record`} aria-busy={loading}>
-  <div className={styles.heading}><div><h2>{sportLabel} record</h2><p>{sport==='mlb'?'Run line':sport==='nhl'?'Puck line':'Against the spread'} · {card==='all'?label:'Saved '+label} · Original saved picks</p></div><a href={href}>Pick history ↗</a></div>
+  <div className={styles.heading}><div><h2>{sportLabel} record</h2><p>{sport==='mlb'?'Run line':sport==='nhl'?'Puck line':'Against the spread'} · {card==='all'?label:'Saved '+label} · Kickoff-locked picks</p></div><a href={href}>Pick history ↗</a></div>
   <div className={styles.grid}>
    <RecordCard title="Day" caption={dateLabel(date)+' · ET'} summary={daily} loading={loading} error={error}/>
    <RecordCard title="Week" caption={week?`${dateLabel(week.start)}–${dateLabel(week.end)}`:'Mon–Sun ET'} summary={weekly} loading={loading} error={error}/>
    <RecordCard title="Tracked season" caption={season!==null?`${seasonContext?.label||season} · partial`:'Season unverified'} summary={seasonView?.spreadOverall} loading={loading} error={error}/>
   </div>
-  <div className={styles.coverage} role="note"><strong>Full-season record unavailable.</strong><span>{coverage?.firstDate&&coverage.lastDate?`Saved picks cover ${dateLabel(coverage.firstDate,true)}–${dateLabel(coverage.lastDate,true)}; earlier or missed games are not included.`:season===null?'The league’s current season could not be verified.':'Complete season coverage has not been established.'}</span></div>
+
   {error&&<p className={styles.warning} role="alert">Could not load the saved record. Refresh to try again.</p>}
   {refreshError&&current&&<p className={styles.warning} role="status">Refresh unavailable. Showing the last checked record.</p>}
   <details className={styles.details}><summary>Record method &amp; coverage</summary><div>
-   <p>One authentic pregame forecast per game, following the formula active for that game. Earlier picks keep their original lines and grades when weights change. Reconstructed and retrospective predictions are excluded. <a href={href}>See every included pick and the selection policy ↗</a></p>
+   <p>{coverage?.firstDate&&coverage.lastDate?`Tracked picks: ${dateLabel(coverage.firstDate,true)}–${dateLabel(coverage.lastDate,true)}. Coverage is partial.`:'Tracked coverage is partial.'}</p>
+   <p>One authentic pregame forecast per game, following the formula active for that game. Valid pregame revisions lock by kickoff. Earlier versions stay in each game’s history; past picks are never recreated from later information. Reconstructed and retrospective predictions are excluded. <a href={href}>See every included pick and the selection policy ↗</a></p>
    <p>Win % = wins ÷ (wins + losses). Pushes, pending games, voids and games without a graded line are excluded. Week is Monday–Sunday in Eastern time. Search filters do not change this {label.toLowerCase()} record.</p>
    {current?.policy&&<p>{current.policy.unavailableGames||0} games lack an eligible pregame pick; {current.policy.metadataConflictGames||0} games have differing saved schedule snapshots. Selection uses the earliest genuine snapshot. The ledger has no historical displayed-card marker.</p>}
    <p>Ranked cards retain their rank within the original formula and selected ranking period; excluded games never promote a pick. These saved-card ranks can differ from the current board window’s ranks. {coverage?.seasonUnknownCount?`${coverage.seasonUnknownCount} picks without a verified season tag are excluded.`:''}</p>

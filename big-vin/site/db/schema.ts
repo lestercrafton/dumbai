@@ -16,3 +16,6 @@ export const collectionRuns=sqliteTable('collection_runs',{
 export const firstMarketObservations=sqliteTable('first_market_observations',{
  forecastId:text('forecast_id').primaryKey().references(()=>forecasts.id),observedAt:text('observed_at').notNull(),recordedAt:text('recorded_at').notNull(),payload:text('payload').notNull()
 });
+export const pickRevisionStates=sqliteTable('pick_revision_states',{
+ forecastId:text('forecast_id').primaryKey().references(()=>forecasts.id),payload:text('payload').notNull()
+});

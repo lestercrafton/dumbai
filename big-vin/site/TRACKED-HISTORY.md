@@ -38,3 +38,9 @@ node scripts/audit-tracked-history.mjs ../season-audit/production-live-all-versi
 ```
 
 The audit verifies outcome and input-order invariance, unique game selection, saved pick/grade preservation, daily/weekly/card reconciliation and board/history selection agreement. It prints the source SHA-256 and policy evidence. The October 17, 2026 export had 2,085 live rows. Its selected CFB history was 208–160–3 ATS across 371 graded picks; 80 reconstructed rows were excluded. These are snapshot observations, not frozen production totals.
+
+## Prospective revisions (October 18, 2026 onward)
+
+The owner permits pick and line updates from information available before kickoff. Original forecast rows remain immutable. `pick_revision_states` stores timestamped versions, the earliest known kickoff and a one-way closure latch. Trusted server quotes may flip the side; zero edge is an explicit pass. The same validated overlay feeds board, hero, grading and record totals. Freshness and persistence are prerequisites for an actionable upcoming rank. Existing historical games are not enrolled or recalculated. Changed schedules only tighten the cutoff; revisions recorded at/after a corrected earlier cutoff are retained for audit but excluded from grading.
+
+Current board ranks use current eligible edges. Tracked Top-N record membership keeps its original input ranking, with the eventually locked pick used for its result. It is explicitly labeled separately from the moving board rank. Model ownership and original model predictions remain unchanged by quote updates. The public browser fallback cannot write revisions.

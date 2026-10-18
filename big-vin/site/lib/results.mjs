@@ -21,7 +21,7 @@ export function gradeForecast(f,game,observedAt=new Date().toISOString()){
  const pnl=!priced||cover===null?null:outcome==='push'?0:outcome==='loss'?-1:f.odds>0?f.odds/100:100/-f.odds;
  // Preserve the frozen pregame schedule; settlement follows the verified day played.
  const playedAt=f.sport==='mlb'&&game.startTime&&f.startTime&&easternDay(game.startTime)!==easternDay(f.startTime)?game.startTime:null;
- return {status:'completed',homeScore:game.homeScore,awayScore:game.awayScore,actualMargin,residual,absoluteError:residual===null?null:Math.abs(residual),marketAbsoluteError:finite(f.marketHomeSpread)?Math.abs(actualMargin+f.marketHomeSpread):null,outcome,pnl,observedAt,sourceUrl:game.sourceUrl,...(playedAt?{playedAt}:{}),...(f.firstMarket?{marketObservation:{forecastId:f.id,observedAt:f.firstMarket.observedAt,recordedAt:f.firstMarket.recordedAt,protocol:f.firstMarket.protocol}}:{})};
+ return {status:'completed',homeScore:game.homeScore,awayScore:game.awayScore,actualMargin,residual,absoluteError:residual===null?null:Math.abs(residual),marketAbsoluteError:finite(f.marketHomeSpread)?Math.abs(actualMargin+f.marketHomeSpread):null,outcome,pnl,observedAt,sourceUrl:game.sourceUrl,...(playedAt?{playedAt}:{}),...(f.pickRevision?{pickRevisionId:f.pickRevision.id,pickRecordedAt:f.pickRevision.recordedAt,pickLockedAt:f.pickLock.lockAt}:{}),...(f.firstMarket?{marketObservation:{forecastId:f.id,observedAt:f.firstMarket.observedAt,recordedAt:f.firstMarket.recordedAt,protocol:f.firstMarket.protocol}}:{})};
 }
 export function summarizeForecasts(records){
  const finals=records.filter(f=>f.result?.status==='completed');

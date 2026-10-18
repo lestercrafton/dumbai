@@ -4,7 +4,9 @@ import {normalizeScoreboard,scoreboardUrl,SPORT_PATHS} from '@/lib/feeds/adapter
 import {getSlate,history,canonical,persistFinals,persistBoard} from '@/lib/feeds/service';
 import {fitRatings,projectGame} from '@/lib/ratings.mjs';
 import {reportingWeek,gradeForecast,MODEL_VERSION} from '@/lib/results.mjs';
-import {seedRecords,saveForecasts,importCfbMissedCard} from '@/lib/result-store';
+import {seedRecords,saveForecasts,importCfbMissedCard,readForecastRecords} from '@/lib/result-store';
+import {capturePickRevisions,pickStates} from '@/lib/pick-revision-store';
+import {withPickState} from '@/lib/pick-revisions.mjs';
 import {sportsDay} from '@/lib/time';
 import {captureFirstMarkets,firstMarkets} from '@/lib/market-store';
 import {withFirstMarket} from '@/lib/first-market.mjs';
@@ -26,22 +28,24 @@ export async function POST(request:Request){
  await persistBoard(v.sport,board,startDate,endDate,boardDates(v.boards));
  const date=sportsDay();const versions=[MODEL_VERSION,...(activeModels[v.sport]?[activeModels[v.sport].id]:[])];let inserted=0;const insertedByVersion:Record<string,number>={};
  for(const version of v.historicalOnly===true?[]:versions){
- const slate=await getSlate(v.sport,date,board,7,version);
+ const slate=await getSlate(v.sport,date,board,7,version,true);
  const hist=version===MODEL_VERSION&&['nfl','cfb'].includes(v.sport)?await history(v.sport):null;
  const shadow=hist?fitRatings(hist.games,{sport:v.sport,asOf:slate.asOf,variant:v.sport==='nfl'?'no-rest':'fixed-home'}):null;
  const records=slate.games.filter((g:any)=>g.modelVersion===version&&g.status==='scheduled'&&Date.parse(g.startTime)>Date.now()+60000&&g.projection?.predictedHomeMargin!==null&&Number.isFinite(g.projection?.predictedHomeMargin)).map((g:any)=>{
  const market=g.stale?null:g.market;const side=market?g.side:null;
  return {id:`${version}:${v.sport}:${g.id}`,gameId:g.id,sport:v.sport,season:g.season,seasonType:g.seasonType,postseason:g.postseason??null,week:g.week,weekKey:reportingWeek(g),cohort:'live',origin:'collector',startTime:g.startTime,capturedAt:now,rank:g.rank,rankBasis:'Collection card · '+date+' through '+slate.endDate,projection:g.projection,ratingCoverage:g.projection.ratingCoverage??null,coverageNote:g.projection.coverageNote??null,home:g.home.name,away:g.away.name,homeId:canonical(g).homeId,awayId:canonical(g).awayId,predictedMargin:g.projection.predictedHomeMargin,marketHomeSpread:market?.homeSpread??null,side,odds:side==='home'?market?.homeSpreadPrice??null:side==='away'?market?.awaySpreadPrice??null:null,marketObservedAt:market?.observedAt??null,provider:market?.provider??null,sourceUrl:g.sourceUrl,trainingCutoff:slate.asOf,modelVersion:version,parameters:slate.model.config,homeAdvantage:slate.model.homeAdvantage,restCoefficient:slate.model.restCoefficient,trainingGames:slate.model.trainingGames,lastTrainingDate:slate.model.lastTrainingDate,shadow:shadow?{version:v.sport==='nfl'?'nfl-no-rest-shadow-v1':'cfb-fixed-home-shadow-v1',predictedMargin:projectGame(canonical(g),shadow)?.predictedHomeMargin??null,eligible:v.sport==='nfl'?String(reportingWeek(g))>='2026-W02':sportsDay(g.startTime)>='2026-09-14'}:null};
  });
- insertedByVersion[version]=await saveForecasts(records);inserted+=insertedByVersion[version];
+ insertedByVersion[version]=await saveForecasts(records,true);inserted+=insertedByVersion[version];
  }
  const marketCaptures=await captureFirstMarkets(v.sport,boards.flatMap(b=>b.games).map(g=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId})),now);
  const marketObservations=await firstMarkets(v.sport);
+ await capturePickRevisions(await readForecastRecords(v.sport,false),games.map(g=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId})));
+ const revisionStates=await pickStates(v.sport);
  const stored=await db().prepare('SELECT id,payload,result FROM forecasts WHERE sport=? AND cohort IN (?,?) AND (result IS NULL OR start_time>=?) ORDER BY start_time DESC LIMIT 5000').bind(v.sport,'live','recovered',new Date(Date.now()-35*86400000).toISOString()).all<{id:string,payload:string,result:string|null}>();
  const gameMap=new Map(games.map(g=>[g.id,g]));const updates=[];const corrections=[];
- for(const row of stored.results){const f=withFirstMarket(JSON.parse(row.payload),marketObservations.get(row.id));const game=gameMap.get(f.gameId);if(!game)continue;const result:any=gradeForecast(f,game,now);if(!result)continue;
+ for(const row of stored.results){const f=withPickState(withFirstMarket(JSON.parse(row.payload),marketObservations.get(row.id)),revisionStates.get(row.id));const game=gameMap.get(f.gameId);if(!game)continue;const result:any=gradeForecast(f,game,new Date().toISOString());if(!result)continue;
  const previous=row.result?JSON.parse(row.result):null;
- if(previous&&previous.status===result.status&&previous.homeScore===result.homeScore&&previous.awayScore===result.awayScore&&previous.outcome===result.outcome&&previous.pnl===result.pnl&&(previous.playedAt??null)===(result.playedAt??null)&&(previous.marketObservation?.observedAt??null)===(result.marketObservation?.observedAt??null))continue;
+ if(previous&&previous.status===result.status&&previous.homeScore===result.homeScore&&previous.awayScore===result.awayScore&&previous.outcome===result.outcome&&previous.pnl===result.pnl&&(previous.playedAt??null)===(result.playedAt??null)&&(previous.pickRevisionId??null)===(result.pickRevisionId??null)&&(previous.marketObservation?.observedAt??null)===(result.marketObservation?.observedAt??null))continue;
  if(previous)corrections.push({id:row.id,before:previous,after:result});
  updates.push(db().prepare('UPDATE forecasts SET result=?,graded_at=? WHERE id=?').bind(JSON.stringify(result),now,row.id));
  }

@@ -876,3 +876,9 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
   .vin-donation-message { font-size: 14px; }
   .vin-pledge > .vin-profit-split { gap: 20px; }
 }
+
+/* Revision details stay quiet beneath the current recommendation. */
+.vin-pick-history { margin: 12px 0; border-top: 1px solid var(--fiji-line); }
+.vin-pick-history > summary { min-height: 44px; padding: 12px 0; color: var(--fiji-purple); }
+.vin-pick-history ol { margin: 0 0 12px; padding-left: 16px; }
+.vin-pick-history li { margin: 7px 0; color: var(--fiji-muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }

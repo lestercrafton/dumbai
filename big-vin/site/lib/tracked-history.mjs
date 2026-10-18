@@ -79,7 +79,7 @@ export function selectTrackedHistory(records,{sport,models=[],rankPeriod='week',
  selected.sort((a,b)=>compare(b.startTime,a.startTime)||compare(a.id,b.id));
  return {records:selected,policy:{id:'saved-active-model-history-v1',
   selection:'One genuine pregame capture per sport/game. The latest registered model eligible at the earliest genuine saved kickoff and reporting week owns the game. Within that model, earliest capture then forecast ID wins. Missing active-model picks stay missing; no benchmark or later-formula fallback.',
-  provenance:'Only live collector or local pregame archives with a forecast captured before kickoff qualify. Reconstructed, recovered, retrospective, late and unverified records are excluded. Saved picks, market lines and results are preserved.',
+  provenance:'Only live collector or local pregame archives with a forecast captured before kickoff qualify. Reconstructed, recovered, retrospective, late and unverified records are excluded. Original forecasts and prior versions are preserved. Authorized prospective revisions use the latest valid saved pick locked by kickoff; past games are never recreated.',
   ranking:'Rank each formula’s full saved live card from frozen inputs in the requested ranking window before exclusions or deduplication. Preserve rank gaps and never promote lower-ranked picks. These are saved-input card ranks, not a verified historical publication log.',
   uncertainty:'The ledger has no published-primary marker. Formula ownership is inferred from the activation registry and saved schedule. Full-season coverage is unavailable.',
   excluded,excludedCount:Object.values(excluded).reduce((sum,count)=>sum+count,0),unavailableGames,metadataConflictGames,

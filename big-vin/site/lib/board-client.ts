@@ -35,7 +35,9 @@ export async function browserBoard(sport:string,startDate:string,endDate?:string
 }
 export async function fetchSlate(sport:string,date:string,days=1){
  const endDate=new Date(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*86400000).toISOString().slice(0,10);
- try{return await api('/api/slate',JsonCall({sport,date,days,payload:await browserBoard(sport,date,endDate)}));}
- catch{return api(`/api/slate?sport=${sport}&date=${date}&days=${days}`);}
+ // Server observations can persist the current pregame pick before returning
+ // it. Browser feeds are a read-only fallback and cannot revise the ledger.
+ try{return await api(`/api/slate?sport=${sport}&date=${date}&days=${days}`);}
+ catch{return api('/api/slate',JsonCall({sport,date,days,payload:await browserBoard(sport,date,endDate)}));}
 }
 export function JsonCall(body:Row,method='POST'){return {method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};}

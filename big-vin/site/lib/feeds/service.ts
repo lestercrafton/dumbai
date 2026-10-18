@@ -4,8 +4,10 @@ import {sportsDay} from '../time';
 import {cached,db} from '../db';
 import {parseCsv,fetchScoreboard,SPORT_PATHS,isThreeDayScoreboardWindow} from './adapter.mjs';
 import {fitRatings,projectCollegeGame,projectGame} from '../ratings.mjs';
-import {readForecastRecords} from '../result-store';
-import {gradeForecast,MODEL_VERSION} from '../results.mjs';
+import {readForecastRecords,saveForecasts} from '../result-store';
+import {gradeForecast,MODEL_VERSION,reportingWeek} from '../results.mjs';
+import {capturePickRevisions,pickStates} from '../pick-revision-store';
+import {withPickState,actionablePick,spreadSelection} from '../pick-revisions.mjs';
 import {modelSpec,modelLabel,eligibleForModel,historicalModelSpecs} from '../model-versions';
 import {historyModelForGame} from '../tracked-history.mjs';
 import {savedBoardHistory,canProjectUncapturedGame} from '../saved-board-history.mjs';
@@ -80,17 +82,17 @@ export function canonical(g:any){
  const id=(side:any)=>g.sport==='nfl'?nflId(side.abbreviation):g.sport==='mlb'?(side.key||side.abbreviation):side.id;
  return {id:g.id,seasonType:g.seasonType,startTime:g.startTime,date:g.sport==='nfl'?sportsDay(g.startTime):g.startTime?.slice(0,10),homeId:id(g.home),awayId:id(g.away),homeScore:g.homeScore,awayScore:g.awayScore,neutral:g.neutralSite===true,restDiff:0,marketHomeSpread:g.market?.homeSpread??null};
 }
-export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=7,requestedVersion?:string){
+export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=7,requestedVersion?:string,trustedBoard=!suppliedBoard){
  if(!Object.hasOwn(SPORT_PATHS,sport))throw new Error('Unsupported sport');
  try{await refreshLiveResults(sport);}catch(e){console.error('Slate finals check unavailable',e);}
  const endDate=day(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*DAY);
- const [board,hist,forecasts]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport)]);
+ const [board,hist,rawForecasts]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false)]);
+ let forecasts=rawForecasts;
  const now=sportsDay();const asOf=date<now?date:now;
  const registry=historicalModelSpecs(sport);
  const currentSpec=modelSpec(sport,requestedVersion);
  const historicalSpec=!requestedVersion?[...registry].reverse().find(candidate=>candidate.startDate<=date):null;
  const spec=requestedVersion?currentSpec:historicalSpec?{...historicalSpec,label:modelLabel(sport,historicalSpec.id)}:modelSpec(sport,MODEL_VERSION);
- const bankroll=replayBankroll(forecasts.filter(f=>f.cohort==='live'&&(f.modelVersion||MODEL_VERSION)===spec.id));
  const model=fitRatings(hist.games,{sport,asOf,parameters:spec.parameters||undefined});
  const baseline=spec.id===MODEL_VERSION?model:fitRatings(hist.games,{sport,asOf});
  const modelsByVersion=new Map<string,any>([[spec.id,model],[MODEL_VERSION,baseline]]);
@@ -98,6 +100,34 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   if(!modelsByVersion.has(gameSpec.id))modelsByVersion.set(gameSpec.id,fitRatings(hist.games,{sport,asOf,parameters:gameSpec.parameters||undefined}));
   return modelsByVersion.get(gameSpec.id);
  };
+ // Only server observations can create a prospective tracked pick. A public
+ // browser POST remains a preview and cannot write picks or revisions.
+ if(trustedBoard&&!board.offlineSnapshot){
+  if(!requestedVersion){
+   const ids=new Set(forecasts.map(f=>f.id));
+   const initial=board.games.flatMap((g:any)=>{
+    if(!canProjectUncapturedGame(g,Date.now()+60000))return [];
+    const gameSpec=historyModelForGame({...g,sport},registry),id=`${gameSpec.id}:${sport}:${g.id}`;
+    if(ids.has(id))return [];
+    const base=canonical(g),fitted=modelForGame(gameSpec);
+    if(sport==='nfl'){const match=hist.games.find((h:any)=>h.homeId===base.homeId&&h.awayId===base.awayId&&Math.abs(Date.parse(h.date)-Date.parse(base.date))<=DAY);base.restDiff=match?.restDiff??0;}
+    const projection:any=(sport==='cfb'?projectCollegeGame:projectGame)(base,fitted);
+    if(!Number.isFinite(projection?.predictedHomeMargin))return [];
+    const capturedAt=new Date().toISOString(),q=g.market;
+    const fresh=q?.timing==='current-displayed-snapshot'&&Number.isFinite(q.homeSpread)&&Date.parse(q.observedAt)<=Date.parse(capturedAt)&&Date.parse(capturedAt)-Date.parse(q.observedAt)<=1800000;
+    const selection=spreadSelection(projection.predictedHomeMargin,fresh?q.homeSpread:null);
+    return [{id,gameId:g.id,sport,season:g.season,seasonType:g.seasonType,postseason:g.postseason??null,week:g.week,weekKey:reportingWeek(g),cohort:'live',origin:'collector',startTime:g.startTime,capturedAt,
+     rank:null,rankBasis:'First server pregame capture',projection,ratingCoverage:projection.ratingCoverage??null,home:g.home.name,away:g.away.name,homeId:base.homeId,awayId:base.awayId,
+     predictedMargin:projection.predictedHomeMargin,marketHomeSpread:fresh?q.homeSpread:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
+     marketObservedAt:fresh?q.observedAt:null,provider:fresh?q.provider:null,sourceUrl:g.sourceUrl,trainingCutoff:asOf,modelVersion:gameSpec.id,parameters:fitted.config,homeAdvantage:fitted.homeAdvantage,restCoefficient:fitted.restCoefficient,trainingGames:fitted.trainingGames,lastTrainingDate:fitted.lastTrainingDate}];
+   });
+   if(initial.length){await saveForecasts(initial,true);forecasts=await readForecastRecords(sport,false);}
+  }
+  await capturePickRevisions(forecasts,board.games.map((g:any)=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId})));
+ }
+ const states=await pickStates(sport);
+ forecasts=forecasts.map(f=>withPickState(f,states.get(f.id)));
+ const bankroll=replayBankroll(forecasts.filter(f=>f.cohort==='live'&&(f.modelVersion||MODEL_VERSION)===spec.id));
  const bankrolls=new Map<string,any>([[spec.id,bankroll]]);
  const savedBankroll=(forecast:any)=>{
   const version=forecast.modelVersion||MODEL_VERSION;
@@ -126,17 +156,17 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const market=archived?Number.isFinite(f.marketHomeSpread)?{provider:f.provider||'Saved market',homeSpread:f.marketHomeSpread,awaySpread:-f.marketHomeSpread,homeSpreadPrice:f.side==='home'?f.odds:null,awaySpreadPrice:f.side==='away'?f.odds:null,observedAt:f.marketObservedAt}:paper?{provider:paper.kind==='archived-opening-spread'?'DraftKings opener':'Paper pick’em',homeSpread:paper.homeSpread,awaySpread:-paper.homeSpread,homeSpreadPrice:paper.side==='home'?paper.odds:null,awaySpreadPrice:paper.side==='away'?paper.odds:null,observedAt:paper.retrievedAt}:null:g.market;
   const project=sport==='cfb'?projectCollegeGame:projectGame;
   const projection=archived?{...f.projection,predictedHomeMargin:f.predictedMargin,fairHomeSpread:-f.predictedMargin,homeEdgePoints:Number.isFinite(f.marketHomeSpread)?f.predictedMargin+f.marketHomeSpread:paper?.kind==='archived-opening-spread'?f.predictedMargin+paper.homeSpread:null,homeAdvantage:f.homeAdvantage??f.projection?.homeAdvantage}:canProjectUncapturedGame(g)?project(base,tracked?modelForGame(gameSpec):eligible?model:baseline):null;
-  // A score refresh must not introduce a second, moving line next to the pick.
-  // Saved forecasts stay fixed; new history is used for new captures only.
-  const stale=!archived&&!!market&&Date.now()-Date.parse(market.observedAt)>30*60*1000;
+  const upcoming=g.status==='scheduled'&&Date.parse(g.startTime)>Date.now();
+  const actionable=upcoming&&!!f&&actionablePick(f,{...g,homeId:base.homeId,awayId:base.awayId});
+  const stale=upcoming?!actionable:!archived&&!!market&&Date.now()-Date.parse(market.observedAt)>30*60*1000;
   const homeEdge=projection?.homeEdgePoints;
   const edge=Number.isFinite(homeEdge)?Math.abs(homeEdge):null;
   const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:homeEdge>0?'home':'away');
   const lowEvidence=hasLimitedData({sport,projection});
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.
-  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:lowEvidence?'Picks with limited data':edge!==null&&!stale?null:paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Stale market snapshot':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
+  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:lowEvidence?'Picks with limited data':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
  });
  matches.sort((a:any,b:any)=>(a.lowEvidence?1:0)-(b.lowEvidence?1:0)||(b.edge??-1)-(a.edge??-1)||String(a.startTime).localeCompare(String(b.startTime))||a.id.localeCompare(b.id));
- let rank=0;for(const g of matches)if(g.edge!==null&&!g.stale&&!g.lowEvidence)g.rank=++rank;
+ let rank=0;for(const g of matches)if(g.edge!==null&&g.edge>0&&g.side&&!g.stale&&!g.lowEvidence)g.rank=++rank;
  return {sport,date,endDate,asOf,seasonContext:board.seasonContext??null,modelVersion:spec.id,modelLabel:spec.label,tuning:spec.parameters?spec:null,retrievedAt:board.retrievedAt,offlineSnapshot:board.offlineSnapshot===true,partialLiveCoverage:board.partialLiveCoverage===true,sourceUrl:board.sourceUrl,warnings:[...board.warnings,...hist.warnings],historySource:hist.sourceUrl,historyRetrievedAt:hist.retrievedAt,historyRefreshedAt:hist.refreshedAt??hist.retrievedAt,model,games:matches};
 }

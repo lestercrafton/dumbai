@@ -6,6 +6,8 @@ import {gradeForecast,reportingWeek} from './results.mjs';
 import {matchMlbFinals,unchangedGrade,eventSummaryUrl,matchEspnSummary,selectSummaryCandidates} from './live-finals.mjs';
 import {postseasonSlotForForecast,seriesLookupCandidates,completedBestOfThreeSeries,inferUnneededPlayoffGame} from './postseason.mjs';
 import {sportsDay} from './time';
+import {capturePickRevisions,pickStates} from './pick-revision-store';
+import {withPickState} from './pick-revisions.mjs';
 
 // Public requests can trigger a check, but only fixed, server-fetched sources
 // can write grades. No browser-supplied score or market can enter this path.
@@ -71,8 +73,12 @@ export async function refreshLiveResults(sport:string){
   const deferred=selectSummaryCandidates(pending,gameMap,attempts,pending.length).filter(f=>!candidates.some(c=>c.gameId===f.gameId)).length;
   if(deferred)warnings.push(`${deferred} other pending game${deferred===1?' is':'s are'} queued for the next automatic checks.`);
   if(!sources.length)return {checkedAt:null,attemptedAt:now,graded:0,warnings};
+  // These games were matched to exact archived identities by the source checks.
+  // Only tighten existing locks here; never accept a quote from a final check.
+  await capturePickRevisions(rows.map(r=>r.forecast),rows.flatMap(({forecast:f})=>{const g=gameMap.get(f.gameId);return g?[{...g,sport:f.sport,homeId:f.homeId,awayId:f.awayId,market:null}]:[];}));
+  const revisionStates=await pickStates(sport);
   const changes:any[]=[],corrections:any[]=[];
-  for(const row of rows){const f=row.forecast,game=gameMap.get(f.gameId);if(!game)continue;const gradedResult=gradeForecast(f,game,now);if(!gradedResult)continue;const result=game.voidEvidence?{...gradedResult,reason:game.voidEvidence.reason,voidEvidence:game.voidEvidence}:gradedResult;const previous=row.result?JSON.parse(row.result):null;if(unchangedGrade(previous,result))continue;if(previous)corrections.push({id:row.id,before:previous,after:result});
+  for(const row of rows){const f=withPickState(row.forecast,revisionStates.get(row.id)),game=gameMap.get(f.gameId);if(!game)continue;const gradedResult=gradeForecast(f,game,now);if(!gradedResult)continue;const result=game.voidEvidence?{...gradedResult,reason:game.voidEvidence.reason,voidEvidence:game.voidEvidence}:gradedResult;const previous=row.result?JSON.parse(row.result):null;if(unchangedGrade(previous,result))continue;if(previous)corrections.push({id:row.id,before:previous,after:result});
    // Compare-and-swap prevents a slower overlapping request overwriting a grade.
    changes.push(db().prepare('UPDATE forecasts SET result=?,graded_at=? WHERE id=? AND result IS ?').bind(JSON.stringify(result),now,row.id,row.result));
   }

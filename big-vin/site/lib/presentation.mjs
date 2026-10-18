@@ -1,4 +1,5 @@
 import {SPORT_PATHS, SPORT_LABELS} from './feeds/adapter.mjs';
+import {currentBoardPick} from './pick-revisions.mjs';
 
 /** Display helpers only. API ranking, prices, picks, and model math stay untouched. */
 export const SUPPORTED_SPORTS = Object.freeze(Object.keys(SPORT_PATHS));
@@ -26,7 +27,7 @@ export function featuredLeaders(slates, now = Date.now()) {
   const eligible = slates.flatMap(slate => (slate?.games || []).map(game => ({...game, sport: game.sport || slate.sport, boardOffline: !!slate.offlineSnapshot})))
     .filter(game => SUPPORTED_SPORTS.includes(game.sport) && game.status === 'scheduled' && !game.completed && Date.parse(game.startTime) > now
       && centralDay(game.startTime) === today && Number.isFinite(game.rank) && game.rank > 0 && Number.isFinite(game.edge) && game.edge > 0
-      && ['home', 'away'].includes(game.side) && !game.stale && !game.lowEvidence && game.paperWager?.kind !== 'synthetic-winner-even');
+      && ['home', 'away'].includes(game.side) && currentBoardPick(game,now) && !game.lowEvidence && game.paperWager?.kind !== 'synthetic-winner-even');
   return SUPPORTED_SPORTS.flatMap(sport => {
     const leader = eligible.filter(game => game.sport === sport).sort((a, b) => a.rank - b.rank || startsFirst(a, b))[0];
     return leader ? [leader] : [];

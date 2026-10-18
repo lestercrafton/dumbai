@@ -16,6 +16,8 @@ import {rankCardHistory,summarizeRankedCards} from './ranked-card-summary.mjs';
 import {summarizeSavedSeason} from './season-record.mjs';
 import {summarizeTrackedHistory} from './tracked-history.mjs';
 import {readForecastPages} from './forecast-pages.mjs';
+import {pickStates} from './pick-revision-store';
+import {withPickState} from './pick-revisions.mjs';
 export const seedRecords:any[]=seed as any[];
 /** Authorized one-time import; preserve any genuine forecast already saved. */
 export async function importCfbMissedCard(){
@@ -38,7 +40,7 @@ export async function importCfbMissedCard(){
  }
  return {inserted,alreadyPresent:present.size,expected:ids.length,numericLinesEnteredAt:importedAt,modelCapturedAt:fixture.capturedAt};
 }
-export async function readForecastRecords(sport:string){
+export async function readForecastRecords(sport:string,includeRevisions=true){
  const results=await readForecastPages(async(afterId:string|null,limit:number)=>{
   const statement=afterId===null?db().prepare('SELECT id,payload,result FROM forecasts WHERE sport=? ORDER BY id ASC LIMIT ?').bind(sport,limit):db().prepare('SELECT id,payload,result FROM forecasts WHERE sport=? AND id>? ORDER BY id ASC LIMIT ?').bind(sport,afterId,limit);
   return (await statement.all<{id:string,payload:string,result:string|null}>()).results;
@@ -46,11 +48,12 @@ export async function readForecastRecords(sport:string){
  const map=new Map(seedRecords.filter(f=>f.sport===sport).map(f=>[f.id,f]));
  for(const r of results){const f=JSON.parse(r.payload);const archived=map.get(f.id);map.set(f.id,{...archived,...f,rank:f.rank??archived?.rank,rankBasis:f.rankBasis??archived?.rankBasis,projection:f.projection??archived?.projection,result:r.result?JSON.parse(r.result):archived?.result??null});}
  const markets=await firstMarkets(sport);
- return [...map.values()].map(f=>withCfbPaperWager(withFirstMarket(f,markets.get(f.id)),cfbOpeningOdds));
+ const states=includeRevisions?await pickStates(sport):new Map();
+ return [...map.values()].map(f=>withPickState(withCfbPaperWager(withFirstMarket(f,markets.get(f.id)),cfbOpeningOdds),states.get(f.id)));
 }
-export async function saveForecasts(records:any[]){
+export async function saveForecasts(records:any[],prospective=false){
  let inserted=0;
- for(let i=0;i<records.length;i+=40){const outcomes=await db().batch(records.slice(i,i+40).map(f=>db().prepare('INSERT INTO forecasts (id,sport,week_key,cohort,start_time,captured_at,payload,result,graded_at) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING').bind(f.id,f.sport,f.weekKey,f.cohort,f.startTime,f.capturedAt,JSON.stringify({...f,result:undefined}),f.result?JSON.stringify(f.result):null,f.result?.observedAt??null)));inserted+=outcomes.reduce((s,r)=>s+(r.meta.changes??0),0);}
+ for(let i=0;i<records.length;i+=40){const outcomes=await db().batch(records.slice(i,i+40).map(f=>db().prepare("INSERT INTO forecasts (id,sport,week_key,cohort,start_time,captured_at,payload,result,graded_at) SELECT ?,?,?,?,?,?,?,?,? WHERE ?=0 OR julianday('now')<julianday(?) ON CONFLICT(id) DO NOTHING").bind(f.id,f.sport,f.weekKey,f.cohort,f.startTime,f.capturedAt,JSON.stringify({...f,result:undefined}),f.result?JSON.stringify(f.result):null,f.result?.observedAt??null,prospective?1:0,f.startTime)));inserted+=outcomes.reduce((s,r)=>s+(r.meta.changes??0),0);}
  return inserted;
 }
 export async function readResults(sport:string,requestedCohort:string|null,week:string|null,requestedVersion:string|null=null,rankPeriod='week',rankAnchor:string|null=null,requestedSeason:number|null=null,historyOnly=false,historyDate:string|null=null){

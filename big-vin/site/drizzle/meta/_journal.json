@@ -29,6 +29,13 @@
       "when": 1789369565565,
       "tag": "0003_first_market_observations",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792335521531,
+      "tag": "0004_strong_hydra",
+      "breakpoints": true
     }
   ]
 }

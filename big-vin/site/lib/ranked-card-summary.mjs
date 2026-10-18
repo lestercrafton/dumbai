@@ -1,4 +1,4 @@
-import {rankForecasts} from './ranking.mjs';
+import {rankForecasts,forecastEdge} from './ranking.mjs';
 import {summarizeForecasts} from './results.mjs';
 import {summarizeSpreadPicks} from './spread-record.mjs';
 
@@ -30,7 +30,12 @@ export function rankCardHistory(records,{rankPeriod='week',rankAnchor=null}={}){
   if(Number.isFinite(anchor))return new Date(anchor+Math.floor((Date.parse(date+'T00:00:00Z')-anchor)/(7*DAY))*7*DAY).toISOString().slice(0,10);
   return record.weekKey;
  };
- return [...groups(records,keyOf).values()].flatMap(rankForecasts);
+ // Top-N history retains its original card membership even when a prospective
+ // revision changes the eventual locked pick. Live boards rank current inputs.
+ return [...groups(records,keyOf).values()].flatMap(rows=>{
+  const originals=new Map(rows.map(row=>[row.id,row]));
+  return rankForecasts(rows.map(row=>row.originalPick?{...row,...row.originalPick}:row)).map(row=>({...originals.get(row.id),edge:forecastEdge(originals.get(row.id)),originalCardEdge:row.edge,cardRank:row.cardRank,lowEvidence:row.lowEvidence,rankReason:row.rankReason}));
+ });
 }
 
 /** Use the board's ranking period and frozen model/market inputs. A final can

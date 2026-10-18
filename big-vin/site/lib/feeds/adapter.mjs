@@ -217,10 +217,10 @@ export async function fetchScoreboard(sport, options = {}, fetchImpl = globalThi
     if(failed)boards[0].warnings.push(`${failed} ${SPORT_LABELS[sport]} weekend date${sport==='cfb'?'/group':''} checks failed; available games are shown and coverage may be incomplete.`);
   }else try { boards=await Promise.all(sourceUrls.map(read)); }
   catch(error){
-    if(!['cfb','nfl'].includes(sport)||!options.startDate)throw error;
+    if(!['cfb','nfl','nba','nhl','mlb'].includes(sport)||!options.startDate)throw error;
     const start=Date.parse(options.startDate+'T00:00:00Z'),end=Date.parse((options.endDate||options.startDate)+'T00:00:00Z');
     if(!Number.isFinite(start)||!Number.isFinite(end)||end<start||end-start>30*86400000)throw error;
-    if(sport==='nfl'){
+    if(sport!=='cfb'){
       if(end<=start||end-start>6*86400000)throw error;
       const dailyUrls=[];
       for(let ms=start;ms<=end;ms+=86400000){
@@ -232,7 +232,7 @@ export async function fetchScoreboard(sport, options = {}, fetchImpl = globalThi
       boards=settled.filter(item=>item.status==='fulfilled').map(item=>item.value);
       if(!boards.length)throw error;
       partialLiveCoverage=settled.some(item=>item.status==='rejected');
-      boards[0].warnings.push(partialLiveCoverage?'Some NFL single-date checks failed; saved games remain visible.':'NFL date-range feed recovered through single-date checks.');
+      boards[0].warnings.push(partialLiveCoverage?`Some ${SPORT_LABELS[sport]} single-date checks failed; saved games remain visible.`:`${SPORT_LABELS[sport]} date-range feed recovered through single-date checks.`);
     }else{
     // The range endpoint can reject valid dates; check every FBS/FCS date
     // using the supported 200-event limit and retain any actual failures.

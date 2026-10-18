@@ -34,6 +34,16 @@ test('NFL daily fallback discloses failed dates and refuses windows beyond a wee
  await assert.rejects(()=>fetchScoreboard('nfl',{startDate:'2026-09-29',endDate:'2026-10-06'},fetchImpl));
 });
 
+test('NBA, NHL and MLB server weeks recover through actual daily observations',async()=>{
+ for(const sport of ['nba','nhl','mlb']){
+  const urls=[];
+  const fetchImpl=async url=>{urls.push(url);const date=new URL(url).searchParams.get('dates');if(date.includes('-'))return {ok:false,status:400};return {ok:true,json:async()=>({events:[{...event(date),date:date.slice(0,4)+'-'+date.slice(4,6)+'-'+date.slice(6,8)+'T17:00:00Z'}]})};};
+  const board=await fetchScoreboard(sport,{startDate:'2026-10-18',endDate:'2026-10-24'},fetchImpl);
+  assert.equal(urls.length,8);assert.equal(board.games.length,7);assert.equal(board.partialLiveCoverage,false);
+  assert.deepEqual(board.sourceUrls.map(url=>new URL(url).searchParams.get('dates')),['20261018','20261019','20261020','20261021','20261022','20261023','20261024']);
+ }
+});
+
 const progressGame=(sport,status,situation,competitionStatus)=>{
  const source=event('progress');
  source.status=status;

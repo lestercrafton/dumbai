@@ -13,7 +13,7 @@ export function spreadDecision(record){
  const synthetic=paper?.kind==='synthetic-winner-even';
  const spread=synthetic?null:paper?.kind==='archived-opening-spread'?paper.homeSpread:record.marketHomeSpread??record.market?.homeSpread;
  const edge=finite(margin)&&finite(spread)?margin+spread:null;
- const side=synthetic?null:record.side??(edge===null||Math.abs(edge)<1e-9?null:edge>0?'home':'away');
+ const side=synthetic?null:record.side!==undefined?record.side:(edge===null||Math.abs(edge)<1e-9?null:edge>0?'home':'away');
  const modelTeam=finite(margin)&&Math.abs(margin)>=0.05?(margin>0?home:away):null;
  const modelLine=finite(margin)?modelTeam?`${modelTeam} ${handicap(-Math.abs(margin))}`:'Pick’em':null;
  const pick=finite(spread)&&side?`${side==='home'?home:away} ${handicap(side==='home'?spread:-spread)}`:null;

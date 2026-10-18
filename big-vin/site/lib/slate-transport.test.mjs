@@ -40,12 +40,13 @@ const jsonResponse = payload => new Response(JSON.stringify(payload), {headers: 
 const dateParam = url => new URL(url).searchParams.get('dates');
 const requestUrl = input => typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
 
-test('browser transport sends exactly Friday through Sunday for days=3, retaining one-day and week behavior', async t => {
+test('browser fallback sends exactly Friday through Sunday for days=3, retaining one-day and week behavior', async t => {
   const {fetchSlate} = await loadModule('lib/board-client.ts');
   const previousFetch = globalThis.fetch;
   t.after(() => { globalThis.fetch = previousFetch; });
   const requests = [], posted = [];
   globalThis.fetch = async (url, options) => {
+    if (requestUrl(url).startsWith('/api/slate?')) throw new Error('Server unavailable');
     if (requestUrl(url).startsWith('/api/slate')) {
       const body = JSON.parse(options.body); posted.push(body);
       return jsonResponse({date: body.date, days: body.days});
@@ -65,7 +66,7 @@ test('browser transport sends exactly Friday through Sunday for days=3, retainin
   assert.deepEqual(requests.map(dateParam), ['20261229', '20261230', '20261231', '20270101', '20270102', '20270103', '20270104']);
 });
 
-test('feed failures fall back to the server with days=3 and partial college coverage stays explicit', async t => {
+test('server is authoritative first; browser fallback keeps partial college coverage explicit', async t => {
   const {fetchSlate} = await loadModule('lib/board-client.ts');
   const previousFetch = globalThis.fetch;
   t.after(() => { globalThis.fetch = previousFetch; });
@@ -76,10 +77,11 @@ test('feed failures fall back to the server with days=3 and partial college cove
     throw new Error('Feed unavailable');
   };
   assert.deepEqual(await fetchSlate('cbb', '2026-10-30', 3), {offlineSnapshot: true, games: []});
-  assert.equal(requests.at(-1), '/api/slate?sport=cbb&date=2026-10-30&days=3');
+  assert.deepEqual(requests, ['/api/slate?sport=cbb&date=2026-10-30&days=3']);
   const compactRequests = [];
   let body;
   globalThis.fetch = async (url, options) => {
+    if (requestUrl(url).startsWith('/api/slate?')) throw new Error('Server unavailable');
     if (requestUrl(url).startsWith('/api/slate')) {body = JSON.parse(options.body); return jsonResponse({partialLiveCoverage: body.payload.partialLiveCoverage});}
     const parsed = new URL(url), dates = parsed.searchParams.get('dates');
     if (dates.includes('-')) throw new Error('Range unavailable');
@@ -209,7 +211,8 @@ test('service includes only the three ET sports dates across DST and preserves s
     '../bankroll.mjs': 'export const replayBankroll=()=>({plays:{}});',
     '../db': 'export const cached=(_key,_seconds,loader)=>loader(); export const db=()=>({prepare:()=>({bind:()=>({all:async()=>({results:[]})})})});',
     '../ratings.mjs': 'export const fitRatings=(_games,options)=>{services.cutoffs.push(options.asOf);return {asOf:options.asOf};}; export const projectGame=()=>{throw new Error("Saved forecast must not be recomputed");}; export const projectCollegeGame=projectGame;',
-    '../result-store': 'export const readForecastRecords=async()=>services.forecasts;',
+    '../result-store': 'export const readForecastRecords=async()=>services.forecasts; export const saveForecasts=async()=>{throw new Error("Browser data must not save forecasts");};',
+    '../pick-revision-store': 'export const pickStates=async()=>new Map(); export const capturePickRevisions=async()=>{throw new Error("Browser data must not write revisions");};',
     '../model-versions': 'export const modelSpec=()=>({id:"ridge-v1",label:"Original",parameters:null}); export const modelLabel=()=>"Original"; export const eligibleForModel=()=>true; export const historicalModelSpecs=()=>[];',
     './histories.json': 'export default services.histories;',
   }, services);
@@ -217,7 +220,7 @@ test('service includes only the three ET sports dates across DST and preserves s
   const before = structuredClone({board, forecasts});
   const weekend = await getSlate('cfb', start, board, 3);
   assert.equal(weekend.endDate, '2026-11-01');
-  assert.deepEqual(weekend.games.map(game => [game.id, game.rank, game.originalRank]), [['fri', 1, 12], ['sun', 2, 13], ['saved', 3, 15]]);
+  assert.deepEqual(weekend.games.map(game => [game.id, game.rank, game.originalRank]), [['fri', null, 12], ['sun', null, 13], ['saved', 1, 15]]);
   const saved = weekend.games.find(game => game.id === 'saved');
   assert.equal(saved.status, 'completed');
   assert.equal(saved.homeScore, 24);
@@ -226,7 +229,7 @@ test('service includes only the three ET sports dates across DST and preserves s
   assert.deepEqual(saved.result, finals);
   assert.equal(saved.forecastOrigin, 'collector');
   assert.equal(saved.historyCardRank, 4);
-  assert.equal(saved.rank, 3);
+  assert.equal(saved.rank, 1);
   assert.equal(saved.home.name, 'Home');
   assert.equal(saved.home.abbreviation, undefined);
   assert.equal(weekend.offlineSnapshot, true);

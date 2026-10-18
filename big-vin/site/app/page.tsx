@@ -8,6 +8,7 @@ import {RecordSummary} from '@/components/record-summary';
 import {useRefreshingResource} from '@/components/use-refreshing-resource';
 import {api,browserBoard,fetchSlate,JsonCall} from '@/lib/board-client';
 import {filterGamesByTeam} from '@/lib/team-search.mjs';
+import {expireBoardPick} from '@/lib/pick-revisions.mjs';
 import {filterByStartTime} from '@/lib/board-discovery.mjs';
 import {activeProviderSeason} from '@/lib/provider-season.mjs';
 import {sportsDay} from '@/lib/time';
@@ -102,7 +103,7 @@ export default function Home(){
  const snapshots=await Promise.allSettled(groups.map(async k=>{const [sp,d]=k.split(':');return {sport:sp,date:d,payload:await browserBoard(sp,d)}}));
  const r=await api('/api/ledger',JsonCall({action:'refresh',snapshots:snapshots.flatMap(x=>x.status==='fulfilled'?[x.value]:[])},'PATCH'));setNotice(`${r.graded} plays graded from final scores.`);await loadLedger()}catch(e){setLedgerError((e as Error).message)}finally{setLedgerBusy(false)}};
  const manualGrade=async(id:string,outcome:string)=>{try{await api('/api/ledger',JsonCall({id,outcome},'PATCH'));await loadLedger()}catch(e){setLedgerError((e as Error).message)}};
- const initialLoading=busy&&!slate;const all:Row[]=slate?.games||[];const games=all.filter(g=>(g.sport!=='cfb'||!g.lowEvidence)&&(filter==='all'||(g.rank&&g.rank<=Number(filter))));const limitedGames=filter==='all'?all.filter(g=>g.sport==='cfb'&&g.lowEvidence):[];const conferences=(sport==='cfb'||sport==='cbb')?boardConferences(all):[];const discover=(rows:Row[])=>filterByStartTime(filterGamesByTeam(filterByConference(rows,conference),teamQuery),{preset:timePreset,from:timePreset==='custom'?timeFrom:'',to:timePreset==='custom'?timeTo:'',now});const displayGames=sortBoard(discover(games),sortMode);const displayLimited=sortBoard(discover(limitedGames),sortMode);const stats=summarizeLedger(ledger.map(p=>({...p,gradedRisk:['win','learn','push'].includes(p.outcome)?p.risk:0})));
+ const initialLoading=busy&&!slate;const all:Row[]=(slate?.games||[]).map((game:Row)=>expireBoardPick(game,now));const games=all.filter(g=>(g.sport!=='cfb'||!g.lowEvidence)&&(filter==='all'||(g.rank&&g.rank<=Number(filter))));const limitedGames=filter==='all'?all.filter(g=>g.sport==='cfb'&&g.lowEvidence):[];const conferences=(sport==='cfb'||sport==='cbb')?boardConferences(all):[];const discover=(rows:Row[])=>filterByStartTime(filterGamesByTeam(filterByConference(rows,conference),teamQuery),{preset:timePreset,from:timePreset==='custom'?timeFrom:'',to:timePreset==='custom'?timeTo:'',now});const displayGames=sortBoard(discover(games),sortMode);const displayLimited=sortBoard(discover(limitedGames),sortMode);const stats=summarizeLedger(ledger.map(p=>({...p,gradedRisk:['win','learn','push'].includes(p.outcome)?p.risk:0})));
  const prediction=selected?.projection?.predictedHomeMargin;const adjusted=prediction==null?null:prediction+Number(adjust);const adjustedEdge=adjusted==null||market!=='spread'||line===''?null:(selection==='home'?adjusted:-adjusted)+Number(line);
 
  const openHeroGame=(g:Row)=>{chooseSport(g.sport);setDate(sportsDay(g.startTime));setWindowDays('1');setTab('slate');document.getElementById('board')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};
@@ -165,7 +166,7 @@ export default function Home(){
       {renderControls()}
       <div className="vin-results-callout"><div><strong>Results, right on the card.</strong><p>Wins, losses, pushes and pending picks stay visible. Records stay separate for every sport.</p></div><button className="vin-button vin-button-outline" onClick={()=>{chooseSport('all');setTab('records');}}>View all sport records <ArrowRight size={16}/></button></div>
 
-      {slate?.tuning?.id?.includes('2026-10-16')&&<p className="vin-model-update">Weights updated October 16. Earlier picks keep their original lines. <a href="/learning-log">What changed <ArrowUpRight size={12}/></a></p>}
+      {slate?.tuning?.id?.includes('2026-10-16')&&<p className="vin-model-update">Weights updated October 16. Picks lock at kickoff. <a href="/learning-log">What changed <ArrowUpRight size={12}/></a></p>}
       {slate?.offlineSnapshot&&<div className="vin-board-warning" role="status">Live refresh is unavailable. Schedule and scores last checked {time(slate.retrievedAt)}. Recorded model lines and ranks remain visible.</div>}
       {sport==='cfb'&&slate?.partialLiveCoverage&&!slate?.offlineSnapshot&&<details className="vin-feed-status"><summary>Some live updates unavailable</summary><p>Some date or league checks did not finish. Saved observations remain visible; refresh to try again.</p></details>}
       {renderGames()}

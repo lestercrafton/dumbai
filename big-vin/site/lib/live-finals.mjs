@@ -45,5 +45,5 @@ export function matchMlbFinals(payload,forecasts,sourceUrl,observedPending=new S
  return matches;
 }
 export function unchangedGrade(previous,result){
- return !!previous&&['status','homeScore','awayScore','outcome','pnl'].every(k=>previous[k]===result[k])&&(previous.playedAt??null)===(result.playedAt??null)&&(previous.marketObservation?.observedAt??null)===(result.marketObservation?.observedAt??null);
+ return !!previous&&['status','homeScore','awayScore','outcome','pnl'].every(k=>previous[k]===result[k])&&(previous.playedAt??null)===(result.playedAt??null)&&(previous.pickRevisionId??null)===(result.pickRevisionId??null)&&(previous.marketObservation?.observedAt??null)===(result.marketObservation?.observedAt??null);
 }
