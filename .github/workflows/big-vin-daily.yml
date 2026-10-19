@@ -22,7 +22,7 @@ on:
       timezone: America/Chicago
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   id-token: write
 
@@ -101,12 +101,35 @@ jobs:
       - name: Collect all sports and publish the daily journal
         if: steps.plan.outputs.journal == 'true' && !cancelled() && steps.prepare.outcome == 'success'
         run: node scripts/daily-experiment.mjs
+      - name: Save odds snapshots and shadow challenger picks
+        id: shadow
+        if: always() && steps.prepare.outcome == 'success'
+        continue-on-error: true
+        run: node scripts/shadow-challengers.mjs
       - name: Verify baseball refresh on demand
         if: steps.plan.outputs.refresh_baseball == 'true'
         run: node scripts/collect-mlb-stats.mjs
       - name: Publish Tuesday results review
         if: steps.plan.outputs.weekly == 'true'
+        env:
+          BIG_VIN_REVIEW_REPO_DIR: ${{ github.workspace }}/playbook/reviews
         run: node scripts/weekly-review.mjs --apply
+      - name: Commit the odds log and shadow ledger
+        if: always() && steps.shadow.outcome != 'skipped'
+        continue-on-error: true
+        working-directory: .
+        env:
+          PUSH_TOKEN: ${{ github.token }}
+        run: |
+          git add playbook/odds playbook/ledger playbook/reviews 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No new odds or shadow records."; exit 0; fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -q -m "Big Vin odds snapshots and shadow picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          remote="https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          for attempt in 1 2 3; do
+            if git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' pull -q --rebase "$remote" main && git push -q "$remote" HEAD:main; then exit 0; fi
+            sleep $((attempt*10))
+          done
+          echo "::warning title=Shadow records::Could not push the odds log; the checkpoint artifact still has the ledger."
       - name: Preserve retry checkpoints even after a partial run
         if: always() && steps.prepare.outcome != 'skipped'
         run: node scripts/cloud-state.mjs pack --output checkpoint
