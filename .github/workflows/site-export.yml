@@ -1,0 +1,52 @@
+name: Big Vin site data export
+
+# Manual, read-only copy of the Big Vin site database for the hosting move.
+# Its OIDC token is accepted only by /api/site-export, which has no write paths.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: big-vin-site-export
+  cancel-in-progress: false
+
+jobs:
+  export:
+    if: github.repository == 'lestercrafton/dumbai' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      BIG_VIN_SITE_URL: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Export every table and stored file, then verify counts and checksums
+        id: export
+        run: node big-vin/site/scripts/site-export-client.mjs "$BIG_VIN_SITE_URL" "$RUNNER_TEMP/export/big-vin-site" --scan-private
+      # This repository is public, so its artifacts are too. The data is uploaded only
+      # when the scan finds no credential-like strings or email addresses.
+      - name: Keep the verified export for 7 days
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: big-vin-site-export-${{ github.run_id }}
+          path: ${{ runner.temp }}/export/big-vin-site/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Keep counts and scan results only (no row data)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: big-vin-site-export-report-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/export/big-vin-site/counts.json
+            ${{ runner.temp }}/export/private-scan.json
+          retention-days: 7
+          if-no-files-found: ignore

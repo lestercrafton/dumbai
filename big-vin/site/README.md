@@ -75,3 +75,7 @@ The current integrated site has been inspected in a browser at desktop and narro
 ## Shared source and editing
 
 The shared source is [big-vin/site in lestercrafton/dumbai](https://github.com/lestercrafton/dumbai/tree/main/big-vin/site). See [AGENTS.md](AGENTS.md) for the editing and publishing workflow. The live URL stays unchanged. Runtime hosting and the existing GitHub Actions collector operate without a local computer. GitHub CI checks source changes; production publication is a separate supported Sites step with fresh short-lived credentials. Do not claim push-to-deploy until that separate step succeeds.
+
+## Data export
+
+`GET /api/site-export` is a read-only export of the site database (tables with counts, every row with exact values, large cells in chunks). It accepts only a GitHub OIDC token from a manual run of `.github/workflows/site-export.yml` on `main`, with its own audience; the collector token is not accepted. That workflow writes `schema.json`, `tables/*.jsonl`, `counts.json` and `SHA256SUMS`, checks counts and byte lengths, refuses to upload if it finds credential-like strings or email addresses, and keeps the artifact for 7 days.
