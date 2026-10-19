@@ -40,3 +40,10 @@ test('foreign-key parents load first',()=>{
  const order=loadOrder([{name:'a_child',sql:'CREATE TABLE a_child (x integer REFERENCES `z_parent`(id))'},{name:'z_parent',sql:'CREATE TABLE z_parent (id integer)'}]);
  assert.deepEqual(order.map(t=>t.name),['z_parent','a_child']);
 });
+test('additive mode keeps rows that are already there',async()=>{
+ const {rowStatements}=await import('./d1-import-from-export.mjs');
+ const table={name:'t',sql:'CREATE TABLE t (id text PRIMARY KEY NOT NULL, v text)',columns:[{name:'id',type:'text',pk:1},{name:'v',type:'text',pk:0}]};
+ const db=new DatabaseSync(':memory:');db.exec(table.sql);db.exec("INSERT INTO t (rowid,id,v) VALUES (1,'a','kept'),(2,'c','local')");
+ for(const s of [...rowStatements(table,{rowid:'1',cells:[{text:'a'},{text:'new'}]},{additive:true}),...rowStatements(table,{rowid:'2',cells:[{text:'b'},{text:'added'}]},{additive:true})])db.exec(s);
+ assert.deepEqual(db.prepare('SELECT id,v FROM t ORDER BY id').all().map(r=>[r.id,r.v]),[['a','kept'],['b','added'],['c','local']]);
+});

@@ -8,13 +8,14 @@ let cachedKeys=null;
 const decode=value=>Uint8Array.from(atob(value.replaceAll('-','+').replaceAll('_','/')),c=>c.charCodeAt(0));
 const json=value=>JSON.parse(new TextDecoder().decode(decode(value)));
 
-export async function authorizedGitHubCollector(token,{now=Date.now(),fetchImpl=fetch,cryptoImpl=crypto}={}){
+/** @param {string} token @param {{now?:number,fetchImpl?:typeof fetch,cryptoImpl?:Crypto,audience?:string}} [options] */
+export async function authorizedGitHubCollector(token,{now=Date.now(),fetchImpl=fetch,cryptoImpl=crypto,audience=COLLECTOR_AUDIENCE}={}){
  try{
   if(typeof token!=='string'||token.length>20000)return false;
   const parts=token.split('.');if(parts.length!==3)return false;
   const header=json(parts[0]),claims=json(parts[1]),seconds=now/1000;
   if(header.alg!=='RS256'||typeof header.kid!=='string'||header.crit)return false;
-  if(claims.iss!==issuer||claims.aud!==COLLECTOR_AUDIENCE||
+  if(claims.iss!==issuer||claims.aud!==audience||
      claims.repository!==repository||claims.repository_id!=='926222029'||
      claims.repository_owner_id!=='197527837'||claims.ref!=='refs/heads/main'||
      claims.workflow_ref!==workflow||claims.sub!==`repo:${repository}:ref:refs/heads/main`||

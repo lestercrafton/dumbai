@@ -25,3 +25,9 @@ test('unknown signing keys cannot repeatedly bypass the JWKS cache',async()=>{
  for(let i=0;i<3;i++)assert.equal(await authorizedGitHubCollector(token,{...options,fetchImpl:async()=>{requests++;throw new Error('Unexpected request');}}),false);
  assert.equal(requests,0);
 });
+test('a second host accepts only its own audience',async()=>{
+ const audience='https://big-vin.example.workers.dev';
+ assert.equal(await authorizedGitHubCollector(await sign({aud:audience}),{...options,audience}),true);
+ assert.equal(await authorizedGitHubCollector(await sign(),{...options,audience}),false);
+ assert.equal(await authorizedGitHubCollector(await sign({aud:audience}),options),false);
+});

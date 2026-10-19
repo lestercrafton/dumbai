@@ -12,13 +12,15 @@
   "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": true },
+  // The runner requests a GitHub OIDC token with this audience when it writes here.
+  "vars": { "COLLECTOR_AUDIENCE": "https://big-vin.sitetime.workers.dev" },
   // The site reads env.DB through cloudflare:workers (lib/db.ts), so the binding name stays DB.
-  // Replace database_id with the id printed by `wrangler d1 create big-vin`.
+  // Created October 19, 2026 in Lester's Cloudflare account; separate from the other projects there.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "big-vin",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "aa66b317-ad92-48d4-842a-fcfc4f63e56d",
       "migrations_dir": "drizzle"
     }
   ]

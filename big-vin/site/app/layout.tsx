@@ -4,6 +4,7 @@ import './globals.css';
 import './big-vin.css';
 import './fiji-theme.css';
 import './playbook.css';
+import HostingNotice from '@/components/hosting-notice';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <HostingNotice />
         {children}
       </body>
     </html>

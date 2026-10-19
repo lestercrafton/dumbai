@@ -16,3 +16,4 @@ th .playbook-version-badge,h2 .playbook-version-badge,h3 .playbook-version-badge
 .playbook-week,.playbook-scoreboard,.playbook-promotions,.playbook-legend{margin-top:18px}
 .playbook-timeline{list-style:none;padding:0;margin:12px 0 0}.playbook-timeline>li+li{margin-top:16px;padding-top:16px;border-top:1px solid #8884}
 .playbook-lesson{margin-top:18px;padding-top:14px;border-top:1px solid #8884}.playbook-lesson h4{margin:6px 0}
+.hosting-notice{margin:0;padding:.45rem 1rem;font-size:.8rem;line-height:1.35;text-align:center;background:#fff6d6;color:#4a3b00;border-bottom:1px solid #ecd98a}

@@ -2,11 +2,14 @@
  * Data contract: docs/learning-loop-contract.md. Pure functions only; storage is lib/playbook-store.ts.
  */
 import {gradeSpreadPick,spreadOffer} from './spread-record.mjs';
+import {replayBankroll,BANKROLL_POLICY} from './bankroll.mjs';
 
 export const PLAYBOOK_V1=Object.freeze({id:'v1',label:'Playbook v1',frozenOn:'2026-10-19',
  // Midnight America/Chicago on October 19, 2026. Anything saved before this is v1.
  frozenAt:'2026-10-19T05:00:00.000Z'});
-export const PAPER_BANKROLL=Object.freeze({start:500,stakePerPick:10});
+// Same rule as the runner and the live board: $500 per version and sport, 2% of the Eastern day's opening balance.
+export const PAPER_BANKROLL=Object.freeze({start:BANKROLL_POLICY.startingBankroll,fraction:BANKROLL_POLICY.fraction,policy:BANKROLL_POLICY.id});
+export const NOTE_LIMIT=2000;
 export const SPORTS=Object.freeze(['nfl','cfb','nba','wnba','cbb','nhl','mlb']);
 const ID=/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/;
 const WEEK=/^(\d{4}-W\d{2}|\d{4}-\d{2}-\d{2})$/;
@@ -40,7 +43,8 @@ export function validateManifest(m){
  }
  return bounded(m,200000);
 }
-export function validateChallengerPick(p,now=Date.now()){
+/** @param {any} p @param {number} [now] @param {{backfill?:boolean}} [options] */
+export function validateChallengerPick(p,now=Date.now(),{backfill=false}={}){
  if(!p||typeof p!=='object')fail('A pick is required.');
  if(!ID.test(p.id||'')||!ID.test(p.versionId||''))fail('Pick id and versionId are required.');
  if(!SPORTS.includes(p.sport))fail('Pick sport is not supported.');
@@ -48,7 +52,11 @@ export function validateChallengerPick(p,now=Date.now()){
  if(!WEEK.test(p.weekKey||''))fail('Pick weekKey is required.');
  if(!isoTime(p.startTime)||!isoTime(p.capturedAt))fail('Pick startTime and capturedAt must be ISO times.');
  if(Date.parse(p.capturedAt)>now+5000)fail('Pick capturedAt cannot be in the future.');
- if(Date.parse(p.capturedAt)>=Date.parse(p.startTime)||Date.parse(p.startTime)<=now+60000)fail('Challenger picks must be saved before kickoff.');
+ if(Date.parse(p.capturedAt)>=Date.parse(p.startTime))fail('Challenger picks must be captured before kickoff.');
+ // Live posts must arrive before kickoff. Backfills from the runner's committed log may arrive later and are labeled.
+ if(!backfill&&Date.parse(p.startTime)<=now+60000)fail('Challenger picks must be saved before kickoff; send older picks as a backfill.');
+ if(p.revision!==undefined&&p.revision!==null&&!(Number.isInteger(p.revision)&&p.revision>=1&&p.revision<=1000))fail('Pick revision must be a whole number from 1.');
+ if(p.supersedes!==undefined&&p.supersedes!==null&&!ID.test(p.supersedes))fail('Pick supersedes must be a pick id.');
  if(!text(p.home,120)||!text(p.away,120))fail('Pick teams are required.');
  if(p.side!==null&&!['home','away'].includes(p.side))fail('Pick side must be home, away or null (no play).');
  for(const k of ['homeSpread','odds','predictedMargin','stakeUnits'])if(p[k]!==undefined&&p[k]!==null&&!finite(p[k]))fail(`Pick ${k} must be a number.`);
@@ -78,7 +86,8 @@ export function validateScoreboard(s){
  if(!Array.isArray(s.entries)||s.entries.length>100)fail('Scoreboard entries must be a list.');
  for(const e of s.entries){
   if(!ID.test(e?.versionId||''))fail('Each entry needs versionId.');
-  if(!['live','challenger'].includes(e.role))fail('Entry role must be live or challenger.');
+  if(!['live','challenger','frozen'].includes(e.role))fail('Entry role must be live, challenger or frozen.');
+  if(e.sport!==undefined&&e.sport!==null&&!SPORTS.includes(e.sport))fail('Entry sport is not supported.');
   if(!['kept','dropped','promoted','continuing'].includes(e.decision))fail('Entry decision must be kept, dropped, promoted or continuing.');
   if(!optionalText(e.note,2000))fail('Entry note is invalid.');
  }
@@ -87,6 +96,23 @@ export function validateScoreboard(s){
  if(s.lessonEntryId!==undefined&&s.lessonEntryId!==null&&!/^[a-z0-9_-]{5,120}$/.test(s.lessonEntryId))fail('lessonEntryId must be a learning-log entry id.');
  if(!optionalText(s.summary,4000))fail('Scoreboard summary is invalid.');
  return bounded(s,120000);
+}
+const ODDS_TYPES=['odds','refresh','close'];
+/** One line of the runner's append-only odds log (playbook/odds/<sport>/<month>.jsonl). */
+export function validateOddsSnapshot(l){
+ if(!l||typeof l!=='object')fail('An odds snapshot is required.');
+ if(!ODDS_TYPES.includes(l.type))fail('Odds snapshot type must be odds, refresh or close.');
+ if(typeof l.id!=='string'||!l.id||l.id.length>200||/\s/.test(l.id))fail('Odds snapshot id is required.');
+ if(!SPORTS.includes(l.sport))fail('Odds snapshot sport is not supported.');
+ if(!isoTime(l.at))fail('Odds snapshot at must be an ISO time.');
+ if(l.type==='refresh'){if(!Array.isArray(l.gameIds)||!l.gameIds.length||l.gameIds.length>2000||!l.gameIds.every(x=>ID.test(String(x))))fail('A refresh line lists the re-checked game ids.');}
+ else{
+  if(!ID.test(String(l.gameId||'')))fail('Odds snapshot gameId is required.');
+  if(!isoTime(l.startTime))fail('Odds snapshot startTime is required.');
+  if(!l.market||typeof l.market!=='object')fail('Odds snapshot market is required.');
+  if(l.type==='odds'&&Date.parse(l.at)>=Date.parse(l.startTime))fail('Odds snapshots are taken before the start.');
+ }
+ return bounded(l,40000);
 }
 export function validatePromotion(p){
  if(!p||typeof p!=='object')fail('A promotion is required.');
@@ -116,6 +142,17 @@ export function liveVersionAt(sport,at,promotions=[]){
  const applied=promotions.filter(p=>p.sport===sport&&Date.parse(p.effectiveAt)<=t).sort((a,b)=>Date.parse(a.effectiveAt)-Date.parse(b.effectiveAt));
  return applied.at(-1)?.toVersionId??PLAYBOOK_V1.id;
 }
+const revisionOf=p=>Number.isInteger(p.revision)?p.revision:Number(/:r(\d+)$/.exec(p.id)?.[1]??1);
+/** The runner may revise a version's pick before kickoff (ids ending :r1, :r2). Only the latest pregame revision counts. */
+export function currentRevisions(picks){
+ const best=new Map();
+ for(const p of picks){
+  if(!(Date.parse(p.capturedAt)<Date.parse(p.startTime)))continue;
+  const key=p.versionId+'|'+p.sport+'|'+p.gameId,prev=best.get(key);
+  if(!prev||revisionOf(p)>revisionOf(prev)||revisionOf(p)===revisionOf(prev)&&p.capturedAt>prev.capturedAt)best.set(key,p);
+ }
+ return [...best.values()];
+}
 export const payout=odds=>finite(odds)&&Math.abs(odds)>=100?(odds>0?odds/100:100/-odds):null;
 
 /** Grade one challenger pick against its saved line; the runner's result supplies the final score and closing line. */
@@ -131,16 +168,33 @@ export function gradeChallenger(pick,result){
  const clv=finite(result.clv)?result.clv:finite(result.closingHomeSpread)?(pick.side==='home'?pick.homeSpread-result.closingHomeSpread:result.closingHomeSpread-pick.homeSpread):null;
  return {outcome,pnl,clv,stake};
 }
-/** W-L-P, ROI at saved odds, average CLV and a flat paper bankroll. */
-export function summarizeRecord(graded){
+/** Records in the shape the shared bankroll replay reads. */
+function bankrollRecord(g,cohort){
+ const p=g.pick??g.f,price=g.pick?{odds:p.odds,marketHomeSpread:p.homeSpread}:{odds:p.odds,marketHomeSpread:p.marketHomeSpread};
+ const result=g.outcome==='pending'?null:g.outcome==='void'?{status:'void'}:g.outcome==='no-play'?null:{status:'completed',pnl:finite(g.pnl)&&finite(g.stake)&&g.stake>0?g.pnl/g.stake:g.pnl,playedAt:g.playedAt??undefined};
+ return {id:p.id,sport:p.sport,cohort,modelVersion:g.pick?p.versionId:p.modelVersion||'ridge-v1',startTime:p.startTime,side:p.side,...price,result};
+}
+/** Bankroll per sport with the runner's rule; null when there is nothing staked. */
+export function replayPaperBankroll(graded,cohort='shadow'){
+ const plays=graded.filter(g=>(g.pick??g.f)&&g.outcome!=='no-play');if(!plays.length)return null;
+ const sports=[...new Set(plays.map(g=>(g.pick??g.f).sport))].sort();
+ const bySport=sports.map(sport=>{try{const r=replayBankroll(plays.filter(g=>(g.pick??g.f).sport===sport).map(g=>bankrollRecord(g,cohort)));return {sport,balance:r.balance,profit:r.profit,blockedBy:r.blockedBy};}catch{return {sport,balance:null,profit:null,blockedBy:null};}});
+ const known=bySport.filter(b=>finite(b.balance));
+ return {balance:known.length===bySport.length?known.reduce((s,b)=>s+b.balance,0):null,start:PAPER_BANKROLL.start*sports.length,blockedBy:bySport.map(b=>b.blockedBy).filter(Boolean).sort()[0]??null,bySport};
+}
+/** W-L-P, ROI at saved odds, average CLV and the 2%-of-opening-balance paper bankroll.
+ * @param {any[]} graded @param {{bankroll?:boolean,cohort?:string}} [options] */
+export function summarizeRecord(graded,{bankroll=true,cohort='shadow'}={}){
  const count=o=>graded.filter(g=>g.outcome===o).length;
  const priced=graded.filter(g=>finite(g.pnl)),staked=priced.reduce((s,g)=>s+(finite(g.stake)?g.stake:1),0);
  const units=priced.length?priced.reduce((s,g)=>s+g.pnl,0):null;
  const clvs=graded.filter(g=>finite(g.clv)).map(g=>g.clv);
+ const paper=bankroll?replayPaperBankroll(graded,cohort):null;
  return {wins:count('win'),losses:count('loss'),pushes:count('push'),pending:count('pending'),voids:count('void'),noPlays:count('no-play'),
   pricedPicks:priced.length,units,roi:units===null||!staked?null:units/staked,
   clv:clvs.length?clvs.reduce((s,x)=>s+x,0)/clvs.length:null,clvPicks:clvs.length,
-  bankroll:PAPER_BANKROLL.start+(units??0)*PAPER_BANKROLL.stakePerPick};
+  backfilled:graded.filter(g=>g.pick?.backfill).length,
+  bankroll:paper?.balance??null,bankrollStart:paper?.start??null,bankrollBlockedBy:paper?.blockedBy??null};
 }
 /** Live-model record over saved live forecasts using the same rules as challengers. */
 export function gradeLiveForecast(f){
@@ -155,6 +209,7 @@ const afterFreeze=f=>Date.parse(f.capturedAt||f.startTime||'')>=Date.parse(PLAYB
  * @param {{picks?:any[],results?:any[],manifest?:any,liveForecasts?:any[],promotions?:any[]}} input */
 export function challengerBoard({picks=[],results=[],manifest=null,liveForecasts=[],promotions=[]}){
  const byPick=new Map(results.map(r=>[r.pickId,r]));
+ picks=currentRevisions(picks);
  const versions=new Map((manifest?.versions||[]).map(v=>[v.id,v]));
  const weeks=[...new Set(picks.map(p=>p.weekKey))].sort().reverse();
  const gradedAll=picks.map(p=>({pick:p,...gradeChallenger(p,byPick.get(p.id))}));
@@ -166,14 +221,14 @@ export function challengerBoard({picks=[],results=[],manifest=null,liveForecasts
    const v=versions.get(versionId);
    return {versionId,label:v?.label??versionId,idea:v?.idea??null,summary:v?.summary??null,role:v?.role??'challenger',
     sports:[...new Set(mine.map(g=>g.pick.sport))].sort(),
-    week:summarizeRecord(mine.filter(g=>g.pick.weekKey===weekKey)),
+    week:summarizeRecord(mine.filter(g=>g.pick.weekKey===weekKey),{bankroll:false}),
     running:summarizeRecord(mine.filter(g=>g.pick.weekKey<=weekKey))};
   });
   const live=sportsInWeek.map(sport=>{
    const all=liveForecasts.filter(f=>f.sport===sport).map(f=>({f,...gradeLiveForecast(f)}));
    return {sport,versionId:liveVersionAt(sport,Date.now(),promotions),
-    week:summarizeRecord(all.filter(g=>g.f.weekKey===weekKey&&afterFreeze(g.f))),
-    running:summarizeRecord(all.filter(g=>g.f.weekKey<=weekKey&&afterFreeze(g.f)))};
+    week:summarizeRecord(all.filter(g=>g.f.weekKey===weekKey&&afterFreeze(g.f)),{bankroll:false}),
+    running:summarizeRecord(all.filter(g=>g.f.weekKey<=weekKey&&afterFreeze(g.f)),{cohort:'live'})};
   });
   return {weekKey,sports:sportsInWeek,challengers,live};
  });

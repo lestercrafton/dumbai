@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {PLAYBOOK_V1,playbookVersionFor,liveVersionAt,validateManifest,validateChallengerPick,validateChallengerResult,validateScoreboard,validatePromotion,gradeChallenger,summarizeRecord,challengerBoard} from './playbook.mjs';
+import {PLAYBOOK_V1,currentRevisions,validateOddsSnapshot,playbookVersionFor,liveVersionAt,validateManifest,validateChallengerPick,validateChallengerResult,validateScoreboard,validatePromotion,gradeChallenger,summarizeRecord,challengerBoard} from './playbook.mjs';
 
 const now=Date.parse('2026-10-20T15:00:00Z');
 const pick=(changes={})=>({id:'v2-injuries:nfl:401',versionId:'v2-injuries',sport:'nfl',gameId:'401',weekKey:'2026-W07',startTime:'2026-10-22T00:15:00Z',capturedAt:'2026-10-20T14:00:00Z',home:'Packers',away:'Bears',side:'home',homeSpread:-3.5,odds:-110,predictedMargin:6,...changes});
@@ -53,7 +53,7 @@ test('grading uses the saved line and odds, with CLV toward the pick',()=>{
  assert.equal(gradeChallenger(p,{status:'void'}).outcome,'void');
  assert.equal(gradeChallenger(pick({odds:null}),{status:'completed',homeScore:30,awayScore:0}).pnl,null);
  const s=summarizeRecord([win,{outcome:'loss',pnl:-1,clv:-0.5,stake:1},{outcome:'pending',pnl:null,clv:null}]);
- assert.equal(s.wins,1);assert.equal(s.losses,1);assert.equal(s.pending,1);assert.ok(Math.abs(s.roi-(100/110-1)/2)<1e-12);assert.equal(s.clv,0.25);assert.ok(Math.abs(s.bankroll-(500+10*(100/110-1)))<1e-9);
+ assert.equal(s.wins,1);assert.equal(s.losses,1);assert.equal(s.pending,1);assert.ok(Math.abs(s.roi-(100/110-1)/2)<1e-12);assert.equal(s.clv,0.25);assert.equal(s.bankroll,null,'no saved picks to replay');
 });
 test('the challenger board keeps running records and a post-freeze live row',()=>{
  const picks=[pick(),pick({id:'b',gameId:'402',weekKey:'2026-W08',startTime:'2026-10-29T00:15:00Z'}),pick({id:'c',versionId:'v3-sizing',gameId:'401'})];
@@ -65,15 +65,40 @@ test('the challenger board keeps running records and a post-freeze live row',()=
  assert.equal(w8.label,'Injury news');assert.equal(w8.week.losses,1);assert.equal(w8.running.wins,1);assert.equal(w8.running.losses,1);
  const live=weeks[1].live[0];assert.equal(live.versionId,'v1');assert.equal(live.week.wins,1);assert.equal(live.week.losses,0,'pre-freeze live pick excluded');
 });
-test('the learning-loop migration only adds tables and indexes',()=>{
+test('the learning-loop migrations only add tables and indexes',()=>{
  const files=readdirSync(new URL('../drizzle/',import.meta.url)).filter(f=>f.endsWith('.sql')).sort();
- assert.equal(files.at(-1),'0005_playbook_learning_loop.sql');
- const sql=readFileSync(new URL('../drizzle/0005_playbook_learning_loop.sql',import.meta.url),'utf8');
- for(const statement of sql.split('--> statement-breakpoint').map(s=>s.trim()).filter(Boolean))assert.match(statement,/^CREATE (TABLE|INDEX) `(challenger_picks|challenger_results|playbook_manifests|promotions|scoreboards|challenger_picks_\w+|playbook_manifests_\w+|promotions_\w+|scoreboards_\w+)`/);
+ const loop=files.filter(f=>f>='0005');
+ assert.deepEqual(loop,['0005_playbook_learning_loop.sql','0006_odds_snapshots.sql']);
+ const read=f=>readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8').split('--> statement-breakpoint').map(s=>s.trim()).filter(Boolean);
  const db=new DatabaseSync(':memory:');
- for(const f of files.slice(0,-1))for(const s of readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8').split('--> statement-breakpoint'))if(s.trim())db.exec(s);
+ for(const f of files.filter(f=>f<'0005'))for(const s of read(f))db.exec(s);
  const before=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
- for(const s of sql.split('--> statement-breakpoint'))if(s.trim())db.exec(s);
+ for(const f of loop)for(const statement of read(f)){assert.match(statement,/^CREATE (TABLE|INDEX) `(challenger_|playbook_manifests|promotions|scoreboards|odds_snapshots)/);db.exec(statement);}
  const after=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
  for(const t of before)assert.deepEqual(after.find(x=>x.name===t.name),t,'existing schema unchanged: '+t.name);
+});
+test('backfills, revisions, frozen controls and odds lines follow the runner format',()=>{
+ const late=pick({startTime:'2026-10-20T00:15:00Z',capturedAt:'2026-10-19T14:00:00Z'});
+ assert.throws(()=>validateChallengerPick(late,now),/backfill/);
+ assert.doesNotThrow(()=>validateChallengerPick(late,now,{backfill:true}));
+ assert.throws(()=>validateChallengerPick({...late,capturedAt:'2026-10-20T01:00:00Z'},now,{backfill:true}),/before kickoff/);
+ const r1=pick({id:'v2-injuries:nfl:401:r1',capturedAt:'2026-10-20T10:00:00Z'}),r2=pick({id:'v2-injuries:nfl:401:r2',capturedAt:'2026-10-20T12:00:00Z',side:'away',supersedes:'v2-injuries:nfl:401:r1'});
+ assert.deepEqual(currentRevisions([r2,r1]).map(p=>p.id),['v2-injuries:nfl:401:r2']);
+ const board=challengerBoard({picks:[r1,r2],results:[{pickId:r1.id,status:'completed',homeScore:24,awayScore:20},{pickId:r2.id,status:'completed',homeScore:24,awayScore:20}]});
+ const row=board[0].challengers[0];assert.equal(row.running.wins+row.running.losses+row.running.pending,1,'superseded revision is not a row');assert.equal(row.running.losses,1);
+ const board2={schema:'big-vin-scoreboard/1',id:'scoreboard-2026-10-27',weekKey:'2026-10-19',publishedFor:'2026-10-27',liveVersionId:'v1',entries:[{versionId:'nfl-v1-control',role:'frozen',sport:'nfl',decision:'kept',note:'x'.repeat(2000)}],won:[],lost:[],kept:[],dropped:[],lessonEntryId:null};
+ assert.doesNotThrow(()=>validateScoreboard(board2));
+ assert.throws(()=>validateScoreboard({...board2,entries:[{...board2.entries[0],note:'x'.repeat(2001)}]}));
+ assert.doesNotThrow(()=>validateOddsSnapshot({type:'odds',id:'odds:nfl:401:2026-10-20T14:00:00.000Z',at:'2026-10-20T14:00:00.000Z',sport:'nfl',gameId:'401',startTime:'2026-10-22T00:15:00Z',market:{homeSpread:-3.5}}));
+ assert.doesNotThrow(()=>validateOddsSnapshot({type:'refresh',id:'refresh:nfl:2026-10-20T15:00:00.000Z',at:'2026-10-20T15:00:00.000Z',sport:'nfl',gameIds:['401','402']}));
+ assert.throws(()=>validateOddsSnapshot({type:'odds',id:'odds:x',at:'2026-10-22T01:00:00Z',sport:'nfl',gameId:'401',startTime:'2026-10-22T00:15:00Z',market:{}}),/before the start/);
+});
+test('the paper bankroll risks 2% of the day\'s opening balance, like the runner',()=>{
+ const p1=pick({id:'a',gameId:'1',startTime:'2026-10-20T00:15:00Z',capturedAt:'2026-10-19T12:00:00Z'}),p2=pick({id:'b',gameId:'2',startTime:'2026-10-21T00:15:00Z',capturedAt:'2026-10-19T12:00:00Z'});
+ const graded=[{pick:p1,...gradeChallenger(p1,{status:'completed',homeScore:24,awayScore:20})},{pick:p2,...gradeChallenger(p2,{status:'completed',homeScore:10,awayScore:20})}];
+ const s=summarizeRecord(graded);
+ const day1=500+10*(100/110),day2=day1-day1*0.02;
+ assert.ok(Math.abs(s.bankroll-day2)<1e-9,String(s.bankroll));assert.equal(s.bankrollStart,500);
+ const pending=summarizeRecord([graded[1],{pick:p1,...gradeChallenger(p1,null)}]);
+ assert.equal(pending.bankroll,500);assert.equal(pending.bankrollBlockedBy,'2026-10-19');
 });

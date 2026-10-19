@@ -1,19 +1,20 @@
 # Learning loop data contract (site side)
 
-Status: **proposed by the site, October 19, 2026.** The runner-side loop (versions manifest, Playbook v1 tag, shadow challenger picks, Tuesday scoreboard, promotion records) had no commits on `main` when this was written, so this file defines what the site accepts. If the runner settles on a different shape, change `lib/playbook.mjs` validators and this file together.
+Status: **in use, October 19, 2026.** Updated after the runner loop landed (6add738, 9a44ba7; tag playbook-v1-2026-10-19); the runner's `big-vin/lib/playbook-outbox.mjs` writes these shapes. The runner-side loop (versions manifest, Playbook v1 tag, shadow challenger picks, Tuesday scoreboard, promotion records) had no commits on `main` when this was written, so this file defines what the site accepts. If the runner settles on a different shape, change `lib/playbook.mjs` validators and this file together.
 
 Validation lives in `lib/playbook.mjs`; storage in `lib/playbook-store.ts`; migration `drizzle/0005_playbook_learning_loop.sql` (new tables only).
 
 ## Writing
 
-`POST /api/playbook` with the same authorization as `/api/collector` (the `big-vin-daily.yml` GitHub OIDC token, audience `https://big-vin-grind-to-win.sunlightisfree.chatgpt.site`). Body is one JSON document, at most 400 KB, with a `kind`:
+`POST /api/playbook` with the same authorization as `/api/collector` (the `big-vin-daily.yml` GitHub OIDC token, audience `https://big-vin-grind-to-win.sunlightisfree.chatgpt.site`). Body is one JSON document, at most 1.5 MB, with a `kind`:
 
 | kind | body | stored | rule |
 |---|---|---|---|
 | `versions` | `{kind, manifest}` | `playbook_manifests` | append-only snapshot; same `manifest.id` again is a no-op; newest `generatedAt` is current |
-| `challenger-picks` | `{kind, picks:[…≤400]}` | `challenger_picks` | insert-only, rejected unless saved before kickoff (server clock); same `id` again is a no-op |
+| `challenger-picks` | `{kind, picks:[…≤400], backfill?}` | `challenger_picks` | insert-only; same `id` again is a no-op. Without `backfill`, rejected after kickoff (server clock). With `backfill:{source:'checkpoint-outbox'\|'repo-ledger', ref?}` (ref: commit or run URL), late picks are accepted if `capturedAt` is before kickoff and are labeled “posted late” |
 | `challenger-results` | `{kind, results:[…≤400]}` | `challenger_results` | one row per pick, separate from the pick; a later `gradedAt` replaces an earlier grade (score corrections) |
 | `scoreboard` | `{kind, scoreboard}` | `scoreboards` | insert-only; corrections are a new id with `supersedes` |
+| `odds-snapshots` | `{kind, lines:[…≤1000]}` | `odds_snapshots` | insert-only by line `id`; the runner's `playbook/odds/<sport>/<month>.jsonl` lines (`odds`, `refresh`, `close`) as written |
 | `promotion` | `{kind, promotion}` | `promotions` | insert-only |
 
 Responses: `{kind, inserted|saved, …}`; validation errors are HTTP 400 with `{error}`. Nothing here touches `forecasts`, `first_market_observations`, `pick_revision_states` or any price row.
@@ -40,7 +41,7 @@ Ids: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$`. Times: ISO 8601 with zone. Sports: `
  "side":"home","homeSpread":-3.5,"odds":-110,"predictedMargin":5.8,"stakeUnits":1,"provider":"ESPN BET","note":"QB questionable"}
 ```
 
-`side` is `home`, `away` or `null` (no play). `homeSpread` is the market line from the home side at capture and is required with a side. `odds` are American (or null: graded, not priced). `stakeUnits` 0–10, default 1. `gameId` is the ESPN event id the site uses.
+Revisions: ids may end `:r1`, `:r2`…; optional `revision` (integer) and `supersedes` (earlier pick id). Every revision is stored; only the latest revision captured before kickoff counts, so superseded revisions never show as ungraded rows. `note` is at most 2,000 characters; the full reasoning stays in the repo ledger. `side` is `home`, `away` or `null` (no play). `homeSpread` is the market line from the home side at capture and is required with a side. `odds` are American (or null: graded, not priced). `stakeUnits` 0–10, default 1. `gameId` is the ESPN event id the site uses.
 
 ### Challenger result
 
@@ -61,7 +62,7 @@ Ids: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$`. Times: ISO 8601 with zone. Sports: `
  "supersedes":null}
 ```
 
-`publishedFor` must be a Tuesday. `decision`: `kept | dropped | promoted | continuing`. `lessonEntryId` is the id of the learning-log entry posted through `POST /api/learning` that week; the scoreboard page shows it inline.
+`publishedFor` must be a Tuesday. Entry `role`: `live | challenger | frozen` (frozen = the runner's v1 control mirror), optional `sport`, `note` ≤ 2,000 characters. `decision`: `kept | dropped | promoted | continuing`. `lessonEntryId` is the id of the learning-log entry posted through `POST /api/learning` that week; the scoreboard page shows it inline.
 
 ### Promotion
 
@@ -78,8 +79,9 @@ Ids: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$`. Times: ISO 8601 with zone. Sports: `
 `GET /api/playbook?view=versions` → `{playbook, manifest, promotions}`
 `GET /api/playbook?view=challengers` → `{playbook, manifest, promotions, weeks:[{weekKey, sports, live:[{sport, versionId, week, running}], challengers:[{versionId, label, idea, summary, role, sports, week, running}]}]}`
 `GET /api/playbook?view=scoreboards` → `{playbook, manifest, promotions, scoreboards}`
+`GET /api/playbook?view=odds&sport=nfl&gameId=401772` → `{sport, gameId, lines}` (the game's odds lines plus refreshes that list it)
 
-Each record: `{wins, losses, pushes, pending, voids, noPlays, pricedPicks, units, roi, clv, clvPicks, bankroll}`. ROI is units won per unit staked at saved odds. Bankroll is a paper $500 with a flat $10 per priced pick (`PAPER_BANKROLL`). Running records start at the freeze. The live row grades saved live forecasts (the site's active model per sport) with the same rules; CLV stays blank there until live closing lines are stored.
+Each record: `{wins, losses, pushes, pending, voids, noPlays, pricedPicks, units, roi, clv, clvPicks, backfilled, bankroll, bankrollStart, bankrollBlockedBy}`. ROI is units won per unit staked at saved odds. Bankroll is the runner's rule, replayed with the site's `replayBankroll` (`sheet-daily-2pct-v1`): $500 per version and sport, each priced pick risks 2% of that Eastern day's opening balance, and a day with unsettled picks holds later days (`bankrollBlockedBy`). Weekly rows show no bankroll; running rows do. Running records start at the freeze. The live row grades saved live forecasts (the site's active model per sport) with the same rules; CLV stays blank there until live closing lines are stored.
 
 ## Version on every pick
 

@@ -32,18 +32,23 @@ export function rowidAlias(table){
  return pk.length===1&&String(pk[0].type).trim().toUpperCase()==='INTEGER'&&!/without\s+rowid/i.test(table.sql||'')?pk[0].name:null;
 }
 /** SQL statements that recreate one exported row; long cells are appended in chunks under the D1 statement limit. */
-export function rowStatements(table,row){
+/** @param {any} table @param {any} row @param {{additive?:boolean}} [options] */
+export function rowStatements(table,row,{additive=false}={}){
  const alias=rowidAlias(table),names=table.columns.map(c=>c.name);
  if(row.cells.length!==names.length)throw Error(`${table.name}#${row.rowid}: cell count differs from schema`);
- const cols=alias?names:['rowid',...names],values=row.cells.map(literal);if(!alias)values.unshift(row.rowid);
- const head=`INSERT INTO ${ident(table.name)} (${cols.map(ident).join(', ')}) VALUES (`;
+ // Additive imports let the target pick rowids, so an export rowid cannot collide with a row added here.
+ const keepRowid=!alias&&!additive;
+ const cols=keepRowid?['rowid',...names]:names,values=row.cells.map(literal);if(keepRowid)values.unshift(row.rowid);
+ const head=`INSERT ${additive?'OR IGNORE ':''}INTO ${ident(table.name)} (${cols.map(ident).join(', ')}) VALUES (`;
  const whole=head+values.join(', ')+');';
  if(whole.length<=STATEMENT_LIMIT)return [whole];
  const later=[];
- row.cells.forEach((cell,i)=>{const p=pieces(cell);const at=alias?i:i+1;if(p&&values[at].length>2000){values[at]=p.empty;later.push([names[i],p.out]);}});
+ row.cells.forEach((cell,i)=>{const p=pieces(cell);const at=keepRowid?i+1:i;if(p&&values[at].length>2000){values[at]=p.empty;later.push([names[i],p.out]);}});
  const first=head+values.join(', ')+');';
  if(first.length>STATEMENT_LIMIT)throw Error(`${table.name}#${row.rowid}: row is too wide for D1 even after splitting`);
+ // In additive mode a skipped insert must not get appended chunks either.
  const out=[first],where=alias?`${ident(alias)} = ${row.rowid}`:`rowid = ${row.rowid}`;
+ if(additive&&later.length)throw Error(`${table.name}#${row.rowid}: long rows cannot be added safely in additive mode; import this table into an empty database.`);
  for(const [column,chunks] of later)for(const chunk of chunks)out.push(`UPDATE ${ident(table.name)} SET ${ident(column)} = ${ident(column)} || ${chunk} WHERE ${where};`);
  return out;
 }
@@ -55,7 +60,8 @@ export function loadOrder(tables){
  for(const t of [...tables].sort((a,b)=>a.name.localeCompare(b.name)))visit(t);
  return out;
 }
-export async function buildImport(exportDir,outDir){
+/** @param {string} exportDir @param {string} outDir @param {{additive?:boolean}} [options] */
+export async function buildImport(exportDir,outDir,{additive=false}={}){
  const schema=JSON.parse(await readFile(join(exportDir,'schema.json'),'utf8'));
  await mkdir(outDir,{recursive:true});
  const plan={tables:{},skipped:[],files:[]};let file=[],size=0,n=0;
@@ -63,7 +69,7 @@ export async function buildImport(exportDir,outDir){
  for(const table of loadOrder(schema.tables)){
   if(SKIP_TABLES.has(table.name)){plan.skipped.push(table.name);continue;}
   const lines=(await readFile(join(exportDir,'tables',table.name+'.jsonl'),'utf8')).split('\n').filter(Boolean);
-  for(const line of lines)for(const s of rowStatements(table,JSON.parse(line))){if(size+s.length>FILE_LIMIT)await flush();file.push(s);size+=s.length+1;}
+  for(const line of lines)for(const s of rowStatements(table,JSON.parse(line),{additive})){if(size+s.length>FILE_LIMIT)await flush();file.push(s);size+=s.length+1;}
   plan.tables[table.name]=lines.length;
  }
  await flush();
@@ -74,8 +80,8 @@ export async function buildImport(exportDir,outDir){
  return plan;
 }
 if(import.meta.url===pathToFileURL(process.argv[1]||'').href){
- const [exportDir,outDir]=process.argv.slice(2);
- if(!exportDir||!outDir){console.error('Usage: node scripts/d1-import-from-export.mjs <export-dir> <out-dir>');process.exit(2);}
- const plan=await buildImport(exportDir,outDir);
+ const [exportDir,outDir]=process.argv.slice(2).filter(a=>!a.startsWith('--'));
+ if(!exportDir||!outDir){console.error('Usage: node scripts/d1-import-from-export.mjs <export-dir> <out-dir> [--additive]');process.exit(2);}
+ const plan=await buildImport(exportDir,outDir,{additive:process.argv.includes('--additive')});
  console.log(JSON.stringify({files:plan.files.length,tables:plan.tables,skipped:plan.skipped}));
 }
