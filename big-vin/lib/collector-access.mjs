@@ -58,3 +58,24 @@ export async function collectorAuthorization(config,{fetchImpl=globalThis.fetch,
  // client-side expiration read is only to refresh before the next request.
  identity={token,expires:claims.exp*1000};return 'Bearer '+token;
 }
+// The Site answers 401 when it cannot reach GitHub's signing keys in time, so a
+// single 401 can be transient. Retry the idempotent access check a few times
+// before failing the run; a persistent rejection still fails after the last try.
+const ACCESS_ATTEMPTS=3,ACCESS_RETRY_DELAYS=[15000,30000];
+export async function verifyCollectorAccess(config,{fetchImpl=globalThis.fetch,sleep=delay,authorize=collectorAuthorization,log=console.error}={}){
+ let failure;
+ for(let attempt=0;attempt<ACCESS_ATTEMPTS;attempt++){
+  let response;const authorization=await authorize(config);
+  try{response=await fetchImpl(config.url+'/api/collector',{method:'POST',headers:{'Content-Type':'application/json',Authorization:authorization},body:JSON.stringify({action:'initialize'}),signal:AbortSignal.timeout(120000)});}
+  catch{failure='network or timeout';}
+  if(response?.ok)return response;
+  if(response){
+   failure=String(response.status);
+   try{await response.body?.cancel();}catch{}
+   const retryable=response.status===401||response.status===429||response.status>=500&&response.status<=599;
+   if(!retryable)break;
+  }
+  if(attempt<ACCESS_ATTEMPTS-1){log(`Big Vin access check failed (${failure}); retrying.`);await sleep(ACCESS_RETRY_DELAYS[attempt]);}
+ }
+ throw new Error(`Big Vin rejected this workflow identity (${failure}).`);
+}

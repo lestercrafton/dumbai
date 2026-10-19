@@ -61,3 +61,19 @@ test('OIDC malformed JSON is a nonretryable response failure',()=>cloudCase(asyn
  let calls=0;
  await assert.rejects(collectorAuthorization({},{fetchImpl:async()=>{calls++;return{ok:true,json:async()=>{throw new SyntaxError('private response');}};},now:()=>now,sleep:async()=>assert.fail('malformed responses must not retry')}),/invalid identity response/);assert.equal(calls,1);
 }));
+test('access check retries a transient 401 and still fails on a persistent rejection',async()=>{
+ const {verifyCollectorAccess}=await import('./collector-access.mjs?access-check');
+ const config={url:'https://example.test',token:'t'},authorize=async()=>'Bearer t',log=()=>{};
+ let calls=0;const waits=[];
+ const flaky=async()=>{calls++;return calls===1?{ok:false,status:401,body:{cancel:async()=>{}}}:{ok:true,status:200};};
+ assert.equal((await verifyCollectorAccess(config,{fetchImpl:flaky,sleep:async ms=>waits.push(ms),authorize,log})).status,200);
+ assert.equal(calls,2);assert.deepEqual(waits,[15000]);
+ calls=0;waits.length=0;
+ const denied=async()=>{calls++;return {ok:false,status:401};};
+ await assert.rejects(verifyCollectorAccess(config,{fetchImpl:denied,sleep:async ms=>waits.push(ms),authorize,log}),/rejected this workflow identity \(401\)/);
+ assert.equal(calls,3);assert.deepEqual(waits,[15000,30000]);
+ calls=0;
+ const forbidden=async()=>{calls++;return {ok:false,status:403};};
+ await assert.rejects(verifyCollectorAccess(config,{fetchImpl:forbidden,sleep:async()=>{},authorize,log}),/\(403\)/);
+ assert.equal(calls,1);
+});
