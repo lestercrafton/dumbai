@@ -64,3 +64,28 @@ test('the five legacy identities are bounded to their verified original pair, se
  const slots=[['wnba','401918021','8','9','2026-10-01T04:00:00Z'],['wnba','401918293','20','16','2026-10-02T04:00:00Z'],['mlb','401907964','mlb:NYY','mlb:BOS','2026-10-01T04:00:00Z'],['mlb','401907898','mlb:HOU','mlb:CWS','2026-10-01T21:00:00Z'],['mlb','401907976','mlb:SD','mlb:CHC','2026-10-02T02:00:00Z']];
  for(const [sport,gameId,homeId,awayId,startTime]of slots){const f={sport,gameId,homeId,awayId,startTime,season:2026};assert.ok(postseasonSlotForForecast(f));assert.equal(postseasonSlotForForecast({...f,season:2025}),null);assert.equal(postseasonSlotForForecast({...f,awayId:'unknown'}),null);}
 });
+
+test('a best-of-seven sweep voids its unneeded Game 5-7 slots after their start, and nothing earlier',async()=>{
+ const {completedPlayoffSeries}=await import('./postseason.mjs');
+ const src='https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401908033',seen='2026-10-20T01:00:00Z';
+ const clinch=(wins=[0,4],gameNumber=4)=>({header:{id:'401908033',season:{year:2026,type:3},gameNote:`NLCS - Game ${gameNumber}`,competitions:[{date:'2026-10-16T01:00:00Z',status:{type:{state:'post',completed:true,name:'STATUS_FINAL'}},
+  competitors:[{team:{id:'19',abbreviation:'LAD'},score:'4'},{team:{id:'8',abbreviation:'MIL'},score:'6'}],
+  series:[{type:'current',completed:true,totalCompetitions:4,competitors:[{id:'19',wins:2},{id:'8',wins:2}]},{type:'playoff',summary:'MIL wins series 4-0',completed:true,totalCompetitions:7,competitors:[{id:'19',wins:wins[0]},{id:'8',wins:wins[1]}]}]}]}});
+ const proof=completedPlayoffSeries(clinch(),'mlb',{sourceUrl:src,observedAt:seen});
+ assert.equal(proof.length,1);assert.deepEqual([proof[0].bestOf,proof[0].gamesPlayed],[7,4]);assert.deepEqual(proof[0].teamIds.sort(),['mlb:LAD','mlb:MIL']);
+ // Not the clinching game, or the series not yet decided: no evidence.
+ assert.equal(completedPlayoffSeries(clinch([1,3],4),'mlb',{sourceUrl:src,observedAt:seen}).length,0);
+ assert.equal(completedPlayoffSeries(clinch([0,4],3),'mlb',{sourceUrl:src,observedAt:seen}).length,0);
+ assert.equal(completedPlayoffSeries(clinch(),'mlb',{sourceUrl:'https://example.com/x',observedAt:seen}).length,0);
+ const slot=(gameNumber,startTime,id)=>({id:'ridge-v1:mlb:'+id,gameId:id,sport:'mlb',season:2026,homeId:'mlb:MIL',awayId:'mlb:LAD',startTime,capturedAt:'2026-10-13T19:19:18Z',
+  postseason:{gameId:id,season:2026,round:'NLCS',gameNumber,ifNecessary:true,sourceUrl:'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard?limit=1000&dates=20261019',observedAt:'2026-10-13T19:19:18.256Z'}});
+ const g7=slot(7,'2026-10-20T00:00:00.000Z','401908036');
+ const game=inferUnneededPlayoffGame(g7,proof,{observedAt:seen,summaryMissing:true});
+ assert.equal(game.status,'cancelled');assert.match(game.voidEvidence.slotBasis,/Game 7/);
+ assert.equal(gradeForecast(g7,game,seen).status,'void');
+ // Before its start time it stays pending; a Game 4 or a different pair is never voided.
+ assert.equal(inferUnneededPlayoffGame(g7,proof,{observedAt:'2026-10-19T17:00:00Z',summaryMissing:true}),null);
+ assert.equal(inferUnneededPlayoffGame({...slot(4,'2026-10-17T01:00:00.000Z','401908099')},proof,{observedAt:seen,summaryMissing:true}),null);
+ assert.equal(inferUnneededPlayoffGame({...g7,homeId:'mlb:TB',awayId:'mlb:CLE'},proof,{observedAt:seen,summaryMissing:true}),null);
+ assert.ok(postseasonSlotForForecast(slot(5,'2026-10-17T01:00:00.000Z','401908034')));
+});

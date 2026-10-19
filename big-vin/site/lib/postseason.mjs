@@ -48,6 +48,29 @@ export function completedBestOfThreeSeries(payload,sport,{sourceUrl,observedAt}=
  });
 }
 
+/** A finished best-of-3, -5 or -7 playoff series, proved by its clinching game's
+ * official final: the game number equals the games played and the winner of that
+ * game has the deciding win. Later if-necessary slots in that round were not needed. */
+export function completedPlayoffSeries(payload,sport,{sourceUrl,observedAt}={}){
+ if(!SUPPORTED.has(sport)||!officialSource(sourceUrl,sport)||!Number.isFinite(Date.parse(observedAt)))return [];
+ const events=payload?.events|| (payload?.header?[{...payload.header,date:payload.header.competitions?.[0]?.date}]:[]);
+ return events.flatMap(event=>{
+  const c=event.competitions?.[0],status={...c?.status?.type,...event.status?.type},date=c?.date||event.date;
+  if(event.season?.type!==3||status.completed!==true||status.state!=='post'||status.name!=='STATUS_FINAL'||!Number.isFinite(Date.parse(date))||Date.parse(date)>=Date.parse(observedAt))return [];
+  const note=parseNote(noteOf(event));if(!note)return [];
+  const teams=c.competitors||[];
+  if(teams.length!==2||teams.some(t=>!t.team?.id||Number(t.team.id)<=0||!Number.isFinite(Number(t.score))||Number(t.score)<0)||Number(teams[0].score)===Number(teams[1].score))return [];
+  const series=(Array.isArray(c.series)?c.series:[c.series]).find(s=>s?.type==='playoff'&&s.completed===true&&[3,5,7].includes(s.totalCompetitions));
+  if(!series||series.competitors?.length!==2||pair(series.competitors.map(t=>t.id))!==pair(teams.map(t=>t.team.id)))return [];
+  if(series.competitors.some(t=>(t.ties??0)!==0||!Number.isInteger(t.wins)||t.wins<0))return [];
+  const need=(series.totalCompetitions+1)/2,wins=series.competitors.map(t=>t.wins),played=wins[0]+wins[1];
+  if(Math.max(...wins)!==need||Math.min(...wins)>=need||note.gameNumber!==played)return [];
+  const winner=teams.find(t=>Number(t.score)>Number(teams.find(other=>other!==t).score));
+  if(series.competitors.find(t=>String(t.id)===String(winner.team.id))?.wins!==need)return [];
+  return [{sport,season:event.season.year,round:note.round,gameId:String(event.id),startTime:date,teamIds:teams.map(t=>key(sport,t.team)),summary:series.summary,sourceUrl,observedAt,bestOf:series.totalCompetitions,wins:[...wins].sort((a,b)=>b-a),gamesPlayed:played}];
+ });
+}
+
 /** Absence alone is never a void: require a known slot and verified series end. */
 export function postseasonSlotForForecast(f){
  if(!SUPPORTED.has(f?.sport))return null;
@@ -55,15 +78,20 @@ export function postseasonSlotForForecast(f){
  const seed=LEGACY_SLOTS[String(f.gameId)];
  const seeded=seed&&seed.sport===f.sport&&seed.season===f.season&&seed.homeId===f.homeId&&seed.awayId===f.awayId&&Date.parse(seed.startTime)===start;
  const slot=seeded?{...seed,gameId:String(f.gameId)}:f.postseason;
- if(!slot||slot.gameId!==String(f.gameId)||slot.season!==f.season||slot.gameNumber!==3||slot.ifNecessary!==true||!roundKey(slot.round))return null;
+ if(!slot||slot.gameId!==String(f.gameId)||slot.season!==f.season||!Number.isInteger(slot.gameNumber)||slot.gameNumber<3||slot.gameNumber>7||slot.ifNecessary!==true||!roundKey(slot.round))return null;
  if(!seeded&&(!officialSource(slot.sourceUrl,f.sport)||!Number.isFinite(Date.parse(slot.observedAt))||Date.parse(slot.observedAt)>=start))return null;
  return slot;
 }
 
+// A best-of-seven runs at most about nine days; the clinching game falls inside that span.
+const SERIES_SPAN_MS=10*86400000;
+// Best-of-three sweeps (the original evidence) or any series that ended before this game number.
+const decidedBefore=(e,gameNumber)=>e.bestOf===3&&pair(e.wins)===pair([2,0])&&!Number.isInteger(e.gamesPlayed)?gameNumber===3
+ :Number.isInteger(e.gamesPlayed)&&[3,5,7].includes(e.bestOf)&&Math.max(...e.wins)===(e.bestOf+1)/2&&e.gamesPlayed<gameNumber&&gameNumber<=e.bestOf;
 export function seriesLookupCandidates(pending,archived,limit=8){
  const candidates=new Map();
  for(const f of pending){if(!postseasonSlotForForecast(f))continue;
-  const previous=archived.filter(other=>other.sport===f.sport&&other.season===f.season&&other.result?.status==='completed'&&pair([other.homeId,other.awayId])===pair([f.homeId,f.awayId])&&Date.parse(other.startTime)<Date.parse(f.startTime)&&Date.parse(f.startTime)-Date.parse(other.startTime)<=7*86400000).sort((a,b)=>Date.parse(b.startTime)-Date.parse(a.startTime))[0];
+  const previous=archived.filter(other=>other.sport===f.sport&&other.season===f.season&&other.result?.status==='completed'&&pair([other.homeId,other.awayId])===pair([f.homeId,f.awayId])&&Date.parse(other.startTime)<Date.parse(f.startTime)&&Date.parse(f.startTime)-Date.parse(other.startTime)<=SERIES_SPAN_MS).sort((a,b)=>Date.parse(b.startTime)-Date.parse(a.startTime))[0];
   if(previous)candidates.set(previous.gameId,previous);
  }
  return [...candidates.values()].slice(0,limit);
@@ -74,8 +102,8 @@ export function inferUnneededPlayoffGame(forecast,evidence,{observedAt='',summar
  if(!SUPPORTED.has(f?.sport)||!Number.isFinite(now)||!Number.isFinite(start)||start>=now||!summaryMissing||currentGame)return null;
  const slot=postseasonSlotForForecast(f);
  if(!slot)return null;
- const candidates=evidence.filter(e=>e.sport===f.sport&&e.season===f.season&&roundKey(e.round)===roundKey(slot.round)&&pair(e.teamIds)===pair([f.homeId,f.awayId])&&e.bestOf===3&&pair(e.wins)===pair([2,0])&&officialSource(e.sourceUrl,f.sport)&&Number.isFinite(Date.parse(e.observedAt))&&Date.parse(e.observedAt)<=now&&Date.parse(e.startTime)<start&&start-Date.parse(e.startTime)<=7*86400000);
+ const candidates=evidence.filter(e=>e.sport===f.sport&&e.season===f.season&&roundKey(e.round)===roundKey(slot.round)&&pair(e.teamIds)===pair([f.homeId,f.awayId])&&decidedBefore(e,slot.gameNumber)&&officialSource(e.sourceUrl,f.sport)&&Number.isFinite(Date.parse(e.observedAt))&&Date.parse(e.observedAt)<=now&&Date.parse(e.startTime)<start&&start-Date.parse(e.startTime)<=SERIES_SPAN_MS);
  if(candidates.length!==1)return null;
  const decided=candidates[0];
- return {id:String(f.gameId),sport:f.sport,startTime:f.startTime,status:'cancelled',completed:false,sourceUrl:decided.sourceUrl,voidEvidence:{reason:'If-necessary playoff game not needed; series already decided',slotBasis:slot.basis||'Archived explicit Game 3 If Necessary note',round:slot.round,seriesGameId:decided.gameId,seriesSummary:decided.summary,seriesGameStartTime:decided.startTime,verifiedAt:decided.observedAt,slotSourceUrl:slot.sourceUrl||f.sourceUrl,slotObservedAt:slot.observedAt||f.capturedAt}};
+ return {id:String(f.gameId),sport:f.sport,startTime:f.startTime,status:'cancelled',completed:false,sourceUrl:decided.sourceUrl,voidEvidence:{reason:'If-necessary playoff game not needed; series already decided',slotBasis:slot.basis||`Archived explicit Game ${slot.gameNumber} If Necessary note`,round:slot.round,seriesGameId:decided.gameId,seriesSummary:decided.summary,seriesGameStartTime:decided.startTime,verifiedAt:decided.observedAt,slotSourceUrl:slot.sourceUrl||f.sourceUrl,slotObservedAt:slot.observedAt||f.capturedAt}};
 }

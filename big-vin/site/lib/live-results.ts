@@ -4,7 +4,7 @@ import {firstMarkets} from './market-store';
 import {withFirstMarket} from './first-market.mjs';
 import {gradeForecast,reportingWeek} from './results.mjs';
 import {matchMlbFinals,unchangedGrade,eventSummaryUrl,matchEspnSummary,selectSummaryCandidates} from './live-finals.mjs';
-import {postseasonSlotForForecast,seriesLookupCandidates,completedBestOfThreeSeries,inferUnneededPlayoffGame} from './postseason.mjs';
+import {postseasonSlotForForecast,seriesLookupCandidates,completedPlayoffSeries,inferUnneededPlayoffGame} from './postseason.mjs';
 import {sportsDay} from './time';
 import {capturePickRevisions,pickStates} from './pick-revision-store';
 import {withPickState} from './pick-revisions.mjs';
@@ -61,7 +61,7 @@ export async function refreshLiveResults(sport:string){
     if(!response.ok)throw new Error('Series final unavailable');
     const payload=await response.json(),verifiedAt=new Date().toISOString(),game=matchEspnSummary(payload,f,source,verifiedAt);
     if(!game?.completed)throw new Error('Series final identity or status mismatch');
-    sources.push(source);return completedBestOfThreeSeries(payload,sport,{sourceUrl:source,observedAt:verifiedAt});
+    sources.push(source);return completedPlayoffSeries(payload,sport,{sourceUrl:source,observedAt:verifiedAt});
    }));
    const evidence=checks.flatMap(check=>check.status==='fulfilled'?check.value:[]);
    for(const f of slots){const game=inferUnneededPlayoffGame(f,evidence,{observedAt:new Date().toISOString(),summaryMissing:true,currentGame:gameMap.get(f.gameId)});if(game){gameMap.set(f.gameId,game);summaryFailures--;}}
