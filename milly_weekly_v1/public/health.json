@@ -1,7 +1,1 @@
-{
-  "status": "failed",
-  "at": "2026-09-06T18:05:22.296830+00:00",
-  "previous_release_preserved": true,
-  "error": "A source, model, browser or final publication check failed. No staged release is approved.",
-  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/34050557744"
-}
+{"status":"waiting_for_pool","at":"2026-10-19T02:41:09.286567+00:00","contest":{"id":196905290,"name":"NFL $2.5M Fantasy Football Millionaire [$1M to 1st, [$1M to 1st, $100K Leaderboard Eligible]","draft_group":155198,"listed_start":"2026-10-25T17:00:00+00:00"},"error":"DraftKings lists NFL $2.5M Fantasy Football Millionaire [$1M to 1st, [$1M to 1st, $100K Leaderboard Eligible] (draft group 155198) but has not posted its player pool yet. No new lineups were generated. A later scheduled run will try again.","previous_release_preserved":true,"previous_release":{"release_id":null,"note":"No earlier release from this pipeline has been published."}}
