@@ -52,3 +52,11 @@ test('the local copy matches the site after a full copy and after incremental sy
  ({d1,full}=await sync(fakeRemote(remote),file,t1+13*3600_000));assert.equal(full,true);
  assert.deepEqual(dump(d1,'forecasts'),dump(remote,'forecasts'));d1.close();
 });
+test('the renderer also prepares the week boards and the record views the home page asks for',async()=>{
+ const {weekSlateKeys,recordKeys}=await import('./render-read-cache.mjs');
+ assert.deepEqual(weekSlateKeys('2026-10-19'),['api:/api/slate?date=2026-10-13&days=7&sport=nfl','api:/api/slate?date=2026-10-19&days=7&sport=cfb']);
+ const now=Date.parse('2026-10-19T12:00:00Z');
+ const season={year:2026,startDate:'2026-08-01T00:00Z',endDate:'2027-02-01T00:00Z'};
+ const keys=recordKeys([{sport:'nfl',days:1,body:JSON.stringify({sport:'nfl',seasonContext:season})},{sport:'mlb',days:1,body:JSON.stringify({sport:'mlb',seasonContext:{year:2026,startDate:'2026-03-01T00:00Z',endDate:'2026-10-01T00:00Z'}})},{sport:'cfb',days:7,body:JSON.stringify({sport:'cfb',seasonContext:season})},{sport:'nba',days:1,body:'not json'}],'2026-10-19',now);
+ assert.deepEqual(keys,['api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankPeriod=day&season=2026&sport=nfl','api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankPeriod=day&sport=mlb','api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankAnchor=2026-10-19&rankPeriod=week&season=2026&sport=cfb']);
+});

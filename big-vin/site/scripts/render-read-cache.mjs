@@ -18,6 +18,8 @@ import {SqliteD1} from './render/sqlite-d1.mjs';
 import {RENDER_TABLES} from '../lib/render-source.mjs';
 import zlib from 'node:zlib';
 import {apiCacheKey,storableHeaders,VINEXT_VARY,MAX_BODY_CHARS,GZIP_PREFIX} from '../cloudflare/read-cache.mjs';
+import {activeProviderSeason} from '../lib/provider-season.mjs';
+import {footballWeekStart} from '../lib/board-window.mjs';
 
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export const SPORTS=['nfl','cfb','nba','wnba','cbb','nhl','mlb'];
@@ -39,6 +41,27 @@ export function baseKeys(today=easternDay()){
  return urls.map(u=>apiCacheKey(new URL(u,'https://x')));
 }
 export const keyUrl=(key,origin)=>origin+key.slice('api:'.length);
+const keyOf=url=>apiCacheKey(new URL(url,'https://x'));
+/** Football week boards the home page asks for when NFL or college football is picked. */
+export function weekSlateKeys(today=easternDay()){
+ return ['nfl','cfb'].map(s=>keyOf(`/api/slate?sport=${s}&date=${footballWeekStart(today,s)}&days=7`));
+}
+/** The record requests the home page makes once a board is loaded, built the way
+ * components/record-summary.tsx builds them (the season comes from that board). */
+export function recordKeys(boards,today=easternDay(),now=Date.now()){
+ const keys=[];
+ for(const {sport,days,body} of boards){
+  let board;try{board=JSON.parse(body);}catch{continue;}
+  if(board?.sport!==sport)continue;
+  const season=activeProviderSeason(board.seasonContext,now);
+  const week=days===7;
+  const params=new URLSearchParams({sport,cohort:'live',history:'1',rankPeriod:week?'week':'day',historyDate:today});
+  if(season!==null)params.set('season',String(season));
+  if(week)params.set('rankAnchor',footballWeekStart(today,sport));
+  keys.push(keyOf('/api/results?'+params));
+ }
+ return keys;
+}
 
 /** Which registered keys to keep rendering, and which to drop so a later visit re-registers them. */
 export function planKeys(remote,base,now=Date.now(),today=easternDay(now)){
@@ -161,16 +184,20 @@ export async function main(){
  log(full?'full copy':'incremental sync',JSON.stringify(counts),`${Date.now()-t0} ms`);
  const handlers=await loadHandlers();handlers.env.DB=d1;
  const remoteKeys=await remote.get({op:'keys'});
- const plan=planKeys(remoteKeys,baseKeys());
+ const today=easternDay();
+ const plan=planKeys(remoteKeys,[...baseKeys(today),...weekSlateKeys(today)]);
  const remoteByKey=new Map(remoteKeys.map(r=>[r.key,r]));
  // Until the writes below reach the site, this copy may hold rows the site lacks.
  setState(d1,'sync',{...getState(d1,'sync'),dirty:true});
  d1.recording=true;
  const rendered=[];
- for(const key of plan.render){
-  try{rendered.push(await render(handlers,key,origin));}
-  catch(e){console.error('Render failed',key,e);}
- }
+ const renderKey=async key=>{try{rendered.push(await render(handlers,key,origin));}catch(e){console.error('Render failed',key,e);}};
+ for(const key of plan.render)await renderKey(key);
+ // Then the record views today's and this week's boards lead to, so the first visitor of the day does not compute them.
+ const boardKeys=new Map([...SPORTS.map(s=>[keyOf(`/api/slate?sport=${s}&date=${today}&days=1`),{sport:s,days:1}]),...['nfl','cfb'].map((s,i)=>[weekSlateKeys(today)[i],{sport:s,days:7}])]);
+ const boards=rendered.filter(r=>r.status===200&&boardKeys.has(r.key)).map(r=>({...boardKeys.get(r.key),body:r.body}));
+ const renderedKeys=new Set(rendered.map(r=>r.key));
+ for(const key of recordKeys(boards,today))if(!renderedKeys.has(key)){renderedKeys.add(key);await renderKey(key);}
  d1.recording=false;
  // Writes first, so the database matches what the pages show.
  const writes=d1.takeWrites();let mismatched=0;
