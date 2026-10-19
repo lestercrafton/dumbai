@@ -21,7 +21,16 @@ if(sports.some(sport=>!Object.hasOwn(SPORT_PATHS,sport)))throw new Error('Unsupp
 const root=path.join(os.homedir(),'.local/share/big-vin/collections');
 const outputDir=process.env.BIG_VIN_COLLECTION_DIR||path.join(root,new Date().toISOString().replaceAll(':','-'));
 fs.mkdirSync(outputDir,{recursive:true,mode:0o700});
-async function post(body){const r=await fetch(site+'/api/collector',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await collectorAuthorization(config)},body:JSON.stringify(body),signal:AbortSignal.timeout(120000)});const text=await r.text();let value;try{value=JSON.parse(text)}catch{throw new Error(`Site response ${r.status} was not JSON.`)}if(!r.ok)throw new Error(value.error+': '+(value.detail||r.status));return value;}
+// A dropped connection or 5xx is retried; the collector keeps the first saved pregame
+// capture, so sending the same boards again does not change anything already stored.
+async function send(body){
+ for(let attempt=0;;attempt++){
+  try{const r=await fetch(site+'/api/collector',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await collectorAuthorization(config)},body:JSON.stringify(body),signal:AbortSignal.timeout(120000)});if(r.status<500||attempt===2)return r;await r.body?.cancel();}
+  catch(e){if(attempt===2||e?.name==='TimeoutError')throw e;}
+  await new Promise(resolve=>setTimeout(resolve,5000*(attempt+1)));
+ }
+}
+async function post(body){const r=await send(body);const text=await r.text();let value;try{value=JSON.parse(text)}catch{throw new Error(`Site response ${r.status} was not JSON.`)}if(!r.ok)throw new Error(value.error+': '+(value.detail||r.status));return value;}
 async function read(url){
  for(let attempt=0;attempt<3;attempt++){
   try{const {stdout}=await exec('curl',['--fail','--silent','--show-error','--max-time','30','--retry','1',url],{maxBuffer:32*1024*1024});return JSON.parse(stdout);}
