@@ -14,6 +14,29 @@ p=ROOT/'publication.py';s=p.read_text();s=s.replace("bank=await r.json();}if(ban
 p.write_text(s)
 import core
 
+def field_estimate(receipt,d,values):
+ """Add each lineup's estimated finish percentile against a simulated field (labelled estimate)."""
+ import hashlib
+ from grading import grade_lineups
+ try:
+  seed=int(hashlib.sha256(d['release_id'].encode()).hexdigest()[:8],16)
+  rows,summary=grade_lineups(d['players'],values,d['lineups'],n=20000,seed=seed)
+  receipt['lineups']=rows;receipt['field_estimate']=summary
+ except Exception as e:
+  receipt['field_estimate']={'status':'unavailable','error':str(e)}
+ return receipt
+
+def append_grade(path,receipt):
+ """Append-only grade log: one line per release, written once; later corrections add a new line."""
+ lines=path.read_text().splitlines() if path.exists() else []
+ prior=[json.loads(x) for x in lines if x.strip()]
+ same=[r for r in prior if r['release_id']==receipt['release_id']]
+ key=lambda r:[(l['rank'],l['points']) for l in r['lineups']]
+ if same and key(same[-1])==key(receipt):return
+ entry={**receipt,'correction_of':same[-1]['graded_at'] if same else None}
+ with path.open('a') as f:f.write(json.dumps(entry,separators=(',',':'),default=str)+'\n')
+
+
 def grade_archives():
  import pandas as pd,numpy as np
  cache=ROOT/'cache';pub=ROOT/'public';files=list(cache.glob('stats_*.csv.gz'))
@@ -28,7 +51,8 @@ def grade_archives():
    a=st[(st.game_id==p['game_id'])&(st.team==p['team'])];ga=done[done.game_id==p['game_id']].iloc[0];pa=ga.away_score if ga.home_team==p['team'] else ga.home_score;tier=10 if pa==0 else 7 if pa<=6 else 4 if pa<=13 else 1 if pa<=20 else 0 if pa<=27 else -1 if pa<=34 else -4
    total=lambda k:float(core.n(a,k).sum())
    values[p['i']]=total('def_sacks')+2*(total('def_interceptions')+total('fumble_recovery_opp'))+6*(total('def_tds')+total('special_teams_tds'))+2*(total('def_safeties')+total('def_punt_blocks')+total('def_fg_blocks')+total('def_pat_blocks'))+tier
-  skill=[p for p in d['players'] if p['position']!='DST'];err=np.array([values[p['i']]-p['mu'] for p in skill]);receipt={'release_id':d['release_id'],'prediction_published_at':d['generated_at'],'graded_at':now.isoformat(),'label':'Paper forecasts and unentered lineup scores; DST proxy. Not actual contest ranks or profit.','player_count':len(skill),'player_mae':float(np.mean(abs(err))),'player_rmse':float(np.sqrt(np.mean(err*err))),'lineups':[{'rank':l['rank'],'points':round(sum(values[i] for i in l['ids']),2)} for l in d['lineups']],'actual_contest_ranks':None,'actual_payouts':None,'corrections':'Outcome receipts may change with official stat corrections; forecast archives remain unchanged.'};receipts.append(receipt)
+  skill=[p for p in d['players'] if p['position']!='DST'];err=np.array([values[p['i']]-p['mu'] for p in skill]);receipt={'release_id':d['release_id'],'prediction_published_at':d['generated_at'],'graded_at':now.isoformat(),'label':'Paper forecasts and unentered lineup scores; DST proxy. Not actual contest ranks or profit.','player_count':len(skill),'player_mae':float(np.mean(abs(err))),'player_rmse':float(np.sqrt(np.mean(err*err))),'lineups':[{'rank':l['rank'],'points':round(sum(values[i] for i in l['ids']),2)} for l in d['lineups']],'playbook_version':'milly-weekly-v1-pb1','actual_contest_ranks':None,'actual_payouts':None,'corrections':'Outcome receipts may change with official stat corrections; forecast archives remain unchanged.'};receipt=field_estimate(receipt,d,values);receipts.append(receipt)
+  append_grade(pub/'grades.jsonl',receipt)
  core.save(pub/'scorecard.json',{'updated_at':now.isoformat(),'releases_scored':len(receipts),'receipts':receipts,'no_results_means':'No archived slate has complete eligible outcomes yet; no simulated profits are substituted.'})
 
 if __name__=='__main__':
