@@ -1,0 +1,341 @@
+{
+ "playbook": "v1",
+ "tag": "playbook-v1-2026-10-19",
+ "startDate": "2026-10-19",
+ "timezone": "America/Chicago",
+ "statement": "Playbook v1 freezes the live Big Vin formula for each sport and Milly weekly v1 as of 2026-10-19. Results before that date are training history only. Every later change is a new dated version listed under history; nothing here is edited retroactively.",
+ "rules": [
+  "Forward only: a version is judged only on games that start after its startDate and after it was registered.",
+  "Saved picks, first-seen prices, capture times and reasoning records are append-only.",
+  "Each version keeps its own $500 paper bankroll under bankroll policy sheet-daily-2pct-v1 (2% of the Eastern day opening balance per priced pick).",
+  "Promotion creates a new dated version; it never edits an existing one."
+ ],
+ "bigVin": {
+  "bankrollPolicy": "sheet-daily-2pct-v1",
+  "sports": {
+   "nfl": {
+    "version": "bv-nfl-pb1",
+    "liveModel": "nfl-season-tuned-2026-10-16",
+    "liveModelSource": "big-vin/site/lib/tuning-2026-10-16.json",
+    "parameters": {
+     "lookbackDays": 1460,
+     "halfLifeDays": 120,
+     "ratingPenalty": 6,
+     "homePenalty": 120,
+     "restPenalty": 100,
+     "homePrior": 0.5,
+     "useRest": true
+    },
+    "activatedAt": "2026-10-16T20:36:19.328Z",
+    "baseline": "ridge-v1"
+   },
+   "cfb": {
+    "version": "bv-cfb-pb1",
+    "liveModel": "cfb-season-tuned-2026-10-16",
+    "liveModelSource": "big-vin/site/lib/tuning-2026-10-16.json",
+    "parameters": {
+     "halfLifeDays": 180,
+     "ratingPenalty": 3,
+     "lookbackDays": 1460,
+     "homePrior": 4,
+     "homePenalty": 30,
+     "fixedHomeAdvantage": 4,
+     "useRest": false
+    },
+    "activatedAt": "2026-10-16T20:36:19.328Z",
+    "baseline": "ridge-v1"
+   },
+   "nba": {
+    "version": "bv-nba-pb1",
+    "liveModel": "ridge-v1",
+    "liveModelSource": "big-vin/site/lib/results.mjs (MODEL_VERSION)",
+    "parameters": null,
+    "activatedAt": null,
+    "baseline": "ridge-v1"
+   },
+   "wnba": {
+    "version": "bv-wnba-pb1",
+    "liveModel": "wnba-season-tuned-2026-10-16",
+    "liveModelSource": "big-vin/site/lib/tuning-2026-10-16.json",
+    "parameters": {
+     "lookbackDays": 730,
+     "halfLifeDays": 240,
+     "ratingPenalty": 3,
+     "homePenalty": 30,
+     "restPenalty": 100,
+     "homePrior": 2,
+     "useRest": false
+    },
+    "activatedAt": "2026-10-16T20:36:19.328Z",
+    "baseline": "ridge-v1"
+   },
+   "cbb": {
+    "version": "bv-cbb-pb1",
+    "liveModel": "ridge-v1",
+    "liveModelSource": "big-vin/site/lib/results.mjs (MODEL_VERSION)",
+    "parameters": null,
+    "activatedAt": null,
+    "baseline": "ridge-v1"
+   },
+   "nhl": {
+    "version": "bv-nhl-pb1",
+    "liveModel": "ridge-v1",
+    "liveModelSource": "big-vin/site/lib/results.mjs (MODEL_VERSION)",
+    "parameters": null,
+    "activatedAt": null,
+    "baseline": "ridge-v1"
+   },
+   "mlb": {
+    "version": "bv-mlb-pb1",
+    "liveModel": "mlb-weekly-tuned-2026-09-14",
+    "liveModelSource": "big-vin/site/lib/tuning-2026-09-14.json",
+    "parameters": {
+     "lookbackDays": 730,
+     "halfLifeDays": 480,
+     "ratingPenalty": 12,
+     "homePenalty": 120,
+     "restPenalty": 100,
+     "homePrior": 0.4,
+     "useRest": false
+    },
+    "activatedAt": "2026-09-14T14:16:36.227693Z",
+    "baseline": "ridge-v1"
+   }
+  }
+ },
+ "milly": {
+  "version": "milly-weekly-v1-pb1",
+  "pipeline": "milly_weekly_v1",
+  "workflow": ".github/workflows/milly-independent-weekly-v1.yml",
+  "codeSha256": {
+   "milly_weekly_v1/core.py": "59db569969db7bcdb458ceebc7ab2e7c8b6c551a085c43936f82ac8bf214a187",
+   "milly_weekly_v1/contest.py": "c2a3b848c19b71feb12c967b9bb8fa95d523079466e65c414ce7c07872cc0bd1",
+   "milly_weekly_v1/run.py": "a9734d2acb383c9179540dfed201fc16792dc20ba9f2f09a5a6b3d2db4f94cdd",
+   "milly_weekly_v1/tests.py": "63800433fb850b069625d42e95217c66ae48fb97aefdd9c067f84e9c7c678143",
+   "milly_weekly_v1/publication.py": "65473f8ff78f541a2b3f503842b712d2caf7c9d4974997db09d516189aeb2276",
+   "milly_weekly_v1/requirements.txt": "c959a88232f2aab2e3f5c3d206a7f8fbf65f02f9b17c3d26fa653739c1608a38"
+  },
+  "note": "No Milly v1 release had been published before this baseline; the first release from this pipeline is its first forward test.",
+  "gradingCode": {
+   "milly_weekly_v1/grading.py": "4a2347c89f107df441bf6056cc90cdaf961e66ca8b9a04984813cf9ae41368a6",
+   "milly_weekly_v1/grade_only.py": "d434397539bbe19b45f847c1df0413bfee4cf165f97cf9f21be241df0bd90a5c"
+  },
+  "grading": "After each slate: actual DK points per released lineup (nflverse stats, DST proxy) and an estimated finish percentile against a simulated salary-constrained field (an estimate, not real standings). Append-only in milly_weekly_v1/public/grades.jsonl. Grading never changes forecasts."
+ },
+ "challengers": [
+  {
+   "version": "bv-nfl-ch-qb-out-unpriced-2026-10-19",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "qb-out-unpriced",
+   "parameters": {
+    "starterOutPoints": 5
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Starter news the line may not have absorbed yet; the effect shrinks by any spread move toward the news since it was published."
+  },
+  {
+   "version": "bv-cfb-ch-qb-out-unpriced-2026-10-19",
+   "sport": "cfb",
+   "base": "bv-cfb-pb1",
+   "feature": "qb-out-unpriced",
+   "parameters": {
+    "starterOutPoints": 6
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Starter news the line may not have absorbed yet; the effect shrinks by any spread move toward the news since it was published."
+  },
+  {
+   "version": "bv-nba-ch-scorer-out-unpriced-2026-10-19",
+   "sport": "nba",
+   "base": "bv-nba-pb1",
+   "feature": "scorer-out-unpriced",
+   "parameters": {
+    "pointsPerPlayer": 3
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Starter news the line may not have absorbed yet; the effect shrinks by any spread move toward the news since it was published."
+  },
+  {
+   "version": "bv-wnba-ch-scorer-out-unpriced-2026-10-19",
+   "sport": "wnba",
+   "base": "bv-wnba-pb1",
+   "feature": "scorer-out-unpriced",
+   "parameters": {
+    "pointsPerPlayer": 3
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Starter news the line may not have absorbed yet; the effect shrinks by any spread move toward the news since it was published."
+  },
+  {
+   "version": "bv-cbb-ch-scorer-out-unpriced-2026-10-19",
+   "sport": "cbb",
+   "base": "bv-cbb-pb1",
+   "feature": "scorer-out-unpriced",
+   "parameters": {
+    "pointsPerPlayer": 3
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Starter news the line may not have absorbed yet; the effect shrinks by any spread move toward the news since it was published."
+  },
+  {
+   "version": "bv-nfl-ch-line-move-2026-10-19",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "line-move",
+   "parameters": {
+    "credit": 1,
+    "minMovePoints": 1
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Early-line movement: credits the market's move from the earliest known line to the model margin."
+  },
+  {
+   "version": "bv-cfb-ch-line-move-2026-10-19",
+   "sport": "cfb",
+   "base": "bv-cfb-pb1",
+   "feature": "line-move",
+   "parameters": {
+    "credit": 1,
+    "minMovePoints": 1
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Early-line movement: credits the market's move from the earliest known line to the model margin."
+  },
+  {
+   "version": "bv-nba-ch-line-move-2026-10-19",
+   "sport": "nba",
+   "base": "bv-nba-pb1",
+   "feature": "line-move",
+   "parameters": {
+    "credit": 1,
+    "minMovePoints": 1
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Early-line movement: credits the market's move from the earliest known line to the model margin."
+  },
+  {
+   "version": "bv-wnba-ch-line-move-2026-10-19",
+   "sport": "wnba",
+   "base": "bv-wnba-pb1",
+   "feature": "line-move",
+   "parameters": {
+    "credit": 1,
+    "minMovePoints": 1
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Early-line movement: credits the market's move from the earliest known line to the model margin."
+  },
+  {
+   "version": "bv-cbb-ch-line-move-2026-10-19",
+   "sport": "cbb",
+   "base": "bv-cbb-pb1",
+   "feature": "line-move",
+   "parameters": {
+    "credit": 1,
+    "minMovePoints": 1
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Early-line movement: credits the market's move from the earliest known line to the model margin."
+  },
+  {
+   "version": "bv-nfl-ch-weather-severe-2026-10-19",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "weather-severe",
+   "parameters": {
+    "marginShrink": 0.2
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Outdoor kickoff-hour forecast (wind, gusts, precipitation, cold) compresses the margin toward zero."
+  },
+  {
+   "version": "bv-cfb-ch-weather-severe-2026-10-19",
+   "sport": "cfb",
+   "base": "bv-cfb-pb1",
+   "feature": "weather-severe",
+   "parameters": {
+    "marginShrink": 0.2
+   },
+   "registeredAt": "2026-10-19T00:00:00-05:00",
+   "status": "shadow",
+   "why": "Outdoor kickoff-hour forecast (wind, gusts, precipitation, cold) compresses the margin toward zero."
+  }
+ ],
+ "promotion": {
+  "rule": "A challenger may become live only when, on graded priced picks for games that started after it was registered (games it had not seen when it was chosen), it meets the sport minimums and beats the live control on BOTH flat-stake ROI and mean closing-line value. Win rate is not a criterion. Promotion is recorded as a new dated version in history; nothing is edited.",
+  "metrics": {
+   "roi": "Sum of 1-unit profit at the captured price divided by priced graded picks.",
+   "clv": "Points of spread gained versus the last observed pregame line for the picked side (positive is better). At least 80% of picks must have an observed closing line."
+  },
+  "minimums": {
+   "nfl": {
+    "gradedPicks": 60,
+    "discordantPicks": 12,
+    "weeks": 4
+   },
+   "cfb": {
+    "gradedPicks": 150,
+    "discordantPicks": 25,
+    "weeks": 4
+   },
+   "nba": {
+    "gradedPicks": 200,
+    "discordantPicks": 30,
+    "weeks": 4
+   },
+   "wnba": {
+    "gradedPicks": 100,
+    "discordantPicks": 20,
+    "weeks": 4
+   },
+   "cbb": {
+    "gradedPicks": 250,
+    "discordantPicks": 40,
+    "weeks": 4
+   },
+   "nhl": {
+    "gradedPicks": 200,
+    "discordantPicks": 30,
+    "weeks": 4
+   },
+   "mlb": {
+    "gradedPicks": 200,
+    "discordantPicks": 30,
+    "weeks": 4
+   }
+  },
+  "minimumsRationale": "At about -110 prices the standard error of flat-stake ROI is roughly 0.95/sqrt(n): about 12% at 60 NFL picks and about 8% at 150 college picks. These minimums are where the shared-game comparison against the live control, plus closing-line value (which is far less noisy than results), can say something useful. Discordant picks are games where the challenger side differs from the control or only one of them picks. Those are the only games where the two can differ.",
+  "controlVersion": "The live formula applied to the same games, the same captured prices and the same capture times (the bv-<sport>-pb1 control)."
+ },
+ "history": [
+  {
+   "date": "2026-10-19",
+   "version": "playbook-v1",
+   "change": "Baseline frozen; challenger registry and append-only odds log started."
+  }
+ ],
+ "challengerNote": "One pre-set size per feature, chosen before any forward results and not fitted to outcomes. No parameter-reshuffle challengers: the 2021-2026 NFL walk-forward (/workspace/walkforward, 423 proposals) showed reshuffled Big Vin knobs do not persist out of sample. Challengers must use information the market may not have priced: injury/lineup news timed against line moves, early-line movement, weather. NHL and MLB lines are fixed 1.5 puck/run lines, so only the control mirror runs there for now.",
+ "oddsLog": {
+  "path": "playbook/odds/<sport>/<YYYY-MM>.jsonl",
+  "startedAt": "2026-10-19",
+  "contents": "First-seen market and every change (spread, total, moneyline with prices and the feed open line), one refresh line per run for unchanged games, and a close line with the last pregame snapshot. Append-only.",
+  "source": "Big Vin public /api/slate moneylineMarket (current DraftKings snapshot via the Site's ESPN feed)"
+ },
+ "rescore": {
+  "subject": "Oct 16 season-tuned settings (nfl/cfb/wnba-season-tuned-2026-10-16)",
+  "file": "playbook/rescore-2026-10-16.md",
+  "decision": "pending Lester"
+ }
+}

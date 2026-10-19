@@ -40,3 +40,19 @@ return rows.length?{games:rows.length,weeks:blocks.size,incumbentMae:mean(rows.m
 }
 const shadow=Object.fromEntries(['nfl','cfb'].map(sport=>[sport,pairedSummary(allPaired.filter(f=>f.sport===sport))]));
 const folder=path.join(os.homedir(),'.local/share/big-vin/reviews');fs.mkdirSync(folder,{recursive:true,mode:0o700});const file=path.join(folder,`${today}-${Date.now()}.json`);fs.writeFileSync(file,JSON.stringify({createdAt:new Date().toISOString(),applied:apply,updates:output,shadow},null,2),{mode:0o600});console.log(JSON.stringify({artifact:file,entries:output.length,applied:apply,shadow},null,2));
+// Playbook scoreboard (live mirror vs challengers). Written to the repo when BIG_VIN_REVIEW_REPO_DIR is set,
+// and queued in the site-contract outbox; it is not posted to the learning log until the site takes it.
+let playbook=null;
+try{
+ const {loadManifest}=await import('../lib/playbook.mjs');const {readEvents,mergeEvents}=await import('../lib/shadow-ledger.mjs');
+ const {buildScoreboard}=await import('../lib/scoreboard.mjs');const {queue}=await import('../lib/playbook-outbox.mjs');
+ const manifest=loadManifest();const state=path.join(os.homedir(),'.local/share/big-vin/playbook');
+ const repoLedger=new URL('../../playbook/ledger/',import.meta.url).pathname;
+ const events=Object.fromEntries(Object.keys(SPORT_PATHS).map(s=>[s,mergeEvents(readEvents(path.join(state,'ledger',s+'.jsonl')),readEvents(path.join(repoLedger,s+'.jsonl')))]));
+ const built=buildScoreboard(events,manifest);
+ const dirs=[path.join(state,'reviews'),...(process.env.BIG_VIN_REVIEW_REPO_DIR?[process.env.BIG_VIN_REVIEW_REPO_DIR]:[])];
+ for(const d of dirs){fs.mkdirSync(d,{recursive:true});fs.writeFileSync(path.join(d,built.scoreboard.publishedFor+'.json'),JSON.stringify(built,null,1)+'\n');fs.writeFileSync(path.join(d,built.scoreboard.publishedFor+'.md'),built.markdown);}
+ queue(path.join(state,'outbox'),{scoreboard:built.scoreboard});
+ playbook={scoreboard:built.scoreboard.id,entries:built.scoreboard.entries.length,lessons:built.lessons};
+}catch(e){playbook={error:e.message};console.error('Playbook scoreboard failed: '+e.message);}
+console.error(JSON.stringify({playbook}));

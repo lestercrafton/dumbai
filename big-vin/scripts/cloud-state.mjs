@@ -183,6 +183,10 @@ export function packCheckpoint({stateRoot=defaultRoot(),output,now=new Date()}={
   const destination=path.join(output,'baseball-stats/statcast',date,name);
   fs.mkdirSync(path.dirname(destination),{recursive:true,mode:0o700});fs.copyFileSync(source,destination);files++;
  }
+ // Shadow ledger, review files and the site-contract outbox (append-only, small).
+ const copyTree=(from,to)=>{if(!fs.existsSync(from))return;for(const name of fs.readdirSync(from)){const a=path.join(from,name),b=path.join(to,name);const st=fs.lstatSync(a);
+  if(st.isDirectory())copyTree(a,b);else if(st.isFile()){fs.mkdirSync(to,{recursive:true,mode:0o700});fs.copyFileSync(a,b);files++;}}};
+ copyTree(path.join(stateRoot,'playbook'),path.join(output,'playbook'));
  return {files,collegeEvents:entries.length,output};
 }
 
