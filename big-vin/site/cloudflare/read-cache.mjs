@@ -104,6 +104,7 @@ export const EDGE_API_SECONDS=60;
 export const EDGE_PAGE_SECONDS=300;
 export const EDGE_STALE_SECONDS=300;
 export const EDGE_NO_STORE='no-store';
+export const EDGE_NOT_FOUND='public, max-age=300';
 /** Seconds until the next Eastern midnight, when the per-day page keys roll over. */
 export function secondsToEasternMidnight(ms=Date.now()){
  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms));

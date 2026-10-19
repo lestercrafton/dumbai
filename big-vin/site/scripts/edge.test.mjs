@@ -8,7 +8,7 @@ import {SqliteD1} from './render/sqlite-d1.mjs';
 // edge.mjs imports ./index.js (the built app); give it a stand-in.
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bv-edge-'));
 for(const f of ['edge.mjs','read-cache.mjs'])fs.copyFileSync(new URL('../cloudflare/'+f,import.meta.url),path.join(dir,f));
-fs.writeFileSync(path.join(dir,'index.js'),"export const calls=[];export default {async fetch(request){calls.push(new URL(request.url).pathname+new URL(request.url).search);const p=new URL(request.url).pathname;if(p==='/api/slate')return Response.json({n:calls.length});if(p==='/')return new Response('<html>'+calls.length+'</html>',{headers:{'content-type':'text/html; charset=utf-8'}});if(p.endsWith('.rsc'))return new Response('0:rsc'+calls.length,{headers:{'content-type':'text/x-component'}});if(p==='/api/results')return Response.json({error:'x'},{status:503});return new Response('app');}};");
+fs.writeFileSync(path.join(dir,'index.js'),"export const calls=[];export default {async fetch(request){calls.push(new URL(request.url).pathname+new URL(request.url).search);const p=new URL(request.url).pathname;if(p==='/api/slate')return Response.json({n:calls.length});if(p==='/')return new Response('<html>'+calls.length+'</html>',{headers:{'content-type':'text/html; charset=utf-8'}});if(p.endsWith('.rsc'))return new Response('0:rsc'+calls.length,{headers:{'content-type':'text/x-component'}});if(p==='/api/results')return Response.json({error:'x'},{status:503});if(p==='/favicon.ico'||p==='/api/nope')return new Response('<html>not found</html>',{status:404,headers:{'content-type':'text/html; charset=utf-8'}});return new Response('app');}};");
 const edge=(await import(path.join(dir,'edge.mjs'))).default;
 const {calls}=await import(path.join(dir,'index.js'));
 function database(){
@@ -75,6 +75,9 @@ test('cacheable responses carry an edge-only cache directive; everything else is
  r=await edge.fetch(new Request('https://x/api/ledger'),env,ctx());assert.equal(r.headers.get(EDGE_HEADER),'no-store');
  r=await edge.fetch(new Request('https://x/api/slate',{method:'POST',body:'{}'}),env,ctx());assert.equal(r.headers.get(EDGE_HEADER),'no-store');
  c=ctx();r=await edge.fetch(new Request('https://x/'),env,c);await Promise.all(c.waits);assert.match(r.headers.get(EDGE_HEADER),/^public, max-age=\d+/);
+ // The not-found page is kept briefly; an API 404 is not.
+ r=await edge.fetch(new Request('https://x/favicon.ico'),env,ctx());assert.equal(r.status,404);assert.equal(r.headers.get(EDGE_HEADER),'public, max-age=300');
+ r=await edge.fetch(new Request('https://x/api/nope'),env,ctx());assert.equal(r.headers.get(EDGE_HEADER),'no-store');
  // Per-day pages never stay cached past Eastern midnight.
  const nearMidnight=Date.parse('2026-10-20T03:59:00Z');
  assert.equal(secondsToEasternMidnight(nearMidnight),60);

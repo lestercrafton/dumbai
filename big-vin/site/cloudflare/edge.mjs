@@ -3,7 +3,7 @@
 // the built app (dist/server) by scripts/cloudflare-build.mjs.
 import {Buffer} from 'node:buffer';
 import app from './index.js';
-import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS,edgeDirective,withEdge,EDGE_NO_STORE} from './read-cache.mjs';
+import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS,edgeDirective,withEdge,EDGE_NO_STORE,EDGE_NOT_FOUND} from './read-cache.mjs';
 
 async function fill(env,key,response,source){
  try{
@@ -44,6 +44,10 @@ async function route(request,env,ctx){
    const pageKey=pageCacheKey(url,env.CF_VERSION?.id);
    if(pageKey)return cachedOrLive(request,env,ctx,pageKey,{maxAge:null,source:'page'});
   }
-  return withEdge(await app.fetch(request,env,ctx),EDGE_NO_STORE);
+  const response=await app.fetch(request,env,ctx);
+  // The not-found page (browsers ask for /favicon.ico on every visit) is the same for every
+  // path in a deployment, and the edge cache is per deployment, so it is kept briefly.
+  const notFoundPage=request.method==='GET'&&response.status===404&&!routerRequest(request)&&!new URL(request.url).pathname.startsWith('/api/')&&(response.headers.get('content-type')||'').startsWith('text/html')&&!response.headers.has('set-cookie');
+  return withEdge(response,notFoundPage?EDGE_NOT_FOUND:EDGE_NO_STORE);
 }
 export default {fetch:route};
