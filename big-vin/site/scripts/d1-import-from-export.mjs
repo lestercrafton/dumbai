@@ -8,7 +8,8 @@ import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 // Migration bookkeeping is recreated by `wrangler d1 migrations apply`, so it is not copied.
-export const SKIP_TABLES=new Set(['d1_migrations','__drizzle_migrations']);
+// __appgarden_migrations is the old host's own migration log.
+export const SKIP_TABLES=new Set(['d1_migrations','__drizzle_migrations','__appgarden_migrations']);
 const STATEMENT_LIMIT=90_000,FILE_LIMIT=4_000_000,TEXT_CHUNK=20_000,BLOB_CHUNK=40_000;
 const ident=name=>'"'+String(name).replaceAll('"','""')+'"';
 const text=value=>"'"+value.replaceAll("'","''")+"'";
@@ -48,7 +49,15 @@ export function rowStatements(table,row,{additive=false}={}){
  if(first.length>STATEMENT_LIMIT)throw Error(`${table.name}#${row.rowid}: row is too wide for D1 even after splitting`);
  // In additive mode a skipped insert must not get appended chunks either.
  const out=[first],where=alias?`${ident(alias)} = ${row.rowid}`:`rowid = ${row.rowid}`;
- if(additive&&later.length)throw Error(`${table.name}#${row.rowid}: long rows cannot be added safely in additive mode; import this table into an empty database.`);
+ // In additive mode a long row is assembled in a scratch table first and then copied with
+ // INSERT OR IGNORE, so an existing row is never appended to or changed.
+ if(additive&&later.length){
+  const stage=ident('_bv_import_stage'),cl=names.map(ident).join(', ');
+  const staged=[`DROP TABLE IF EXISTS ${stage};`,`CREATE TABLE ${stage} AS SELECT ${cl} FROM ${ident(table.name)} WHERE 0;`,`INSERT INTO ${stage} (${cl}) VALUES (${values.join(', ')});`];
+  for(const [column,chunks] of later)for(const chunk of chunks)staged.push(`UPDATE ${stage} SET ${ident(column)} = ${ident(column)} || ${chunk};`);
+  staged.push(`INSERT OR IGNORE INTO ${ident(table.name)} (${cl}) SELECT ${cl} FROM ${stage};`,`DROP TABLE ${stage};`);
+  return staged;
+ }
  for(const [column,chunks] of later)for(const chunk of chunks)out.push(`UPDATE ${ident(table.name)} SET ${ident(column)} = ${ident(column)} || ${chunk} WHERE ${where};`);
  return out;
 }

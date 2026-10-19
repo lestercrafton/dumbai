@@ -47,3 +47,12 @@ test('additive mode keeps rows that are already there',async()=>{
  for(const s of [...rowStatements(table,{rowid:'1',cells:[{text:'a'},{text:'new'}]},{additive:true}),...rowStatements(table,{rowid:'2',cells:[{text:'b'},{text:'added'}]},{additive:true})])db.exec(s);
  assert.deepEqual(db.prepare('SELECT id,v FROM t ORDER BY id').all().map(r=>[r.id,r.v]),[['a','kept'],['b','added'],['c','local']]);
 });
+test('additive mode adds a long row whole and leaves an existing long row untouched',async()=>{
+ const {rowStatements}=await import('./d1-import-from-export.mjs');
+ const table={name:'t',sql:'CREATE TABLE t (id text PRIMARY KEY NOT NULL, v text)',columns:[{name:'id',type:'text',pk:1},{name:'v',type:'text',pk:0}]};
+ const db=new DatabaseSync(':memory:');db.exec(table.sql);db.exec("INSERT INTO t (id,v) VALUES ('a','kept')");
+ const long='x'.repeat(95_000)+'é'+'y'.repeat(70_000);
+ for(const id of ['a','b'])for(const s of rowStatements(table,{rowid:'9',cells:[{text:id},{text:long}]},{additive:true})){assert.ok(s.length<=90_000);db.exec(s);}
+ assert.deepEqual(db.prepare('SELECT id,v FROM t ORDER BY id').all().map(r=>[r.id,r.v]),[['a','kept'],['b',long]]);
+ assert.equal(db.prepare("SELECT count(*) n FROM sqlite_master WHERE name='_bv_import_stage'").get().n,0);
+});
