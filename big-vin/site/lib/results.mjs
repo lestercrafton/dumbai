@@ -1,12 +1,20 @@
 /** Frozen forecasts and grading. Positive margin means home wins. */
 export const MODEL_VERSION='ridge-v1';
+// Shared formatters and a per-start-time memo: these ran once per game per request.
+const EASTERN_CA=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+const EASTERN_US=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+const weeks=new Map();
 export function reportingWeek(game){
  if(game.sport==='nfl'&&game.season&&game.week)return `${game.season}-W${String(game.week).padStart(2,'0')}`;
- const d=new Date(game.startTime);const day=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
- const t=new Date(day+'T12:00:00Z');t.setUTCDate(t.getUTCDate()-((t.getUTCDay()+6)%7));return t.toISOString().slice(0,10);
+ const start=game.startTime;
+ if(typeof start==='string'&&weeks.has(start))return weeks.get(start);
+ const d=new Date(start);const day=EASTERN_CA.format(d);
+ const t=new Date(day+'T12:00:00Z');t.setUTCDate(t.getUTCDate()-((t.getUTCDay()+6)%7));const week=t.toISOString().slice(0,10);
+ if(typeof start==='string'){if(weeks.size>=8192)weeks.clear();weeks.set(start,week);}
+ return week;
 }
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
-const easternDay=value=>{const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(value));return ['year','month','day'].map(type=>parts.find(p=>p.type===type).value).join('-');};
+const easternDay=value=>{const parts=EASTERN_US.formatToParts(new Date(value));return ['year','month','day'].map(type=>parts.find(p=>p.type===type).value).join('-');};
 export function gradeForecast(f,game,observedAt=new Date().toISOString()){
  if(game.startTime&&Date.parse(game.startTime)>Date.parse(observedAt))return null;
  // A postponed MLB event is not the separately forecast makeup game. Release
