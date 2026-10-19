@@ -17,7 +17,7 @@ import {readEvents,mergeEvents,writeEvents,capturePick,observeMarket,closeEvent,
 
 export const REPO_LEDGER=fileURLToPath(new URL('../../playbook/ledger',import.meta.url));
 export const stateDir=(root=path.join(os.homedir(),'.local/share/big-vin'))=>path.join(root,'playbook');
-const SITE=process.env.BIG_VIN_SITE_URL||'https://big-vin-grind-to-win.sunlightisfree.chatgpt.site';
+const SITE=process.env.BIG_VIN_SITE_URL||'https://big-vin.sitetime.workers.dev';
 const day=ms=>new Date(ms).toISOString().slice(0,10);
 const easternDay=value=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
 

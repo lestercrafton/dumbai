@@ -1,6 +1,6 @@
 # Big Vin unattended sports experiment
 
-[Live site](https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/) · [Learning log](https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/learning-log) · [Cloud runs](https://github.com/lestercrafton/dumbai/actions/workflows/big-vin-daily.yml)
+[Live site](https://big-vin.sitetime.workers.dev/) · [Learning log](https://big-vin.sitetime.workers.dev/learning-log) · [Cloud runs](https://github.com/lestercrafton/dumbai/actions/workflows/big-vin-daily.yml)
 
 The scheduled runner lives in **Lester's personal `lestercrafton/dumbai` repository**. GitHub-hosted Ubuntu machines fetch the data and publish to the existing cloud-hosted Big Vin site. Neither the Mac nor Codex needs to be open. No company Azure services are used. The domain is independent of the scheduler; this workflow does not change millymate.com DNS.
 

@@ -2,11 +2,10 @@
 
 ## Current state (October 19, 2026)
 
-Live in parallel at **https://big-vin.sitetime.workers.dev** (Worker `big-vin`, D1 `big-vin`; `sitetime` is the account's existing workers.dev subdomain). The ChatGPT Sites site is still the primary and the runner's `BIG_VIN_SITE_URL` is unchanged.
+**Cut over.** https://big-vin.sitetime.workers.dev (Worker `big-vin`, D1 `big-vin`) is the only site the runner writes to: `BIG_VIN_SITE_URL` in `big-vin-daily.yml`, the runner's OIDC audience (`SITE_URL` in `big-vin/lib/collector-access.mjs`, matching `COLLECTOR_AUDIENCE` here), the playbook URL and the MCP server all point at it. The dual write (`scripts/mirror-writes.mjs`) is no longer loaded.
 
-- Seeded from what is recoverable without the ChatGPT Sites export: the bundled bootstrap forecasts (`initialize`), every forecast and result the old site's public `/api/results` shows (all sports, cohorts, model versions and weeks; `scripts/public-recovery.mjs`, rows carry `payload.recovery`), its public learning log, collection reports from the runner's latest checkpoint artifact (`scripts/checkpoint-recovery.mjs`), and ESPN finals since each bundled history ends (`scripts/backfill-finals.mjs`, historical-only collector posts).
-- Missing until the export (about October 24): first-seen market rows, pick revision rows, the feed cache, older collection runs, and anything the public pages do not show. Import it with `scripts/d1-import-from-export.mjs --additive` so rows already here are kept.
-- Dual write: `big-vin-daily.yml` loads `scripts/mirror-writes.mjs` on its site-writing steps. Each POST to the primary `/api/` is repeated to the Cloudflare site with a GitHub OIDC token for audience `https://big-vin.sitetime.workers.dev` (`COLLECTOR_AUDIENCE` in `wrangler.cloudflare.jsonc`). Failures only warn; the run summary has a “Cloudflare copy” section.
+- The ChatGPT Sites export (Site data export run 39300555834, Oct 19) was imported with `scripts/d1-import-from-export.mjs --additive`. Every exported row's key is present in D1; rows that were already here were kept.
+- The ChatGPT Sites site is no longer written to and its data stops at that export.
 - Writes made directly here use the Worker secret `BIG_VIN_ADMIN_TOKEN`, kept on the box in `~/.config/big-vin-cloudflare/admin-token`.
 
 `wrangler.cloudflare.jsonc` deploys the normal `npm run build` output (`dist/server` as the Worker, `dist/client` as static assets) with D1 bound as `DB`, the same binding the site already reads through `cloudflare:workers` in `lib/db.ts`. There is no adapter layer to swap: the ChatGPT Sites build is already a Cloudflare Worker, and nothing OpenAI-specific ships in `dist/server`. The only secret the site reads is `BIG_VIN_ADMIN_TOKEN` (optional; the runner signs in with GitHub OIDC).
