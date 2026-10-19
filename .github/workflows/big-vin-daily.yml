@@ -137,7 +137,8 @@ jobs:
         env:
           PUSH_TOKEN: ${{ github.token }}
         run: |
-          git add playbook/odds playbook/ledger playbook/reviews 2>/dev/null || true
+          # git add stops at the first missing path, so add each folder that exists.
+          for p in playbook/odds playbook/ledger playbook/reviews; do if test -e "$p"; then git add "$p"; fi; done
           if git diff --cached --quiet; then echo "No new odds or shadow records."; exit 0; fi
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -q -m "Big Vin odds snapshots and shadow picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           remote="https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
