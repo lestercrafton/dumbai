@@ -19,3 +19,11 @@ export const firstMarketObservations=sqliteTable('first_market_observations',{
 export const pickRevisionStates=sqliteTable('pick_revision_states',{
  forecastId:text('forecast_id').primaryKey().references(()=>forecasts.id),payload:text('payload').notNull()
 });
+// Learning loop (October 19, 2026). Additive only: pick and price rows above are never altered.
+export const playbookManifests=sqliteTable('playbook_manifests',{id:text('id').primaryKey(),publishedAt:text('published_at').notNull(),generatedAt:text('generated_at').notNull(),payload:text('payload').notNull()},t=>[index('playbook_manifests_generated').on(t.generatedAt)]);
+export const challengerPicks=sqliteTable('challenger_picks',{
+ id:text('id').primaryKey(),versionId:text('version_id').notNull(),sport:text('sport').notNull(),gameId:text('game_id').notNull(),weekKey:text('week_key').notNull(),startTime:text('start_time').notNull(),capturedAt:text('captured_at').notNull(),publishedAt:text('published_at').notNull(),payload:text('payload').notNull()
+},t=>[index('challenger_picks_version_week').on(t.versionId,t.weekKey),index('challenger_picks_sport_week').on(t.sport,t.weekKey)]);
+export const challengerResults=sqliteTable('challenger_results',{pickId:text('pick_id').primaryKey().references(()=>challengerPicks.id),gradedAt:text('graded_at').notNull(),payload:text('payload').notNull()});
+export const scoreboards=sqliteTable('scoreboards',{id:text('id').primaryKey(),weekKey:text('week_key').notNull(),publishedFor:text('published_for').notNull(),publishedAt:text('published_at').notNull(),payload:text('payload').notNull()},t=>[index('scoreboards_published_for').on(t.publishedFor)]);
+export const promotions=sqliteTable('promotions',{id:text('id').primaryKey(),sport:text('sport').notNull(),effectiveAt:text('effective_at').notNull(),publishedAt:text('published_at').notNull(),payload:text('payload').notNull()},t=>[index('promotions_sport_effective').on(t.sport,t.effectiveAt)]);

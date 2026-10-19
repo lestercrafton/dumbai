@@ -1,0 +1,18 @@
+.playbook-banner{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:14px 0 4px;padding:14px 18px;border:1px solid var(--fiji-purple,#520975);border-radius:10px;background:#5209750d;color:inherit;text-decoration:none;font-size:13px;line-height:1.5}
+.playbook-banner:hover,.playbook-banner:focus-visible{background:#52097519}
+.playbook-banner strong{font-size:16px;color:var(--fiji-purple,#520975)}
+.playbook-banner-date{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+.playbook-banner span:last-child{display:inline-flex;align-items:center;gap:6px}
+.playbook-version-badge{display:inline-block;margin-left:6px;padding:1px 7px;border:1px solid currentColor;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.04em;line-height:1.6;vertical-align:middle;opacity:.85;white-space:nowrap}
+th .playbook-version-badge,h2 .playbook-version-badge,h3 .playbook-version-badge,li .playbook-version-badge{margin:0 6px 0 0}
+.playbook-note{max-width:760px}.playbook-note h1{margin:10px 0 18px}.playbook-note p{margin:0 0 14px;line-height:1.7}
+.playbook-note-links,.playbook-columns{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:18px}
+.playbook-columns>section{flex:1 1 200px}.playbook-columns ul,.playbook-ideas{margin:6px 0 0;padding-left:18px;line-height:1.6}
+.playbook-table-wrap{overflow-x:auto;margin-top:12px}
+.playbook-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.playbook-table th,.playbook-table td{padding:8px 10px;border-bottom:1px solid #8884;text-align:left;white-space:nowrap}
+.playbook-table tbody th{font-weight:500}.playbook-table small{opacity:.7}
+.playbook-live{background:#5209750a}.playbook-live th{font-weight:650}
+.playbook-week,.playbook-scoreboard,.playbook-promotions,.playbook-legend{margin-top:18px}
+.playbook-timeline{list-style:none;padding:0;margin:12px 0 0}.playbook-timeline>li+li{margin-top:16px;padding-top:16px;border-top:1px solid #8884}
+.playbook-lesson{margin-top:18px;padding-top:14px;border-top:1px solid #8884}.playbook-lesson h4{margin:6px 0}

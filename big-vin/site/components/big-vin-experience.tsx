@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {ArrowDown, ArrowRight, ArrowUpRight, ChevronDown, Database, Radio, RefreshCw, Scale, TrendingUp} from 'lucide-react';
 import {DonateButton} from '@/components/donate-button';
+import {VersionBadge} from '@/components/version-badge';
 export {DonateButton} from '@/components/donate-button';
 import {useRefreshingResource} from '@/components/use-refreshing-resource';
 import CfbNewsReview, {CfbNewsFlag} from '@/components/cfb-news-review';
@@ -38,7 +39,7 @@ function stakeNote(game: Row) {
 export function SiteHeader({onBoard, onResults}: {onBoard: () => void; onResults: () => void}) {
   return <header className="vin-header">
     <a className="vin-wordmark" href="#top" aria-label="Big Vin home"><span className="vin-mark" aria-hidden="true">b<span>v</span><i/></span><span>BIG VIN<span className="vin-wordmark-sub">AN INDEPENDENT EDGE.</span></span></a>
-    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a></nav>
+    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a></nav>
     <DonateButton className="vin-button-outline vin-header-donate"/>
   </header>;
 }
@@ -78,7 +79,7 @@ export function TodayHero({readSlate, onOpenGame, refreshKey = 0}: {readSlate: (
       <div className="vin-feature-top"><span><Radio size={14}/>{data?.partial || error ? 'TODAY’S AVAILABLE TOP EDGES' : 'TOP EDGE BY SPORT'}</span><span>CT</span></div>
       {leaders.length > 0 && <div className="vin-feature-leagues" role="group" aria-label="Today’s eligible league leaders">{leaders.map(leader => <button key={leader.sport} type="button" aria-pressed={game?.sport === leader.sport} onClick={() => setFeaturedSport(leader.sport)}><span>{leader.sport.toUpperCase()}</span><small>{pointValue(leader.edge)} {shortScoreUnit(leader.sport)}</small></button>)}</div>}
       {game && decision && lines ? <>
-        <div className="vin-feature-meta"><span>{sportLabel(game.sport).toUpperCase()}</span><span>{centralTime(game.startTime)}</span></div>
+        <div className="vin-feature-meta"><span>{sportLabel(game.sport).toUpperCase()}</span><span>{centralTime(game.startTime)} <VersionBadge record={game}/></span></div>
         <h2 className="vin-feature-matchup"><span>{teamName(game.away)}</span><small>at</small><span>{teamName(game.home)}</span></h2>
         <div className="vin-feature-bottom"><div><span className="vin-label">THE SIDE</span><strong>{lines.pick || 'No ATS pick'}</strong><small>{game.actionable ? 'Current pregame pick' : 'Locked pregame line'}</small></div><div className="vin-feature-edge"><strong>{pointValue(game.edge)}</strong><span>{scoreUnit(game.sport).toUpperCase()} OF EDGE</span></div></div>
         <button className="vin-feature-action" onClick={() => onOpenGame(game)}>See this matchup <ArrowUpRight size={19}/></button>
@@ -111,7 +112,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       : score.kind === 'live' && livePick.provisional && livePick.state === 'covering' ? 'vin-game-covering'
       : score.kind === 'live' && livePick.provisional && livePick.state === 'not-covering' ? 'vin-game-not-covering' : 'vin-game-neutral';
     return <article className={`vin-game-card ${game.lowEvidence ? 'vin-game-limited' : ''} ${cardState}`} key={game.id} data-game-id={game.id} data-rank={game.rank??''} data-result-outcome={decision.outcome} data-live-pick-status={score.kind==='live'?livePick.state:undefined}>
-      <div className="vin-game-top"><span className="vin-game-rank">{game.rank ? <><span>#</span>{String(game.rank).padStart(2, '0')}</> : 'UNRANKED'}</span><span>{score.kind==='live' && <b className={livePick.isWinning?'vin-live':'vin-score-neutral'}>{score.label.toUpperCase()} · </b>}{centralTime(game.startTime)}</span></div>
+      <div className="vin-game-top"><span className="vin-game-rank">{game.rank ? <><span>#</span>{String(game.rank).padStart(2, '0')}</> : 'UNRANKED'}</span><span>{score.kind==='live' && <b className={livePick.isWinning?'vin-live':'vin-score-neutral'}>{score.label.toUpperCase()} · </b>}{centralTime(game.startTime)} <VersionBadge record={game} sport={sport}/></span></div>
       <div className="vin-game-matchup"><h3>{teamName(game.away)} <span>at</span> {teamName(game.home)}</h3><span className="vin-game-league">{sport.toUpperCase()}{game.neutralSite ? ' · Neutral' : ''}</span></div>
       {(score.kind==='live'||score.kind==='final')&&<ScorePanel href={gamecast??undefined} target={gamecast?'_blank':undefined} rel={gamecast?'noopener noreferrer':undefined} className={`vin-scoreboard ${gamecast?'vin-scoreboard-link':''} vin-scoreboard-${score.freshness} ${score.kind==='live'&&livePick.provisional?livePick.state==='covering'?'vin-scoreboard-covering':livePick.state==='not-covering'?'vin-scoreboard-not-covering':'':''}`} aria-label={`${score.label}: ${teamName(game.away)} ${score.awayScore??'unavailable'}, ${teamName(game.home)} ${score.homeScore??'unavailable'}${progress?'. '+progress.label:''}${gamecast?'. Open ESPN Gamecast in a new tab':''}`}>
        <div className="vin-scoreboard-top"><strong>{score.label}</strong>{progress&&<span className="vin-game-progress">{progress.label}</span>}</div>

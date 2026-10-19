@@ -157,6 +157,7 @@ export default function Home(){
  return <main className="vin-site" id="top">
   <a href="#board" className="vin-skip-link">Skip to game board</a>
   <div className="vin-shell"><SiteHeader onBoard={()=>setTab('slate')} onResults={()=>setTab('records')}/>
+   <a className="playbook-banner" href="/notes/october-19-2026"><span className="playbook-banner-date">October 19, 2026</span><strong>The day we changed the game</strong><span>Playbook v1 is frozen. New ideas now compete in public <ArrowRight size={14} aria-hidden="true"/></span></a>
    <section id="board" className="vin-board-section" aria-label="Game board and records">
     <div className="vin-board-heading"><div><p className="vin-kicker">THE BOARD / ALL SIGNAL</p><h2>Find your game.</h2></div><p>Ranked within each sport.<br/>Every result on the record.</p></div>
     <p className="vin-board-motto">We never lose; we either win or learn.</p>

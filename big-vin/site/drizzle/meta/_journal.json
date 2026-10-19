@@ -36,6 +36,13 @@
       "when": 1792335521531,
       "tag": "0004_strong_hydra",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1792386507292,
+      "tag": "0005_playbook_learning_loop",
+      "breakpoints": true
     }
   ]
 }
