@@ -118,6 +118,9 @@ jobs:
         continue-on-error: true
         env:
           NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
+          # Playbook documents go straight to the Cloudflare site (its own OIDC audience); a failure only warns.
+          BIG_VIN_PLAYBOOK_POST: '1'
+          BIG_VIN_PLAYBOOK_URL: https://big-vin.sitetime.workers.dev
         run: node scripts/shadow-challengers.mjs
       - name: Verify baseball refresh on demand
         if: steps.plan.outputs.refresh_baseball == 'true'

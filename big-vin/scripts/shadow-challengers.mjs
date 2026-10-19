@@ -10,8 +10,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {SPORT_PATHS,normalizeScoreboard,scoreboardUrls} from '../lib/feeds/adapter.mjs';
 import {loadManifest,variantsFor,predict,NEEDS} from '../lib/playbook.mjs';
 import {weatherContext} from '../lib/weather.mjs';
-import {manifestDocument,pendingDocuments,queue,readQueue,chunks,post} from '../lib/playbook-outbox.mjs';
-import {collectorAuthorization} from '../lib/collector-access.mjs';
+import {manifestDocument,pendingDocuments,queue,readQueue,flush,PLAYBOOK_URL} from '../lib/playbook-outbox.mjs';
 import {ODDS_DIR,readOdds,snapshotRun,appendOdds,spreadObservations,spreadAt} from '../lib/odds-log.mjs';
 import {injuryContext,scoreboardLeaders} from '../lib/injuries.mjs';
 import {readEvents,mergeEvents,writeEvents,capturePick,observeMarket,closeEvent,gradeEvents,currentPicks} from '../lib/shadow-ledger.mjs';
@@ -106,37 +105,36 @@ export async function runSport(sport,{manifest,events,odds=[],now=new Date().toI
  return {sport,variants:variants.map(v=>v.version),upcoming:upcoming.length,added,oddsLines,warnings};
 }
 
-export async function main({sports=Object.keys(SPORT_PATHS),root,repoLedger=REPO_LEDGER,oddsDir=ODDS_DIR,fetchImpl=globalThis.fetch,now=new Date().toISOString()}={}){
+export async function main({sports=Object.keys(SPORT_PATHS),root,repoLedger=REPO_LEDGER,oddsDir=ODDS_DIR,fetchImpl=globalThis.fetch,now=new Date().toISOString(),postEnabled=process.env.BIG_VIN_PLAYBOOK_POST==='1',playbookUrl=process.env.BIG_VIN_PLAYBOOK_URL||PLAYBOOK_URL,ref=process.env.GITHUB_RUN_ID?`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`:null}={}){
  const manifest=loadManifest();const dir=stateDir(root);const report={at:now,sports:[]};
+ const outbox=path.join(dir,'outbox');const fresh=new Set();
+ // The odds log is kept in the repo and, so a failed commit never loses it, in the checkpoint too.
+ const stateOdds=path.join(dir,'odds');
+ for(const k of queue(outbox,{manifestDoc:manifestDocument(manifest,{generatedAt:now})}))fresh.add(k);
  for(const sport of sports){
   const ledgerFiles=[path.join(dir,'ledger',sport+'.jsonl'),path.join(repoLedger,sport+'.jsonl')];
   const events=mergeEvents(...ledgerFiles.map(readEvents));
   try{
-   const r=await runSport(sport,{manifest,events,odds:readOdds(sport,{dir:oddsDir}),now,fetchImpl});
-   if(r.oddsLines.length)appendOdds(sport,r.oddsLines,{dir:oddsDir});
+   const odds=mergeEvents(readOdds(sport,{dir:oddsDir}),readOdds(sport,{dir:stateOdds}));
+   const r=await runSport(sport,{manifest,events,odds,now,fetchImpl});
+   if(r.oddsLines.length){appendOdds(sport,r.oddsLines,{dir:oddsDir});appendOdds(sport,r.oddsLines,{dir:stateOdds});}
    const merged=mergeEvents(events,r.added);
    if(merged.length)for(const f of ledgerFiles)writeEvents(f,merged);
-   // Site contract documents: queued always, posted only when the endpoint is enabled.
-   const outbox=path.join(dir,'outbox');const docs=pendingDocuments(merged,readQueue(outbox));
-   queue(outbox,{manifestDoc:manifestDocument(manifest,{generatedAt:now}),picks:docs.picks,results:docs.results});
-   if(process.env.BIG_VIN_PLAYBOOK_POST==='1'&&(docs.picks.length||docs.results.length)){
-    try{const auth=await collectorAuthorization({});
-     const live=docs.picks.filter(p=>Date.parse(p.startTime)>Date.now()+90000);
-     await post(SITE,auth,{kind:'versions',manifest:manifestDocument(manifest,{generatedAt:now})},{fetchImpl});
-     for(const c of chunks(live))await post(SITE,auth,{kind:'challenger-picks',picks:c},{fetchImpl});
-     for(const c of chunks(docs.results.map(r=>r.doc)))await post(SITE,auth,{kind:'challenger-results',results:c},{fetchImpl});
-    }catch(e){r.warnings.push('Playbook post failed; documents remain in the outbox: '+e.message);}
-   }
+   const docs=pendingDocuments(merged,readQueue(outbox));
+   for(const k of queue(outbox,{picks:docs.picks,results:docs.results,odds:r.oddsLines}))fresh.add(k);
    const count=t=>r.added.filter(e=>e.type===t).length,oc=t=>r.oddsLines.filter(e=>e.type===t).length;
    report.sports.push({sport,variants:r.variants,upcoming:r.upcoming,odds:{snapshots:oc('odds'),refreshed:r.oddsLines.find(l=>l.type==='refresh')?.gameIds.length??0,closes:oc('close')},picks:count('pick'),closes:count('close'),grades:count('grade'),warnings:r.warnings,skipped:r.skipped});
   }catch(e){report.sports.push({sport,error:e.message});}
  }
+ // Post to the Cloudflare site; earlier queued documents go as a labeled backfill. Failure only warns.
+ report.playbook=postEnabled?await flush(outbox,{siteUrl:playbookUrl,fresh,ref,fetchImpl}):{skipped:'BIG_VIN_PLAYBOOK_POST is not 1; documents stay queued in the outbox.'};
  return report;
 }
 
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url){
  const requested=process.argv.find(a=>a.startsWith('--sport='))?.slice(8);
  const report=await main({sports:requested?[requested]:undefined});
+ if(report.playbook?.error)console.log(`::warning title=Playbook posting::${report.playbook.error} Documents stay queued in the checkpoint outbox.`);
  for(const s of report.sports){if(s.error)console.log(`::warning title=Shadow ${s.sport}::${s.error}`);for(const w of s.warnings||[])console.log(`::warning title=Shadow ${s.sport}::${w}`);}
  console.log(JSON.stringify(report,null,1));
 }

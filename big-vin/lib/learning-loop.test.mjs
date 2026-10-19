@@ -8,7 +8,7 @@ import {snapshotRun,spreadObservations,spreadAt} from './odds-log.mjs';
 import {capturePick,closeEvent,gradeEvents,mergeEvents,versionRecords,summarize,currentPicks} from './shadow-ledger.mjs';
 import {loadManifest,variantsFor,predict} from './playbook.mjs';
 import {compare} from './promotion.mjs';
-import {manifestDocument,pickDocument,resultDocument,pendingDocuments,queue,readQueue} from './playbook-outbox.mjs';
+import {manifestDocument,pickDocument,resultDocument,pendingDocuments,queue,readQueue,flush,playbookAuthorization} from './playbook-outbox.mjs';
 import {conditions,pickPlace,venueOf} from './weather.mjs';
 import * as site from '../site/lib/playbook.mjs';
 
@@ -111,7 +111,7 @@ test('runner documents satisfy the site learning-loop contract',()=>{
  const grade={type:'grade',id:'grade:'+p.id,at:'2026-10-25T21:00:00Z',pickId:p.id,gameId:'401',status:'completed',homeScore:20,awayScore:17,clvPoints:0.5,sourceUrl:'sb'};
  site.validateChallengerResult(resultDocument(grade,[p,grade]));
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'outbox-'));
- const docs=pendingDocuments([p,grade]);assert.equal(queue(dir,{picks:docs.picks,results:docs.results}),2);
+ const docs=pendingDocuments([p,grade]);assert.equal(queue(dir,{picks:docs.picks,results:docs.results}).length,2);
  assert.equal(pendingDocuments([p,grade],readQueue(dir)).picks.length,0);
 });
 
@@ -120,6 +120,42 @@ test('Tuesday scoreboard follows the site contract',async()=>{
  assert.equal(tuesdayOf('2026-10-20T14:00:00Z'),'2026-10-20');assert.equal(tuesdayOf('2026-10-21T14:00:00Z'),'2026-10-27');
  const built=buildScoreboard({nfl:[],cfb:[]},loadManifest(),{at:'2026-10-20T14:00:00Z'});
  site.validateScoreboard(built.scoreboard);
- assert.ok(built.scoreboard.entries.some(e=>e.versionId==='bv-nfl-pb1'&&e.role==='live'));
+ assert.ok(built.scoreboard.entries.some(e=>e.versionId==='bv-nfl-pb1'&&e.role==='frozen'));
  assert.match(built.markdown,/Lessons/);
+});
+
+test('outbox replays to the Cloudflare site with its own audience and a labeled backfill',async()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'outbox-'));const m=loadManifest();
+ const g=game({startTime:'2026-10-25T17:00:00Z'});
+ const old=capturePick([],{version:'bv-nfl-pb1',sport:'nfl',game:g,predictedMargin:5,market:g.moneylineMarket,reasoning:{},at:'2026-10-20T12:00:00Z'});
+ queue(dir,{manifestDoc:manifestDocument(m,{generatedAt:'2026-10-20T12:00:00Z'}),picks:[pickDocument(old)],odds:snapshotRun('nfl',[g],[],{at:'2026-10-20T12:00:00Z'})});
+ const later=game({id:'402',startTime:'2026-10-26T17:00:00Z'});
+ const fresh=new Set(queue(dir,{picks:[pickDocument(capturePick([],{version:'bv-nfl-pb1',sport:'nfl',game:later,predictedMargin:5,market:later.moneylineMarket,reasoning:{},at:'2026-10-21T12:00:00Z'}))]}));
+ const calls=[];const now=Date.parse('2026-10-21T12:00:01Z');
+ const fetchImpl=async(url,init)=>{
+  if(String(url).startsWith('https://token.example')){calls.push({audience:new URL(url).searchParams.get('audience')});return {ok:true,json:async()=>({value:'h.'+Buffer.from(JSON.stringify({exp:now/1000+600})).toString('base64url')+'.s'})};}
+  const body=JSON.parse(init.body);calls.push({url:String(url),kind:body.kind,backfill:body.backfill??null,n:(body.picks||body.lines||[]).length});
+  if(body.kind==='versions')site.validateManifest(body.manifest);
+  if(body.kind==='challenger-picks')for(const p of body.picks)site.validateChallengerPick(p,now,{backfill:!!body.backfill});
+  if(body.kind==='odds-snapshots')for(const l of body.lines)site.validateOddsSnapshot(l);
+  return {ok:true,text:async()=>JSON.stringify({received:(body.picks||body.lines||[1]).length,inserted:(body.picks||body.lines||[1]).length})};
+ };
+ const env={ACTIONS_ID_TOKEN_REQUEST_URL:'https://token.example/request',ACTIONS_ID_TOKEN_REQUEST_TOKEN:'x'};
+ const r=await flush(dir,{siteUrl:'https://big-vin.sitetime.workers.dev',fresh,ref:'run-1',fetchImpl,now:()=>now,authorize:(u,o)=>playbookAuthorization(u,{...o,env,now:()=>now})});
+ assert.equal(r.error,null);
+ assert.equal(calls[0].audience,'https://big-vin.sitetime.workers.dev');
+ assert.ok(calls.slice(1).every(c=>c.url==='https://big-vin.sitetime.workers.dev/api/playbook'));
+ const picks=calls.filter(c=>c.kind==='challenger-picks');
+ assert.deepEqual(picks.map(c=>[c.n,c.backfill?.source??null]),[[1,null],[1,'checkpoint-outbox']]);
+ assert.equal(calls.filter(c=>c.kind==='odds-snapshots').length,1);
+ const again=await flush(dir,{siteUrl:'https://big-vin.sitetime.workers.dev',fetchImpl,authorize:async()=>'Bearer t'});
+ assert.deepEqual(again.posted,{},'nothing is posted twice');
+});
+test('a failed post keeps documents queued and does not throw',async()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'outbox-'));
+ queue(dir,{manifestDoc:manifestDocument(loadManifest(),{generatedAt:'2026-10-20T12:00:00Z'})});
+ const r=await flush(dir,{fetchImpl:async()=>({ok:false,status:503,text:async()=>'down'}),authorize:async()=>'Bearer t'});
+ assert.match(r.error,/503/);
+ const ok=await flush(dir,{fetchImpl:async()=>({ok:true,text:async()=>'{"inserted":true}'}),authorize:async()=>'Bearer t'});
+ assert.equal(ok.posted.versions,1);
 });

@@ -16,7 +16,7 @@ export function buildScoreboard(eventsBySport,manifest,{at=new Date().toISOStrin
  for(const [sport,events] of Object.entries(eventsBySport)){
   const control=manifest.bigVin.sports[sport]?.version;if(!control)continue;
   const live=summarize(versionRecords(events,control));
-  entries.push({versionId:control,role:'live',sport,decision:'kept',record:record(live),note:`Runner mirror of ${manifest.bigVin.sports[sport].liveModel}.`});kept.push(control);
+  entries.push({versionId:control,role:'frozen',sport,decision:'kept',record:record(live),note:`Runner mirror of ${manifest.bigVin.sports[sport].liveModel}.`});kept.push(control);
   for(const row of compare(events,manifest,sport)){
    const a=row.challengerSummary;
    const decision=row.decision==='retain-control'?'dropped':'continuing';
