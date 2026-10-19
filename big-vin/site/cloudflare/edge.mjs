@@ -3,7 +3,7 @@
 // the built app (dist/server) by scripts/cloudflare-build.mjs.
 import {Buffer} from 'node:buffer';
 import app from './index.js';
-import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS} from './read-cache.mjs';
+import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS,edgeDirective,withEdge,EDGE_NO_STORE} from './read-cache.mjs';
 
 async function fill(env,key,response,source){
  try{
@@ -21,16 +21,18 @@ async function cachedOrLive(request,env,ctx,key,{maxAge,source}){
  let hit=null;
  const meter=env.BV_D1_METER?meta=>console.log(JSON.stringify({d1read:meta?.rows_read??0,d1write:meta?.rows_written??0})):undefined;
  try{hit=await readCached(env.DB,key,meter);}catch(error){console.error('Read cache lookup failed',key,error);}
- if(hit&&(maxAge===null||fresh({rendered_at:hit.renderedAt},Date.now(),maxAge)))return cachedResponse(hit,'hit',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64});
+ const kind=source==='miss'?'api':'page';
+ if(hit&&(maxAge===null||fresh({rendered_at:hit.renderedAt},Date.now(),maxAge)))return withEdge(cachedResponse(hit,'hit',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),hit.status===200?edgeDirective(kind):EDGE_NO_STORE);
  // Register the key first, so the renderer picks it up even if this request fails.
  if(!hit&&source==='miss')ctx.waitUntil(register(env,key));
  const response=await app.fetch(request,env,ctx);
  const type=response.headers.get('content-type')||'';
- if(response.status===200&&(type.startsWith('application/json')||type.startsWith('text/html')||type.startsWith('text/x-component'))&&!response.headers.has('set-cookie'))ctx.waitUntil(fill(env,key,response.clone(),source));
- return response;
+ const storable=response.status===200&&(type.startsWith('application/json')||type.startsWith('text/html')||type.startsWith('text/x-component'))&&!response.headers.has('set-cookie');
+ if(storable)ctx.waitUntil(fill(env,key,response.clone(),source));
+ return withEdge(response,storable?edgeDirective(kind):EDGE_NO_STORE);
 }
-export default {
- async fetch(request,env,ctx){
+// Everything outside the read cache keeps running on every request.
+async function route(request,env,ctx){
   if(request.method==='GET'&&env.DB&&routerRequest(request)){
    const rscKey=rscCacheKey(request,env.CF_VERSION?.id);
    if(rscKey)return cachedOrLive(request,env,ctx,rscKey,{maxAge:null,source:'page'});
@@ -42,6 +44,6 @@ export default {
    const pageKey=pageCacheKey(url,env.CF_VERSION?.id);
    if(pageKey)return cachedOrLive(request,env,ctx,pageKey,{maxAge:null,source:'page'});
   }
-  return app.fetch(request,env,ctx);
- }
-};
+  return withEdge(await app.fetch(request,env,ctx),EDGE_NO_STORE);
+}
+export default {fetch:route};

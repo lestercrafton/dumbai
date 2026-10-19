@@ -13,6 +13,9 @@
   "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": true },
+  // Workers Cache: repeat requests for the read-cache routes are answered at the edge
+  // without running the Worker (cloudflare/edge.mjs sets the edge-only directive).
+  "cache": { "enabled": true },
   // The home page HTML is cached per deployment, so a new deploy never serves old asset links.
   "version_metadata": { "binding": "CF_VERSION" },
   // The runner requests a GitHub OIDC token with this audience when it writes here.

@@ -64,3 +64,21 @@ test('gzipped bodies from the renderer go out as stored bytes, or unpacked for c
  r=await edge.fetch(new Request('https://x/api/learning',{headers:{'accept-encoding':'identity'}}),env,ctx());
  assert.equal(r.headers.get('content-encoding'),null);assert.equal(await r.text(),body);
 });
+test('cacheable responses carry an edge-only cache directive; everything else is marked no-store',async()=>{
+ const {EDGE_HEADER,edgeDirective,secondsToEasternMidnight}=await import('../cloudflare/read-cache.mjs');
+ const env={DB:database(),CF_VERSION:{id:'v1'}};
+ let c=ctx();let r=await edge.fetch(new Request('https://x/api/slate?sport=nba&date=2026-10-19&days=1'),env,c);await Promise.all(c.waits);
+ assert.equal(r.headers.get(EDGE_HEADER),'public, max-age=60, stale-while-revalidate=300');assert.equal(r.headers.get('cache-control'),null);
+ r=await edge.fetch(new Request('https://x/api/slate?sport=nba&date=2026-10-19&days=1'),env,ctx());
+ assert.equal(r.headers.get('x-big-vin-cache'),'hit');assert.equal(r.headers.get(EDGE_HEADER),'public, max-age=60, stale-while-revalidate=300');
+ r=await edge.fetch(new Request('https://x/api/results?sport=nba'),env,ctx());assert.equal(r.status,503);assert.equal(r.headers.get(EDGE_HEADER),'no-store');
+ r=await edge.fetch(new Request('https://x/api/ledger'),env,ctx());assert.equal(r.headers.get(EDGE_HEADER),'no-store');
+ r=await edge.fetch(new Request('https://x/api/slate',{method:'POST',body:'{}'}),env,ctx());assert.equal(r.headers.get(EDGE_HEADER),'no-store');
+ c=ctx();r=await edge.fetch(new Request('https://x/'),env,c);await Promise.all(c.waits);assert.match(r.headers.get(EDGE_HEADER),/^public, max-age=\d+/);
+ // Per-day pages never stay cached past Eastern midnight.
+ const nearMidnight=Date.parse('2026-10-20T03:59:00Z');
+ assert.equal(secondsToEasternMidnight(nearMidnight),60);
+ assert.equal(edgeDirective('page',nearMidnight),'public, max-age=60, stale-while-revalidate=60');
+ assert.equal(edgeDirective('page',Date.parse('2026-10-20T03:59:58Z')),'no-store');
+ assert.equal(edgeDirective('page',Date.parse('2026-10-19T16:00:00Z')),'public, max-age=300, stale-while-revalidate=300');
+});

@@ -95,3 +95,30 @@ export function cachedResponse(hit,state,{acceptsGzip=true,decodeBase64}={}){
  if(acceptsGzip){headers.set('content-encoding','gzip');return new Response(bytes,{status:hit.status,headers,encodeBody:'manual'});}
  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip')),{status:hit.status,headers});
 }
+
+// Workers Cache (cache.enabled in wrangler.cloudflare.jsonc) answers repeat
+// requests at the edge without starting the Worker. Only Cloudflare reads this
+// header; the browser keeps the app's own Cache-Control, as before.
+export const EDGE_HEADER='cloudflare-cdn-cache-control';
+export const EDGE_API_SECONDS=60;
+export const EDGE_PAGE_SECONDS=300;
+export const EDGE_STALE_SECONDS=300;
+export const EDGE_NO_STORE='no-store';
+/** Seconds until the next Eastern midnight, when the per-day page keys roll over. */
+export function secondsToEasternMidnight(ms=Date.now()){
+ const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms));
+ const get=k=>Number(parts.find(p=>p.type===k)?.value);
+ return Math.max(0,86400-(get('hour')*3600+get('minute')*60+get('second')));
+}
+/** Edge directive for a cacheable 200 response. Per-day pages never outlive their day. */
+export function edgeDirective(kind,ms=Date.now()){
+ if(kind==='api')return `public, max-age=${EDGE_API_SECONDS}, stale-while-revalidate=${EDGE_STALE_SECONDS}`;
+ const left=secondsToEasternMidnight(ms);
+ if(left<=5)return EDGE_NO_STORE;
+ return `public, max-age=${Math.min(EDGE_PAGE_SECONDS,left)}, stale-while-revalidate=${Math.min(EDGE_STALE_SECONDS,left)}`;
+}
+/** Set the edge directive, copying the response when its headers are immutable. */
+export function withEdge(response,directive){
+ try{response.headers.set(EDGE_HEADER,directive);return response;}
+ catch{const copy=new Response(response.body,response);copy.headers.set(EDGE_HEADER,directive);return copy;}
+}
