@@ -37,6 +37,9 @@ jobs:
     timeout-minutes: 100
     env:
       BIG_VIN_SITE_URL: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site
+      # Parallel Cloudflare site until cutover. Site writes are copied there; a failed copy only warns.
+      BIG_VIN_MIRROR_URL: https://big-vin.sitetime.workers.dev
+      BIG_VIN_MIRROR_LOG: /tmp/big-vin-mirror.jsonl
     defaults:
       run:
         working-directory: big-vin
@@ -60,6 +63,8 @@ jobs:
         run: npm test
       - name: Verify personal workflow identity with the Site
         run: node scripts/check-cloud-access.mjs
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
       - name: Restore the most recent checkpoint, including failed runs
         id: checkpoint
         uses: actions/github-script@v7
@@ -94,25 +99,36 @@ jobs:
         run: node scripts/cloud-state.mjs prepare --skip-history
       - name: Refresh all sports with the full daily window
         if: steps.plan.outputs.collection == 'full'
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/collect-results.mjs --results-only
       - name: Refresh recent scores and today's markets
         if: steps.plan.outputs.collection == 'recent'
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/collect-results.mjs --results-only --recent
       - name: Collect all sports and publish the daily journal
         if: steps.plan.outputs.journal == 'true' && !cancelled() && steps.prepare.outcome == 'success'
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/daily-experiment.mjs
       - name: Save odds snapshots and shadow challenger picks
         id: shadow
         if: always() && steps.prepare.outcome == 'success'
         continue-on-error: true
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/shadow-challengers.mjs
       - name: Verify baseball refresh on demand
         if: steps.plan.outputs.refresh_baseball == 'true'
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/collect-mlb-stats.mjs
       - name: Publish Tuesday results review
         if: steps.plan.outputs.weekly == 'true'
         env:
           BIG_VIN_REVIEW_REPO_DIR: ${{ github.workspace }}/playbook/reviews
+          NODE_OPTIONS: --import=${{ github.workspace }}/big-vin/site/scripts/mirror-writes.mjs
         run: node scripts/weekly-review.mjs --apply
       - name: Commit the odds log and shadow ledger
         if: always() && steps.shadow.outcome != 'skipped'
@@ -147,6 +163,13 @@ jobs:
         with:
           path: ~/.local/share/big-vin/baseball-stats
           key: big-vin-baseball-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Report the Cloudflare copy
+        if: always()
+        continue-on-error: true
+        run: |
+          f="$BIG_VIN_MIRROR_LOG"
+          if ! test -s "$f"; then echo "No site writes were copied to $BIG_VIN_MIRROR_URL." >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          node -e 'const l=require("fs").readFileSync(process.argv[1],"utf8").trim().split("\n").map(JSON.parse);const ok=l.filter(x=>x.ok).length;const by={};for(const x of l){const k=x.path+" "+(x.status??"error");by[k]=(by[k]||0)+1;}console.log(`### Cloudflare copy\n${ok} of ${l.length} site writes copied to ${process.env.BIG_VIN_MIRROR_URL}.\n\n`+Object.entries(by).map(([k,n])=>`- ${k}: ${n}`).join("\n"));' "$f" >> "$GITHUB_STEP_SUMMARY"
       - name: Write visible run status
         if: always()
         env:
