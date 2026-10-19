@@ -19,20 +19,20 @@ jobs:
   clock:
     runs-on: ubuntu-latest
     outputs:
-      run: ${{ steps.time.outputs.run }}
+      run: ${{ steps.plan.outputs.run }}
+      reason: ${{ steps.plan.outputs.reason }}
     steps:
-      - id: time
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test scheduling and contest identity
+        run: python milly_weekly_v1/test_schedule.py
+      - name: Run once per contest, even when GitHub starts the schedule late
+        id: plan
         env:
           EVENT: ${{ github.event_name }}
-        run: |
-          python - <<'PY'
-          import datetime,zoneinfo,os
-          t=datetime.datetime.now(zoneinfo.ZoneInfo('America/Chicago'))
-          schedule=(t.weekday() in (2,5) and t.hour==8) or (t.weekday()==6 and t.hour in (10,11)) or (t.weekday()==1 and t.hour==8)
-          active=os.environ['EVENT']!='schedule' or schedule
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(active).lower()+'\n')
-          print('Local Central time',t.isoformat(),'run',active)
-          PY
+        run: python milly_weekly_v1/plan.py
   research:
     needs: clock
     if: needs.clock.outputs.run == 'true'
@@ -55,27 +55,27 @@ jobs:
         run: |
           pip install -r milly_weekly_v1/requirements.txt
           python -m playwright install --with-deps chromium
-      - name: Normalize initial source migrations
+      - name: Check sources compile and scheduling tests pass with the model runtime
         run: |
-          python - <<'PY'
-          import pathlib
-          root=pathlib.Path('milly_weekly_v1')
-          p=root/'core.py';s=p.read_text().replace('from site import render','from publication import render')
-          s=s.replace("dep=dep[dep.stamp==last].copy();dep['team']", "dep=dep.sort_values('stamp').drop_duplicates(['team','gsis_id'],keep='last').copy();dep['team']")
-          s=s.replace("if len(match)!=1:rejected.append", "if len(match)!=1 or pd.isna(match.iloc[0].get('gsis_id')):rejected.append")
-          if "'source_receipts':" not in s:
-              s=s.replace("'entry_ready':False,'independent_baseline':True", "'source_receipts':[json.loads(x) for x in (CACHE/'source-receipts.jsonl').read_text().splitlines()],'code_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'entry_ready':False,'independent_baseline':True")
-          p.write_text(s)
-          p=root/'run.py';s=p.read_text()
-          s=s.replace('s=s.replace("save(STAGE/', 's=s if "world[\'point_scale\']=100" in s else s.replace("save(STAGE/')
-          p.write_text(s)
-          PY
           python -m py_compile milly_weekly_v1/*.py
+          python milly_weekly_v1/test_schedule.py
       - name: Refresh inputs, train independent forecasts and generate the twenty
         run: python -u milly_weekly_v1/run.py
+      - name: Read run outcome
+        id: outcome
+        run: |
+          python - <<'PY'
+          import json,os
+          h=json.load(open('milly_weekly_v1/public/health.json'))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('status='+h.get('status','unknown')+'\n')
+          if h.get('status')=='waiting_for_pool':
+              print('::warning title=Milly is waiting for the DraftKings player pool::'+h['error']+' '+h['previous_release']['note'])
+          PY
       - name: Verify HTTP publication and a completed custom-world generation
+        if: steps.outcome.outputs.status == 'success'
         run: python -u milly_weekly_v1/browser_verify.py
       - name: Last pre-lock publication check
+        if: steps.outcome.outputs.status == 'success'
         run: |
           python - <<'PY'
           import json,datetime,pathlib
@@ -96,7 +96,10 @@ jobs:
           python - <<'PY'
           import json,pathlib,datetime,os
           p=pathlib.Path('milly_weekly_v1/public');p.mkdir(parents=True,exist_ok=True)
-          receipt={'status':'failed','at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'previous_release_preserved':True,'error':'A source, model, browser or final publication check failed. No staged release is approved.','run_url':os.environ['GITHUB_SERVER_URL']+'/'+os.environ['GITHUB_REPOSITORY']+'/actions/runs/'+os.environ['GITHUB_RUN_ID']}
+          import sys;sys.path.insert(0,'milly_weekly_v1');import contest
+          try:detail=json.loads(pathlib.Path('milly_weekly_v1/failed_run/health.json').read_text()).get('error')
+          except Exception:detail=None
+          receipt={'status':'failed','at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'previous_release_preserved':True,'previous_release':contest.previous_release(p),'error':'A source, model, browser or final publication check failed. No staged release is approved.','detail':detail,'run_url':os.environ['GITHUB_SERVER_URL']+'/'+os.environ['GITHUB_REPOSITORY']+'/actions/runs/'+os.environ['GITHUB_RUN_ID']}
           (p/'health.json').write_text(json.dumps(receipt,indent=2))
           PY
       - name: Commit the approved release or explicit failure receipt
@@ -128,3 +131,17 @@ jobs:
             .github/workflows/milly-independent-weekly-v1.yml
           include-hidden-files: true
           retention-days: 30
+  report:
+    needs: [clock, research]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make a skipped or failed research job visible
+        env:
+          CLOCK: ${{ needs.clock.result }}
+          RESEARCH: ${{ needs.research.result }}
+          REASON: ${{ needs.clock.outputs.reason }}
+        run: |
+          echo "Planner: $CLOCK. Research: $RESEARCH. $REASON" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$CLOCK" != success ]; then echo "::error title=Milly planner failed::The run could not decide whether to train. Research did not run."; exit 1; fi
+          if [ "$RESEARCH" = skipped ]; then echo "::warning title=Milly research skipped::$REASON"; fi

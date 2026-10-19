@@ -12,6 +12,7 @@ import pandas as pd
 from scipy.optimize import milp,Bounds,LinearConstraint
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error,mean_squared_error
+import contest as contest_lib
 ROOT=pathlib.Path(__file__).resolve().parent;CACHE=ROOT/'cache';PUB=ROOT/'public';STAGE=ROOT/'staging'
 for p in (CACHE,PUB,STAGE):p.mkdir(exist_ok=True)
 NOW=pd.Timestamp.now(tz='UTC');YEAR=NOW.year if NOW.month>=3 else NOW.year-1
@@ -32,7 +33,7 @@ def save(path,obj):path=pathlib.Path(path);path.parent.mkdir(parents=True,exist_
 def get(name,url,kind='csv',required=True):
  receipt={'name':name,'url':url,'retrieved_at':pd.Timestamp.now(tz='UTC').isoformat()}
  try:
-  req=urllib.request.Request(url,headers={'User-Agent':'Milly-research/1.0'})
+  req=urllib.request.Request(url,headers=contest_lib.HEADERS)
   with urllib.request.urlopen(req,timeout=55) as r:raw=r.read()
   receipt.update(ok=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
   if kind=='json':value=json.loads(raw);(CACHE/(name+'.json')).write_bytes(raw)
@@ -56,18 +57,13 @@ def schedules(s):
  s['kick']=pd.to_datetime(s.gameday+' '+s.gametime.fillna('13:00'),errors='coerce').dt.tz_localize('America/New_York',ambiguous='NaT',nonexistent='shift_forward').dt.tz_convert('UTC');return s
 
 def slate(lobby):
- options=[]
- for c in lobby.get('Contests',[]):
-  name=c.get('n','').lower()
-  if 'millionaire' not in name or c.get('gameType')!='Classic' or any(w in name for w in ('satellite','supersat','qualifier','showdown','madden')):continue
-  m=re.search(r'\d+',str(c.get('sd','')))
-  if m:
-   at=pd.to_datetime(int(m[0]),unit='ms',utc=True)
-   if not NOW<at<NOW+pd.Timedelta(days=9) or at.tz_convert('America/New_York').dayofweek!=6:continue
-  options.append(c)
- for c in sorted(options,key=lambda x:(float(x.get('a',999)), -int(x.get('m',0)))):
+ options=contest_lib.millionaire_options(lobby,NOW.to_pydatetime());unposted=[];seen=set()
+ for c in options:
+  if c.get('dg') in seen:continue
+  seen.add(c.get('dg'))
   raw=get('draftables_'+str(c['dg']),f'https://api.draftkings.com/draftgroups/v1/draftgroups/{c["dg"]}/draftables?format=json','json',False)
-  if not raw:continue
+  if raw is None:continue
+  if not raw.get('draftables'):unposted.append(c);continue
   ps={}
   for q in sorted(raw.get('draftables',[]),key=lambda q:int(q.get('draftableId',0))):
    if q.get('position') not in POS+['DST'] or not q.get('salary') or q.get('rosterSlotId')==70:continue
@@ -75,10 +71,12 @@ def slate(lobby):
    if pd.isna(at) or '@' not in game or team not in game.split('@'):continue
    ps.setdefault(str(q['playerId']),{'id':str(q['draftableId']),'athlete_id':str(q['playerId']),'name':q['displayName'],'position':q['position'],'salary':int(q['salary']),'team':team,'opp':next(x for x in game.split('@') if x!=team),'game':game,'start':at.isoformat(),'status':str(q.get('status','')),'disabled':bool(q.get('isDisabled',False))})
   p=pd.DataFrame(ps.values())
-  if p.empty:continue
+  if p.empty:unposted.append(c);continue
   et=pd.to_datetime(p.start,utc=True).dt.tz_convert('America/New_York')
   if p.game.nunique()<5 or not (et.dt.weekday==6).all() or not et.dt.hour.between(13,16).all() or pd.to_datetime(p.start,utc=True).min()<=NOW:continue
   return p,{'id':c['id'],'name':c['n'],'draft_group':c['dg'],'entry_fee':c['a'],'capacity':c['m'],'kickoff':p.start.min(),'pool_records':len(p),'games':p.game.nunique()}
+ if unposted:
+  c=unposted[0];raise contest_lib.PoolNotPosted(contest_lib.summary(c),f"DraftKings lists {c.get('n')} (draft group {c.get('dg')}) but has not posted its player pool yet. No new lineups were generated.")
  raise RuntimeError('No verified future Sunday NFL Classic Millionaire slate. No stale-slate fallback.')
 
 def collect():
@@ -92,7 +90,7 @@ def collect():
   if ro is not None and len(ro):rosters.append(ro)
  current=get('current_roster',f'https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_{YEAR}.csv')
  depth=get('current_depth',f'https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_{YEAR}.csv')
- lobby=get('dk_lobby','https://www.draftkings.com/lobby/getcontests?sport=1','json')
+ lobby=get('dk_lobby',contest_lib.LOBBY_URL,'json')
  pool,contest=slate(lobby)
  return schedule,pd.concat(stats,ignore_index=True),pd.concat(rosters,ignore_index=True),current,depth,pool,contest
 
@@ -284,6 +282,12 @@ def run():
    if path.is_file():os.replace(path,PUB/path.name)
   receipt={'status':'success','at':pd.Timestamp.now(tz='UTC'),'release_id':rid,'sha256':hashlib.sha256(raw.encode()).hexdigest(),'elapsed_seconds':time.time()-start,'verification':checks}
   save(PUB/'health.json',receipt);print(json.dumps(clean(receipt),indent=2),flush=True)
+ except contest_lib.PoolNotPosted as e:
+  listed=e.contest.get('listed_start');hours=(pd.Timestamp(listed)-pd.Timestamp.now(tz='UTC')).total_seconds()/3600 if listed else None
+  late=hours is not None and hours<24
+  receipt={'status':'failed' if late else 'waiting_for_pool','at':pd.Timestamp.now(tz='UTC'),'contest':e.contest,'error':str(e)+(' Kickoff is under 24 hours away.' if late else ' A later scheduled run will try again.'),'previous_release_preserved':True,'previous_release':contest_lib.previous_release(PUB)}
+  save(PUB/'health.json',receipt);print(json.dumps(clean(receipt),indent=2),flush=True)
+  if late:raise
  except Exception as e:
-  save(PUB/'health.json',{'status':'failed','at':pd.Timestamp.now(tz='UTC'),'error':str(e),'previous_release_preserved':True});traceback.print_exc();raise
+  save(PUB/'health.json',{'status':'failed','at':pd.Timestamp.now(tz='UTC'),'error':str(e),'previous_release_preserved':True,'previous_release':contest_lib.previous_release(PUB)});traceback.print_exc();raise
 if __name__=='__main__':run()
