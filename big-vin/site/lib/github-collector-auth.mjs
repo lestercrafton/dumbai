@@ -3,13 +3,13 @@ export const COLLECTOR_AUDIENCE='https://big-vin-grind-to-win.sunlightisfree.cha
 const issuer='https://token.actions.githubusercontent.com';
 const jwksUrl=issuer+'/.well-known/jwks';
 const repository='lestercrafton/dumbai';
-const workflow=repository+'/.github/workflows/big-vin-daily.yml@refs/heads/main';
+const workflowRef=file=>repository+'/.github/workflows/'+file+'@refs/heads/main';
 let cachedKeys=null;
 const decode=value=>Uint8Array.from(atob(value.replaceAll('-','+').replaceAll('_','/')),c=>c.charCodeAt(0));
 const json=value=>JSON.parse(new TextDecoder().decode(decode(value)));
 
-/** @param {string} token @param {{now?:number,fetchImpl?:typeof fetch,cryptoImpl?:Crypto,audience?:string}} [options] */
-export async function authorizedGitHubCollector(token,{now=Date.now(),fetchImpl=fetch,cryptoImpl=crypto,audience=COLLECTOR_AUDIENCE}={}){
+/** @param {string} token @param {{now?:number,fetchImpl?:typeof fetch,cryptoImpl?:Crypto,audience?:string,workflowFile?:string,events?:string[]}} [options] */
+export async function authorizedGitHubCollector(token,{now=Date.now(),fetchImpl=fetch,cryptoImpl=crypto,audience=COLLECTOR_AUDIENCE,workflowFile='big-vin-daily.yml',events=['schedule','workflow_dispatch','push']}={}){
  try{
   if(typeof token!=='string'||token.length>20000)return false;
   const parts=token.split('.');if(parts.length!==3)return false;
@@ -18,8 +18,8 @@ export async function authorizedGitHubCollector(token,{now=Date.now(),fetchImpl=
   if(claims.iss!==issuer||claims.aud!==audience||
      claims.repository!==repository||claims.repository_id!=='926222029'||
      claims.repository_owner_id!=='197527837'||claims.ref!=='refs/heads/main'||
-     claims.workflow_ref!==workflow||claims.sub!==`repo:${repository}:ref:refs/heads/main`||
-     !['schedule','workflow_dispatch','push'].includes(claims.event_name))return false;
+     claims.workflow_ref!==workflowRef(workflowFile)||claims.sub!==`repo:${repository}:ref:refs/heads/main`||
+     !events.includes(claims.event_name))return false;
   if(!Number.isFinite(claims.exp)||!Number.isFinite(claims.iat)||!Number.isFinite(claims.nbf)||
      claims.exp<=seconds||claims.iat>seconds+30||claims.nbf>seconds+30||
      claims.iat<seconds-3600||claims.exp-claims.iat>3600)return false;

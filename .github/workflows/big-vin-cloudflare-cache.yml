@@ -1,0 +1,65 @@
+name: Big Vin Cloudflare read cache
+
+# Precomputes the Cloudflare site's public reads so visitor requests stay inside
+# the free plan (see big-vin/site/cloudflare/read-cache.mjs). Writes only to the
+# Cloudflare site; the ChatGPT site is not touched.
+on:
+  schedule:
+    - cron: '4-59/10 * * * *'
+  workflow_run:
+    workflows: ['Big Vin daily sports experiment']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  actions: write
+
+concurrency:
+  group: big-vin-cloudflare-cache
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BV_SITE: https://big-vin.sitetime.workers.dev
+      BV_RENDER_DB: /tmp/bv-render/site.sqlite
+    defaults:
+      run:
+        working-directory: big-vin/site
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      # Node 24 matches the Worker's floating-point math exactly, so bodies are identical.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: big-vin/site/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Restore the local database copy
+        uses: actions/cache/restore@v4
+        with:
+          path: /tmp/bv-render/site.sqlite
+          key: bv-render-db-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: bv-render-db-
+      - name: Render and upload
+        run: node scripts/render-read-cache.mjs
+      - name: Save the local database copy
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /tmp/bv-render/site.sqlite
+          key: bv-render-db-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Keep only the newest copies
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh cache list --key bv-render-db- --sort created_at --order desc --limit 100 --json id --jq '.[2:][].id' |
+            while read -r id; do gh cache delete "$id" || true; done

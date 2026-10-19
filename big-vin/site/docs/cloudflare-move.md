@@ -16,7 +16,7 @@ Checked on the box (Oct 19, 2026): `npm run build` + `wrangler deploy --dry-run`
 ## Steps (run in `big-vin/site`, Node 22)
 
 1. Sign in: `npx wrangler whoami` must show the Cloudflare account Big Vin should live in, with a token that can edit Workers scripts and D1. Otherwise run `npx wrangler login` (browser), or set `CLOUDFLARE_API_TOKEN` to a token with *Workers Scripts: Edit* and *D1: Edit*, plus `CLOUDFLARE_ACCOUNT_ID`.
-2. `npm ci && npm run build`
+2. `npm ci && npm run build:cloudflare` (the plain `npm run build` output is for ChatGPT Sites)
 3. `npx wrangler d1 create big-vin` and put the printed `database_id` into `wrangler.cloudflare.jsonc`.
 4. `npx wrangler d1 migrations apply big-vin --remote --config wrangler.cloudflare.jsonc`
 5. Download the `big-vin-site-export-<run>` artifact from the **Site data export** workflow, unzip it to `./export`, and check `sha256sum -c SHA256SUMS` inside it.
@@ -32,5 +32,16 @@ If the live database has a table that no drizzle migration creates, step 6 fails
 
 ## Free plan limits to watch
 
-- Workers: 100,000 requests/day and 10 ms CPU per request. Page rendering is the most likely thing to hit the CPU cap; check `wrangler tail` for `exceededCpu` after the deploy.
+- Workers: 100,000 requests/day and 10 ms CPU per request. Check `wrangler tail` for `exceededCpu` after a deploy.
 - D1: 5 GB storage, 5 million rows read and 100,000 rows written per day. The import counts toward that day's writes.
+
+## Staying on the free plan (read cache)
+
+Computing a slate or a results page reads thousands of rows and takes 30 to 850 ms of CPU, so on Cloudflare visitors never do it:
+
+- **Pages.** `npm run build:cloudflare` saves the server-rendered HTML of every page except `/` as a static file (served without starting the Worker). `/` shows today's date, so the Worker renders it once per deployment and Eastern day and keeps the HTML in D1. Client navigation payloads (`RSC` requests) are kept the same way.
+- **Public reads.** `cloudflare/edge.mjs` is the Worker entry. GET `/api/slate`, `/api/results`, `/api/learning`, `/api/college-experiment` and `/api/playbook?view=challengers|versions|scoreboards` are answered from the `read_cache` table: one row, gzipped, about 1 ms of CPU. Anything else goes to the app unchanged.
+- **Renderer.** `.github/workflows/big-vin-cloudflare-cache.yml` runs every 10 minutes and after each Big Vin daily run. `scripts/render-read-cache.mjs` keeps a copy of the database (only changed rows are fetched; a full copy every 12 hours), runs the site's own GET handlers in Node 24 (its math matches the Worker's to the last bit), sends back the writes those requests make (the same feed-cache, pick-revision and live-grade writes a visitor's request made before), then uploads the bodies. It signs in with GitHub OIDC (audience `<site>/api/render`); `BV_RENDER_TOKEN_FILE` with the admin token works from a terminal.
+- **Keys.** Today's one-day slate and the default results views for every sport are always rendered. Any other query a page asks for is computed live on its first request, registered, and rendered from then on; keys nobody has asked for in three days are dropped and re-register on the next visit.
+- **Freshness.** Bodies are at most one renderer run old (10 to 20 minutes, depending on GitHub's schedule). A body older than 45 minutes is ignored and the request computes live, so a stalled renderer slows the site down rather than freezing it.
+- **Measuring.** Set `BV_D1_METER` in the config vars to log rows read and written per D1 statement, then `wrangler tail big-vin --format json`.

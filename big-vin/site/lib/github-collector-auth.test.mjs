@@ -31,3 +31,12 @@ test('a second host accepts only its own audience',async()=>{
  assert.equal(await authorizedGitHubCollector(await sign(),{...options,audience}),false);
  assert.equal(await authorizedGitHubCollector(await sign({aud:audience}),options),false);
 });
+test('the read-cache renderer gets its own workflow, audience and events',async()=>{
+ const aud='https://big-vin.sitetime.workers.dev/api/render',render={...options,audience:aud,workflowFile:'big-vin-cloudflare-cache.yml',events:['schedule','workflow_dispatch','workflow_run']};
+ const ok={aud,workflow_ref:'lestercrafton/dumbai/.github/workflows/big-vin-cloudflare-cache.yml@refs/heads/main',event_name:'workflow_run'};
+ assert.equal(await authorizedGitHubCollector(await sign(ok),render),true);
+ assert.equal(await authorizedGitHubCollector(await sign(ok),options),false,'renderer token cannot collect');
+ assert.equal(await authorizedGitHubCollector(await sign(),render),false,'collector token cannot render');
+ assert.equal(await authorizedGitHubCollector(await sign({...ok,event_name:'pull_request'}),render),false);
+ assert.equal(await authorizedGitHubCollector(await sign({...ok,aud:'https://big-vin.sitetime.workers.dev'}),render),false);
+});

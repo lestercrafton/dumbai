@@ -1,9 +1,10 @@
 // Cloudflare Workers (free plan) target for Big Vin. See docs/cloudflare-move.md.
-// Build first (npm run build); this deploys dist/ as one Worker with static assets and D1.
+// Build first (npm run build:cloudflare); this deploys dist/ as one Worker with static assets and D1.
+// The entry is cloudflare/edge.mjs: precomputed public reads from D1, everything else to the app.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "big-vin",
-  "main": "dist/server/index.js",
+  "main": "dist/server/edge.mjs",
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
   "no_bundle": true,
@@ -12,6 +13,8 @@
   "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": true },
+  // The home page HTML is cached per deployment, so a new deploy never serves old asset links.
+  "version_metadata": { "binding": "CF_VERSION" },
   // The runner requests a GitHub OIDC token with this audience when it writes here.
   "vars": { "COLLECTOR_AUDIENCE": "https://big-vin.sitetime.workers.dev" },
   // The site reads env.DB through cloudflare:workers (lib/db.ts), so the binding name stays DB.

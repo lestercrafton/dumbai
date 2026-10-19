@@ -8,11 +8,12 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:cloudflare": "vinext build && node scripts/cloudflare-build.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt",
     "experiment:daily": "node scripts/daily-experiment.mjs",
-    "check": "node --test lib/*.test.mjs scripts/daily-experiment.test.mjs scripts/d1-import-from-export.test.mjs scripts/mirror-writes.test.mjs && tsc --noEmit --incremental false"
+    "check": "node --test lib/*.test.mjs scripts/daily-experiment.test.mjs scripts/d1-import-from-export.test.mjs scripts/mirror-writes.test.mjs scripts/render-read-cache.test.mjs scripts/edge.test.mjs && tsc --noEmit --incremental false"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
