@@ -1,8 +1,10 @@
 import {db} from './db';
 import {advancePickState} from './pick-revisions.mjs';
 
+// Scans the small state table and checks each row's sport through the forecasts index:
+// about a third of the D1 rows the join read, same rows returned.
 export async function pickStates(sport:string){
- const rows=await db().prepare('SELECT p.forecast_id,p.payload FROM pick_revision_states p JOIN forecasts f ON f.id=p.forecast_id WHERE f.sport=?').bind(sport).all<{forecast_id:string,payload:string}>();
+ const rows=await db().prepare('SELECT p.forecast_id,p.payload FROM pick_revision_states p WHERE EXISTS (SELECT 1 FROM forecasts f WHERE f.id=p.forecast_id AND f.sport=?)').bind(sport).all<{forecast_id:string,payload:string}>();
  return new Map(rows.results.map(r=>[r.forecast_id,JSON.parse(r.payload)]));
 }
 

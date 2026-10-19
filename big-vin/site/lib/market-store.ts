@@ -2,7 +2,7 @@ import {db} from './db';
 import {firstMarketObservation} from './first-market.mjs';
 
 export async function firstMarkets(sport:string){
- const rows=await db().prepare('SELECT m.forecast_id,m.payload FROM first_market_observations m JOIN forecasts f ON f.id=m.forecast_id WHERE f.sport=?').bind(sport).all<{forecast_id:string,payload:string}>();
+ const rows=await db().prepare('SELECT m.forecast_id,m.payload FROM first_market_observations m WHERE EXISTS (SELECT 1 FROM forecasts f WHERE f.id=m.forecast_id AND f.sport=?)').bind(sport).all<{forecast_id:string,payload:string}>();
  return new Map(rows.results.map(r=>[r.forecast_id,JSON.parse(r.payload)]));
 }
 export async function captureFirstMarkets(sport:string,games:any[],recordedAt:string){
