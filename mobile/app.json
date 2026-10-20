@@ -32,6 +32,12 @@
       "expo-secure-store",
       "expo-web-browser"
     ],
-    "scheme": "ovanovamileage"
+    "scheme": "ovanovamileage",
+    "extra": {
+      "eas": {
+        "projectId": "42815003-3e88-4e16-baa4-584735579a79"
+      }
+    },
+    "owner": "lestercrafton"
   }
 }
