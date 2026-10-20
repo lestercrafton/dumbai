@@ -4,7 +4,7 @@ import {ArrowUpRight} from 'lucide-react';
 export default function TopLinks() {
   return <div className="vin-top-links">
     <a className="vin-milly-link" href="https://millymate.sitetime.workers.dev" target="_blank" rel="noopener noreferrer">
-      Milly (NFL DFS) <ArrowUpRight size={14} aria-hidden="true"/><span className="sr-only"> (opens in a new tab)</span>
+      <img src="/milly-sigil.svg" width={30} height={30} alt="" aria-hidden="true"/>Milly (NFL DFS) <ArrowUpRight size={16} aria-hidden="true"/><span className="sr-only"> (opens in a new tab)</span>
     </a>
   </div>;
 }
