@@ -1,6 +1,5 @@
 {
   "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "strict": true
-  }
+  "compilerOptions": { "strict": true },
+  "exclude": ["test", ".test-build", "node_modules"]
 }
