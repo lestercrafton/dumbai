@@ -30,8 +30,8 @@ const route = t => t.route || [t.startLoc, t.endLoc].map(l => l ? (l.name || `${
 async function act(fn) { try { msg = (await fn()) || ''; } catch (e) { msg = '<span class="err">' + esc(e.message) + '</span>'; } await load(); }
 function render() {
   $('#who').innerHTML = `${esc(S.user.name || S.user.email)} · <a href="/auth/logout">Sign out</a>`;
-  const tabs = ['trips', 'vehicles', 'settings'].map(t => `<button class="${t === tab ? 'on' : ''}" onclick="tab='${t}';location.hash=tab;msg='';render()">${t[0].toUpperCase() + t.slice(1)}</button>`).join('');
-  app.innerHTML = `<nav>${tabs}</nav>${msg ? `<div class="card">${msg}</div>` : ''}` + ({ trips, vehicles, settings })[tab]();
+  const tabs = ['trips', 'vehicles', 'commands', 'settings'].map(t => `<button class="${t === tab ? 'on' : ''}" onclick="tab='${t}';location.hash=tab;msg='';render()">${t[0].toUpperCase() + t.slice(1)}</button>`).join('');
+  app.innerHTML = `<nav>${tabs}</nav>${msg ? `<div class="card">${msg}</div>` : ''}` + ({ trips, vehicles, commands, settings })[tab]();
 }
 function trips() {
   const rows = S.trips.map(t => `<tr><td>${fmt(t.startTime)}<div class="muted">${esc(route(t))}</div></td><td>${t.miles} mi${t.inferred ? ' *' : ''}</td>
@@ -63,5 +63,40 @@ function settings() { const s = S.settings;
     <label>Phone push: ntfy topic (install the ntfy app and subscribe to this topic)<input id="nt" value="${esc(s.ntfy.topic)}" placeholder="e.g. ovanova-mileage-${Math.random().toString(36).slice(2, 8)}"></label><br><br>
     <label>End-of-week email (Central time)<div style="display:flex;gap:6px"><select id="wd">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => `<option value="${i}" ${i == s.weekEnd.day ? 'selected' : ''}>${d}</option>`).join('')}</select><input id="wt" type="time" value="${esc(s.weekEnd.time)}"></div></label><br>
     <button onclick="act(()=>api('/api/settings',{sugar:{to:$('#st').value,cc:$('#sc').value},signature:$('#sg').value,ntfy:{topic:$('#nt').value},weekEnd:{day:+$('#wd').value,time:$('#wt').value}}).then(()=>'Settings saved'))">Save</button></div>`; }
+
+let CS = null, cmsg = '', cbusy = false;
+function commands() {
+  if (!CS) { api('/api/commands').then(j => { CS = j; render(); }).catch(e => { CS = { error: e.message }; render(); }); return '<div class="card">Loading your cars…</div>'; }
+  if (CS.error) return `<div class="card err">${esc(CS.error)}</div>`;
+  const help = `<ol><li><a href="${esc(CS.approveUrl)}">Approve command access</a> (Tesla page; approve Vehicle Commands and Charging).</li><li>On your phone with the Tesla app, open <a href="${esc(CS.pairUrl)}">${esc(CS.pairUrl)}</a> and add the key to your car.</li></ol>`;
+  if (!CS.connected) return `<div class="card"><h3>Commands</h3><p>Connect your Tesla on the Vehicles tab first, then:</p>${help}</div>`;
+  if (!CS.approved) return `<div class="card"><h3>Commands</h3><p class="err">Command access isn't approved for your Tesla account yet.</p>${help}</div>`;
+  if (!CS.cars.length) return `<div class="card"><h3>Commands</h3><p>No cars on your Tesla account.</p></div>`;
+  const B = (c, l) => `<button ${cbusy ? 'disabled' : ''} onclick="sendCmd({cmd:'${c}'})">${l}</button>`;
+  const N = (c, l, id, v) => `<span style="display:inline-flex;gap:4px;align-items:center;margin:2px"><input id="${id}" type="number" value="${v}" style="width:70px"><button ${cbusy ? 'disabled' : ''} onclick="sendCmd({cmd:'${c}',arg:+$('#${id}').value})">${l}</button></span>`;
+  return `<div class="card"><h3>Commands</h3>
+    <label>Car <select id="cv">${CS.cars.map(c => `<option value="${esc(c.vin)}">${esc(c.name)} · ${esc(c.vin.slice(-6))} (${esc(c.state)})</option>`).join('')}</select></label>
+    ${cmsg ? `<div class="card" style="box-shadow:none;background:#f3f4f6">${cmsg}</div>` : ''}
+    <p><b>Say or type it</b></p><div style="display:flex;gap:6px"><input id="ct" placeholder="e.g. set temp 72, charge limit 80, amps 20, vent windows" onkeydown="if(event.key==='Enter')sendCmd({text:this.value})">
+    <button class="alt" id="mic" title="Speak" onclick="listen()">🎤</button><button ${cbusy ? 'disabled' : ''} onclick="sendCmd({text:$('#ct').value})">Go</button></div>
+    <p><b>Windows</b><br>${B('windows-vent', 'Vent')}${B('windows-close', 'Close')}</p>
+    <p><b>Climate</b><br>${B('climate-on', 'On')}${B('climate-off', 'Off')}${N('set-temp', 'Set °F', 'tf', 72)}</p>
+    <p><b>Charging</b><br>${B('charge-start', 'Start')}${B('charge-stop', 'Stop')}${N('charge-limit', 'Limit %', 'cl', 80)}${N('charge-amps', 'Amps', 'ca', 32)}</p>
+    <p><b>Car</b><br>${B('lock', 'Lock')}${B('unlock', 'Unlock')}${B('honk', 'Honk')}${B('flash', 'Flash lights')}${B('wake', 'Wake')}</p>
+    <p class="muted">Commands only work on cars in your own Tesla account. A sleeping car is woken first, which can take up to 30 seconds.</p></div>`;
+}
+async function sendCmd(o, confirmed) {
+  const vin = $('#cv') && $('#cv').value; cbusy = true; cmsg = 'Sending…'; render(); if ($('#cv')) $('#cv').value = vin;
+  try { const r = await api('/api/command', { vin, ...o, confirmed: !!confirmed });
+    if (r.needsConfirm) { cbusy = false; if (confirm(r.label + ' the car? Anyone nearby could open it.')) return sendCmd({ cmd: r.cmd, arg: r.arg }, true); cmsg = 'Cancelled'; }
+    else cmsg = '<span style="color:#15803d">✓ ' + esc(r.done) + '</span>'; }
+  catch (e) { cmsg = '<span class="err">' + esc(e.message) + '</span>' + (/approved|pair|key/i.test(e.message) ? ` · <a href="${esc(CS.approveUrl)}">Approve</a> · <a href="${esc(CS.pairUrl)}">Pair key</a>` : ''); }
+  cbusy = false; render(); if ($('#cv')) $('#cv').value = vin;
+}
+function listen() { const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R) { cmsg = '<span class="err">Voice input isn\'t supported in this browser. Try Chrome or Safari, or type the command.</span>'; return render(); }
+  const r = new R(); r.lang = 'en-US'; r.interimResults = false; $('#mic').textContent = '…';
+  r.onresult = e => { $('#ct').value = e.results[0][0].transcript; }; r.onend = () => { const m = $('#mic'); if (m) m.textContent = '🎤'; };
+  r.onerror = e => { cmsg = '<span class="err">Mic: ' + esc(e.error) + '</span>'; render(); }; r.start(); }
 load();
 </script></body></html>

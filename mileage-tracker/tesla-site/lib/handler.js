@@ -5,6 +5,7 @@ const { allowedEmail } = require('./service');
 const { PhoneService } = require('./phone'); // WebService plus phone-trip rules (dedup, company cars, per-user Gmail)
 const { Tesla, pkce, CMD_SCOPES } = require('./tesla');
 const { HttpError } = require('./retry');
+const C = require('./commands');
 
 function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.fetch, now } = {}) {
   let svc;
@@ -76,6 +77,7 @@ function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.f
       }
       if (req.method === 'POST' && req.headers['x-mt'] !== '1') return json(res, 403, { error: 'missing header' }); // CSRF guard
       const svc = get();
+      if (p === '/api/commands') return json(res, 200, await C.status(svc, email));
       if (p === '/api/state') return json(res, 200, await svc.state(email));
       if (req.method !== 'POST') return json(res, 404, { error: 'not found' });
       const b = await body(req), ids = Array.isArray(b.ids) ? b.ids.map(String) : [];
@@ -86,6 +88,7 @@ function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.f
       if (p === '/api/send') return json(res, 200, await svc.send(email, ids, 'manual'));
       if (p === '/api/settings') return json(res, 200, await svc.saveSettings(email, b));
       if (p === '/api/manual') return json(res, 200, await svc.addManual(email, b));
+      if (p === '/api/command') return json(res, 200, await C.run(svc, email, { vin: b.vin, cmd: b.cmd, arg: b.arg, text: b.text, confirmed: b.confirmed }));
       if (p === '/api/poll') return json(res, 200, await svc.pollUser(email));
       return json(res, 404, { error: 'not found' });
     } catch (e) {

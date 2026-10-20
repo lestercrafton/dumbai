@@ -1,0 +1,3 @@
+api/*_test.go
+test/
+node_modules/
