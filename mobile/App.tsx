@@ -186,7 +186,7 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
   useEffect(() => { isTracking().then(setTracking); load(); }, []);
   return (<>
     <View style={s.card}>
-      <Row label="Automatic tracking" hint="Starts after a minute above 15 mph, ends after 4 minutes parked">
+      <Row label="Automatic tracking" hint="Starts after a minute above 15 mph, ends after 5–6 minutes parked. Quick stops (gas, errands) under 10 minutes stay one trip.">
         <Switch trackColor={{ true: C.brand }} value={tracking} onValueChange={async v => {
           if (v) { await askPermission(); const err = await startTracking(); if (err) onMsg(err); } else await stopTracking(); setTracking(await isTracking()); }} /></Row>
     </View>
