@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Mileage",
+    "slug": "ovanova-mileage",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "co.ovanova.mileage",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Mileage records the route and miles of your drives.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Mileage detects when you start and finish a drive, even when the app is closed, so business miles are logged automatically.",
+        "UIBackgroundModes": ["location", "fetch"],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "plugins": [
+      ["expo-location", { "isIosBackgroundLocationEnabled": true, "locationAlwaysAndWhenInUsePermission": "Mileage detects when you start and finish a drive, even when the app is closed, so business miles are logged automatically." }],
+      "expo-notifications",
+      "expo-sqlite",
+      "expo-secure-store"
+    ]
+  }
+}

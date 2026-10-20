@@ -1,13 +1,14 @@
 // HTTP routing for the web app (one Vercel function keeps us well under Hobby limits).
 const crypto = require('crypto');
 const S = require('./session');
-const { WebService, allowedEmail } = require('./service');
+const { allowedEmail } = require('./service');
+const { PhoneService } = require('./phone'); // WebService plus phone-trip rules (dedup, company cars, per-user Gmail)
 const { Tesla, pkce, CMD_SCOPES } = require('./tesla');
 const { HttpError } = require('./retry');
 
 function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.fetch, now } = {}) {
   let svc;
-  const get = () => svc || (svc = new WebService({ db: db || require('./db').fromEnv(env), env, transport: transport !== undefined ? transport : smtpTransport(env), tesla: new Tesla({ env, fetch: f }), fetch: f, now }));
+  const get = () => svc || (svc = new PhoneService({ db: db || require('./db').fromEnv(env), env, transport: transport !== undefined ? transport : smtpTransport(env), tesla: new Tesla({ env, fetch: f }), fetch: f, now }));
   const base = () => (env.PUBLIC_URL || 'https://ovanova-mileage-tesla.vercel.app').replace(/\/$/, '');
   const googleRedirect = () => base() + '/auth/google/callback', teslaRedirect = () => base() + '/auth/tesla/callback';
   const json = (res, code, o) => { res.statusCode = code; res.setHeader('Content-Type', 'application/json'); res.setHeader('Cache-Control', 'no-store'); res.end(JSON.stringify(o)); };
