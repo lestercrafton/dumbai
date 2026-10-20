@@ -1,21 +1,22 @@
 // Phone (iPhone) trips on top of WebService: per-user car list tagged personal/business/Tesla, trip intake from the
-// app, Tesla dedup, reimbursement only for business trips in personal cars, each user's own Gmail SMTP,
-// GPS-mode email, and a monthly Drive log per user.
+// app, Tesla dedup, reimbursement only for business trips in personal cars, email sent through the Gmail API as the
+// signed-in Google user (SMTP only as a fallback), GPS-mode email, and a monthly log CSV in the user's own Drive.
 const C = require('./core');
-const { WebService, K, allowedEmail } = require('./service');
+const { WebService, K } = require('./service');
 const { withRetry, HttpError } = require('./retry');
 const { gpsEmail, ymd } = require('./gpsmail');
 const { supersedeReason, overlaps, reimbursable, isTeslaTrip } = require('./dedup');
-const { Drive, logCsv } = require('./drive');
+const { logCsv } = require('./log');
+const { Google } = require('./google');
 
-const KP = { driveFile: (e, ym) => `drive:${e}:${ym}` };
+const validEmail = e => typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length < 200;
 const round = (n, p) => Math.round(n * 10 ** p) / 10 ** p;
 const OWN = ['personal', 'business'];
 const isIso = s => typeof s === 'string' && !Number.isNaN(Date.parse(s));
 const cleanLoc = l => l && Number.isFinite(+l.lat) && Number.isFinite(+l.lon) ? { lat: +(+l.lat).toFixed(6), lon: +(+l.lon).toFixed(6), ...(l.name ? { name: String(l.name).slice(0, 200) } : {}) } : null;
 
-// Each user's own Gmail account. Env per user, keyed by the address before @, upper-cased, non-alphanumerics -> _:
-//   SMTP_PASS_LESTER=<Gmail app password> (lester@ovanova.co), SMTP_PASS_JOHN=..., SMTP_PASS_C=...
+// Fallback only (when a user hasn't granted gmail.send): SMTP password per user, keyed by the address before @,
+// upper-cased, non-alphanumerics -> _, e.g. SMTP_PASS_LESTER for lester@ovanova.co.
 const smtpKey = email => 'SMTP_PASS_' + email.split('@')[0].toUpperCase().replace(/[^A-Z0-9]/g, '_');
 function gmailTransportFor(env, email) {
   const pass = env[smtpKey(email)]; if (!pass) return null;
@@ -23,12 +24,29 @@ function gmailTransportFor(env, email) {
 }
 
 class PhoneService extends WebService {
-  constructor(o) { super(o); this.userTransport = o.userTransport || (email => gmailTransportFor(this.env, email)); this.drive = o.drive || new Drive({ env: this.env, fetch: this.fetch, now: this.now }); }
+  constructor(o) { super(o); this.userTransport = o.userTransport || (email => gmailTransportFor(this.env, email));
+    this.google = o.google || new Google({ env: this.env, db: this.db, fetch: this.fetch, now: this.now, retryBaseMs: this.retryBaseMs }); }
 
-  async ensureUser(email, name) {
-    email = email.toLowerCase(); if (!allowedEmail(email)) throw new HttpError(403, 'Only @ovanova.co accounts');
-    if (!(await this.user(email))) await this.signIn({ email, name: name || email.split('@')[0] });
+  // Any verified Google account can use the phone app (not only @ovanova.co).
+  async ensureUser(email, name, sub) {
+    email = String(email || '').toLowerCase(); if (!validEmail(email)) throw new HttpError(400, 'bad email');
+    const u = (await this.user(email)) || { email, createdAt: this.now().toISOString(), settings: {} };
+    Object.assign(u, { name: name || u.name || email.split('@')[0], ...(sub ? { sub } : {}), lastLoginAt: this.now().toISOString() });
+    await this.db.set(K.user(email), u); await this.db.sadd(K.users, email);
+    if (!(await this.db.get(K.veh(email)))) await this.db.set(K.veh(email), []);
     return email;
+  }
+  async setRecipient(email, { to, cc }) {
+    if (to != null && !validEmail(String(to).trim())) throw new HttpError(400, 'Recipient must be an email address');
+    const ccs = cc == null ? null : String(cc).split(',').map(x => x.trim()).filter(Boolean);
+    if (ccs && ccs.some(x => !validEmail(x))) throw new HttpError(400, 'CC must be email addresses');
+    return this.saveSettings(email, { sugar: { ...(to != null ? { to: String(to).trim() } : {}), ...(ccs ? { cc: ccs.join(', ') } : {}) } });
+  }
+  // Gmail API as the user when they granted gmail.send; otherwise per-user SMTP; otherwise the server's SMTP.
+  async transportFor(email) {
+    if (this.google && this.google.configured && await this.google.hasScope(email, 'gmail.send')) return { t: this.google.gmailTransport(email), own: true };
+    const u = this.userTransport(email); if (u) return { t: u, own: true };
+    return this.transport ? { t: this.transport, own: false } : null;
   }
   // ---- cars
   async cars(email) { return (await this.vehicles(email)).map(v => ({ ...v, ownership: v.ownership || 'personal', isTesla: !!(v.isTesla || v.vin && /tesla/i.test(v.model || '')) })); }
@@ -116,12 +134,13 @@ class PhoneService extends WebService {
     let result;
     try {
       const s = await this.settings(email); if (!s.sugar.to) throw new HttpError(400, 'Set the Sugar recipient in Settings');
-      const transport = this.userTransport(email) || this.transport;
-      if (!transport) throw new HttpError(503, `Email is not set up for ${email} (${smtpKey(email)})`);
+      const tr = await this.transportFor(email);
+      if (!tr) throw new HttpError(503, `Email is not set up for ${email}: sign in with Google again and allow sending email`);
+      const transport = tr.t, own = tr.own;
       const vs = await this.cars(email);
       const list = (await this.trips(email)).filter(t => ids.includes(t.id) && !t.reimbursedAt && (isTeslaTrip(t) ? t.category === 'business' : reimbursable(t, vs)));
       if (!list.length) throw new HttpError(400, 'No unsent reimbursable trips selected');
-      const m = await this.build(email, list), u = m.u, own = !!this.userTransport(email), fromAddr = own ? email : (this.env.SMTP_FROM || this.env.SMTP_USER);
+      const m = await this.build(email, list), u = m.u, fromAddr = own ? email : (this.env.SMTP_FROM || this.env.SMTP_USER);
       const info = await withRetry(() => transport.sendMail({ from: `${u.name} <${fromAddr}>`, replyTo: own ? undefined : email, to: s.sugar.to,
         cc: [s.sugar.cc, own ? '' : email].filter(Boolean).join(', ') || undefined, subject: m.subject, text: m.text, html: m.html, attachments: m.attachments }),
         { tries: 3, baseMs: this.retryBaseMs, retryable: e => !(e.responseCode >= 500 || /auth|Invalid login/i.test(e.message)) });
@@ -141,17 +160,15 @@ class PhoneService extends WebService {
     return out; }
 
   async logToDrive(email, dates) {
-    if (!this.drive || !this.drive.configured || !dates || !dates.length) return { skipped: true };
+    if (!dates || !dates.length || !this.google || !this.google.configured || !(await this.google.hasScope(email, 'drive.file'))) return { skipped: true };
     const months = [...new Set(dates.map(d => ymd(d).slice(0, 7)))], all = await this.trips(email), vs = await this.cars(email), out = [];
     for (const ym of months) {
       try {
-        const rows = all.filter(t => ymd(t.startTime).startsWith(ym)), name = `Mileage log ${ym} - ${email}.csv`;
-        const cached = await this.db.get(KP.driveFile(email, ym));
-        const id = await this.drive.upsertCsv(name, logCsv(rows, vs, t => this.status(t, vs)), cached);
-        if (id !== cached) await this.db.set(KP.driveFile(email, ym), id); out.push({ month: ym, fileId: id });
+        const rows = all.filter(t => ymd(t.startTime).startsWith(ym));
+        const id = await this.google.upsertCsv(email, ym, `Mileage log ${ym}.csv`, logCsv(rows, vs, t => this.status(t, vs))); out.push({ month: ym, fileId: id });
       } catch (e) { out.push({ month: ym, error: e.message }); }
     }
     return { months: out };
   }
 }
-module.exports = { PhoneService, smtpKey, gmailTransportFor };
+module.exports = { PhoneService, smtpKey, gmailTransportFor, validEmail };

@@ -1,5 +1,6 @@
-// Talks to the Vercel API. The server URL and device token are entered once in Settings.
+// Talks to the Vercel API. Sign-in is "Sign in with Google": the server runs the OAuth flow and hands back a session token.
 import * as SecureStore from 'expo-secure-store';
+import * as WebBrowser from 'expo-web-browser';
 import type { Car } from './detector';
 import { getKv, setKv, unsynced, saveTrip, replaceCars, type LocalTrip } from './db';
 
@@ -8,15 +9,30 @@ export const getServer = () => getKv<string>('server', DEFAULT_SERVER);
 export const setServer = (u: string) => setKv('server', u.replace(/\/$/, ''));
 export const getToken = () => SecureStore.getItemAsync('deviceToken');
 export const setToken = (t: string) => SecureStore.setItemAsync('deviceToken', t.trim());
+export const APP_REDIRECT = 'ovanovamileage://auth';
+
+// Opens Google's sign-in in a secure browser sheet; returns the signed-in email, or throws with a readable message.
+export async function signInWithGoogle(): Promise<{ email: string; name: string; missing: string[] }> {
+  const server = await getServer();
+  const r = await WebBrowser.openAuthSessionAsync(`${server}/api/phone/auth/start?redirect=${encodeURIComponent(APP_REDIRECT)}`, APP_REDIRECT);
+  if (r.type !== 'success') throw new Error('Sign-in was cancelled');
+  const back = new URL(r.url), err = back.searchParams.get('error'); if (err) throw new Error(err);
+  const res = await fetch(server + '/api/phone/auth/exchange', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: back.searchParams.get('code') }) });
+  const j = await res.json().catch(() => ({})); if (!res.ok) throw new Error(j.error || 'Sign-in failed');
+  await setToken(j.token);
+  return { email: j.email, name: j.name, missing: (back.searchParams.get('missing') || '').split(',').filter(Boolean) };
+}
+export async function signOut(revoke = false) { try { await call('POST', '/api/phone/auth/signout', { revoke }); } catch {} await SecureStore.deleteItemAsync('deviceToken'); }
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
-  const token = await getToken(); if (!token) throw new Error('Pair this phone first (Settings → device token)');
+  const token = await getToken(); if (!token) throw new Error('Sign in with Google first (Settings tab)');
   const r = await fetch((await getServer()) + path, { method, headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.error || 'Server error ' + r.status);
   return j as T;
 }
-export type Me = { email: string; name: string; sugar: string; nextBatch: string; emailReady: boolean; driveReady: boolean };
+export type Me = { email: string; name: string; sugar: string; sugarCc: string; nextBatch: string; emailReady: boolean; emailVia: 'gmail' | 'smtp' | null; driveReady: boolean };
+export const saveRecipient = (sugar: string, sugarCc: string) => call<{ sugar: string; sugarCc: string }>('PUT', '/api/phone/settings', { sugar, sugarCc });
 export const me = () => call<Me>('GET', '/api/phone/me');
 export async function pullCars(): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('GET', '/api/phone/cars'); await replaceCars(cars); return cars; }
 export async function pushCars(list: Car[]): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('PUT', '/api/phone/cars', { cars: list }); await replaceCars(cars); return cars; }

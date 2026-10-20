@@ -99,14 +99,30 @@ function Cars({ cars, onSave }: { cars: Car[]; onSave: (c: Car[]) => void }) {
 }
 
 function Settings({ onMsg, onPaired }: { onMsg: (m: string) => void; onPaired: () => void }) {
-  const [server, setServer] = useState(API.DEFAULT_SERVER), [token, setTok] = useState(''), [tracking, setTracking] = useState(false), [me, setMe] = useState<API.Me | null>(null);
-  useEffect(() => { API.getServer().then(setServer); isTracking().then(setTracking); API.me().then(setMe).catch(() => {}); }, []);
+  const [tracking, setTracking] = useState(false), [me, setMe] = useState<API.Me | null>(null), [busy, setBusy] = useState(false);
+  const [to, setTo] = useState(''), [cc, setCc] = useState('');
+  const load = async () => { try { const m = await API.me(); setMe(m); setTo(m.sugar); setCc(m.sugarCc || ''); } catch { setMe(null); } };
+  useEffect(() => { isTracking().then(setTracking); load(); }, []);
   return (<View>
-    <Text style={s.label}>Server</Text><TextInput style={s.input} autoCapitalize="none" value={server} onChangeText={setServer} />
-    <Text style={s.label}>Device token</Text><TextInput style={s.input} autoCapitalize="none" secureTextEntry placeholder="Paste the token you were given" value={token} onChangeText={setTok} />
-    <Btn title="Pair phone" onPress={async () => { await API.setServer(server); if (token) await API.setToken(token);
-      try { const m = await API.me(); setMe(m); onMsg('Paired as ' + m.email); onPaired(); } catch (e: any) { onMsg(e.message); } }} />
-    {me && <Text style={s.muted}>{me.name} · {me.email}{'\n'}Reimbursements go to {me.sugar}. Next batch {new Date(me.nextBatch).toLocaleString()}.{'\n'}{me.emailReady ? 'Email ready' : 'Email not set up on the server yet'} · {me.driveReady ? 'Drive log on' : 'Drive log off'}</Text>}
+    {me ? <View style={s.card}>
+      <Text style={s.h}>{me.name}</Text><Text style={s.muted}>{me.email}</Text>
+      <Text style={s.muted}>{me.emailVia === 'gmail' ? 'Reimbursement emails are sent from your Gmail.' : me.emailReady ? 'Email is sent by the server.' : 'Email not allowed yet. Sign in again and allow "Send email on your behalf".'}</Text>
+      <Text style={s.muted}>{me.driveReady ? 'Your mileage log is saved in Google Drive → "Mileage logs".' : 'Drive log off (sign in again and allow Drive access to turn it on).'}</Text>
+      <Text style={s.muted}>Next batch: {new Date(me.nextBatch).toLocaleString()}</Text>
+      <Btn title="Sign out" onPress={async () => { await API.signOut(); setMe(null); onMsg('Signed out'); }} />
+    </View> : <View style={s.card}>
+      <Text style={s.h}>Sign in</Text>
+      <Text style={s.muted}>Sign in with your Google account. You'll be asked to allow sending email as you (for reimbursement requests) and saving your mileage log to your Google Drive.</Text>
+      <Btn title={busy ? 'Signing in…' : 'Sign in with Google'} onPress={async () => { setBusy(true);
+        try { const r = await API.signInWithGoogle(); onMsg('Signed in as ' + r.email + (r.missing.length ? ' (some permissions were not granted: ' + r.missing.join(', ') + ')' : '')); await load(); onPaired(); }
+        catch (e: any) { onMsg(e.message); } finally { setBusy(false); } }} />
+    </View>}
+    {me && <View style={s.card}>
+      <Text style={s.h}>Reimbursement emails go to</Text>
+      <TextInput style={s.input} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder="sugar@ovanova.co" />
+      <TextInput style={s.input} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional, comma separated)" />
+      <Btn title="Save recipient" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Recipient saved'); } catch (e: any) { onMsg(e.message); } }} />
+    </View>}
     <View style={s.rowB}><Text style={s.h}>Automatic trip tracking</Text><Switch value={tracking} onValueChange={async v => {
       if (v) { await askPermission(); const err = await startTracking(); if (err) onMsg(err); } else await stopTracking(); setTracking(await isTracking()); }} /></View>
     <Text style={s.muted}>Uses location "Always". A trip starts after about a minute above 15 mph and ends after about 4 minutes stopped.</Text>

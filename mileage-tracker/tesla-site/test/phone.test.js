@@ -4,15 +4,17 @@ const { memoryDb } = require('../lib/db');
 const { PhoneService, smtpKey } = require('../lib/phone');
 const { makePhoneHandler } = require('../lib/phone-handler');
 const { gpsEmail } = require('../lib/gpsmail');
-const { Drive, logCsv } = require('../lib/drive');
+const { logCsv } = require('../lib/log');
+const { Google, encrypt, decrypt } = require('../lib/google');
 const { sign } = require('../lib/session');
 
 const LESTER = 'lester@ovanova.co';
 function setup(nowIso = '2026-10-20T15:00:00Z') {
-  const db = memoryDb(), sent = [], drive = { configured: true, writes: [], async upsertCsv(name, csv, id) { this.writes.push({ name, csv }); return id || 'f-' + name; } };
+  const db = memoryDb(), sent = [], drive = { configured: true, writes: [], async hasScope(e, x) { return x === 'drive.file'; },
+    async upsertCsv(email, ym, name, csv) { this.writes.push({ email, name, csv }); return 'f-' + ym; } };
   let now = new Date(nowIso);
   const transport = { sendMail: async m => { sent.push(m); return { messageId: '<m' + sent.length + '@x>' }; } };
-  const svc = new PhoneService({ db, env: { SESSION_SECRET: 's' }, userTransport: e => e === LESTER ? transport : null, transport: null, drive, tesla: null, now: () => now, retryBaseMs: 1 });
+  const svc = new PhoneService({ db, env: { SESSION_SECRET: 's' }, userTransport: e => e === LESTER ? transport : null, transport: null, google: drive, tesla: null, now: () => now, retryBaseMs: 1 });
   return { db, svc, sent, drive, setNow: d => { now = new Date(d); } };
 }
 async function withCars(svc) {
@@ -32,7 +34,7 @@ test('personal car + business + send now emails Sugar from the user Gmail in GPS
   assert.match(m.subject, /^Mileage Reimbursement Request – Oct 19, 2026 Site visit Trip \(12\.4 miles \/ \$9\.42\)$/);
   assert.match(m.text, /GPS/); assert.doesNotMatch(m.text, /odometer/i);
   assert.equal(m.attachments.length, 1); assert.match(m.attachments[0].filename, /\.csv$/);
-  assert.ok(drive.writes.some(w => w.name === 'Mileage log 2026-10 - lester@ovanova.co.csv' && /sent/.test(w.csv)));
+  assert.ok(drive.writes.some(w => w.name === 'Mileage log 2026-10.csv' && w.email === LESTER && /sent/.test(w.csv)));
 });
 
 test('double-send protection: resubmitting or re-sending does not email twice', async () => {
@@ -104,11 +106,11 @@ test('IRS rate follows trip date', () => {
   assert.equal(m.amount, 14.85); assert.match(m.text, /Miles at \$0\.725\/mile \| 10/); assert.match(m.text, /Thanks,\nLester/);
 });
 
-test('user without Gmail app password gets a clear error and nothing is marked sent', async () => {
+test('user without Google email access gets a clear error and nothing is marked sent', async () => {
   const { svc } = setup(); const JOHN = 'john@ovanova.co'; await svc.ensureUser(JOHN, 'John');
   await svc.saveCars(JOHN, [{ id: 'j1', name: 'Tahoe', ownership: 'personal' }]);
   const r = await svc.receive(JOHN, [trip({ carId: 'j1', action: 'send' })]);
-  assert.match(r.sendError, /SMTP_PASS_JOHN/); assert.equal(r.results[0].status, 'reimbursable');
+  assert.match(r.sendError, /sign in with Google again/); assert.equal(r.results[0].status, 'reimbursable');
   assert.equal(smtpKey('c@ovanova.co'), 'SMTP_PASS_C');
 });
 
@@ -119,14 +121,15 @@ test('saveCars keeps a connected Tesla even if the phone omits it', async () => 
   assert.equal(cars.length, 2); assert.equal(cars.find(c => c.name === 'F-150').ownership, 'business');
 });
 
-test('HTTP: device token auth, cars, trips, cron secret', async () => {
+test('HTTP: session token auth, cars, trips, cron secret', async () => {
   const db = memoryDb(), sent = [];
-  const h = makePhoneHandler({ env: { SESSION_SECRET: 'sec', CRON_SECRET: 'cron' }, db, drive: { configured: false }, userTransport: () => ({ sendMail: async m => { sent.push(m); return { messageId: 'x' }; } }), now: () => new Date('2026-10-20T15:00:00Z') });
+  const h = makePhoneHandler({ env: { SESSION_SECRET: 'sec', CRON_SECRET: 'cron' }, db, google: { configured: false, async hasScope() { return false; }, async status() { return { linked: false }; } }, userTransport: () => ({ sendMail: async m => { sent.push(m); return { messageId: 'x' }; } }), now: () => new Date('2026-10-20T15:00:00Z') });
   const call = async (method, url, b, auth) => { const res = { headers: {}, setHeader(k, v) { this.headers[k] = v; }, end(s) { this.body = JSON.parse(s); } };
     await h({ method, url, headers: { authorization: auth }, body: b }, res); return res; };
   const tok = 'Bearer ' + sign({ k: 'device', e: LESTER, n: 'Lester Crafton' }, 'sec');
   assert.equal((await call('GET', '/api/phone/me', undefined, 'Bearer junk')).statusCode, 401);
-  assert.equal((await call('GET', '/api/phone/me', undefined, 'Bearer ' + sign({ k: 'device', e: 'x@gmail.com' }, 'sec'))).statusCode, 401);
+  assert.equal((await call('GET', '/api/phone/me', undefined, 'Bearer ' + sign({ k: 'device', e: 'x@gmail.com' }, 'sec'))).statusCode, 200); // any Google account
+  assert.equal((await call('GET', '/api/phone/me', undefined, 'Bearer ' + sign({ k: 'other', e: 'x@gmail.com' }, 'sec'))).statusCode, 401);
   const me = await call('GET', '/api/phone/me', undefined, tok); assert.equal(me.body.email, LESTER); assert.equal(me.body.sugar, 'sugar@ovanova.co');
   await call('PUT', '/api/phone/cars', { cars: [{ id: 'f150', name: 'F-150', ownership: 'personal' }] }, tok);
   const r = await call('POST', '/api/phone/trips', { trips: [trip({ action: 'send' })] }, tok);
@@ -136,18 +139,72 @@ test('HTTP: device token auth, cars, trips, cron secret', async () => {
   assert.equal((await call('GET', '/api/phone/cron', undefined, 'Bearer cron')).body.ok, true);
 });
 
-test('Drive: service-account JWT, search then create, then patch with cached id', async () => {
-  const { privateKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-  const calls = [];
-  const f = async (url, o = {}) => { calls.push({ url, method: o.method || 'GET' });
-    const ok = b => ({ ok: true, json: async () => b, text: async () => '' });
-    if (url.includes('oauth2')) return ok({ access_token: 'at', expires_in: 3600 });
-    if (url.startsWith('https://www.googleapis.com/drive/v3/files?')) return ok({ files: [] });
-    return ok({ id: 'new1' }); };
-  const d = new Drive({ env: { GOOGLE_SA_EMAIL: 'sa@x.iam.gserviceaccount.com', GOOGLE_SA_PRIVATE_KEY: privateKey.export({ type: 'pkcs8', format: 'pem' }), DRIVE_FOLDER_ID: 'fold' }, fetch: f, retryBaseMs: 1 });
-  assert.equal(await d.upsertCsv('a.csv', 'x'), 'new1');
-  assert.equal(await d.upsertCsv('a.csv', 'y', 'new1'), 'new1');
-  assert.deepEqual(calls.map(c => c.method), ['POST', 'GET', 'POST', 'PATCH']);
+test('log CSV row format', () => {
   const csv = logCsv([{ ...trip(), vehicleId: 'f150', source: 'phone-gps', driver: 'Lester' }], [{ id: 'f150', name: 'F-150' }], () => ({ status: 'reimbursable', rate: 0.76, amount: 9.45 }));
   assert.match(csv.split('\n')[1], /"2026-10-19","9:00 AM","9:30 AM","Lester","F-150","personal","phone-gps","business","reimbursable","12.44"/);
+});
+
+test('refresh tokens are encrypted at rest (AES-GCM) and tamper-evident', () => {
+  const env = { SESSION_SECRET: 'abc' }, blob = encrypt(env, '1//refresh-token');
+  assert.ok(!blob.includes('refresh')); assert.equal(decrypt(env, blob), '1//refresh-token');
+  assert.throws(() => decrypt({ SESSION_SECRET: 'other' }, blob));
+});
+
+// Fake Google: token endpoint, Gmail send, Drive create/patch.
+function fakeGoogle() {
+  const calls = [], idt = o => 'h.' + Buffer.from(JSON.stringify({ aud: 'cid', iss: 'https://accounts.google.com', exp: 4102444800, email_verified: true, sub: '42', ...o })).toString('base64url') + '.s';
+  let refreshFails = false;
+  const ok = b => ({ ok: true, status: 200, json: async () => b, text: async () => '' });
+  const f = async (url, o = {}) => { const b = o.body instanceof URLSearchParams ? Object.fromEntries(o.body) : o.body; calls.push({ url, method: o.method || 'GET', body: b, auth: o.headers && o.headers.Authorization });
+    if (url === 'https://oauth2.googleapis.com/token' && b.grant_type === 'authorization_code') return ok({ access_token: 'at1', expires_in: 3600, refresh_token: 'rt-secret',
+      scope: 'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/drive.file', id_token: idt({ email: 'Pat@Gmail.com', name: 'Pat Doe' }) });
+    if (url === 'https://oauth2.googleapis.com/token' && b.grant_type === 'refresh_token') return refreshFails ? { ok: false, status: 400, json: async () => ({ error: 'invalid_grant' }) } : ok({ access_token: 'at2', expires_in: 3600 });
+    if (url.includes('gmail/v1/users/me/messages/send')) return ok({ id: 'gm1' });
+    if (url.startsWith('https://www.googleapis.com/drive/v3/files')) return ok({ id: 'folder1' });
+    if (url.includes('/upload/drive/v3/files')) return ok({ id: 'file1' });
+    throw new Error('unexpected ' + url); };
+  return { f, calls, failRefresh: () => { refreshFails = true; } };
+}
+
+test('Google sign-in from the app: any Google account, one-time code, session token, Gmail send + own Drive log', async () => {
+  const db = memoryDb(), G = fakeGoogle(), env = { SESSION_SECRET: 'sec', GOOGLE_WEB_CLIENT_ID: 'cid', GOOGLE_WEB_CLIENT_SECRET: 'csecret', PUBLIC_URL: 'https://m.example' };
+  const h = makePhoneHandler({ env, db, fetch: G.f, now: () => new Date('2026-10-20T15:00:00Z') });
+  const call = async (method, url, b, auth) => { const res = { headers: {}, setHeader(k, v) { this.headers[k] = v; }, end(s) { try { this.body = JSON.parse(s); } catch { this.body = s; } } };
+    await h({ method, url, headers: { authorization: auth }, body: b }, res); return res; };
+  assert.equal((await call('GET', '/api/phone/auth/start?redirect=https://evil.example')).statusCode, 400);
+  const st = await call('GET', '/api/phone/auth/start?redirect=' + encodeURIComponent('ovanovamileage://auth'));
+  assert.equal(st.statusCode, 302); const g = new URL(st.headers.Location);
+  assert.equal(g.searchParams.get('redirect_uri'), 'https://m.example/api/phone/auth/callback'); assert.equal(g.searchParams.get('access_type'), 'offline');
+  assert.match(g.searchParams.get('scope'), /gmail\.send.*drive\.file/);
+  const cb = await call('GET', `/api/phone/auth/callback?code=abc&state=${g.searchParams.get('state')}`);
+  const back = new URL(cb.headers.Location); assert.equal(back.protocol, 'ovanovamileage:'); assert.ok(!back.searchParams.get('missing'));
+  assert.equal((await call('GET', `/api/phone/auth/callback?code=abc&state=${g.searchParams.get('state')}`)).statusCode, 400); // state is single-use
+  const ex = await call('POST', '/api/phone/auth/exchange', { code: back.searchParams.get('code') });
+  assert.equal(ex.body.email, 'pat@gmail.com');
+  assert.equal((await call('POST', '/api/phone/auth/exchange', { code: back.searchParams.get('code') })).statusCode, 400); // code is single-use
+  const stored = await db.get('google:pat@gmail.com'); assert.ok(stored.rt && !JSON.stringify(stored).includes('rt-secret'));
+  const tok = 'Bearer ' + ex.body.token;
+  const me = await call('GET', '/api/phone/me', undefined, tok); assert.equal(me.body.emailVia, 'gmail'); assert.equal(me.body.driveReady, true); assert.equal(me.body.sugar, 'sugar@ovanova.co');
+  assert.equal((await call('PUT', '/api/phone/settings', { sugar: 'not-an-email' }, tok)).statusCode, 400);
+  assert.equal((await call('PUT', '/api/phone/settings', { sugar: 'ap@example.com', sugarCc: 'boss@example.com' }, tok)).body.sugar, 'ap@example.com');
+  await call('PUT', '/api/phone/cars', { cars: [{ id: 'civic', name: 'Civic', ownership: 'personal' }] }, tok);
+  const r = await call('POST', '/api/phone/trips', { trips: [trip({ carId: 'civic', action: 'send' })] }, tok);
+  assert.equal(r.body.results[0].status, 'sent', JSON.stringify(r.body));
+  const sendCall = G.calls.find(c => c.url.includes('messages/send')); const raw = Buffer.from(JSON.parse(sendCall.body).raw, 'base64url').toString();
+  assert.match(raw, /^From: Pat Doe <pat@gmail\.com>/m); assert.match(raw, /^To: ap@example\.com/m); assert.match(raw, /^Cc: boss@example\.com/m); assert.match(raw, /GPS/);
+  assert.ok(G.calls.some(c => c.url.startsWith('https://www.googleapis.com/drive/v3/files') && c.method === 'POST'));
+  assert.ok(G.calls.some(c => c.url.includes('/upload/drive/v3/files?uploadType=multipart')));
+  assert.equal((await call('GET', '/api/phone/me', undefined, 'Bearer junk')).statusCode, 401);
+});
+
+test('expired Google grant (e.g. 7-day Testing limit) asks the user to sign in again and sends nothing', async () => {
+  const db = memoryDb(), G = fakeGoogle(), env = { SESSION_SECRET: 'sec', GOOGLE_WEB_CLIENT_ID: 'cid', GOOGLE_WEB_CLIENT_SECRET: 'cs' };
+  const google = new Google({ env, db, fetch: G.f, retryBaseMs: 1 });
+  await db.set('google:pat@gmail.com', { rt: encrypt(env, 'rt'), scopes: ['https://www.googleapis.com/auth/gmail.send'] });
+  const svc = new PhoneService({ db, env, google, transport: null, userTransport: () => null, tesla: null, now: () => new Date('2026-10-20T15:00:00Z'), retryBaseMs: 1 });
+  await svc.ensureUser('pat@gmail.com', 'Pat'); await svc.saveCars('pat@gmail.com', [{ id: 'c', name: 'Civic' }]);
+  G.failRefresh();
+  const r = await svc.receive('pat@gmail.com', [trip({ carId: 'c', action: 'send' })]);
+  assert.match(r.sendError, /Sign in with Google again/); assert.equal(r.results[0].status, 'reimbursable');
+  assert.equal((await db.get('google:pat@gmail.com')).error, 'expired');
 });

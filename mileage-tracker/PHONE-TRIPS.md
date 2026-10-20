@@ -2,7 +2,9 @@
 
 The iPhone app (`../mobile`) detects drives with background location, asks at the end of each drive whether it was
 business and which car was used, and uploads the answer to the Vercel API in `tesla-site/`. The API decides what is
-reimbursed, emails Sugar from each person's own Gmail, runs the Friday batch, and keeps a monthly log in Google Drive.
+reimbursed, emails Sugar (or whoever each person sets as recipient) from that person's own Gmail via the Gmail API,
+runs the Friday batch, and keeps a monthly log CSV in a "Mileage logs" folder in that person's own Google Drive.
+Anyone with a Google account can sign in; there are no passwords or tokens to hand out.
 
 ## Rules
 | Trip | Result |
@@ -18,45 +20,38 @@ reimbursed, emails Sugar from each person's own Gmail, runs the Friday batch, an
 - A trip is marked sent as soon as Gmail accepts the message; a per-person lock stops two sends running at once,
   and a sent trip can never be sent or queued again. Resubmitting the same trip from the phone is harmless.
 
-## API (all JSON, `Authorization: Bearer <device token>`)
-- `GET /api/phone/me` – who am I, Sugar address, next batch time, whether email/Drive are set up
-- `GET|PUT /api/phone/cars` – car list `{id, name, model, vin, ownership: personal|business, isTesla}`
-- `POST /api/phone/trips` – `{trips:[{clientId, startTime, endTime, miles, startLoc, endLoc, carId, category, action: send|batch|log, purpose}]}`
-- `GET /api/phone/trips?since=ISO` – trips with server status
-- `POST /api/phone/send` – `{ids:[...]}` send now
-- `GET /api/phone/cron` – Friday batch for everyone (Vercel cron, `Authorization: Bearer $CRON_SECRET`)
+## Sign-in
+The app's **Sign in with Google** button opens `/api/phone/auth/start` in a browser sheet. The server runs Google's
+authorization-code flow (with PKCE) asking for `openid email profile`, `gmail.send` and `drive.file`, stores the refresh
+token encrypted (AES-256-GCM, key from `TOKEN_ENC_KEY` or derived from `SESSION_SECRET`) in Upstash, and returns to the
+app (`ovanovamileage://auth`) with a one-time code. The app trades it at `/api/phone/auth/exchange` for a 180-day session
+token kept in the iPhone keychain. If Google later rejects the refresh token, the app shows "Sign in with Google again".
+If a user doesn't allow Gmail, the server falls back to SMTP (`SMTP_PASS_<NAME>` for that user, else the shared `SMTP_*`).
 
-## One-time setup (Vercel project `ovanova-mileage-tesla`)
-1. **Storage (free):** Vercel → Storage → Marketplace → Upstash Redis (free) → connect to this project.
-   This sets `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
-2. **Secrets** (Settings → Environment Variables, Production):
-   - `SESSION_SECRET` – long random string (`openssl rand -hex 32`). Signs device tokens.
-   - `CRON_SECRET` – long random string. Vercel sends it to the cron automatically.
-   - `SMTP_PASS_LESTER`, `SMTP_PASS_JOHN`, `SMTP_PASS_C` – each person's Gmail app password
-     (myaccount.google.com/apppasswords, needs 2-Step Verification). The name is `SMTP_PASS_` + the part of the
-     address before `@`, upper-case. Mail is sent via smtp.gmail.com:587 as that person.
-   - Drive log: `GOOGLE_SA_EMAIL`, `GOOGLE_SA_PRIVATE_KEY`, `DRIVE_FOLDER_ID` (below).
-3. **Drive folder:** Google Cloud console → IAM → Service accounts → create `mileage-log`, then Keys → Add key → JSON.
-   Copy `client_email` to `GOOGLE_SA_EMAIL` and `private_key` to `GOOGLE_SA_PRIVATE_KEY`. Enable the Google Drive API
-   on the project. In Google Drive create a **Shared drive** (e.g. "Mileage"), add the service account address as
-   Content manager, create a folder "Mileage logs" in it, and copy the folder id from its URL into `DRIVE_FOLDER_ID`.
-   (A shared drive is needed because service accounts can't own files in someone's My Drive.)
-   Files are named `Mileage log YYYY-MM - name@ovanova.co.csv`, one per person per month, rewritten on each change.
-4. **Deploy:** `cd tesla-site && vercel deploy --prod`.
-   The batch is checked every 5 minutes by the existing GitHub Actions poll (`.github/workflows/mileage-poll.yml` →
-   `/api/cron`, needs the repo secret `MILEAGE_CRON_SECRET` = `CRON_SECRET`), so it goes out within ~5 minutes of
-   Friday 17:00 Central. As a backup, a Vercel cron hits `/api/phone/cron` Fridays 23:05 UTC (17:05 CST / 18:05 CDT;
-   Hobby crons can fire any time within that hour). Each Friday moment is sent only once.
-   The web app (`/api/app`) now uses the same rules, so a web or Tesla-triggered send never includes company-car
-   or superseded trips.
-5. **Device tokens:** for each person run
-   `SESSION_SECRET=<same value> node tools/device-token.js john@ovanova.co "John"` and give them the token.
-   Valid one year; changing `SESSION_SECRET` revokes all tokens.
+## API (JSON, `Authorization: Bearer <session token>` except auth/cron)
+- `GET /api/phone/auth/start?redirect=ovanovamileage://auth`, `GET /api/phone/auth/callback`, `POST /api/phone/auth/exchange {code}`
+- `POST /api/phone/auth/signout {revoke?}`
+- `GET /api/phone/me`, `PUT /api/phone/settings {sugar, sugarCc}` (recipient, default sugar@ovanova.co)
+- `GET|PUT /api/phone/cars`, `POST|GET /api/phone/trips`, `POST /api/phone/send {ids}`
+- `GET /api/phone/cron` (Friday batch; `Authorization: Bearer $CRON_SECRET`)
+
+## One-time setup
+1. **Google OAuth client (Web application)** in Google Cloud: authorized redirect URI
+   `https://ovanova-mileage-tesla.vercel.app/api/phone/auth/callback` (add `/auth/google/callback` too for the web app).
+   Enable the **Gmail API** and **Google Drive API**. On the consent screen add the scopes `gmail.send` and `drive.file`.
+2. Vercel env (Production): `GOOGLE_WEB_CLIENT_ID`, `GOOGLE_WEB_CLIENT_SECRET`. Already set: `SESSION_SECRET`,
+   `CRON_SECRET`, Upstash `KV_REST_API_*`. Optional: `TOKEN_ENC_KEY`.
+3. While the Google app is in **Testing** mode only listed test users (max 100) can sign in, they see an
+   "unverified app" warning, and their sign-in expires after 7 days. Publishing removes those limits but `gmail.send`
+   is a sensitive scope, so Google verification is required (privacy policy, homepage, demo video; takes days–weeks).
+   For a Google Workspace org, choosing **Internal** avoids all of this but only allows that org's accounts.
+4. Deploy. The Friday batch is checked every 5 minutes by `.github/workflows/mileage-poll.yml` and once on Fridays by
+   a backup Vercel cron.
 
 ## iPhone app build (Expo, free)
 1. `cd mobile && npm install && npx eas-cli login` (free Expo account) and `npx eas-cli init` to link the project.
 2. `npx eas-cli build -p ios --profile production` – signs with Lester's Apple Developer account (EAS asks for the Apple ID).
 3. `npx eas-cli submit -p ios` – uploads to App Store Connect. In TestFlight, add John and Chris as internal testers.
    (Alternative without TestFlight: `--profile preview` with their device UDIDs registered via `eas device:create`.)
-4. On each phone: install from TestFlight, open Settings tab → paste the device token → Pair. Add cars in the Cars tab
+4. On each phone: install from TestFlight, open Settings tab → **Sign in with Google** → allow the permissions. Add cars in the Cars tab
    (mark company cars and Teslas). Turn on Automatic trip tracking and choose **Always** for location.
