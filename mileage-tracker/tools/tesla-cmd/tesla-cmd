@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# wrapper: loads secret env if present, then runs the CLI
+[ -f /workspace/mileage-tracker-secrets/tesla.env ] && set -a && . /workspace/mileage-tracker-secrets/tesla.env && set +a
+[ -f /workspace/mileage-tracker-secrets/web.env ] && set -a && . /workspace/mileage-tracker-secrets/web.env && set +a
+exec node "$(dirname "$(readlink -f "$0")")/tesla-cmd.js" "$@"

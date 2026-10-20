@@ -2,7 +2,7 @@
   "rewrites": [
     { "source": "/token", "destination": "/api/token" },
     { "source": "/auth/:path*", "destination": "/api/app" },
-    { "source": "/api/(health|state|act|cron|tag|queue|unqueue|preview|send|settings|manual|poll)", "destination": "/api/app" }
+    { "source": "/api/(admin/tesla-token|health|state|act|cron|tag|queue|unqueue|preview|send|settings|manual|poll)", "destination": "/api/app" }
   ],
   "crons": [{ "path": "/api/cron", "schedule": "0 23 * * *" }],
   "headers": [

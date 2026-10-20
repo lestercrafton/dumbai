@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const S = require('./session');
 const { WebService, allowedEmail } = require('./service');
-const { Tesla, pkce } = require('./tesla');
+const { Tesla, pkce, CMD_SCOPES } = require('./tesla');
 const { HttpError } = require('./retry');
 
 function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.fetch, now } = {}) {
@@ -55,11 +55,16 @@ function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.f
         if (!db && !(env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL)) return json(res, 200, { ok: true, skipped: 'storage not connected yet' });
         return json(res, 200, { ok: true, at: new Date().toISOString(), results: await get().pollAll() });
       }
+      if (p === '/api/admin/tesla-token') { // box CLI (tesla-cmd) fetches a fresh access token for one VIN
+        if (!env.CRON_SECRET || req.headers.authorization !== 'Bearer ' + env.CRON_SECRET) return json(res, 401, { error: 'unauthorized' });
+        const vin = String(q.get('vin') || ''); if (!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)) return json(res, 400, { error: 'bad vin' });
+        return json(res, 200, await get().accessTokenForVin(vin));
+      }
       const sess = S.verify(ck.sess, secret), email = sess && sess.email;
       if (!email || !allowedEmail(email)) return p.startsWith('/auth/') ? redirect(res, '/') : json(res, 401, { error: 'signed out' });
-      if (p === '/auth/tesla') {
+      if (p === '/auth/tesla' || p === '/auth/tesla/commands') { // /commands also asks for vehicle_cmds + vehicle_charging_cmds
         const { verifier, challenge } = pkce(), state = crypto.randomBytes(16).toString('hex');
-        return redirect(res, get().tesla.authorizeUrl(teslaRedirect(), state, challenge), [S.cookie('t_oauth', S.sign({ state, verifier, email }, secret, 600), 600)]);
+        return redirect(res, get().tesla.authorizeUrl(teslaRedirect(), state, challenge, p === '/auth/tesla/commands' ? CMD_SCOPES : undefined), [S.cookie('t_oauth', S.sign({ state, verifier, email }, secret, 600), 600)]);
       }
       if (p === '/auth/tesla/callback') {
         const st = S.verify(ck.t_oauth, secret); if (!st || st.state !== q.get('state') || st.email !== email) return page(res, 400, 'Tesla sign-in expired. Please try again.');

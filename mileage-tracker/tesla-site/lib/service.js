@@ -59,6 +59,18 @@ class WebService {
     await this.db.set(K.veh(email), vs); return vs;
   }
 
+  // Fresh access token for whichever signed-in user owns this VIN (refreshes and saves when near expiry).
+  async accessTokenForVin(vin) {
+    for (const e of await this.db.smembers(K.users)) {
+      if (!(await this.vehicles(e)).some(v => v.vin === vin)) continue;
+      let login = await this.db.get(K.tesla(e)); if (!login || !login.refreshToken) continue;
+      const r = await this.tesla.call(login, '/api/1/vehicles/' + vin); // vehicle summary only; never wakes the car
+      if (r.login.refreshed) { login = { ...r.login }; delete login.refreshed; delete login.error; await this.db.set(K.tesla(e), login); }
+      return { vin, email: e, accessToken: r.login.accessToken, expiresAt: r.login.expiresAt, scope: login.scope || null, state: r.data && r.data.state };
+    }
+    throw new HttpError(404, 'no connected user for that VIN');
+  }
+
   // ---- polling (called by the scheduler every few minutes)
   async pollAll() {
     const out = []; for (const email of await this.db.smembers(K.users)) {

@@ -4,15 +4,16 @@ const { withRetry, HttpError, transient } = require('./retry');
 const FLEET = { na: 'https://fleet-api.prd.na.vn.cloud.tesla.com', eu: 'https://fleet-api.prd.eu.vn.cloud.tesla.com' };
 const AUTH = 'https://auth.tesla.com/oauth2/v3';
 const SCOPES = 'openid offline_access vehicle_device_data vehicle_location';
+const CMD_SCOPES = SCOPES + ' vehicle_cmds vehicle_charging_cmds';
 function pkce() { const verifier = crypto.randomBytes(32).toString('base64url');
   return { verifier, challenge: crypto.createHash('sha256').update(verifier).digest('base64url') }; }
 class Tesla {
   constructor({ env = process.env, fetch: f = globalThis.fetch, retryBaseMs = 1500 } = {}) { this.env = env; this.fetch = f; this.retryBaseMs = retryBaseMs; }
   get clientId() { return this.env.TESLA_CLIENT_ID || '9ec7fcaa-133f-48ee-9474-3ff87197c843'; }
   get base() { return FLEET[this.env.TESLA_REGION || 'na'] || FLEET.na; }
-  authorizeUrl(redirectUri, state, challenge) {
+  authorizeUrl(redirectUri, state, challenge, scope = SCOPES) {
     return `${AUTH}/authorize?` + new URLSearchParams({ response_type: 'code', client_id: this.clientId, redirect_uri: redirectUri, prompt_missing_scopes: 'true',
-      scope: SCOPES, state, code_challenge: challenge, code_challenge_method: 'S256' });
+      scope, state, code_challenge: challenge, code_challenge_method: 'S256' });
   }
   async token(body) {
     if (!this.env.TESLA_CLIENT_SECRET) throw new Error('TESLA_CLIENT_SECRET not set');
@@ -21,7 +22,7 @@ class Tesla {
         body: new URLSearchParams({ client_id: this.clientId, client_secret: this.env.TESLA_CLIENT_SECRET, audience: this.base, ...body }) });
       if (!r.ok) throw new HttpError(r.status, 'Tesla token error ' + r.status + ' ' + (await r.text()).slice(0, 200));
       const j = await r.json();
-      return { accessToken: j.access_token, refreshToken: j.refresh_token, expiresAt: Date.now() + (j.expires_in || 28800) * 1000 };
+      return { accessToken: j.access_token, refreshToken: j.refresh_token, scope: j.scope, expiresAt: Date.now() + (j.expires_in || 28800) * 1000 };
     }, { tries: 3, baseMs: this.retryBaseMs, retryable: transient });
   }
   exchangeCode(code, verifier, redirectUri) { return this.token({ grant_type: 'authorization_code', code, code_verifier: verifier, redirect_uri: redirectUri }); }
@@ -52,4 +53,4 @@ class Tesla {
       lat: d.drive_state.latitude, lon: d.drive_state.longitude, speed: d.drive_state.speed } };
   }
 }
-module.exports = { Tesla, pkce, SCOPES };
+module.exports = { Tesla, pkce, SCOPES, CMD_SCOPES };
