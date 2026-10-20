@@ -52,6 +52,7 @@ function makeHandler({ env = process.env, db, transport, fetch: f = globalThis.f
       }
       if (p === '/api/cron') {
         if (!env.CRON_SECRET || req.headers.authorization !== 'Bearer ' + env.CRON_SECRET) return json(res, 401, { error: 'unauthorized' });
+        if (!db && !(env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL)) return json(res, 200, { ok: true, skipped: 'storage not connected yet' });
         return json(res, 200, { ok: true, at: new Date().toISOString(), results: await get().pollAll() });
       }
       const sess = S.verify(ck.sess, secret), email = sess && sess.email;

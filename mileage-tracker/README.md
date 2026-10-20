@@ -44,3 +44,13 @@ Each person signs in on their own computer and their data stays there. If you wa
 - Google sign-in, the Tesla OAuth and Fleet API calls, the token broker, ntfy.sh, TeslaMate, and real SMTP providers are written against their published docs. They are covered by mocks or the local SMTP catcher only and have not been run against the live services.
 - Push notifications are desktop notifications on the computer of the account that owns the car; phone push needs ntfy. Short drives that start and end between two polls, with no odometer change visible, are a known gap.
 - Tokens and the SMTP password are stored in plain JSON in the user's app-data folder; prefer the env vars.
+
+## Web version (https://ovanova-mileage-tesla.vercel.app)
+Same Vercel project as the Tesla partner domain (`tesla-site/`): `/.well-known/...public-key.pem` and `/token` are unchanged.
+- `api/app.js` + `lib/` serve Google sign-in (@ovanova.co only), Connect my Tesla, trips, tagging, Send now / batch for Friday 17:00 Central, and ntfy push with Yes · Send now / Yes · Batch / No buttons. `lib/core.js` is the desktop `src/core.js`, unchanged (a test checks this).
+- Storage: Upstash Redis free tier connected through the Vercel Marketplace (`KV_REST_API_URL`/`KV_REST_API_TOKEN`).
+- Polling: Vercel Hobby cron runs only once a day, so `.github/workflows/mileage-poll.yml` calls `/api/cron` every 5 minutes (GitHub schedules can run late). A sleeping car is never woken.
+- Env (Vercel): `SESSION_SECRET`, `CRON_SECRET` (same value as GitHub secret `MILEAGE_CRON_SECRET`), `TESLA_CLIENT_ID/SECRET`, `GOOGLE_WEB_CLIENT_ID/SECRET`, `SMTP_HOST/PORT/USER/PASS/FROM`, `PUBLIC_URL`.
+- Redirect URIs: Google `https://ovanova-mileage-tesla.vercel.app/auth/google/callback`, Tesla `https://ovanova-mileage-tesla.vercel.app/auth/tesla/callback`.
+- Mail goes out from lester@ovanova.co; for other users it is sent "via Mileage Tracker" with their address as reply-to and cc. Attachments: odometer captures (HTML) and CSV.
+- Tests: `cd tesla-site && npm ci && npm test` (in-memory storage, mocked Google/Tesla/ntfy, local SMTP catcher).
