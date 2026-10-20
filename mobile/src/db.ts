@@ -5,7 +5,7 @@ import type { Car, CompletedTrip, DetectorState } from './detector';
 export type Category = 'business' | 'personal' | null;
 export type Action = 'send' | 'batch' | 'log' | null;
 export type LocalTrip = CompletedTrip & { clientId: string; carId: string | null; category: Category; action: Action; purpose: string;
-  synced: 0 | 1; serverStatus: string | null; serverError: string | null };
+  synced: 0 | 1; serverStatus: string | null; serverError: string | null; route?: string };
 
 let dbp: Promise<SQLite.SQLiteDatabase> | null = null;
 export function db() {
