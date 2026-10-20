@@ -1,0 +1,6 @@
+body{font-family:system-ui,sans-serif;margin:0;color:#222}header{display:flex;gap:1em;align-items:center;background:#171a20;color:#fff;padding:.5em 1em}
+header h1{font-size:1.2em;margin:0}nav{margin-left:auto}section{padding:1em}.bar{margin-bottom:.7em;display:flex;gap:.5em;align-items:center;flex-wrap:wrap}
+table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;padding:4px 6px;text-align:left;font-size:.9em}
+label{display:block;margin:.3em 0}.business{color:#0a6}.personal{color:#36c}.untagged{color:#c60}dialog menu{display:flex;gap:.5em;padding:0}
+@media print{.noprint{display:none!important}#report{display:block!important}}
+label.inline{display:inline}td button{font-size:.8em}.sent{color:#080}.queued{color:#a60}

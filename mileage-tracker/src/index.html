@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mileage Tracker</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+<link rel="stylesheet" href="style.css"></head><body>
+<section id="signin" class="noprint" style="display:none;text-align:center;padding-top:15vh"><h1>Mileage Tracker</h1>
+  <p>Sign in to create or open your account. Your cars, trips and reports stay on this computer.</p>
+  <button id="googleBtn">Sign in with Google</button><p id="signinMsg"></p></section>
+<div id="appRoot" style="display:none">
+<header class="noprint"><h1>Mileage Tracker</h1><span id="status"></span>
+<nav><button data-tab="trips">Trips</button><button data-tab="report">Report</button><button data-tab="vehicles">Vehicles</button><button data-tab="settings">Settings</button>
+<span id="who"></span> <button id="signOut">Sign out</button></nav></header>
+<section id="trips" class="tab noprint">
+  <div class="bar">Show <select id="filter"><option value="all">All</option><option value="business">Business</option><option value="personal">Personal</option><option value="untagged">Untagged</option><option value="queued">Waiting for end of week</option><option value="sent">Sent to Sugar</option></select>
+  Vehicle <select id="fVehicle"></select> Driver <select id="fDriver"></select>
+  Sort <select id="sort"><option value="date-desc">Newest</option><option value="date-asc">Oldest</option><option value="miles-desc">Most miles</option></select>
+  <span id="totals"></span> <button id="seed">Seed sample trips</button></div>
+  <table><thead><tr><th>Date</th><th>Vehicle</th><th>Driver</th><th>Route</th><th>Odometer</th><th>Miles</th><th>Category</th><th>Purpose</th><th>Sugar</th><th></th></tr></thead><tbody id="tripRows"></tbody></table>
+  <details><summary>Manual entry (fallback)</summary><form id="manual">
+    Vehicle <select name="vehicleId" id="mVehicle"></select> Start <input type="datetime-local" name="start" required> End <input type="datetime-local" name="end" required>
+    Start odo <input type="number" step="0.1" name="startOdo"> End odo <input type="number" step="0.1" name="endOdo"> Miles <input type="number" step="0.1" name="miles">
+    Route <input name="route"> <select name="category"><option>business</option><option>personal</option></select> Purpose <input name="purpose"> <button>Add</button></form></details>
+</section>
+<section id="report" class="tab">
+  <div class="bar noprint">From <input type="date" id="rFrom"> To <input type="date" id="rTo"> Vehicle <select id="rVehicle"></select> Driver <select id="rDriver"></select>
+  Rate $/mi <input type="number" step="0.001" id="rRate" placeholder="IRS by date">
+  <label class="inline"><input type="checkbox" id="rIncl"> include already sent</label>
+  <button id="rRun">Generate</button><button id="rCsv">CSV</button><button id="rPdf">Save PDF</button><button id="printBtn">Print</button></div>
+  <div class="bar noprint"><b>Sugar:</b> <button id="rSendNow">Send now</button><button id="rQueue">Wait till end of week</button><button id="rPreview">Preview email</button> <span id="sendMsg"></span></div>
+  <div id="reportOut"></div>
+</section>
+<section id="vehicles" class="tab noprint">
+  <table><thead><tr><th>Name</th><th>Owner</th><th>Model</th><th>VIN</th><th>Source</th><th>Tesla</th><th></th></tr></thead><tbody id="vRows"></tbody></table>
+  <p><button id="addVehicle">Add vehicle (Connect my Tesla)</button> <button id="addSim">Add simulated vehicle</button> <span id="vMsg"></span></p>
+</section>
+<section id="settings" class="tab noprint"><form id="sForm">
+  <h3>Send mileage to Sugar (email)</h3>
+  <label>To <input name="sugar.to"></label><label>CC <input name="sugar.cc"></label>
+  <label>Signature <textarea name="signature" rows="3" placeholder="Thanks,&#10;Lester"></textarea></label>
+  <label>End of week send: <select name="weekEnd.day"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select>
+    at <input type="time" name="weekEnd.time"> (local) — only for trips you chose "Wait till end of week"</label>
+  <label>Automatic sending of all unsent business trips <select name="autoSchedule"><option value="off">Off</option><option value="weekly">Weekly (previous Mon–Sun)</option><option value="monthly">Monthly (previous month)</option></select></label>
+  <h3>Your email account (SMTP, e.g. Gmail app password)</h3>
+  <label>Host <input name="smtp.host" placeholder="smtp.gmail.com"></label><label>Port <input type="number" name="smtp.port"></label>
+  <label>TLS on connect (465) <select name="smtp.secure"><option value="false">No (STARTTLS)</option><option value="true">Yes</option></select></label>
+  <label>User <input name="smtp.user"></label><label>Password / app password <input type="password" name="smtp.pass"></label><label>From <input name="smtp.from"></label>
+  <h3>Report</h3><label>Rate override $/mi <input type="number" step="0.001" name="rate" placeholder="blank = IRS (0.725 H1 2026, 0.76 from Jul 1 2026)"></label>
+  <p><button>Save settings</button> <span id="sMsg"></span></p></form>
+  <h3>TeslaMate import</h3><label>Postgres URL <input id="tmUrl" placeholder="postgres://teslamate:pass@host:5432/teslamate"></label>
+  Into vehicle <select id="tmVehicle"></select> since <input type="date" id="tmSince"> <button id="tmImport">Import drives</button> <span id="tmMsg"></span>
+</section>
+</div>
+<dialog id="prompt"><form method="dialog"><h3 id="pTitle">Trip ended</h3><p id="pInfo"></p>
+  <label>Route <input id="pRoute" size="60"></label><label>Business purpose <input id="pPurpose" size="60" placeholder="e.g. Drive to HQ for the Friday team meeting"></label>
+  <p>Was this a business trip?</p>
+  <menu><button value="now" id="pNow">Business — Send now</button><button value="week" id="pWeek">Business — Wait till end of week</button>
+  <button value="business" id="pBiz">Business — decide later</button><button value="personal" id="pNo">Personal</button></menu></form></dialog>
+<dialog id="pickCars"><form method="dialog"><h3>Pick your car(s)</h3><div id="carList"></div><menu><button value="cancel">Cancel</button><button value="ok">Add</button></menu></form></dialog>
+<dialog id="emailDlg"><form method="dialog"><h3>Email preview</h3><pre id="ePreview" style="white-space:pre-wrap;max-width:80vw"></pre><menu><button>Close</button></menu></form></dialog>
+<script src="core.js"></script><script src="app.js"></script></body></html>

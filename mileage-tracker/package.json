@@ -1,0 +1,29 @@
+{
+  "name": "mileage-tracker",
+  "version": "1.0.0",
+  "description": "Desktop mileage tracker with Tesla Fleet API / TeslaMate",
+  "main": "src/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/core.test.js && node test/service.test.js && node test/more.test.js",
+    "selftest": "node test/e2e.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "44.9.0",
+    "mailparser": "3.10.0",
+    "smtp-server": "3.20.2"
+  },
+  "dependencies": {
+    "nodemailer": "10.1.7",
+    "pg": "8.23.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

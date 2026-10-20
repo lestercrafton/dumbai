@@ -1,0 +1,27 @@
+{
+  "_comment": "Bundled, admin-owned, NO secrets. Remaining blanks: google.clientId (+ optional desktop clientSecret) - see SETUP-REMAINING.md.",
+  "google": {
+    "clientId": "589578316056-7445nnffoho4ta7quf0m9btm8j981qmp.apps.googleusercontent.com",
+    "clientSecret": ""
+  },
+  "tesla": {
+    "clientId": "9ec7fcaa-133f-48ee-9474-3ff87197c843",
+    "region": "na",
+    "redirectUri": "http://localhost:8765/callback",
+    "tokenBroker": "https://ovanova-mileage-tesla.vercel.app",
+    "partnerDomain": "ovanova-mileage-tesla.vercel.app"
+  },
+  "sugar": {
+    "to": "sugar@ovanova.co"
+  },
+  "defaultVehicles": [
+    {
+      "id": "micro",
+      "name": "micro",
+      "owner": "Lester",
+      "ownerEmail": "lester@ovanova.co",
+      "model": "Tesla Model Y Dual Motor",
+      "vin": "7SAYGDEE4RA246655"
+    }
+  ]
+}

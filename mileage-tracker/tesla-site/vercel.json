@@ -1,0 +1,4 @@
+{
+  "rewrites": [{ "source": "/token", "destination": "/api/token" }],
+  "headers": [{ "source": "/.well-known/appspecific/com.tesla.3p.public-key.pem", "headers": [{ "key": "Content-Type", "value": "application/x-pem-file" }] }]
+}
