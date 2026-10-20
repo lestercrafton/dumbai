@@ -1,1 +1,8 @@
-{"name":"ovanova-mileage-tesla","private":true}
+{
+  "name": "ovanova-mileage-tesla",
+  "private": true,
+  "scripts": { "test": "node --test test/" },
+  "dependencies": { "nodemailer": "10.1.7" },
+  "devDependencies": { "smtp-server": "3.20.2", "mailparser": "3.10.0" },
+  "engines": { "node": ">=20" }
+}

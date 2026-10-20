@@ -1,1 +1,67 @@
-<!doctype html><title>Ovanova Mileage Tracker</title><p>Tesla Fleet API partner domain for the Ovanova Mileage Tracker desktop app.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ovanova Mileage Tracker</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;background:#f5f6f8;color:#1b1f24}
+header{background:#14213d;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+header a{color:#fff}main{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:10px;padding:16px;margin:12px 0;box-shadow:0 1px 3px #0002}
+button,.btn{background:#1d4ed8;color:#fff;border:0;border-radius:6px;padding:8px 12px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;margin:2px}
+button.alt{background:#e5e7eb;color:#111}button.ok{background:#15803d}
+nav button{background:none;color:#1d4ed8;border-bottom:2px solid transparent;border-radius:0}nav button.on{border-color:#1d4ed8}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
+input,select,textarea{font:inherit;padding:6px;border:1px solid #ccc;border-radius:6px;width:100%;box-sizing:border-box}
+.muted{color:#666;font-size:13px}.err{color:#b91c1c}pre{white-space:pre-wrap;background:#f3f4f6;padding:10px;border-radius:6px;font-size:13px}
+.tag{font-size:12px;padding:2px 6px;border-radius:10px;background:#eef}
+</style></head><body>
+<header><b>Ovanova Mileage Tracker</b><span id="who"></span></header>
+<main id="app"><div class="card">Loading…</div></main>
+<script>
+const $ = s => document.querySelector(s), app = $('#app');
+const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let S = null, tab = (location.hash || '#trips').slice(1), msg = '';
+async function api(p, b) { const r = await fetch(p, b ? { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MT': '1' }, body: JSON.stringify(b) } : {});
+  const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.error || r.status), { status: r.status }); return j; }
+async function load() { try { S = await api('/api/state'); render(); } catch (e) { if (e.status === 401) signin(); else app.innerHTML = `<div class="card err">${esc(e.message)}</div>`; } }
+function signin() { $('#who').innerHTML = ''; app.innerHTML = `<div class="card" style="text-align:center;padding:40px">
+  <h2>Sign in</h2><p>Log business trips from your Tesla and send mileage reimbursement to Sugar.</p>
+  <a class="btn" href="/auth/google">Sign in with Google</a><p class="muted">Ovanova (@ovanova.co) accounts only.</p></div>`; }
+const fmt = d => new Date(d).toLocaleString('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' CT';
+const route = t => t.route || [t.startLoc, t.endLoc].map(l => l ? (l.name || `${l.lat.toFixed(3)}, ${l.lon.toFixed(3)}`) : '?').join(' → ');
+async function act(fn) { try { msg = (await fn()) || ''; } catch (e) { msg = '<span class="err">' + esc(e.message) + '</span>'; } await load(); }
+function render() {
+  $('#who').innerHTML = `${esc(S.user.name || S.user.email)} · <a href="/auth/logout">Sign out</a>`;
+  const tabs = ['trips', 'vehicles', 'settings'].map(t => `<button class="${t === tab ? 'on' : ''}" onclick="tab='${t}';location.hash=tab;msg='';render()">${t[0].toUpperCase() + t.slice(1)}</button>`).join('');
+  app.innerHTML = `<nav>${tabs}</nav>${msg ? `<div class="card">${msg}</div>` : ''}` + ({ trips, vehicles, settings })[tab]();
+}
+function trips() {
+  const rows = S.trips.map(t => `<tr><td>${fmt(t.startTime)}<div class="muted">${esc(route(t))}</div></td><td>${t.miles} mi${t.inferred ? ' *' : ''}</td>
+    <td><input value="${esc(t.purpose)}" placeholder="Purpose" onchange="act(()=>api('/api/tag',{id:'${esc(t.id)}',category:'business',purpose:this.value}).then(()=>'Saved'))"></td>
+    <td>${t.reimbursedAt ? `<span class="tag">sent ${fmt(t.reimbursedAt)}</span>` : t.queuedAt ? `<span class="tag">batched for Friday</span> <button class="alt" onclick="act(()=>api('/api/unqueue',{ids:['${esc(t.id)}']}))">Unbatch</button>`
+      : `${t.category ? `<span class="tag">${t.category}</span><br>` : '<b>Business?</b><br>'}
+        <button class="ok" onclick="send(['${esc(t.id)}'])">Yes · Send now</button><button onclick="act(()=>api('/api/queue',{ids:['${esc(t.id)}']}).then(()=>'Queued for Friday'))">Yes · Batch</button><button class="alt" onclick="act(()=>api('/api/tag',{id:'${esc(t.id)}',category:'personal'}).then(()=>'Marked personal'))">No</button>`}</td></tr>`).join('');
+  return `<div class="card"><h3>Trips</h3><p class="muted">Next end-of-week email: ${fmt(S.nextBatch)}. ${S.smtpConfigured ? '' : '<span class="err">Email is not configured on the server.</span>'}</p>
+    ${S.trips.length ? `<table><tr><th>When</th><th>Miles</th><th>Purpose</th><th></th></tr>${rows}</table>` : '<p>No trips yet. Trips appear here a few minutes after you park.</p>'}</div>
+    <div class="card"><h3>Add a trip by hand</h3><div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:6px">
+    <input id="md" type="date"><input id="mm" type="number" step="0.1" placeholder="Miles"><input id="mp" placeholder="Purpose / route">
+    <button onclick="act(()=>api('/api/manual',{date:$('#md').value,miles:$('#mm').value,purpose:$('#mp').value}).then(()=>'Added'))">Add</button></div></div>`;
+}
+async function send(ids) { try { const p = await api('/api/preview', { ids: [] .concat(ids) }).catch(async e => { if (/business/.test(e.message)) { await api('/api/tag', { id: ids[0], category: 'business' }); return api('/api/preview', { ids }); } throw e; });
+  if (!confirm(`Send to ${p.to}?\n\n${p.subject}\n\n${p.text}`)) return; } catch (e) { msg = '<span class="err">' + esc(e.message) + '</span>'; return render(); }
+  act(() => api('/api/send', { ids }).then(r => `Sent ${r.count} trip(s) to ${esc(r.to)} · ${r.miles} mi · $${r.amount.toFixed(2)}`)); }
+function vehicles() {
+  return `<div class="card"><h3>Vehicles</h3>${S.teslaError ? `<p class="err">${esc(S.teslaError)}</p>` : ''}
+    <table>${S.vehicles.map(v => `<tr><td><b>${esc(v.name)}</b><div class="muted">${esc(v.model)} · VIN ${esc(v.vin)}</div></td><td>${v.connected ? '<span class="tag">connected</span>' : 'not connected'}</td></tr>`).join('') || '<tr><td>No cars yet.</td></tr>'}</table>
+    <p><a class="btn" href="/auth/tesla">${S.teslaConnected ? 'Reconnect / add Tesla' : 'Connect my Tesla'}</a>
+    ${S.teslaConnected ? `<button class="alt" onclick="act(()=>api('/api/poll',{}).then(r=>'Checked: '+esc(JSON.stringify(r.states||r))))">Check car now</button>` : ''}</p>
+    <p class="muted">Read-only access to vehicle info and location. A sleeping car is never woken.</p></div>`;
+}
+function settings() { const s = S.settings;
+  return `<div class="card"><h3>Settings</h3>
+    <label>Send reimbursements to<input id="st" value="${esc(s.sugar.to)}"></label><br><br>
+    <label>CC (optional)<input id="sc" value="${esc(s.sugar.cc)}"></label><br><br>
+    <label>Signature<textarea id="sg" rows="3">${esc(s.signature)}</textarea></label><br><br>
+    <label>Phone push: ntfy topic (install the ntfy app and subscribe to this topic)<input id="nt" value="${esc(s.ntfy.topic)}" placeholder="e.g. ovanova-mileage-${Math.random().toString(36).slice(2, 8)}"></label><br><br>
+    <label>End-of-week email (Central time)<div style="display:flex;gap:6px"><select id="wd">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => `<option value="${i}" ${i == s.weekEnd.day ? 'selected' : ''}>${d}</option>`).join('')}</select><input id="wt" type="time" value="${esc(s.weekEnd.time)}"></div></label><br>
+    <button onclick="act(()=>api('/api/settings',{sugar:{to:$('#st').value,cc:$('#sc').value},signature:$('#sg').value,ntfy:{topic:$('#nt').value},weekEnd:{day:+$('#wd').value,time:$('#wt').value}}).then(()=>'Settings saved'))">Save</button></div>`; }
+load();
+</script></body></html>
