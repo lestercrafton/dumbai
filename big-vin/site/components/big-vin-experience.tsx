@@ -40,7 +40,7 @@ export function SiteHeader({onBoard, onResults}: {onBoard: () => void; onResults
   return <header className="vin-header">
     <a className="vin-wordmark" href="#top" aria-label="Big Vin home"><span className="vin-mark" aria-hidden="true">b<span>v</span><i/></span><span>BIG VIN<span className="vin-wordmark-sub">AN INDEPENDENT EDGE.</span></span></a>
     <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a></nav>
-    <DonateButton className="vin-button-outline vin-header-donate"/>
+    <DonateButton className="vin-header-donate"/>
   </header>;
 }
 

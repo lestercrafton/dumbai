@@ -882,3 +882,19 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-pick-history > summary { min-height: 44px; padding: 12px 0; color: var(--fiji-purple); }
 .vin-pick-history ol { margin: 0 0 12px; padding-left: 16px; }
 .vin-pick-history li { margin: 7px 0; color: var(--fiji-muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+
+/* Top link bar and a filled, high-contrast header donate button (all widths). */
+.vin-top-links { display: flex; justify-content: flex-end; padding: 6px 24px; background: var(--fiji-surface); border-bottom: 1px solid var(--fiji-line); }
+.vin-milly-link { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 4px 12px; border: 1px solid #ad90bc; border-radius: 999px; background: #fff; color: var(--fiji-purple); font-size: 13px; font-weight: 600; text-decoration: none; }
+.vin-milly-link:hover { background: var(--fiji-purple); border-color: var(--fiji-purple); color: #fff; }
+.vin-milly-link:focus-visible, .vin-header-donate:focus-visible { outline: 3px solid var(--fiji-secondary); outline-offset: 2px; }
+.vin-header-donate, .vin-site .vin-header-donate { background: var(--fiji-purple); border: 1px solid var(--fiji-purple); color: #fff; font-weight: 700; box-shadow: 0 4px 14px #52097533; }
+.vin-header-donate .vin-donate-label > span { opacity: .9; }
+.vin-header-donate:hover, .vin-site .vin-header-donate:hover { background: #6b218a; border-color: #6b218a; color: #fff; }
+.mast { gap: 16px; }
+.mast .vin-header-donate { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 8px; font-size: 12px; min-height: 44px; }
+@media (max-width: 560px) {
+  .vin-top-links { justify-content: center; padding: 6px 12px; }
+  .vin-header-donate, .vin-site .vin-header-donate { display: inline-flex; min-height: 44px; }
+  .mast .private { display: none; }
+}
