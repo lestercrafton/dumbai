@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "count": 10,
+  "checks": [
+    "Twenty cards served over HTTP",
+    "180 complete roster rows",
+    "No JavaScript errors at load",
+    "Interpretation visible before results",
+    "Three real conditional lineups generated",
+    "Published baseline unchanged",
+    "No scenario JavaScript errors",
+    "Negation rejected instead of guessed",
+    "Mobile width does not overflow",
+    "All twenty visible with JavaScript disabled"
+  ],
+  "mode": "Actual local HTTP plus Chromium; hosted deployment checked separately",
+  "release_id": "2026-w07-20261020T180509Z"
+}
