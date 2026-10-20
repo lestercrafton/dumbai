@@ -11,8 +11,8 @@ import * as API from './src/api';
 import { setupNotifications, askPermission } from './src/notify';
 import { startTracking, stopTracking, isTracking } from './src/background';
 
-// Ovanova palette and type scale
-export const C = { brand: '#F76707', brandSoft: '#FFF1E6', ink: '#1B2430', muted: '#6B7280', line: '#E7E2DB', bg: '#F7F5F2', card: '#FFFFFF', ok: '#2F9E44', okSoft: '#E3F5E7', warn: '#B45309', warnSoft: '#FEF3C7' };
+// Ovanova (OSC green) palette and type scale: #78BA89 from the style guide, #40804F from the logo
+export const C = { brand: '#40804F', osc: '#78BA89', brandSoft: '#E8F4EB', ink: '#1B2430', muted: '#6B7280', line: '#E7E2DB', bg: '#F7F5F2', card: '#FFFFFF', ok: '#2F9E44', okSoft: '#E3F5E7', warn: '#B45309', warnSoft: '#FEF3C7' };
 const T = { big: 34, title: 20, body: 16, small: 13 };
 const TAP = 48;
 
@@ -221,13 +221,13 @@ const Empty = ({ icon, title, body, action }: { icon: string; title: string; bod
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg }, center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   welcome: { backgroundColor: C.brand, padding: 24 }, wTitle: { color: '#fff', fontSize: T.big, fontWeight: '800', marginTop: 20 },
-  wSub: { color: '#FFE8D6', fontSize: T.body + 1, textAlign: 'center', marginTop: 10, lineHeight: 24 },
+  wSub: { color: '#E3F1E6', fontSize: T.body + 1, textAlign: 'center', marginTop: 10, lineHeight: 24 },
   wBtn: { backgroundColor: '#fff', borderRadius: 14, minHeight: 56, alignItems: 'center', justifyContent: 'center' }, wBtnTxt: { color: C.brand, fontSize: T.body + 1, fontWeight: '700' },
-  wFine: { color: '#FFE8D6', fontSize: T.small, textAlign: 'center', lineHeight: 18 }, wErr: { color: '#fff', backgroundColor: 'rgba(0,0,0,0.2)', padding: 10, borderRadius: 10, textAlign: 'center' },
+  wFine: { color: '#E3F1E6', fontSize: T.small, textAlign: 'center', lineHeight: 18 }, wErr: { color: '#fff', backgroundColor: 'rgba(0,0,0,0.2)', padding: 10, borderRadius: 10, textAlign: 'center' },
   header: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 4 }, hTitle: { fontSize: 30, fontWeight: '800', color: C.ink },
   toast: { marginHorizontal: 16, marginTop: 8, backgroundColor: C.ink, borderRadius: 12, padding: 12 }, toastTxt: { color: '#fff', fontSize: T.small + 1 },
   section: { fontSize: T.small, fontWeight: '700', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginTop: 4 },
-  card: { backgroundColor: C.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: C.line }, cardPending: { borderColor: C.brand, borderWidth: 1.5 },
+  card: { backgroundColor: C.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: C.line }, cardPending: { borderColor: C.osc, borderWidth: 1.5 },
   cardTitle: { fontSize: T.title - 2, fontWeight: '700', color: C.ink },
   tripTop: { flexDirection: 'row', alignItems: 'flex-start' }, when: { fontSize: T.body, fontWeight: '600', color: C.ink }, route: { fontSize: T.small + 1, color: C.muted, marginTop: 2, marginBottom: 8 },
   miles: { fontSize: T.big, fontWeight: '800', color: C.ink, lineHeight: 38 }, unit: { fontSize: T.small, color: C.muted },
