@@ -22,3 +22,14 @@ export async function notifyTripEnded(t: LocalTrip, lastCar: Car | undefined) {
     body: lastCar ? `Car: ${lastCar.name}${p.note ? '. ' + p.note : ''} Tap to change the car.` : 'Tap to pick the car.',
     categoryIdentifier: p.reimbursable ? CAT_REIMB : CAT_LOG, data: { clientId: t.clientId } } });
 }
+
+// Gentle nudge for trips nobody answered: one quiet reminder each evening at 6 PM while any are waiting.
+// Unanswered trips are never uploaded or reimbursed; they wait in "Needs review" until the driver decides.
+export const REVIEW_REMINDER = 'review-reminder';
+export async function scheduleReviewReminder(count: number) {
+  await Notifications.cancelScheduledNotificationAsync(REVIEW_REMINDER).catch(() => {});
+  if (!count) return;
+  await Notifications.scheduleNotificationAsync({ identifier: REVIEW_REMINDER, content: {
+    title: `${count} trip${count > 1 ? 's' : ''} to review`, body: 'Business or personal? Open Ovanova Moves to sort them in one go.', sound: false },
+    trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: 18, minute: 0 } });
+}

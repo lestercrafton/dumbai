@@ -103,11 +103,12 @@ export function flush(state: DetectorState, now: number, o: Options = DEFAULTS):
   return release(finish(state, o).state, now, o);
 }
 
-export type Car = { id: string; name: string; model?: string; vin?: string; ownership: 'personal' | 'business'; isTesla: boolean };
+export type Car = { id: string; name: string; model?: string; vin?: string; ownership: 'personal' | 'business'; isTesla: boolean; teslaId?: number | string | null };
 // What the end-of-trip prompt should offer for a given car.
 export function promptFor(car: Car | undefined): { reimbursable: boolean; actions: ('send' | 'batch' | 'log' | 'personal')[]; note?: string } {
   if (!car) return { reimbursable: false, actions: ['personal'], note: 'Pick a car' };
-  if (car.isTesla) return { reimbursable: false, actions: ['log', 'personal'], note: 'Tesla trips come from the car itself; this phone trip will not be counted twice.' };
+  // Tesla is optional: only a Tesla whose own log is linked on the server takes over its miles.
+  if (car.isTesla && car.teslaId) return { reimbursable: false, actions: ['log', 'personal'], note: 'Tesla trips come from the car itself; this phone trip will not be counted twice.' };
   if (car.ownership === 'business') return { reimbursable: false, actions: ['log', 'personal'], note: 'Company car: logged only, no reimbursement.' };
   return { reimbursable: true, actions: ['send', 'batch', 'personal'] };
 }
