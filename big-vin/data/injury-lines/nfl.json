@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-21T00:42:09.820Z",
+ "generatedAt": "2026-10-21T05:16:44.836Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -162,7 +162,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-21T00:33Z",
+     "reported": "2026-10-21T05:01Z",
      "weight": 1,
      "points": 0.3
     }
@@ -849,7 +849,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-21T00:33Z",
+     "reported": "2026-10-21T05:01Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1111,7 +1111,7 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 0.93,
+   "loss": 0.53,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
@@ -1125,16 +1125,6 @@
      "espnId": "3121422",
      "status": "Out",
      "reported": "2026-10-20T19:18Z",
-     "weight": 1,
-     "points": 0.4
-    },
-    {
-     "group": "rb1",
-     "position": "RB",
-     "player": "Jacory Croskey-Merritt",
-     "espnId": "4575131",
-     "status": "Injured Reserve",
-     "reported": "2026-10-19T20:28Z",
      "weight": 1,
      "points": 0.4
     },
