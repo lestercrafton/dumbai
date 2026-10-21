@@ -7,9 +7,25 @@ export type Action = 'send' | 'batch' | 'log' | null;
 export type LocalTrip = CompletedTrip & { clientId: string; carId: string | null; category: Category; action: Action; purpose: string;
   synced: 0 | 1; serverStatus: string | null; serverError: string | null; route?: string };
 
+// Each signed-in Google account gets its own database file, so cars and trips never mix between users on one phone.
+// The original mileage.db stays with the first account that signs in after this change (the phone's owner).
+let sp: Promise<SQLite.SQLiteDatabase> | null = null;
+const session = () => sp ??= SQLite.openDatabaseAsync('session.db').then(async d => { await d.execAsync('CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY NOT NULL, v TEXT NOT NULL);'); return d; });
+async function sget(k: string) { return (await (await session()).getFirstAsync<{ v: string }>('SELECT v FROM kv WHERE k = ?', k))?.v ?? null; }
+async function sset(k: string, v: string | null) { const d = await session(); if (v == null) await d.runAsync('DELETE FROM kv WHERE k = ?', k); else await d.runAsync('INSERT OR REPLACE INTO kv (k, v) VALUES (?, ?)', k, v); }
+export const currentUser = () => sget('currentUser');
+export async function setCurrentUser(email: string | null) {
+  const e = email ? email.trim().toLowerCase() : null;
+  if (e && !(await sget('legacyOwner'))) await sset('legacyOwner', e);
+  await sset('currentUser', e); dbp = null;
+}
+export async function dbFileFor(email: string | null) {
+  const legacy = await sget('legacyOwner');
+  return !email || email === legacy ? 'mileage.db' : 'u-' + email.replace(/[^a-z0-9]+/g, '_') + '.db';
+}
 let dbp: Promise<SQLite.SQLiteDatabase> | null = null;
 export function db() {
-  return dbp ??= SQLite.openDatabaseAsync('mileage.db').then(async d => {
+  return dbp ??= currentUser().then(dbFileFor).then(name => SQLite.openDatabaseAsync(name)).then(async d => {
     await d.execAsync(`PRAGMA journal_mode = WAL;
       CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY NOT NULL, v TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS cars (id TEXT PRIMARY KEY NOT NULL, json TEXT NOT NULL, sort INTEGER NOT NULL DEFAULT 0);

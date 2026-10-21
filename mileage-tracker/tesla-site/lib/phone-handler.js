@@ -71,6 +71,7 @@ function makePhoneHandler({ env = process.env, db, transport = null, userTranspo
       if (p === '/api/phone/trips' && req.method === 'POST') return json(res, 200, await s.receive(email, (await body(req)).trips));
       if (p === '/api/phone/trips' && req.method === 'GET') { const vs = await s.cars(email), since = q.get('since') || '';
         return json(res, 200, { trips: (await s.trips(email)).filter(t => t.startTime >= since).map(t => ({ ...t, ...s.status(t, vs) })) }); }
+      if (p === '/api/phone/export' && req.method === 'POST') { const b = await body(req); return json(res, 200, await s.exportSheet(email, b.from, b.to)); }
       if (p === '/api/phone/send' && req.method === 'POST') { const ids = (await body(req)).ids; return json(res, 200, await s.send(email, Array.isArray(ids) ? ids.map(String) : [], 'phone')); }
       return json(res, 404, { error: 'not found' });
     } catch (e) {

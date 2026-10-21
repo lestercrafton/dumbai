@@ -23,6 +23,27 @@ function gmailTransportFor(env, email) {
   return require('nodemailer').createTransport({ host: env.SMTP_HOST || 'smtp.gmail.com', port: Number(env.SMTP_PORT || 587), secure: env.SMTP_SECURE === 'true', auth: { user: email, pass } });
 }
 
+const TZ = 'America/Chicago';
+const q = v => { const x = String(v ?? ''); return /[",\n]/.test(x) || /^[=+\-@]/.test(x) ? '"' + (/^[=+\-@]/.test(x) ? "'" : '') + x.replace(/"/g, '""') + '"' : x; };
+const place = l => !l ? '' : l.name || `${l.lat}, ${l.lon}`;
+const STATUS_LABEL = { sent: 'Sent', queued: 'Batched (Friday)', 'log only': 'Logged', reimbursable: 'Not sent yet', personal: 'Personal', untagged: 'Needs review', superseded: 'Logged' };
+// Rows for the Google Sheet export, with a totals row (formulas so edits in the sheet keep adding up).
+function sheetCsv(trips, vehicles, statusOf) {
+  const head = ['Date', 'Start time', 'Start place', 'End place', 'Miles', 'Duration (min)', 'Business/Personal', 'Car', 'Car type', 'Reimbursable amount', 'Status'];
+  const out = [head.join(',')];
+  for (const t of trips) {
+    const st = statusOf(t), car = vehicles.find(v => v.id === t.vehicleId), [a, b] = (t.route || '').split(' → ');
+    const d = new Date(t.startTime), date = d.toLocaleDateString('en-US', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }), time = d.toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
+    const amount = ['sent', 'queued', 'reimbursable'].includes(st.status) && st.amount != null ? st.amount.toFixed(2) : '0.00';
+    out.push([date, time, a && b ? a : place(t.startLoc), a && b ? b : place(t.endLoc), (+t.miles).toFixed(1), Math.round((Date.parse(t.endTime) - Date.parse(t.startTime)) / 60000),
+      t.category === 'business' ? 'Business' : t.category === 'personal' ? 'Personal' : 'Not answered', car ? car.name : '', car ? (car.ownership === 'business' ? 'Company' : 'Personal') : '',
+      amount, STATUS_LABEL[st.status] || st.status].map(q).join(','));
+  }
+  const n = trips.length + 1;
+  out.push(['Total', '', '', '', n > 1 ? `=SUM(E2:E${n})` : 0, n > 1 ? `=SUM(F2:F${n})` : 0, '', '', '', n > 1 ? `=SUM(J2:J${n})` : 0, ''].join(','));
+  return out.join('\n') + '\n';
+}
+
 class PhoneService extends WebService {
   constructor(o) { super(o); this.userTransport = o.userTransport || (email => gmailTransportFor(this.env, email));
     this.google = o.google || new Google({ env: this.env, db: this.db, fetch: this.fetch, now: this.now, retryBaseMs: this.retryBaseMs }); }
@@ -159,6 +180,16 @@ class PhoneService extends WebService {
     for (const email of await this.db.smembers(K.users)) { try { const r = await this.tick(email); if (r.length) out.push({ email, sent: r }); } catch (e) { out.push({ email, error: e.message }); } }
     return out; }
 
+  // Export a date range (inclusive, YYYY-MM-DD in Central time) to a new Google Sheet in the user's own Drive.
+  async exportSheet(email, from, to) {
+    const D = /^\d{4}-\d{2}-\d{2}$/; if (!D.test(from || '') || !D.test(to || '') || from > to) throw new HttpError(400, 'Pick a start and end date');
+    if (!this.google || !this.google.configured || !(await this.google.hasScope(email, 'drive.file'))) throw new HttpError(403, 'Google Drive permission missing: sign out and sign in with Google again');
+    const vs = await this.cars(email), all = await this.vehicles(email);
+    const rows = (await this.trips(email)).filter(t => ymd(t.startTime) >= from && ymd(t.startTime) <= to).sort((a, b) => a.startTime.localeCompare(b.startTime));
+    const csv = sheetCsv(rows, all, t => this.status(t, vs));
+    return this.google.createSheet(email, `Ovanova Moves ${from} to ${to}`, csv);
+  }
+
   async logToDrive(email, dates) {
     if (!dates || !dates.length || !this.google || !this.google.configured || !(await this.google.hasScope(email, 'drive.file'))) return { skipped: true };
     const months = [...new Set(dates.map(d => ymd(d).slice(0, 7)))], all = await this.trips(email), vs = await this.cars(email), out = [];
@@ -171,4 +202,4 @@ class PhoneService extends WebService {
     return { months: out };
   }
 }
-module.exports = { PhoneService, smtpKey, gmailTransportFor, validEmail };
+module.exports = { PhoneService, sheetCsv, smtpKey, gmailTransportFor, validEmail };

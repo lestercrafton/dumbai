@@ -82,5 +82,13 @@ class Google {
     catch (e) { if (e.status !== 404 || retried) throw e; await this.db.del(KG.folder(email)); return this.upsertCsv(email, ym, name, csv, true); } // folder deleted: recreate
     await this.db.set(KG.file(email, ym), j.id); return j.id;
   }
+  // New Google Sheet from CSV in the Mileage logs folder. Drive converts it on upload, so drive.file is enough.
+  async createSheet(email, name, csv, retried = false) {
+    const parent = await this.folder(email), boundary = 'mtsheet' + crypto.randomBytes(8).toString('hex');
+    const body = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({ name, parents: [parent], mimeType: 'application/vnd.google-apps.spreadsheet' })}\r\n--${boundary}\r\nContent-Type: text/csv\r\n\r\n${csv}\r\n--${boundary}--`;
+    try { const j = await this.api(email, 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', { method: 'POST', headers: { 'Content-Type': 'multipart/related; boundary=' + boundary }, body });
+      return { id: j.id, url: j.webViewLink || `https://docs.google.com/spreadsheets/d/${j.id}/edit` }; }
+    catch (e) { if (e.status !== 404 || retried) throw e; await this.db.del(KG.folder(email)); return this.createSheet(email, name, csv, true); }
+  }
 }
 module.exports = { Google, SCOPES, encrypt, decrypt, KG };

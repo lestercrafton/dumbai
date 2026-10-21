@@ -2,7 +2,7 @@
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import type { Car } from './detector';
-import { getKv, setKv, unsynced, patchTrip, replaceCars } from './db';
+import { getKv, setKv, unsynced, patchTrip, replaceCars, setCurrentUser } from './db';
 
 export const DEFAULT_SERVER = 'https://ovanova-mileage-tesla.vercel.app';
 export const getServer = () => getKv<string>('server', DEFAULT_SERVER);
@@ -19,10 +19,12 @@ export async function signInWithGoogle(): Promise<{ email: string; name: string;
   const back = new URL(r.url), err = back.searchParams.get('error'); if (err) throw new Error(err);
   const res = await fetch(server + '/api/phone/auth/exchange', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: back.searchParams.get('code') }) });
   const j = await res.json().catch(() => ({})); if (!res.ok) throw new Error(j.error || 'Sign-in failed');
-  await setToken(j.token);
+  await setToken(j.token); await setCurrentUser(j.email);
   return { email: j.email, name: j.name, missing: (back.searchParams.get('missing') || '').split(',').filter(Boolean) };
 }
-export async function signOut(revoke = false) { try { await call('POST', '/api/phone/auth/signout', { revoke }); } catch {} await SecureStore.deleteItemAsync('deviceToken'); }
+export async function signOut(revoke = false) { try { await call('POST', '/api/phone/auth/signout', { revoke }); } catch {} await SecureStore.deleteItemAsync('deviceToken'); await setCurrentUser(null); }
+// Builds a Google Sheet of trips between two dates (YYYY-MM-DD) in the user's own Drive; returns its link.
+export const exportSheet = (from: string, to: string) => call<{ id: string; url: string }>('POST', '/api/phone/export', { from, to });
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
   const token = await getToken(); if (!token) throw new Error('Sign in with Google first (Settings tab)');
