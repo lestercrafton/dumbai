@@ -236,3 +236,31 @@ test('cars are stored per user and never shared', async () => {
   await svc.saveCars(JOHN, [{ id: 'j1', name: 'Tahoe', ownership: 'personal' }]);
   assert.deepEqual((await svc.cars(JOHN)).map(c => c.name), ['Tahoe']); assert.ok(!(await svc.cars(LESTER)).some(c => c.name === 'Tahoe'));
 });
+
+test('reimbursement email carries only business trips in personal cars: no personal, unreviewed or company-car miles', async () => {
+  const { svc, sent, setNow } = setup('2026-10-20T15:00:00Z'); await withCars(svc);
+  await svc.receive(LESTER, [
+    trip({ clientId: 'b1', miles: 10, action: 'batch' }),
+    trip({ clientId: 'p1', miles: 77, category: 'personal', purpose: 'Groceries' }),
+    trip({ clientId: 'u1', miles: 55, category: null, purpose: '' }),
+    trip({ clientId: 'v1', miles: 33, carId: 'van', action: 'batch' }),
+    trip({ clientId: 'b2', miles: 20, action: 'batch', startTime: '2026-10-20T14:00:00Z', endTime: '2026-10-20T14:30:00Z' })]);
+  // explicit attempts to sound the excluded trips through Send now / Batch are refused
+  await svc.queue(LESTER, ['phone:p1', 'phone:v1']);
+  await assert.rejects(svc.send(LESTER, ['phone:p1', 'phone:u1', 'phone:v1']), /No unsent/);
+  setNow('2026-10-23T22:05:00Z'); await svc.tickAll();
+  assert.equal(sent.length, 1); const m = sent[0], all = m.subject + m.text + m.html + m.attachments.map(a => a.content).join('');
+  assert.match(m.subject, /\(30 miles \//); assert.match(m.text, /Total business miles \| 30 \|/);
+  for (const x of ['77', '55', '33', 'Groceries', 'Shop van']) assert.ok(!all.includes(x), x + ' leaked into the email');
+  const t = await svc.trips(LESTER), st = id => t.find(x => x.id === 'phone:' + id);
+  assert.ok(st('b1').reimbursedAt && st('b2').reimbursedAt); for (const id of ['p1', 'u1', 'v1']) assert.ok(!st(id).reimbursedAt && !st(id).queuedAt, id);
+  assert.equal(st('p1').category, 'personal');
+});
+
+test('a queued trip later marked personal is dropped from the Friday batch', async () => {
+  const { svc, sent, setNow } = setup(); await withCars(svc);
+  await svc.receive(LESTER, [trip({ clientId: 'b1', miles: 10, action: 'batch' }), trip({ clientId: 'b2', miles: 40, action: 'batch' })]);
+  await svc.receive(LESTER, [trip({ clientId: 'b2', miles: 40, category: 'personal' })]);
+  setNow('2026-10-23T22:05:00Z'); await svc.tickAll();
+  assert.equal(sent.length, 1); assert.match(sent[0].subject, /\(10 miles \//); assert.ok(!sent[0].text.includes('40'));
+});
