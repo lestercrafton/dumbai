@@ -4,7 +4,6 @@ import './globals.css';
 import './big-vin.css';
 import './fiji-theme.css';
 import './playbook.css';
-import HostingNotice from '@/components/hosting-notice';
 import TopLinks from '@/components/top-links';
 
 const geistSans = Geist({
@@ -52,7 +51,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TopLinks />
-        <HostingNotice />
         {children}
       </body>
     </html>

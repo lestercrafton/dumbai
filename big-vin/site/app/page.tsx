@@ -157,7 +157,6 @@ export default function Home(){
  return <main className="vin-site" id="top">
   <a href="#board" className="vin-skip-link">Skip to game board</a>
   <div className="vin-shell"><SiteHeader onBoard={()=>setTab('slate')} onResults={()=>setTab('records')}/>
-   <a className="playbook-banner" href="/notes/october-19-2026"><span className="playbook-banner-date">October 19, 2026</span><strong>The day we changed the game</strong><span>Playbook v1 is frozen. New ideas now compete in public <ArrowRight size={14} aria-hidden="true"/></span></a>
    <section id="board" className="vin-board-section" aria-label="Game board and records">
     <div className="vin-board-heading"><div><p className="vin-kicker">THE BOARD / ALL SIGNAL</p><h2>Find your game.</h2></div><p>Ranked within each sport.<br/>Every result on the record.</p></div>
     <p className="vin-board-motto">We never lose; we either win or learn.</p>
@@ -167,7 +166,6 @@ export default function Home(){
       {renderControls()}
       <div className="vin-results-callout"><div><strong>Results, right on the card.</strong><p>Wins, losses, pushes and pending picks stay visible. Records stay separate for every sport.</p></div><button className="vin-button vin-button-outline" onClick={()=>{chooseSport('all');setTab('records');}}>View all sport records <ArrowRight size={16}/></button></div>
 
-      {slate?.tuning?.id?.includes('2026-10-16')&&<p className="vin-model-update">Weights updated October 16. Picks lock at kickoff. <a href="/learning-log">What changed <ArrowUpRight size={12}/></a></p>}
       {slate?.offlineSnapshot&&<div className="vin-board-warning" role="status">Live refresh is unavailable. Schedule and scores last checked {time(slate.retrievedAt)}. Recorded model lines and ranks remain visible.</div>}
       {sport==='cfb'&&slate?.partialLiveCoverage&&!slate?.offlineSnapshot&&<details className="vin-feed-status"><summary>Some live updates unavailable</summary><p>Some date or league checks did not finish. Saved observations remain visible; refresh to try again.</p></details>}
       {renderGames()}
