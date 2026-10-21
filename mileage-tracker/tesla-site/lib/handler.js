@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const S = require('./session');
 const { allowedEmail } = require('./service');
-const { PhoneService } = require('./phone'); // WebService plus phone-trip rules (dedup, company cars, per-user Gmail)
+const { PhoneService } = require('./phone'); // WebService plus phone-trip rules (company cars, per-user Gmail)
 const { Tesla, pkce, CMD_SCOPES } = require('./tesla');
 const { HttpError } = require('./retry');
 const C = require('./commands');

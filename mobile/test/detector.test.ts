@@ -47,11 +47,9 @@ test('unknown speed (-1) falls back to distance over time', () => {
   assert.equal(out.length, 1); assert.ok(out[0].miles > 7);
 });
 test('haversine sanity: 1 degree latitude ≈ 111 km', () => { assert.ok(Math.abs(haversineM({ lat: 0, lon: 0 }, { lat: 1, lon: 0 }) - 111_195) < 50); });
-test('prompt: personal car offers send/batch; company car and Tesla are log only', () => {
-  assert.deepEqual(promptFor({ id: 'a', name: 'F-150', ownership: 'personal', isTesla: false }).actions, ['send', 'batch', 'personal']);
-  assert.deepEqual(promptFor({ id: 'b', name: 'Van', ownership: 'business', isTesla: false }).actions, ['log', 'personal']);
-  assert.equal(promptFor({ id: 'c', name: 'micro', ownership: 'personal', isTesla: true, teslaId: 1 }).reimbursable, false);
-  assert.equal(promptFor({ id: 'd', name: 'Model 3, not linked', ownership: 'personal', isTesla: true }).reimbursable, true);
+test('prompt: personal car offers send/batch; company car is log only', () => {
+  assert.deepEqual(promptFor({ id: 'a', name: 'F-150', ownership: 'personal' }).actions, ['send', 'batch', 'personal']);
+  assert.deepEqual(promptFor({ id: 'b', name: 'Van', ownership: 'business' }).actions, ['log', 'personal']);
 });
 
 test('stop sign / several 2-min lights and slow creeping never end the trip', () => {

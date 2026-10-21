@@ -42,4 +42,19 @@ export const saveTrip = (t: LocalTrip) => serial(() => write(t));
 export const patchTrip = (clientId: string, fn: (cur: LocalTrip) => LocalTrip | null) => serial(async () => {
   const cur = await trip(clientId); if (!cur) return null; const next = fn(cur); if (next) await write(next); return next; });
 export async function unsynced(): Promise<LocalTrip[]> { return (await (await db()).getAllAsync<{ json: string }>('SELECT json FROM trips WHERE synced = 0 ORDER BY startTime')).map(r => JSON.parse(r.json)); }
+// Same name + model (ignoring case and spaces) is the same car.
+export const carKey = (c: Car) => [c.name, c.model || ''].map(x => x.trim().toLowerCase().replace(/\s+/g, ' ')).join('|');
+// Points local trips at a kept car after duplicates were merged.
+export async function remapCars(remap: Record<string, string>) {
+  if (!Object.keys(remap).length) return;
+  for (const t of await trips(1000)) if (t.carId && remap[t.carId]) await patchTrip(t.clientId, cur => cur.carId && remap[cur.carId] ? { ...cur, carId: remap[cur.carId], synced: cur.category ? 0 : cur.synced } : null);
+}
+// One-time cleanup after Tesla support was removed: plain cars, and trips once "Counted by Tesla" go back to review.
+export async function migrateNoTesla() {
+  if (await getKv('migratedNoTesla', false)) return;
+  const list = await cars(); await replaceCars(list.map(({ isTesla, teslaId, ...c }: any) => c));
+  for (const t of await trips(1000)) if (t.serverStatus === 'superseded')
+    await patchTrip(t.clientId, cur => ({ ...cur, category: null, action: null, synced: 0, serverStatus: null, serverError: null }));
+  await setKv('migratedNoTesla', true);
+}
 export async function needsReviewCount() { return (await trips(500)).filter(t => !t.category).length; }

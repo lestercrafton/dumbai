@@ -12,11 +12,10 @@ Anyone with a Google account can sign in; there are no passwords or tokens to ha
 | Business, personal car | Reimbursed: **Send now** emails Sugar immediately; **Batch** goes out Friday 17:00 Central |
 | Business, company (business) car | Logged only (Drive log), never emailed |
 | Personal | Logged only |
-| Tesla picked as the car, or the trip overlaps a Tesla trip by time (±5 min) | Marked *superseded* and kept for audit; the Tesla log is the record, so miles are never counted twice. A Tesla trip that arrives later also supersedes an overlapping phone trip that hasn't been sent yet. |
 
 - Miles come from GPS (no odometer). The email lists GPS miles per trip, the IRS rate for each trip date
   ($0.725 Jan–Jun 2026, $0.76 from Jul 1 2026), and attaches a CSV. It does not mention odometer captures.
-  Batches made only of Tesla trips keep the existing odometer email.
+  The phone counts every mile it records for every car; it never looks at Tesla data. Batches made only of Tesla-tool trips keep the existing odometer email.
 - A trip is marked sent as soon as Gmail accepts the message; a per-person lock stops two sends running at once,
   and a sent trip can never be sent or queued again. Resubmitting the same trip from the phone is harmless.
 
@@ -54,4 +53,4 @@ If a user doesn't allow Gmail, the server falls back to SMTP (`SMTP_PASS_<NAME>`
 3. `npx eas-cli submit -p ios` – uploads to App Store Connect. In TestFlight, add John and Chris as internal testers.
    (Alternative without TestFlight: `--profile preview` with their device UDIDs registered via `eas device:create`.)
 4. On each phone: install from TestFlight, open Settings tab → **Sign in with Google** → allow the permissions. Add cars in the Cars tab
-   (mark company cars and Teslas). Turn on Automatic trip tracking and choose **Always** for location.
+   (mark company cars). Turn on Automatic trip tracking and choose **Always** for location.

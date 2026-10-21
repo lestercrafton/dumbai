@@ -28,7 +28,7 @@ type Answer = 'send' | 'batch' | 'log' | 'personal';
 const TABS: { k: Tab; icon: string; label: string }[] = [{ k: 'trips', icon: '🚗', label: 'Trips' }, { k: 'cars', icon: '🔑', label: 'Cars' }, { k: 'settings', icon: '⚙️', label: 'Settings' }];
 const STATUS: Record<string, [string, 'ok' | 'muted' | 'warn']> = {
   sent: ['Sent to Sugar', 'ok'], queued: ['In Friday batch', 'ok'], reimbursable: ['Business · not sent yet', 'warn'], 'log only': ['Logged · company car', 'muted'],
-  superseded: ['Counted by Tesla', 'muted'], personal: ['Personal', 'muted'], untagged: ['Needs review', 'warn'] };
+  personal: ['Personal', 'muted'], untagged: ['Needs review', 'warn'] };
 
 export default function App() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
@@ -75,7 +75,7 @@ function Main({ onSignedOut }: { onSignedOut: () => void }) {
   const syncNow = useCallback(async () => { try { const r = await API.sync(); if (r.sendError) setMsg('Email not sent: ' + r.sendError); else if (r.uploaded) setMsg(`Synced ${r.uploaded} trip${r.uploaded > 1 ? 's' : ''}`); }
     catch (e: any) { setMsg(e.message); } await reload(); }, [reload]);
 
-  useEffect(() => { (async () => { await setupNotifications(); await reload(); API.pullCars().then(reload).catch(() => {}); syncNow(); })();
+  useEffect(() => { (async () => { await setupNotifications(); await DB.migrateNoTesla().catch(() => {}); await reload(); API.pullCars().then(async list => { await reload(); if (new Set(list.map(DB.carKey)).size < list.length) await saveCars(list); }).catch(() => {}); syncNow(); })();
     const sub = Notifications.addNotificationResponseReceivedListener(r => onAction(String(r.notification.request.content.data?.clientId || ''), r.actionIdentifier));
     Notifications.getLastNotificationResponseAsync().then(r => r && onAction(String(r.notification.request.content.data?.clientId || ''), r.actionIdentifier));
     const st = AppState.addEventListener('change', x => { if (x === 'active') syncNow(); });
@@ -103,6 +103,14 @@ function Main({ onSignedOut }: { onSignedOut: () => void }) {
   }
 
   const pending = trips.filter(t => !t.category), answered = trips.filter(t => !!t.category);
+  async function saveCars(raw: Car[]) {
+          // Merge identical cars (same name + model) and move their trips to the one that stays.
+          const list: Car[] = [], remap: Record<string, string> = {};
+          for (const c of raw) { const c2 = { ...c, name: c.name.trim(), model: (c.model || '').trim() }; const dup = list.find(x => DB.carKey(x) === DB.carKey(c2)); if (dup) remap[c.id] = dup.id; else list.push(c2); }
+          const merged = raw.filter(c => c.name.trim()).length - list.length;
+          try { setCars(await API.pushCars(list)); setMsg(merged ? `Cars saved · merged ${merged} duplicate${merged > 1 ? 's' : ''}` : 'Cars saved'); }
+          catch (e: any) { await DB.replaceCars(list); setCars(list); setMsg('Saved on phone; will retry: ' + e.message); }
+          await DB.remapCars(remap); await reload(); }
   const toggleSel = (id: string) => { pick(); setSel(x => x.includes(id) ? x.filter(y => y !== id) : [...x, id]); };
   return (
     <SafeAreaView style={s.root} edges={['top']}>
@@ -124,7 +132,7 @@ function Main({ onSignedOut }: { onSignedOut: () => void }) {
           {!!answered.length && <Text style={s.section}>Recent</Text>}
           {answered.map(t => <TripCard key={t.clientId} t={t} cars={cars} lastCar={lastCar} open={open === t.clientId} onToggle={() => { pick(); setOpen(open === t.clientId ? null : t.clientId); }} onAnswer={answer} />)}
         </> : <Empty icon="🛣️" title="No drives yet" body={'Turn on automatic tracking in Settings, then just drive.\nWe’ll ask “business or personal?” when you park.'} action={{ label: 'Open Settings', onPress: () => setTab('settings') }} />)}
-        {tab === 'cars' && <Cars cars={cars} onSave={async list => { try { setCars(await API.pushCars(list)); setMsg('Cars saved'); } catch (e: any) { await DB.replaceCars(list); setCars(list); setMsg('Saved on phone; will retry: ' + e.message); } }} />}
+        {tab === 'cars' && <Cars cars={cars} onSave={saveCars} />}
         {tab === 'settings' && <Settings onMsg={setMsg} onSignedOut={onSignedOut} />}
       </ScrollView>
       <SafeAreaView edges={['bottom']} style={s.tabBar}>
@@ -170,7 +178,7 @@ function TripCard({ t, cars, lastCar, open, onToggle, onAnswer }: { t: DB.LocalT
     </View>);
 }
 
-// Car chips plus clear choices. A personal car on business shows both "Send now" and "Friday batch"; a company car or Tesla logs only.
+// Car chips plus clear choices. A personal car on business shows both "Send now" and "Friday batch"; a company car logs only.
 function AnswerPanel({ cars, carId, setCarId, current, onAnswer }: { cars: Car[]; carId: string | null; setCarId: (id: string) => void; current?: DB.LocalTrip; onAnswer: (a: Answer, carId: string | null) => void }) {
   const car = cars.find(c => c.id === carId), p = promptFor(car), logOnly = p.actions.includes('log');
   const chosen = (a: Answer) => !!current && (a === 'personal' ? current.category === 'personal' : current.category === 'business' && current.action === a);
@@ -178,7 +186,7 @@ function AnswerPanel({ cars, carId, setCarId, current, onAnswer }: { cars: Car[]
     <View style={{ marginTop: 14, gap: 10 }}>
       {cars.length > 0 ? <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
         {cars.map(c => <Pressable key={c.id} onPress={() => { pick(); setCarId(c.id); }} accessibilityState={{ selected: carId === c.id }} style={({ pressed }) => [s.chip, carId === c.id && s.chipOn, pressed && { opacity: 0.7 }]}>
-          <Text style={[s.chipTxt, carId === c.id && { color: C.brand }]}>{carId === c.id ? '✓ ' : ''}{c.name}{c.isTesla && c.teslaId ? ' · Tesla' : c.ownership === 'business' ? ' · company' : ''}</Text></Pressable>)}
+          <Text style={[s.chipTxt, carId === c.id && { color: C.brand }]}>{carId === c.id ? '✓ ' : ''}{c.name}{c.ownership === 'business' ? ' · company' : ''}</Text></Pressable>)}
       </ScrollView> : <Text style={s.muted}>Add your car in the Cars tab to log business trips.</Text>}
       {!!p.note && car && <Text style={s.muted}>{p.note}</Text>}
       {car && !logOnly ? <>
@@ -220,23 +228,43 @@ function BulkBar({ count, total, cars, lastCar, onAll, onAnswer }: { count: numb
   </View>;
 }
 
-function Cars({ cars, onSave }: { cars: Car[]; onSave: (c: Car[]) => void }) {
-  const [list, setList] = useState<Car[]>(cars); useEffect(() => setList(cars), [cars]);
-  const upd = (i: number, p: Partial<Car>) => setList(list.map((c, j) => j === i ? { ...c, ...p } : c));
-  const add = () => setList([...list, { id: 'car-' + Crypto.randomUUID().slice(0, 8), name: '', ownership: 'personal', isTesla: false }]);
+// Compact car list: one row per car (name, model, Personal/Company), tap Edit to rename, Remove to delete.
+function Cars({ cars, onSave }: { cars: Car[]; onSave: (c: Car[]) => Promise<void> }) {
+  const [list, setList] = useState<Car[]>(cars), [editing, setEditing] = useState<string | null>(null), [saving, setSaving] = useState(false);
+  useEffect(() => setList(cars), [cars]);
+  const dirty = JSON.stringify(list) !== JSON.stringify(cars);
+  const upd = (id: string, p: Partial<Car>) => setList(l => l.map(c => c.id === id ? { ...c, ...p } : c));
+  const add = () => { const id = 'car-' + Crypto.randomUUID().slice(0, 8); setList(l => [...l, { id, name: '', ownership: 'personal' }]); setEditing(id); };
+  const remove = (c: Car) => Alert.alert('Remove car?', c.name || 'This car', [{ text: 'Cancel', style: 'cancel' }, { text: 'Remove', style: 'destructive', onPress: () => { done(); setList(l => l.filter(x => x.id !== c.id)); } }]);
   if (!list.length) return <Empty icon="🚙" title="Add your car" body="Tell us what you drive so business trips are counted the right way." action={{ label: 'Add a car', onPress: add }} />;
   return (<>
-    {list.map((c, i) => <View key={c.id} style={s.card}>
-      <TextInput style={s.input} value={c.name} placeholder="Name (e.g. F-150)" placeholderTextColor={C.muted} onChangeText={v => upd(i, { name: v })} />
-      <TextInput style={[s.input, { marginTop: 8 }]} value={c.model || ''} placeholder="Model (optional)" placeholderTextColor={C.muted} onChangeText={v => upd(i, { model: v })} />
-      <Row label="Company car" hint="Logged only, no reimbursement"><Switch trackColor={{ true: C.brand }} value={c.ownership === 'business'} onValueChange={v => upd(i, { ownership: v ? 'business' : 'personal' })} /></Row>
-      <Row label="Tesla" hint={c.teslaId ? "Linked: miles come from the car, never counted twice" : "Optional. Until your Tesla is linked, phone miles count normally."}><Switch trackColor={{ true: C.brand }} value={c.isTesla} onValueChange={v => upd(i, { isTesla: v })} /></Row>
-      <Pressable style={s.link} onPress={() => Alert.alert('Remove car?', c.name, [{ text: 'Cancel' }, { text: 'Remove', style: 'destructive', onPress: () => setList(list.filter((_, j) => j !== i)) }])}><Text style={[s.linkTxt, { color: '#C92A2A' }]}>Remove</Text></Pressable>
-    </View>)}
-    <View style={{ flexDirection: 'row', gap: 10 }}>
-      <Btn alt title="Add car" onPress={add} /><Btn title="Save" onPress={() => onSave(list.filter(c => c.name.trim()))} />
+    <View style={[s.card, { paddingVertical: 4 }]}>
+      {list.map((c, i) => <View key={c.id} style={[s.carRow, i > 0 && s.carRowLine]}>
+        {editing === c.id ? <View style={{ gap: 8 }}>
+          <TextInput autoFocus style={s.input} value={c.name} placeholder="Name (e.g. Dodge Ram)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { name: v })} />
+          <TextInput style={s.input} value={c.model || ''} placeholder="Model (optional)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { model: v })} />
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}><Pressable hitSlop={8} onPress={() => { pick(); setEditing(null); }} style={press}><Text style={s.sectionAction}>Done</Text></Pressable></View>
+        </View> : <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <Pressable style={({ pressed }) => [{ flex: 1 }, pressed && { opacity: 0.6 }]} onPress={() => { pick(); setEditing(c.id); }}>
+            <Text style={s.carName} numberOfLines={1}>{c.name || 'Unnamed car'}</Text>
+            {!!c.model && <Text style={s.muted} numberOfLines={1}>{c.model}</Text>}
+          </Pressable>
+          <Pressable hitSlop={8} onPress={() => { pick(); setEditing(c.id); }} style={press} accessibilityLabel={'Edit ' + c.name}><Text style={s.iconBtn}>✎</Text></Pressable>
+          <Pressable hitSlop={8} onPress={() => remove(c)} style={press} accessibilityLabel={'Remove ' + c.name}><Text style={[s.iconBtn, { color: '#C92A2A' }]}>✕</Text></Pressable>
+        </View>}
+        <View style={[s.seg, { marginTop: 8, alignSelf: 'stretch' }]}>
+          {(['personal', 'business'] as const).map(o => <Pressable key={o} onPress={() => { if (c.ownership !== o) pick(); upd(c.id, { ownership: o }); }} accessibilityRole="button" accessibilityState={{ selected: c.ownership === o }}
+            style={({ pressed }) => [s.segItem, { flex: 1, alignItems: 'center' }, c.ownership === o && s.segOn, pressed && { opacity: 0.7 }]}>
+            <Text style={[s.segTxt, c.ownership === o && { color: C.ink }]}>{o === 'personal' ? 'Personal · reimbursed' : 'Company · log only'}</Text></Pressable>)}
+        </View>
+      </View>)}
     </View>
-    <Text style={[s.muted, { textAlign: 'center' }]}>Personal car + business trip = reimbursed.</Text>
+    <View style={{ flexDirection: 'row', gap: 10 }}>
+      <Btn alt title="+ Add car" onPress={add} />
+      <Btn title={saving ? 'Saving…' : dirty ? 'Save' : 'Saved ✓'} onPress={async () => {
+        if (saving) return; setSaving(true); setEditing(null);
+        try { await onSave(list.filter(c => c.name.trim())); } finally { setSaving(false); } }} />
+    </View>
   </>);
 }
 
@@ -303,6 +331,8 @@ const s = StyleSheet.create({
   sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, sectionAction: { color: C.brand, fontWeight: '700', fontSize: T.small + 1 },
   selRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12 }, selOn: { borderColor: C.brand, backgroundColor: C.brandSoft },
   box: { width: 26, height: 26, borderRadius: 8, borderWidth: 2, borderColor: C.line, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  carRow: { paddingVertical: 12 }, carRowLine: { borderTopWidth: 1, borderColor: C.line }, carName: { fontSize: T.body + 1, fontWeight: '700', color: C.ink },
+  iconBtn: { fontSize: 18, color: C.muted, paddingHorizontal: 6, fontWeight: '700' },
   boxOn: { backgroundColor: C.brand, borderColor: C.brand }, boxTick: { color: '#fff', fontWeight: '800' },
   btn: { flex: 1, minHeight: TAP, borderRadius: 12, backgroundColor: C.brand, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16 }, btnTxt: { color: '#fff', fontSize: T.body, fontWeight: '700' },
   input: { minHeight: TAP, backgroundColor: C.bg, borderRadius: 12, paddingHorizontal: 14, fontSize: T.body, color: C.ink },
