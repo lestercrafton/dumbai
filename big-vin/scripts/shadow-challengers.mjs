@@ -13,6 +13,8 @@ import {weatherContext} from '../lib/weather.mjs';
 import {manifestDocument,pendingDocuments,queue,readQueue,flush,PLAYBOOK_URL} from '../lib/playbook-outbox.mjs';
 import {ODDS_DIR,readOdds,snapshotRun,appendOdds,spreadObservations,spreadAt} from '../lib/odds-log.mjs';
 import {injuryContext,scoreboardLeaders} from '../lib/injuries.mjs';
+import {gameInjury} from '../site/lib/injury-lines.mjs';
+import {OUT_FILE as INJURY_FILE} from './injury-lines.mjs';
 import {readEvents,mergeEvents,writeEvents,capturePick,observeMarket,closeEvent,gradeEvents,currentPicks} from '../lib/shadow-ledger.mjs';
 
 export const REPO_LEDGER=fileURLToPath(new URL('../../playbook/ledger',import.meta.url));
@@ -49,7 +51,7 @@ async function scoreboards(sport,dates,fetchImpl){
  return {raw,games};
 }
 
-export async function runSport(sport,{manifest,events,odds=[],now=new Date().toISOString(),fetchImpl=globalThis.fetch,log=console.error}){
+export async function runSport(sport,{manifest,events,odds=[],now=new Date().toISOString(),fetchImpl=globalThis.fetch,log=console.error,injuryFile=INJURY_FILE}){
  const added=[],warnings=[];const all=()=>[...events,...added];
  const slateUrl=`${SITE}/api/slate?sport=${sport}`;
  const slate=await json(slateUrl,fetchImpl);
@@ -68,10 +70,13 @@ export async function runSport(sport,{manifest,events,odds=[],now=new Date().toI
  if((needs.has('players')||needs.has('weather'))&&dates.length){try{raw=(await scoreboards(sport,dates,fetchImpl)).raw;rawOk=true;}catch(e){warnings.push('Scoreboard unavailable, injury and weather challengers not captured this run: '+e.message);}}
  const context=needs.has('players')&&rawOk?injuryContext(sport,{fetchImpl,now,log}):null;
  const weather=needs.has('weather')&&rawOk?weatherContext({fetchImpl,log}):null;
+ let injuryTable=null;if(needs.has('injuryTable')){try{injuryTable=JSON.parse(fs.readFileSync(injuryFile,'utf8'));}catch(e){warnings.push('Injury table unavailable: '+e.message);}}
+ const abbr=t=>({WSH:'WAS',LA:'LAR',JAC:'JAX'})[t?.abbreviation]||t?.abbreviation;
  for(const g of upcoming){
   const mm=g.moneylineMarket;
   const market=mm?{provider:mm.provider,homeSpread:mm.homeSpread,homeSpreadPrice:mm.homeSpreadPrice,awaySpreadPrice:mm.awaySpreadPrice,openHomeSpread:mm.openHomeSpread,observedAt:mm.observedAt}:null;
-  const base={version:g.pickRevision?.modelVersion||g.modelVersion,predictedMargin:Number.isFinite(g.pickRevision?.predictedMargin)?g.pickRevision.predictedMargin:g.projection?.predictedHomeMargin,source:slateUrl,asOf:g.modelAsOf??slate.asOf??null};
+  // The frozen formula's own margin: the live board now adds injuries and a market check on top.
+  const base={version:g.pickRevision?.modelVersion||g.modelVersion,predictedMargin:Number.isFinite(g.baseMargin)?g.baseMargin:Number.isFinite(g.pickRevision?.predictedMargin)?g.pickRevision.predictedMargin:g.projection?.predictedHomeMargin,source:slateUrl,asOf:g.modelAsOf??slate.asOf??null};
   const r=raw.get(String(g.id));
   let players=null,wx=null;
   if(context&&r){
@@ -84,7 +89,8 @@ export async function runSport(sport,{manifest,events,odds=[],now=new Date().toI
   const lineAt=t=>{const l=spreadAt(allOdds,g.id,t);return l?{homeSpread:l.market.homeSpread,at:l.at}:null;};
   for(const v of variants){
    if(v.role==='challenger'){const need=NEEDS[v.feature];if(need==='players'&&!players||need==='weather'&&!wx)continue;}
-   const {predictedMargin,reasoning}=predict(v,{base,players,market,lineAt,firstSeen:first?{homeSpread:first.market.homeSpread,at:first.at}:null,weather:wx});
+   const injury=injuryTable?gameInjury(injuryTable,sport,abbr(g.home),abbr(g.away),Date.parse(now)):null;
+   const {predictedMargin,reasoning}=predict(v,{base,players,market,lineAt,firstSeen:first?{homeSpread:first.market.homeSpread,at:first.at}:null,weather:wx,injury});
    const e=capturePick(all(),{version:v.version,sport,game:g,predictedMargin,market,reasoning:{...reasoning,marketSource:'Big Vin slate current feed snapshot (moneylineMarket)'},at:now,eligible:!g.lowEvidence&&!g.stale});
    if(e)added.push(e);
   }

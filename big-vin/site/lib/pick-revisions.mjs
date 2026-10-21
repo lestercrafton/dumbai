@@ -1,3 +1,4 @@
+import {liveMargin} from './injury-lines.mjs';
 const at=value=>typeof value==='string'?Date.parse(value):NaN;
 const finite=Number.isFinite;
 export const PICK_PROTOCOL='pregame-revisions-v1';
@@ -11,6 +12,8 @@ export function spreadSelection(margin,homeSpread){
  const homeEdge=margin+homeSpread;
  return {side:Math.abs(homeEdge)<1e-9?null:homeEdge>0?'home':'away',edge:Math.abs(homeEdge)<1e-9?0:Math.abs(homeEdge)};
 }
+/** The model margin before injuries and the market check; older records have no separate base. */
+export const baseMargin=f=>finite(f?.baseMargin)?f.baseMargin:f?.predictedMargin;
 export function revisableForecast(f){
  return f?.cohort==='live'&&['collector','local-pregame-archive'].includes(f.origin)&&!f.paperWager
   &&finite(f.predictedMargin)&&finite(at(f.startTime))&&finite(at(f.capturedAt))&&at(f.capturedAt)<at(f.startTime);
@@ -27,7 +30,7 @@ export function validPregameQuote(f,g,now=Date.now(),lockAt=f.startTime){
   &&finite(observed)&&observed>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)&&observed<=now&&now-observed<=QUOTE_MAX_AGE;
 }
 const odds=value=>finite(value)&&Number.isInteger(value)&&Math.abs(value)>=100?value:null;
-const sameOffer=(a,b)=>['side','marketHomeSpread','odds','provider'].every(key=>a?.[key]===b?.[key]);
+const sameOffer=(a,b)=>['side','marketHomeSpread','odds','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
 
 /** Pure prospective state transition. Original forecasts are never rewritten.
  * Earliest observed kickoff and a started/unknown-status latch only tighten. */
@@ -46,9 +49,11 @@ export function advancePickState(f,previous,g,recordedAt=new Date().toISOString(
  if(closedAt||!validPregameQuote(f,g,now,lockAt))return next;
  const q=g.market;
  if(at(q.observedAt)<at(state.verifiedAt))return next;
- const selected=spreadSelection(f.predictedMargin,q.homeSpread);
+ const base=baseMargin(f),live=liveMargin({sport:f.sport,baseMargin:base,homeSpread:q.homeSpread,injury:g.injury});
+ const selected=spreadSelection(live.margin,q.homeSpread);
  const revision={id:f.id+':'+q.observedAt,forecastId:f.id,gameId:f.gameId,homeId:f.homeId,awayId:f.awayId,
-  modelVersion:f.modelVersion,predictedMargin:f.predictedMargin,marketHomeSpread:q.homeSpread,...selected,
+  modelVersion:f.modelVersion,predictedMargin:live.margin,...(live.margin!==f.predictedMargin?{baseMargin:base}:{}),
+  ...(live.injuryAdjustment!==null?{injuryAdjustment:live.injuryAdjustment,injury:g.injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:q.homeSpread,...selected,
   odds:odds(selected.side==='home'?q.homeSpreadPrice:selected.side==='away'?q.awaySpreadPrice:null),
   provider:q.provider||'Sportsbook',observedAt:q.observedAt,recordedAt,startTime:g.startTime,lockAt,sourceUrl:g.sourceUrl};
  const last=state.revisions.at(-1);
@@ -64,13 +69,13 @@ export function withPickState(f,state){
  if(!state||state.protocol!==PICK_PROTOCOL||state.forecastId!==f.id||!revisableForecast(f))return f;
  const cutoff=Math.min(at(f.startTime),at(state.lockAt));
  const revisions=state.revisions.filter(r=>r.forecastId===f.id&&r.gameId===f.gameId&&r.homeId===f.homeId&&r.awayId===f.awayId
-  &&r.predictedMargin===f.predictedMargin&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
+  &&(r.baseMargin??r.predictedMargin)===baseMargin(f)&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
   &&at(r.recordedAt)<cutoff&&at(r.observedAt)<=at(r.recordedAt)&&at(r.observedAt)>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)
-  &&r.side===spreadSelection(f.predictedMargin,r.marketHomeSpread).side);
+  &&r.side===spreadSelection(r.predictedMargin,r.marketHomeSpread).side);
  const selected=[...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1);
  const originalPick={side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,marketObservedAt:f.marketObservedAt,capturedAt:f.capturedAt,recordedAt:f.firstMarket?.recordedAt??f.capturedAt,provider:f.provider};
  const validOriginal=at(f.capturedAt)<cutoff&&(!finite(f.marketHomeSpread)||at(f.marketObservedAt)<cutoff);
- return {...f,...(selected?{side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
+ return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
   originalPick,pickRevision:selected??null,pickRevisions:state.revisions,pickLock:{lockAt:state.lockAt,closedAt:state.closedAt,verifiedAt:state.verifiedAt,protocol:PICK_PROTOCOL}};
 }
 

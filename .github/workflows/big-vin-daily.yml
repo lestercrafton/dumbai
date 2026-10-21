@@ -102,6 +102,11 @@ jobs:
       - name: Collect all sports and publish the daily journal
         if: steps.plan.outputs.journal == 'true' && !cancelled() && steps.prepare.outcome == 'success'
         run: node scripts/daily-experiment.mjs
+      - name: Build the NFL injury table
+        id: injuries
+        if: always() && steps.prepare.outcome == 'success'
+        continue-on-error: true
+        run: node scripts/injury-lines.mjs
       - name: Save odds snapshots and shadow challenger picks
         id: shadow
         if: always() && steps.prepare.outcome == 'success'
@@ -127,8 +132,8 @@ jobs:
           PUSH_TOKEN: ${{ github.token }}
         run: |
           # git add stops at the first missing path, so add each folder that exists.
-          for p in playbook/odds playbook/ledger playbook/reviews; do if test -e "$p"; then git add "$p"; fi; done
-          if git diff --cached --quiet; then echo "No new odds or shadow records."; exit 0; fi
+          for p in playbook/odds playbook/ledger playbook/reviews big-vin/data/injury-lines; do if test -e "$p"; then git add "$p"; fi; done
+          if git diff --cached --quiet; then echo "No new odds, injury or shadow records."; exit 0; fi
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -q -m "Big Vin odds snapshots and shadow picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           remote="https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
           for attempt in 1 2 3; do

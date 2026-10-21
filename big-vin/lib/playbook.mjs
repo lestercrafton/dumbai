@@ -14,7 +14,7 @@ export function variantsFor(manifest,sport,at){
  return [{version:control.version,role:'control',feature:null,parameters:null,liveModel:control.liveModel},
   ...manifest.challengers.filter(c=>c.sport===sport&&c.status!=='retired'&&Date.parse(c.registeredAt)<=Date.parse(at)).map(c=>({...c,role:'challenger'}))];
 }
-export const NEEDS={'qb-out-unpriced':'players','scorer-out-unpriced':'players','line-move':'market','weather-severe':'weather'};
+export const NEEDS={'injury-values':'injuryTable','injury-gap-guard':'injuryTable','market-blend':'market','qb-out-unpriced':'players','scorer-out-unpriced':'players','line-move':'market','weather-severe':'weather'};
 
 /** Out-player adjustment reduced by any line move toward that result since the news. */
 function unpricedOut({players,parameters,market,lineAt},points,label){
@@ -37,7 +37,22 @@ function unpricedOut({players,parameters,market,lineAt},points,label){
  }
  return {delta,adjustments};
 }
+import {liveMargin} from '../site/lib/injury-lines.mjs';
+const injuryAdjustments=injury=>injury?['home','away'].flatMap(side=>(injury[side].items||[]).map(i=>({input:'Unavailable starter',team:side,...i}))):[];
 export const FEATURES={
+ // Starter-vs-backup QB value from nflverse EPA plus small fixed values for other starters (big-vin/data/injury-lines).
+ 'injury-values':({injury})=>injury?{delta:injury.homeDelta,adjustments:injuryAdjustments(injury),note:`Injury table ${injury.tableAt}.`}:{delta:0,adjustments:[],note:'No fresh injury table for this game.'},
+ // Injury values, then a gap of 4+ points (NFL) vs the market with no injury explanation is halved toward the market.
+ 'injury-gap-guard':({base,injury,market,parameters})=>{
+  const live=liveMargin({sport:parameters.sport,baseMargin:base.predictedMargin,homeSpread:market?.homeSpread,injury});
+  return {delta:live.margin-base.predictedMargin,adjustments:[...injuryAdjustments(injury),...(live.marketCheck?[{input:'Market gap check',...live.marketCheck}]:[])],note:injury?null:'No fresh injury table; market check only.'};
+ },
+ // Blend the model margin with the market's implied margin.
+ 'market-blend':({base,market,parameters})=>{
+  if(!finite(market?.homeSpread))return {delta:0,adjustments:[],note:'No current spread.'};
+  const blended=(1-parameters.marketWeight)*base.predictedMargin-parameters.marketWeight*market.homeSpread;
+  return {delta:blended-base.predictedMargin,adjustments:[{input:'Market implied margin',currentHomeSpread:market.homeSpread,marketWeight:parameters.marketWeight,effectOnHomeMargin:blended-base.predictedMargin}]};
+ },
  'qb-out-unpriced':ctx=>unpricedOut(ctx,ctx.parameters.starterOutPoints,'Season passing leader out'),
  'scorer-out-unpriced':ctx=>unpricedOut(ctx,ctx.parameters.pointsPerPlayer,'Season scoring leader out'),
  // Credit the market's move from the earliest known line: smart early money is information.
@@ -58,10 +73,10 @@ export const FEATURES={
 };
 
 /** Build one version's prediction and reasoning record for a game. */
-export function predict(variant,{base,players,market,lineAt,firstSeen,weather}){
+export function predict(variant,{base,players,market,lineAt,firstSeen,weather,injury}){
  const inputs={baseModel:base.version,basePredictedHomeMargin:base.predictedMargin,baseSource:base.source,baseAsOf:base.asOf??null};
  if(variant.role==='control'||!finite(base.predictedMargin))return {predictedMargin:base.predictedMargin,reasoning:{feature:null,inputs,adjustments:[],totalAdjustment:0}};
- const r=FEATURES[variant.feature]({base,players,market,lineAt,firstSeen,weather,parameters:variant.parameters});
+ const r=FEATURES[variant.feature]({base,players,market,lineAt,firstSeen,weather,injury,parameters:variant.parameters});
  if(NEEDS[variant.feature]==='players')inputs.keyPlayers=['home','away'].map(side=>({team:side,players:(players?.[side]?.players||[]).map(p=>({name:p.name,athleteId:p.athleteId,leader:p.leader,leaderSource:p.source,out:p.out})),inputs:players?.[side]?.inputs??null,note:players?.[side]?.note??null}));
  if(NEEDS[variant.feature]==='weather')inputs.weather=weather?{status:weather.status,venue:weather.venue?.name??null,flags:weather.flags??[],source:weather.source??null,observedAt:weather.observedAt??null}:null;
  return {predictedMargin:base.predictedMargin+r.delta,reasoning:{feature:variant.feature,parameters:variant.parameters,inputs,adjustments:r.adjustments,totalAdjustment:r.delta,note:r.note??null}};

@@ -131,6 +131,8 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
         {liveResult && livePick.state==='not-covering' && <span>Net {scoreUnit(sport)} needed to move past the spread.</span>}
       </div>
       {(game.stale || game.lowEvidence || (!game.rank && game.rankReason)) && <p className="vin-data-note">{game.stale ? 'Waiting for a verified current quote. Outside ranked picks.' : game.lowEvidence ? 'Limited rating evidence. Included in full-card results; outside ranked picks.' : game.rankReason}</p>}
+      {game.marketCheck?.review && <p className="vin-data-note">Review: {game.marketCheck.note}</p>}
+      {game.injury && Math.abs(game.injuryAdjustment??0)>=0.5 && <p className="vin-data-note">Injuries move this line {pointValue(Math.abs(game.injuryAdjustment))} toward {teamCode(game[game.injuryAdjustment>0?'home':'away'])}.</p>}
       <details className="vin-game-details"><summary>Behind the line <CfbNewsFlag gameId={game.id} sport={sport}/><ChevronDown size={15}/></summary><div>
         <p>{game.modelLabel || 'Experimental ratings'} · results before {game.modelAsOf || 'the model cutoff'}.</p>
         <p>Source: {game.market?.provider || 'No market provider returned'}.{game.market?.observedAt ? ' Price observed ' + centralTime(game.market.observedAt) + '.' : ''}</p>
@@ -139,6 +141,8 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
           <li>{centralTime(game.originalPick.recordedAt||game.originalPick.capturedAt)} · Original: {game.originalPick.side?`${teamCode(game[game.originalPick.side])} ${handicap(game.originalPick.marketHomeSpread*(game.originalPick.side==='away'?-1:1))}`:'No pick'}</li>
           {game.pickRevisions.map((revision:Row)=><li key={revision.id}>{centralTime(revision.recordedAt)} · {revision.side?`${teamCode(game[revision.side])} ${handicap(revision.marketHomeSpread*(revision.side==='away'?-1:1))}`:'No edge · Pass'} · {pointValue(revision.edge)} {shortScoreUnit(sport)} edge{Date.parse(revision.recordedAt)>=Date.parse(game.pickLock.lockAt)?' · Excluded after schedule correction':''}</li>)}
         </ol></details>}
+        {game.injury && <p>Injuries: {(['away','home'] as const).map(side=>`${teamCode(game[side])} ${(game.injury[side].items||[]).filter((i:Row)=>i.points>=0.1).map((i:Row)=>`${i.player} (${i.position}, ${i.status}${i.replacement?`, ${i.replacement} starts`:''}) ${pointValue(i.points)}`).join('; ')||'none that move the line'}`).join(' · ')}. Base model margin {pointValue(game.baseMargin??0)} for {teamCode(game.home)}; injury effect {game.injuryAdjustment>0?'+':''}{pointValue(game.injuryAdjustment)}.</p>}
+        {game.marketCheck && !game.marketCheck.review && <p>{game.marketCheck.note}</p>}
         {game.forecastCapturedAt && <p>{game.forecastOrigin === 'cfb-reconstructed-2026-09-26' ? 'Reconstructed' : 'Forecast saved'} {centralTime(game.forecastCapturedAt)}.</p>}
         {game.historyRankBasis && <p>Board rank: {game.rank?`#${game.rank}`:'unranked'} · Saved-card rank: {game.historyCardRank?`#${game.historyCardRank}`:'unranked'}. Tracked Top cards use the saved-card rank; search keeps the board rank unchanged.</p>}
         {game.firstMarket && <p>First price captured {centralTime(game.firstMarket.observedAt)}. The revision history retains earlier prices.</p>}

@@ -271,6 +271,52 @@
    "registeredAt": "2026-10-19T00:00:00-05:00",
    "status": "shadow",
    "why": "Outdoor kickoff-hour forecast (wind, gusts, precipitation, cold) compresses the margin toward zero."
+  },
+  {
+   "version": "bv-nfl-ch-injury-values-2026-10-21",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "injury-values",
+   "parameters": {},
+   "registeredAt": "2026-10-20T19:30:00-05:00",
+   "status": "shadow",
+   "why": "Adds the injury table to the frozen NFL formula: starting QB vs projected backup from nflverse EPA/play (shrunk), plus small fixed values for other starters. Out/IR/Doubtful full, Questionable 25%."
+  },
+  {
+   "version": "bv-nfl-ch-injury-gap-guard-2026-10-21",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "injury-gap-guard",
+   "parameters": {
+    "sport": "nfl"
+   },
+   "registeredAt": "2026-10-20T19:30:00-05:00",
+   "status": "shadow",
+   "why": "Injury values, then any spread 4+ points from the market with no injury explanation has its edge halved toward the market. This mirrors the live board line from Oct 21."
+  },
+  {
+   "version": "bv-nfl-ch-market-blend-2026-10-21",
+   "sport": "nfl",
+   "base": "bv-nfl-pb1",
+   "feature": "market-blend",
+   "parameters": {
+    "marketWeight": 0.5
+   },
+   "registeredAt": "2026-10-20T19:30:00-05:00",
+   "status": "shadow",
+   "why": "Half the model margin, half the market implied margin: tests whether the ratings add anything on top of the market."
+  },
+  {
+   "version": "bv-cfb-ch-market-blend-2026-10-21",
+   "sport": "cfb",
+   "base": "bv-cfb-pb1",
+   "feature": "market-blend",
+   "parameters": {
+    "marketWeight": 0.5
+   },
+   "registeredAt": "2026-10-20T19:30:00-05:00",
+   "status": "shadow",
+   "why": "Half the model margin, half the market implied margin: tests whether the ratings add anything on top of the market."
   }
  ],
  "promotion": {
@@ -324,6 +370,11 @@
    "date": "2026-10-19",
    "version": "playbook-v1",
    "change": "Baseline frozen; challenger registry and append-only odds log started."
+  },
+  {
+   "date": "2026-10-21",
+   "version": "playbook-v1 live board update",
+   "change": "NFL live lines add injury values (starting QB vs projected backup from nflverse EPA/play, smaller fixed values for other starters, ESPN status). NFL and CFB lines 4+/7+ points from the market with no injury explanation have their edge halved toward the market and are marked for review. Applies to revisions recorded from Oct 21 on; earlier picks are unchanged. bv-*-pb1 keeps the frozen formula without these steps for comparison."
   }
  ],
  "challengerNote": "One pre-set size per feature, chosen before any forward results and not fitted to outcomes. No parameter-reshuffle challengers: the 2021-2026 NFL walk-forward (/workspace/walkforward, 423 proposals) showed reshuffled Big Vin knobs do not persist out of sample. Challengers must use information the market may not have priced: injury/lineup news timed against line moves, early-line movement, weather. NHL and MLB lines are fixed 1.5 puck/run lines, so only the control mirror runs there for now.",

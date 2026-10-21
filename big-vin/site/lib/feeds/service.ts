@@ -13,6 +13,7 @@ import {historyModelForGame} from '../tracked-history.mjs';
 import {savedBoardHistory,canProjectUncapturedGame} from '../saved-board-history.mjs';
 import {mergeSavedBoard,rangeDates} from '../collector-sources.mjs';
 import {hasLimitedData} from '../ranking.mjs';
+import {INJURY_TABLE_URL,INJURY_SPORTS,gameInjury,liveMargin} from '../injury-lines.mjs';
 const DAY=86400000;
 const NFL_URL='https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
 const num=(v:unknown)=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v))?Number(v):null;
@@ -58,6 +59,12 @@ export async function scoreboard(sport:string,startDate:string,endDate=startDate
   return {...snap,offlineSnapshot:true,retrievedAt:boards.map(b=>b.retrievedAt).sort().at(-1)||snap.retrievedAt,warnings:[...new Set(['Server feed unavailable. Showing the latest saved observations; browser refresh attempts the current feed.',...boards.flatMap(b=>b.warnings||[])])],games};
  }
 }
+/** Injury table built on GitHub Actions; a missing table means no adjustment, never an error. */
+export async function injuryTable(sport:string){
+ if(!INJURY_SPORTS.has(sport))return null;
+ try{return await cached('injury-lines:'+sport,600,async()=>{const r=await fetch(INJURY_TABLE_URL,{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Injury table returned ${r.status}`);return r.json();});}
+ catch(e){console.error('Injury table unavailable',e);return null;}
+}
 async function nflHistory(){return cached('nfl:history',21600,async()=>{const retrievedAt=new Date().toISOString();const rows=parseCsv(await textAt(NFL_URL));return {retrievedAt,sourceUrl:NFL_URL,source:'nflverse game data',warnings:[],games:rows.filter((r:any)=>Number(r.season)>=2015).map((r:any)=>({id:r.game_id,date:r.gameday,homeId:nflId(r.home_team),awayId:nflId(r.away_team),homeScore:num(r.home_score),awayScore:num(r.away_score),neutral:r.location==='Neutral',restDiff:Math.max(-7,Math.min(7,(num(r.home_rest)??7)-(num(r.away_rest)??7))),season:Number(r.season),week:Number(r.week)}))};});}
 export async function persistFinals(sport:string,boards:any[]){
  const games=boards.flatMap(b=>b.games||[]).filter(g=>g.completed&&g.seasonType!==1&&!g.modelExcludedReason&&g.startTime&&Date.parse(g.startTime)<Date.now()).map(canonical);
@@ -86,7 +93,8 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  if(!Object.hasOwn(SPORT_PATHS,sport))throw new Error('Unsupported sport');
  try{await refreshLiveResults(sport);}catch(e){console.error('Slate finals check unavailable',e);}
  const endDate=day(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*DAY);
- const [board,hist,rawForecasts]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false)]);
+ const [board,hist,rawForecasts,injuries]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false),injuryTable(sport)]);
+ const injuryFor=(g:any)=>{const c=canonical({...g,sport});return gameInjury(injuries,sport,c.homeId,c.awayId);};
  let forecasts=rawForecasts;
  const now=sportsDay();const asOf=date<now?date:now;
  const registry=historicalModelSpecs(sport);
@@ -115,15 +123,16 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
     if(!Number.isFinite(projection?.predictedHomeMargin))return [];
     const capturedAt=new Date().toISOString(),q=g.market;
     const fresh=q?.timing==='current-displayed-snapshot'&&Number.isFinite(q.homeSpread)&&Date.parse(q.observedAt)<=Date.parse(capturedAt)&&Date.parse(capturedAt)-Date.parse(q.observedAt)<=1800000;
-    const selection=spreadSelection(projection.predictedHomeMargin,fresh?q.homeSpread:null);
+    const injury=injuryFor(g),live=liveMargin({sport,baseMargin:projection.predictedHomeMargin,homeSpread:fresh?q.homeSpread:null,injury});
+    const selection=spreadSelection(live.margin,fresh?q.homeSpread:null);
     return [{id,gameId:g.id,sport,season:g.season,seasonType:g.seasonType,postseason:g.postseason??null,week:g.week,weekKey:reportingWeek(g),cohort:'live',origin:'collector',startTime:g.startTime,capturedAt,
      rank:null,rankBasis:'First server pregame capture',projection,ratingCoverage:projection.ratingCoverage??null,home:g.home.name,away:g.away.name,homeId:base.homeId,awayId:base.awayId,
-     predictedMargin:projection.predictedHomeMargin,marketHomeSpread:fresh?q.homeSpread:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
+     predictedMargin:live.margin,...(live.margin!==projection.predictedHomeMargin?{baseMargin:projection.predictedHomeMargin}:{}),...(injury?{injuryAdjustment:live.injuryAdjustment,injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:fresh?q.homeSpread:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
      marketObservedAt:fresh?q.observedAt:null,provider:fresh?q.provider:null,sourceUrl:g.sourceUrl,trainingCutoff:asOf,modelVersion:gameSpec.id,parameters:fitted.config,homeAdvantage:fitted.homeAdvantage,restCoefficient:fitted.restCoefficient,trainingGames:fitted.trainingGames,lastTrainingDate:fitted.lastTrainingDate}];
    });
    if(initial.length){await saveForecasts(initial,true);forecasts=await readForecastRecords(sport,false);}
   }
-  await capturePickRevisions(forecasts,board.games.map((g:any)=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId})));
+  await capturePickRevisions(forecasts,board.games.map((g:any)=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId,injury:injuryFor(g)})));
  }
  const states=await pickStates(sport);
  forecasts=forecasts.map(f=>withPickState(f,states.get(f.id)));
@@ -150,6 +159,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  const boardComplete=trustedBoard&&!board.offlineSnapshot&&board.partialLiveCoverage!==true;
  const offSchedule=(f:any)=>boardComplete&&f.postseason?.ifNecessary===true&&f.result==null;
  for(const f of coverageRecords){const id=f.gameId;if(!gameMap.has(id))gameMap.set(id,{id,sport,startTime:f.startTime,season:f.season,seasonType:f.seasonType,week:f.week,home:{id:f.homeId,name:f.home},away:{id:f.awayId,name:f.away},status:f.result?.status==='completed'?'completed':f.result?.status==='void'?'cancelled':Date.parse(f.startTime)>Date.now()?(offSchedule(f)?'not-on-schedule':'scheduled'):'awaiting-update',completed:f.result?.status==='completed',homeScore:f.result?.homeScore,awayScore:f.result?.awayScore,sourceUrl:f.result?.sourceUrl||f.sourceUrl,retrievedAt:f.result?.observedAt||f.capturedAt,market:null});}
+ const withInjury=(p:any,g:any)=>{const injury=injuryFor(g);if(!injury||!Number.isFinite(p?.predictedHomeMargin))return p;const m=p.predictedHomeMargin+injury.homeDelta;return {...p,baseHomeMargin:p.predictedHomeMargin,injuryAdjustment:injury.homeDelta,injury,predictedHomeMargin:m,fairHomeSpread:-m,homeEdgePoints:p.marketHomeSpread===null?null:m+p.marketHomeSpread};};
  const matches=[...gameMap.values()].map((g:any)=>{
   const f=saved.get(g.id);const base=canonical(g);const eligible=eligibleForModel(g,spec);
   const gameSpec=tracked?historyModelForGame({...g,sport},registry):eligible?spec:modelSpec(sport,MODEL_VERSION);
@@ -161,7 +171,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const paper=f?.paperWager??null;
   const market=archived?Number.isFinite(f.marketHomeSpread)?{provider:f.provider||'Saved market',homeSpread:f.marketHomeSpread,awaySpread:-f.marketHomeSpread,homeSpreadPrice:f.side==='home'?f.odds:null,awaySpreadPrice:f.side==='away'?f.odds:null,observedAt:f.marketObservedAt}:paper?{provider:paper.kind==='archived-opening-spread'?'DraftKings opener':'Paper pick’em',homeSpread:paper.homeSpread,awaySpread:-paper.homeSpread,homeSpreadPrice:paper.side==='home'?paper.odds:null,awaySpreadPrice:paper.side==='away'?paper.odds:null,observedAt:paper.retrievedAt}:null:g.market;
   const project=sport==='cfb'?projectCollegeGame:projectGame;
-  const projection=archived?{...f.projection,predictedHomeMargin:f.predictedMargin,fairHomeSpread:-f.predictedMargin,homeEdgePoints:Number.isFinite(f.marketHomeSpread)?f.predictedMargin+f.marketHomeSpread:paper?.kind==='archived-opening-spread'?f.predictedMargin+paper.homeSpread:null,homeAdvantage:f.homeAdvantage??f.projection?.homeAdvantage}:canProjectUncapturedGame(g)?project(base,tracked?modelForGame(gameSpec):eligible?model:baseline):null;
+  const projection=archived?{...f.projection,predictedHomeMargin:f.predictedMargin,fairHomeSpread:-f.predictedMargin,homeEdgePoints:Number.isFinite(f.marketHomeSpread)?f.predictedMargin+f.marketHomeSpread:paper?.kind==='archived-opening-spread'?f.predictedMargin+paper.homeSpread:null,homeAdvantage:f.homeAdvantage??f.projection?.homeAdvantage}:canProjectUncapturedGame(g)?withInjury(project(base,tracked?modelForGame(gameSpec):eligible?model:baseline),g):null;
   const upcoming=g.status==='scheduled'&&Date.parse(g.startTime)>Date.now();
   const actionable=upcoming&&!!f&&actionablePick(f,{...g,homeId:base.homeId,awayId:base.awayId});
   const stale=upcoming?!actionable:!archived&&!!market&&Date.now()-Date.parse(market.observedAt)>30*60*1000;
@@ -170,7 +180,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:homeEdge>0?'home':'away');
   const lowEvidence=hasLimitedData({sport,projection});
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.
-  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:g.status==='not-on-schedule'?'If-necessary playoff game no longer on the league schedule. No pick.':lowEvidence?'Picks with limited data':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
+  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,injury:f?.injury??projection?.injury??null,injuryAdjustment:f?.injuryAdjustment??projection?.injuryAdjustment??null,baseMargin:f?.baseMargin??projection?.baseHomeMargin??null,marketCheck:f?.marketCheck??null,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:g.status==='not-on-schedule'?'If-necessary playoff game no longer on the league schedule. No pick.':lowEvidence?'Picks with limited data':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
  });
  matches.sort((a:any,b:any)=>(a.lowEvidence?1:0)-(b.lowEvidence?1:0)||(b.edge??-1)-(a.edge??-1)||String(a.startTime).localeCompare(String(b.startTime))||a.id.localeCompare(b.id));
  let rank=0;for(const g of matches)if(g.edge!==null&&g.edge>0&&g.side&&!g.stale&&!g.lowEvidence)g.rank=++rank;

@@ -77,7 +77,7 @@ test('challengers only use information features and record their inputs',()=>{
  assert.deepEqual(variantsFor(m,'nfl','2026-10-18T12:00:00Z'),[]);
  const v=variantsFor(m,'nfl','2026-10-19T12:00:00Z');
  assert.equal(v[0].version,'bv-nfl-pb1');assert.deepEqual(v.slice(1).map(x=>x.feature).sort(),['line-move','qb-out-unpriced','weather-severe']);
- for(const c of m.challengers)assert.ok(['qb-out-unpriced','scorer-out-unpriced','line-move','weather-severe'].includes(c.feature));
+ for(const c of m.challengers)assert.ok(['qb-out-unpriced','scorer-out-unpriced','line-move','weather-severe','injury-values','injury-gap-guard','market-blend'].includes(c.feature));
  const base={version:'live',predictedMargin:4,source:'slate'};
  const qb=v.find(x=>x.feature==='qb-out-unpriced');
  const players={home:{players:[{name:'Q',athleteId:'9',out:true,evidence:[{effectiveOut:true,source:'espn-team-news',published:'2026-10-21T00:00:00Z'}]}]},away:{players:[]}};

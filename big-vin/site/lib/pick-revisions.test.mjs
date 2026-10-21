@@ -6,6 +6,7 @@ import {gradeForecast,summarizeForecasts} from './results.mjs';
 import {summarizeSpreadPicks} from './spread-record.mjs';
 import {rankCardHistory} from './ranked-card-summary.mjs';
 import {featuredGame} from './presentation.mjs';
+import {liveMargin} from './injury-lines.mjs';
 const t='2026-10-23T16:00:00.000Z',start='2026-10-23T17:00:00.000Z';
 const f=(sport='cfb',more={})=>({id:'ridge-v1:'+sport+':123',gameId:'123',sport,season:2026,weekKey:'2026-10-19',cohort:'live',origin:'collector',modelVersion:'ridge-v1',
  homeId:'H',awayId:'A',home:'Baylor',away:'TCU',predictedMargin:5.4,marketHomeSpread:-5.5,side:'away',odds:-110,marketObservedAt:'2026-10-22T15:00:00.000Z',capturedAt:'2026-10-22T15:01:00.000Z',startTime:start,...more});
@@ -18,7 +19,7 @@ test('all seven sports flip the actionable team and keep market/fair signs consi
   const original=f(sport,{predictedMargin:margin}),game=g(sport,spread),before=structuredClone(original);
   const state=advancePickState(original,null,game,t),current=withPickState(original,state);
   assert.ok(actionablePick(current,game,Date.parse(t)));
-  const lines=displayLines(row(current,game)),selected=spreadSelection(margin,spread);
+  const lines=displayLines(row(current,game)),selected=spreadSelection(liveMargin({sport,baseMargin:margin,homeSpread:spread}).margin,spread);
   assert.equal(lines.side,selected.side);
   if(selected.side){assert.ok(Math.abs(lines.marketLine-lines.fairLine-selected.edge)<1e-9);assert.ok(selected.edge>0);}
   else assert.equal(lines.pick,null);
