@@ -1,11 +1,11 @@
-// Phone (iPhone) trips on top of WebService: per-user car list tagged personal/business/Tesla, trip intake from the
-// app, Tesla dedup, reimbursement only for business trips in personal cars, email sent through the Gmail API as the
+// Phone (iPhone) trips on top of WebService: per-user car list tagged personal/business, trip intake from the
+// app (the phone counts every mile it records; it never consults Tesla data), reimbursement only for business trips in personal cars, email sent through the Gmail API as the
 // signed-in Google user (SMTP only as a fallback), GPS-mode email, and a monthly log CSV in the user's own Drive.
 const C = require('./core');
 const { WebService, K } = require('./service');
 const { withRetry, HttpError } = require('./retry');
 const { gpsEmail, ymd } = require('./gpsmail');
-const { supersedeReason, overlaps, reimbursable, isTeslaTrip } = require('./dedup');
+const { reimbursable, isTeslaTrip } = require('./dedup');
 const { logCsv } = require('./log');
 const { Google } = require('./google');
 
@@ -49,18 +49,26 @@ class PhoneService extends WebService {
     return this.transport ? { t: this.transport, own: false } : null;
   }
   // ---- cars
-  async cars(email) { return (await this.vehicles(email)).map(v => ({ ...v, ownership: v.ownership || 'personal', isTesla: !!(v.isTesla || v.vin && /tesla/i.test(v.model || '')) })); }
+  // Cars as the phone sees them: plain personal/company cars. Cars the driver removed in the app stay hidden.
+  async cars(email) { return (await this.vehicles(email)).filter(v => !v.phoneHidden).map(({ isTesla, ...v }) => ({ ...v, ownership: v.ownership || 'personal' })); }
   async saveCars(email, list) {
     if (!Array.isArray(list) || list.length > 50) throw new HttpError(400, 'cars must be a list');
-    const cur = await this.vehicles(email), out = [];
+    const cur = await this.vehicles(email), out = [], remap = {};
+    const keyOf = c => [c.name, c.model || ''].map(x => String(x).trim().toLowerCase().replace(/\s+/g, ' ')).join('|');
     for (const c of list) {
-      const id = String(c.id || '').slice(0, 64) || 'car' + Date.now().toString(36) + out.length; if (!c.name) throw new HttpError(400, 'Each car needs a name');
-      const old = cur.find(v => v.id === id) || {};
-      out.push({ ...old, id, name: String(c.name).slice(0, 60), model: String(c.model ?? old.model ?? '').slice(0, 80), vin: String(c.vin ?? old.vin ?? '').slice(0, 20),
-        ownership: OWN.includes(c.ownership) ? c.ownership : 'personal', isTesla: !!c.isTesla, owner: old.owner || (await this.user(email)).name.split(' ')[0], ownerEmail: email });
+      const id = String(c.id || '').slice(0, 64) || 'car' + Date.now().toString(36) + out.length; if (!c.name || !String(c.name).trim()) throw new HttpError(400, 'Each car needs a name');
+      const dup = out.find(x => keyOf(x) === keyOf(c)); if (dup) { if (dup.id !== id) remap[id] = dup.id; continue; } // same name + model saved twice
+      const old = cur.find(v => v.id === id) || {}; const { isTesla, phoneHidden, ...keep } = old;
+      out.push({ ...keep, id, name: String(c.name).trim().slice(0, 60), model: String(c.model ?? old.model ?? '').trim().slice(0, 80), vin: String(c.vin ?? old.vin ?? '').slice(0, 20),
+        ownership: OWN.includes(c.ownership) ? c.ownership : 'personal', owner: old.owner || (await this.user(email)).name.split(' ')[0], ownerEmail: email });
     }
-    for (const v of cur) if (v.teslaId && !out.some(x => x.id === v.id)) out.push(v); // never drop a connected Tesla
-    await this.db.set(K.veh(email), out); return this.cars(email);
+    // Cars linked to the separate Tesla tool keep their record for that tool, just hidden from the phone.
+    for (const v of cur) if (v.teslaId && !out.some(x => x.id === v.id)) out.push({ ...v, phoneHidden: true });
+    await this.db.set(K.veh(email), out);
+    if (Object.keys(remap).length) { const trips = await this.trips(email); let ch = false;
+      for (const t of trips) if (remap[t.vehicleId]) { t.vehicleId = remap[t.vehicleId]; ch = true; }
+      if (ch) await this.db.set(K.trips(email), trips); }
+    return this.cars(email);
   }
 
   // ---- intake from the phone. Idempotent per clientId; resubmits only update tags of unsent trips.
@@ -81,13 +89,15 @@ class PhoneService extends WebService {
         if (p.route) t.route = String(p.route).slice(0, 300);
         const car = vehicles.find(v => v.id === t.vehicleId);
         t.logOnly = !!(car && car.ownership === 'business');
-        const sup = supersedeReason(t, trips, vehicles); if (sup) Object.assign(t, sup); else { delete t.supersededBy; delete t.reason; }
-        if (t.category !== 'business' || t.supersededBy || t.logOnly) delete t.queuedAt;
+        delete t.supersededBy; delete t.reason; delete t.teslaConflict; // phone miles always count
+        if (t.category !== 'business' || t.logOnly) delete t.queuedAt;
       }
       const ok = reimbursable(t, vehicles) && !t.reimbursedAt;
       if (ok && p.action === 'send') toSend.push(t.id); else if (ok && p.action === 'batch' && !t.queuedAt) toQueue.push(t.id);
-      results.push({ clientId: cid, id, status: this.status(t, vehicles).status, supersededBy: t.supersededBy });
+      results.push({ clientId: cid, id, status: this.status(t, vehicles).status });
     }
+    // One-time cleanup: phone trips once marked "Counted by Tesla" count again (unsent ones only).
+    for (const t of trips) if (t.source === 'phone-gps' && t.supersededBy && !t.reimbursedAt) { delete t.supersededBy; delete t.reason; }
     await this.db.set(K.trips(email), trips);
     if (toQueue.length) await this.queue(email, toQueue);
     let sent = null, sendError = null;
@@ -108,16 +118,6 @@ class PhoneService extends WebService {
     return { status: 'reimbursable', rate, amount };
   }
 
-  // A Tesla trip arriving after a phone trip supersedes the overlapping phone trip (unless it was already sent).
-  async onTripEnd(email, vehicle, trip) {
-    const t = await super.onTripEnd(email, vehicle, trip); if (!t) return t;
-    const trips = await this.trips(email); let changed = false;
-    for (const p of trips) if (p.source === 'phone-gps' && !p.supersededBy && overlaps(p, t)) {
-      if (p.reimbursedAt) p.teslaConflict = t.id; else { p.supersededBy = t.id; p.reason = 'Overlaps a Tesla trip'; delete p.queuedAt; }
-      changed = true; }
-    if (changed) await this.db.set(K.trips(email), trips);
-    return t;
-  }
   async queue(email, ids) { const vs = await this.cars(email), ok = (await this.trips(email)).filter(t => ids.includes(t.id) && (isTeslaTrip(t) || reimbursable({ ...t, category: 'business' }, vs))).map(t => t.id);
     return super.queue(email, ok); }
 

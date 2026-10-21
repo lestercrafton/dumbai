@@ -65,37 +65,35 @@ test('personal trips are not reimbursed', async () => {
   assert.equal(r.results[0].status, 'personal'); assert.equal(sent.length, 0);
 });
 
-test('Tesla dedup: linked Tesla selected on the phone => superseded and kept', async () => {
+test('phone miles always count: a car with a Tesla link is reimbursed like any personal car', async () => {
   const { svc, db, sent } = setup(); await withCars(svc);
   await db.set('vehicles:' + LESTER, (await db.get('vehicles:' + LESTER)).map(v => v.id === 'micro' ? { ...v, teslaId: 1 } : v));
   const r = await svc.receive(LESTER, [trip({ carId: 'micro', action: 'send' })]);
-  assert.equal(r.results[0].status, 'superseded'); assert.equal(sent.length, 0);
-  assert.equal((await svc.trips(LESTER)).length, 1);
+  assert.equal(r.results[0].status, 'sent'); assert.equal(sent.length, 1);
+  assert.ok(!(await svc.cars(LESTER)).some(c => 'isTesla' in c));
 });
 
-test('No Tesla linked: a car marked Tesla still counts phone miles normally', async () => {
-  const { svc, sent } = setup(); await withCars(svc);
-  const r = await svc.receive(LESTER, [trip({ carId: 'micro', action: 'send' })]);
-  assert.notEqual(r.results[0].status, 'superseded'); assert.equal(sent.length, 1);
-});
-
-test('Tesla dedup: overlap within ±5 min of a logged Tesla trip => superseded', async () => {
+test('phone trips are never superseded by overlapping Tesla trips', async () => {
   const { svc, db, sent } = setup(); await withCars(svc);
-  await db.set('trips:' + LESTER, [{ id: 'micro:t1', source: 'tesla', vehicleId: 'micro', startTime: '2026-10-19T14:33:00Z', endTime: '2026-10-19T15:00:00Z', miles: 20, startOdo: 1, endOdo: 21, category: null }]);
+  await db.set('trips:' + LESTER, [{ id: 'micro:t1', source: 'tesla', vehicleId: 'micro', startTime: '2026-10-19T14:05:00Z', endTime: '2026-10-19T14:25:00Z', miles: 20, startOdo: 1, endOdo: 21, category: null }]);
   const r = await svc.receive(LESTER, [trip({ action: 'send' })]);
-  assert.equal(r.results[0].status, 'superseded'); assert.equal(r.results[0].supersededBy, 'micro:t1'); assert.equal(sent.length, 0);
-  const far = await svc.receive(LESTER, [trip({ clientId: 'c9', startTime: '2026-10-19T12:00:00Z', endTime: '2026-10-19T14:20:00Z' })]);
-  assert.equal(far.results[0].status, 'reimbursable');
+  assert.equal(r.results[0].status, 'sent'); assert.equal(sent.length, 1);
 });
 
-test('Tesla dedup: a Tesla trip arriving later supersedes the queued phone trip', async () => {
+test('migration: phone trips once marked Counted by Tesla count again', async () => {
+  const { svc, db } = setup(); await withCars(svc);
+  await db.set('trips:' + LESTER, [{ id: 'phone:old', source: 'phone-gps', vehicleId: 'f150', startTime: '2026-10-18T14:00:00Z', endTime: '2026-10-18T14:30:00Z', miles: 5, category: 'business', supersededBy: 'tesla-car:micro', reason: 'x' }]);
+  await svc.receive(LESTER, [trip({ category: 'personal' })]);
+  const old = (await svc.trips(LESTER)).find(t => t.id === 'phone:old');
+  assert.equal(old.supersededBy, undefined); assert.equal(svc.status(old, await svc.cars(LESTER)).status, 'reimbursable');
+});
+
+test('saveCars merges identical cars and points trips at the kept one', async () => {
   const { svc } = setup(); await withCars(svc);
-  svc.pushNtfy = async () => false;
-  await svc.receive(LESTER, [trip({ action: 'batch' })]);
-  assert.ok((await svc.trips(LESTER)).find(t => t.id === 'phone:c1').queuedAt);
-  await svc.onTripEnd(LESTER, { id: 'micro', name: 'micro', owner: 'Lester' }, { id: 't5', source: 'tesla', startTime: '2026-10-19T14:02:00Z', endTime: '2026-10-19T14:31:00Z', miles: 12.6, startOdo: 100, endOdo: 112.6 });
-  const p = (await svc.trips(LESTER)).find(t => t.id === 'phone:c1');
-  assert.equal(p.supersededBy, 'micro:t5'); assert.equal(p.queuedAt, undefined);
+  await svc.receive(LESTER, [trip({ carId: 'f150', category: 'personal' })]);
+  await svc.saveCars(LESTER, [{ id: 'r1', name: 'Dodge Ram', ownership: 'personal' }, { id: 'f150', name: ' dodge  ram ', ownership: 'personal' }]);
+  const cars = await svc.cars(LESTER); assert.deepEqual(cars.map(c => c.id), ['r1']);
+  assert.equal((await svc.trips(LESTER)).find(t => t.id === 'phone:c1').vehicleId, 'r1');
 });
 
 test('Friday 17:00 Central batch sends queued trips once, as one weekly email', async () => {
@@ -121,11 +119,12 @@ test('user without Google email access gets a clear error and nothing is marked 
   assert.equal(smtpKey('c@ovanova.co'), 'SMTP_PASS_C');
 });
 
-test('saveCars keeps a connected Tesla even if the phone omits it', async () => {
+test('saveCars: a removed car linked to the Tesla tool is hidden from the phone, not deleted', async () => {
   const { svc, db } = setup(); await svc.ensureUser(LESTER, 'Lester');
   await db.set('vehicles:' + LESTER, [{ id: 'micro', name: 'micro', vin: 'V', teslaId: 9, connected: true }]);
   const cars = await svc.saveCars(LESTER, [{ name: 'F-150', ownership: 'business' }]);
-  assert.equal(cars.length, 2); assert.equal(cars.find(c => c.name === 'F-150').ownership, 'business');
+  assert.deepEqual(cars.map(c => c.name), ['F-150']); assert.equal(cars[0].ownership, 'business');
+  assert.equal((await db.get('vehicles:' + LESTER)).length, 2);
 });
 
 test('HTTP: session token auth, cars, trips, cron secret', async () => {
