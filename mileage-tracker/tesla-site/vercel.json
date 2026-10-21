@@ -1,16 +1,62 @@
 {
   "rewrites": [
-    { "source": "/token", "destination": "/api/token" },
-    { "source": "/auth/:path*", "destination": "/api/app" },
-    { "source": "/api/(admin/tesla-token|health|state|act|cron|tag|queue|unqueue|preview|send|settings|manual|poll|commands|command)", "destination": "/api/app" },
-    { "source": "/api/phone/:path*", "destination": "/api/phone" }
+    {
+      "source": "/token",
+      "destination": "/api/token"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/api/app"
+    },
+    {
+      "source": "/api/(admin/tesla-token|health|state|act|cron|tag|queue|unqueue|preview|send|settings|manual|poll|commands|command)",
+      "destination": "/api/app"
+    },
+    {
+      "source": "/api/phone/:path*",
+      "destination": "/api/phone"
+    },
+    {
+      "source": "/api/sitetime/:path*",
+      "destination": "/api/sitetime"
+    }
   ],
-  "functions": { "api/vcmd.go": { "maxDuration": 60 }, "api/app.js": { "maxDuration": 60 } },
+  "functions": {
+    "api/vcmd.go": {
+      "maxDuration": 60
+    },
+    "api/app.js": {
+      "maxDuration": 60
+    }
+  },
   "crons": [
-    { "path": "/api/phone/cron", "schedule": "5 23 * * 5" }
+    {
+      "path": "/api/phone/cron",
+      "schedule": "5 23 * * 5"
+    }
   ],
   "headers": [
-    { "source": "/.well-known/appspecific/com.tesla.3p.public-key.pem", "headers": [{ "key": "Content-Type", "value": "application/x-pem-file" }] },
-    { "source": "/(.*)", "headers": [{ "key": "X-Frame-Options", "value": "DENY" }, { "key": "Referrer-Policy", "value": "same-origin" }] }
+    {
+      "source": "/.well-known/appspecific/com.tesla.3p.public-key.pem",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/x-pem-file"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "same-origin"
+        }
+      ]
+    }
   ]
 }
