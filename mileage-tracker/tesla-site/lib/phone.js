@@ -175,6 +175,13 @@ class PhoneService extends WebService {
     result.drive = await this.logToDrive(email, result.months); delete result.months;
     return result;
   }
+  // Trips waiting for the Friday batch that would actually be reimbursed (business, personal car, unsent).
+  async pendingBatch(email) { const vs = await this.cars(email);
+    const list = (await this.trips(email)).filter(t => t.queuedAt && !t.reimbursedAt && reimbursable(t, vs));
+    return { ids: list.map(t => t.id), count: list.length, miles: round(list.reduce((a, t) => a + t.miles, 0), 1) }; }
+  // "Send now" from Settings: send the whole pending batch immediately instead of waiting for Friday.
+  async sendBatch(email) { const p = await this.pendingBatch(email); if (!p.count) throw new HttpError(400, 'Nothing is waiting in the Friday batch');
+    return this.send(email, p.ids, 'manual-batch'); }
   // Friday batch for every user (called by the Vercel cron).
   async tickAll() { const out = [];
     for (const email of await this.db.smembers(K.users)) { try { const r = await this.tick(email); if (r.length) out.push({ email, sent: r }); } catch (e) { out.push({ email, error: e.message }); } }

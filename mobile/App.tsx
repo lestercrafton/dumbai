@@ -323,7 +323,7 @@ function ExportCard({ onMsg }: { onMsg: (m: string) => void }) {
 
 function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSignedOut: () => void }) {
   const [tracking, setTracking] = useState(false), [me, setMe] = useState<API.Me | null>(null);
-  const [to, setTo] = useState(''), [cc, setCc] = useState('');
+  const [to, setTo] = useState(''), [cc, setCc] = useState(''), [sending, setSending] = useState(false);
   const load = async () => { try { const m = await API.me(); setMe(m); setTo(m.sugar); setCc(m.sugarCc || ''); } catch (e: any) { onMsg(e.message); } };
   useEffect(() => { isTracking().then(setTracking); load(); }, []);
   return (<>
@@ -338,13 +338,23 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
         <Pill tone={me.emailReady ? 'ok' : 'warn'}>{me.emailVia === 'gmail' ? 'Emails send from your Gmail' : me.emailReady ? 'Emails send from the server' : 'Email permission missing — sign in again'}</Pill>
         <Pill tone={me.driveReady ? 'ok' : 'warn'}>{me.driveReady ? 'Log saved to Drive → Mileage logs' : 'Drive permission missing — sign in again'}</Pill>
       </View>
-      <Text style={[s.muted, { marginTop: 10 }]}>Next Friday batch: {new Date(me.nextBatch).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</Text>
     </View>}
     {me && <View style={s.card}>
       <Text style={s.cardTitle}>Reimbursements go to</Text>
       <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 10 }]} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder="sugar@ovanova.co" placeholderTextColor={C.muted} />
       <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 8 }]} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional)" placeholderTextColor={C.muted} />
-      <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn title="Save" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
+      <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn alt title="Save" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
+      <Text style={[s.muted, { marginTop: 10 }]}>Batched trips are sent automatically every Friday at 5 PM to this address. Next: {new Date(me.nextBatch).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}.</Text>
+      <Pressable disabled={sending || !me.pending?.count} accessibilityRole="button" accessibilityState={{ disabled: sending || !me.pending?.count, busy: sending }}
+        style={({ pressed }) => [s.big, s.bigPrimary, { marginTop: 12, flex: 0 }, !me.pending?.count && { opacity: 0.4 }, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}
+        onPress={() => { tap(); const n = me.pending!.count;
+          Alert.alert('Send now?', `${n} business trip${n === 1 ? '' : 's'} (${me.pending!.miles} mi) will be emailed to ${me.sugar} now instead of Friday.`, [{ text: 'Cancel', style: 'cancel' },
+            { text: 'Send', onPress: async () => { setSending(true);
+              try { const r = await API.sendBatch(); done(); onMsg(`Sent ${r.count} trip${r.count === 1 ? '' : 's'} · ${r.miles} mi · $${r.amount.toFixed(2)} to ${r.to}`); await load(); }
+              catch (e: any) { onMsg(e.message); } finally { setSending(false); } } }]); }}>
+        {sending ? <ActivityIndicator color="#fff" /> : <Text style={s.btnTxt}>Send now</Text>}
+      </Pressable>
+      <Text style={[s.muted, { marginTop: 6, textAlign: 'center' }]}>{me.pending?.count ? `${me.pending.count} business trip${me.pending.count === 1 ? '' : 's'} · ${me.pending.miles} mi waiting for Friday` : 'Nothing waiting for Friday'}</Text>
     </View>}
     {me && <ExportCard onMsg={onMsg} />}
     <Pressable style={({ pressed }) => [s.link, pressed && { opacity: 0.6 }]} onPress={async () => { tap(); await stopTracking().catch(() => {}); await scheduleReviewReminder(0).catch(() => {}); await API.signOut(); onSignedOut(); }}><Text style={s.linkTxt}>Sign out</Text></Pressable>
