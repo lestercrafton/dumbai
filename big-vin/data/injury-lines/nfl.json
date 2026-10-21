@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-21T15:36:43.274Z",
+ "generatedAt": "2026-10-21T17:16:47.191Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -162,7 +162,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-21T15:21Z",
+     "reported": "2026-10-21T17:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -225,7 +225,7 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.26,
+   "loss": 0.32,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
@@ -238,7 +238,7 @@
      "player": "Quinshon Judkins",
      "espnId": "4685702",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-21T16:39Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -251,6 +251,16 @@
      "reported": "2026-10-20T16:10Z",
      "weight": 0.25,
      "points": 0.08
+    },
+    {
+     "group": "lb",
+     "position": "MLB",
+     "player": "Carson Schwesinger",
+     "espnId": "4876017",
+     "status": "Questionable",
+     "reported": "2026-10-21T01:47Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "s",
@@ -473,7 +483,7 @@
      "player": "Rashee Rice",
      "espnId": "4428331",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-21T16:59Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -808,8 +818,8 @@
    "team": "NYG",
    "loss": 0.37,
    "starter": {
-    "name": "Jameis Winston",
-    "espnId": "2969939",
+    "name": "J.J. McCarthy",
+    "espnId": "4433970",
     "basis": "depth chart QB1"
    },
    "items": [
@@ -849,16 +859,18 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-21T15:21Z",
+     "reported": "2026-10-21T17:00Z",
      "weight": 0.25,
      "points": 0.1
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Jameis Winston is not the resolved starter."
+   ]
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.54,
+   "loss": 0.24,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -870,10 +882,10 @@
      "position": "WR",
      "player": "Adonai Mitchell",
      "espnId": "4597500",
-     "status": "Doubtful",
-     "reported": "2026-10-20T16:10Z",
-     "weight": 1,
-     "points": 0.4
+     "status": "Questionable",
+     "reported": "2026-10-21T16:50Z",
+     "weight": 0.25,
+     "points": 0.1
     },
     {
      "group": "lb",
@@ -1050,7 +1062,7 @@
      "espnId": "3052587",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-21T16:19Z",
      "weight": 0.25,
      "replacement": "Jalon Daniels",
      "starterEpaPerPlay": -0.006,
