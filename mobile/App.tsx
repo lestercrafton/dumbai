@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Alert, AppState, Image, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, Image, Keyboard, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
@@ -121,7 +121,8 @@ function Main({ onSignedOut }: { onSignedOut: () => void }) {
       <StatusBar style="dark" />
       <View style={s.header}><Text style={s.hTitle}>{TABS.find(x => x.k === tab)!.label}</Text></View>
       {!!msg && <Pressable onPress={() => setMsg('')} style={s.toast} accessibilityLiveRegion="polite"><Text style={s.toastTxt}>{msg}</Text></Pressable>}
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 32, gap: 12 }}>
+      <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets contentContainerStyle={{ padding: 16, paddingBottom: 32, gap: 12, flexGrow: 1 }}>
+        <Pressable accessible={false} onPress={Keyboard.dismiss} style={{ gap: 12, flexGrow: 1 }}>
         {tab === 'trips' && (trips.length ? <>
           {!!pending.length && <View style={s.sectionRow}>
             <Text style={s.section}>Needs review · {pending.length}</Text>
@@ -138,6 +139,7 @@ function Main({ onSignedOut }: { onSignedOut: () => void }) {
         </> : <Empty icon="🛣️" title="No drives yet" body={'Turn on automatic tracking in Settings, then just drive.\nWe’ll ask “business or personal?” when you park.'} action={{ label: 'Open Settings', onPress: () => setTab('settings') }} />)}
         {tab === 'cars' && <Cars cars={cars} onSave={saveCars} />}
         {tab === 'settings' && <Settings onMsg={setMsg} onSignedOut={onSignedOut} />}
+        </Pressable>
       </ScrollView>
       <SafeAreaView edges={['bottom']} style={s.tabBar}>
         {TABS.map(x => <Pressable key={x.k} onPress={() => { if (tab !== x.k) pick(); setTab(x.k); }} style={({ pressed }) => [s.tabItem, pressed && { opacity: 0.6 }]} accessibilityRole="tab" accessibilityState={{ selected: tab === x.k }}>
@@ -259,8 +261,8 @@ function Cars({ cars, onSave }: { cars: Car[]; onSave: (c: Car[]) => Promise<voi
     <View style={[s.card, { paddingVertical: 4 }]}>
       {list.map((c, i) => <View key={c.id} style={[s.carRow, i > 0 && s.carRowLine]}>
         {editing === c.id ? <View style={{ gap: 8 }}>
-          <TextInput autoFocus style={s.input} value={c.name} placeholder="Name (e.g. Dodge Ram)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { name: v })} />
-          <TextInput style={s.input} value={c.model || ''} placeholder="Model (optional)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { model: v })} />
+          <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" autoFocus style={s.input} value={c.name} placeholder="Name (e.g. Dodge Ram)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { name: v })} />
+          <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={s.input} value={c.model || ''} placeholder="Model (optional)" placeholderTextColor={C.muted} onChangeText={v => upd(c.id, { model: v })} />
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}><Pressable hitSlop={8} onPress={() => { pick(); setEditing(null); }} style={press}><Text style={s.sectionAction}>Done</Text></Pressable></View>
         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
           <Pressable style={({ pressed }) => [{ flex: 1 }, pressed && { opacity: 0.6 }]} onPress={() => { pick(); setEditing(c.id); }}>
@@ -305,8 +307,8 @@ function ExportCard({ onMsg }: { onMsg: (m: string) => void }) {
         <Text style={[s.chipTxt, range === r.label && s.chipTxtOn]}>{r.label}</Text></Pressable>)}
     </ScrollView>
     <View style={{ flexDirection: 'row', gap: 8, marginTop: 10 }}>
-      <View style={{ flex: 1 }}><Text style={s.label}>From</Text><TextInput style={[s.input, { marginTop: 4 }]} value={from} onChangeText={v => { setFrom(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
-      <View style={{ flex: 1 }}><Text style={s.label}>To</Text><TextInput style={[s.input, { marginTop: 4 }]} value={to} onChangeText={v => { setTo(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
+      <View style={{ flex: 1 }}><Text style={s.label}>From</Text><TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 4 }]} value={from} onChangeText={v => { setFrom(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
+      <View style={{ flex: 1 }}><Text style={s.label}>To</Text><TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 4 }]} value={to} onChangeText={v => { setTo(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
     </View>
     <View style={{ flexDirection: 'row', marginTop: 10, opacity: valid ? 1 : 0.5 }}>
       <Btn title={busy ? 'Building sheet…' : 'Export & open'} onPress={async () => {
@@ -340,8 +342,8 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
     </View>}
     {me && <View style={s.card}>
       <Text style={s.cardTitle}>Reimbursements go to</Text>
-      <TextInput style={[s.input, { marginTop: 10 }]} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder="sugar@ovanova.co" placeholderTextColor={C.muted} />
-      <TextInput style={[s.input, { marginTop: 8 }]} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional)" placeholderTextColor={C.muted} />
+      <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 10 }]} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder="sugar@ovanova.co" placeholderTextColor={C.muted} />
+      <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 8 }]} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional)" placeholderTextColor={C.muted} />
       <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn title="Save" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
     </View>}
     {me && <ExportCard onMsg={onMsg} />}
