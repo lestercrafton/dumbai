@@ -48,21 +48,22 @@ export function evaluateTeam({abbr,depth,injuries,teamUse,season,allQbRows,espnT
  const items=[],notes=[];
  const statusOf=espnId=>espnId?injuries.get(espnId):null;
  const cur=[...(teamUse?.games||[])].filter(g=>g.startsWith(season+':'));
- // Season starter = most QB plays for this team this season (depth charts drop injured starters).
- const qbs=Object.values(teamUse?.players||{}).filter(p=>p.position==='QB'&&p.qbPlays>0).sort((a,b)=>b.qbPlays-a.qbPlays);
- const starter=qbs[0];
+ // Starter: ESPN's depth-chart QB1, except when the team's season usage leader is the one hurt
+ // (depth charts drop an injured starter, e.g. Hurts on IR leaves McKee as QB1).
+ const starter=resolveStarter({depth,teamUse,statusOf,espnToGsis,gsisToEspn,names,abbr,notes});
  if(starter){
-  const sEspn=gsisToEspn.get(starter.id),inj=statusOf(sEspn),w=statusWeight(inj?.status);
+  const sEspn=starter.espnId,inj=statusOf(sEspn),w=statusWeight(inj?.status);
   if(w>0){
    const depthQbs=(depth.qb||[]).filter(id=>id!==sEspn&&statusWeight(statusOf(id)?.status)<1);
    const backupEspn=depthQbs[0]??null,backupGsis=backupEspn?espnToGsis.get(backupEspn):null;
    const rowsFor=id=>allQbRows.get(id)||[];
-   const s=qbEpa(rowsFor(starter.id),{season,prior:QB.starterPriorEpa}),b=qbEpa(backupGsis?rowsFor(backupGsis):[],{season,prior:QB.replacementEpa});
-   const v=qbPoints({starter:s,backup:b,teamGames:cur.length,starterGames:[...starter.games].filter(g=>g.startsWith(season+':')).length});
-   const backupName=backupGsis?names.get(backupGsis)??injuriesName(injuries,backupEspn)??backupGsis:backupEspn?`ESPN ${backupEspn}`:'unknown backup';
-   items.push({group:'qb',position:'QB',player:starter.name,espnId:sEspn??null,status:inj.status,reported:inj.reported,weight:w,replacement:backupName,starterEpaPerPlay:round(s.shrunk,3),starterPlays:Math.round(s.plays),backupEpaPerPlay:round(b.shrunk,3),backupPlays:Math.round(b.plays),...v,points:round(v.points*w,2)});
+   const s=qbEpa(starter.gsis?rowsFor(starter.gsis):[],{season,prior:QB.starterPriorEpa}),b=qbEpa(backupGsis?rowsFor(backupGsis):[],{season,prior:QB.replacementEpa});
+   const startedGames=starter.gsis&&teamUse?.players?.[starter.gsis]?[...teamUse.players[starter.gsis].games].filter(g=>g.startsWith(season+':')).length:0;
+   const v=qbPoints({starter:s,backup:b,teamGames:cur.length,starterGames:Math.min(cur.length,startedGames)});
+   const backupName=backupGsis?names.get(backupGsis)??injuriesName(injuries,backupEspn)??backupGsis:backupEspn?injuriesName(injuries,backupEspn)??`ESPN ${backupEspn}`:'unknown backup';
+   items.push({group:'qb',position:'QB',player:starter.name,espnId:sEspn??null,starterBasis:starter.basis,status:inj.status,reported:inj.reported,weight:w,replacement:backupName,starterEpaPerPlay:round(s.shrunk,3),starterPlays:Math.round(s.plays),backupEpaPerPlay:round(b.shrunk,3),backupPlays:Math.round(b.plays),...v,points:round(v.points*w,2)});
   }
- }else notes.push('No QB usage found in nflverse for this season.');
+ }
  // Skill starters by usage; line and defense starters by ESPN depth rank 1.
  const players=Object.values(teamUse?.players||{});
  const top=(pos,key,n)=>players.filter(p=>p.position===pos).sort((a,b)=>b[key]-a[key]).slice(0,n);
@@ -71,7 +72,24 @@ export function evaluateTeam({abbr,depth,injuries,teamUse,season,allQbRows,espnT
  for(const [p,group] of skill){const e=gsisToEspn.get(p.id),inj=statusOf(e),w=statusWeight(inj?.status);if(e)seen.add(e);if(w>0)items.push({group,position:group.slice(0,2).toUpperCase(),player:p.name,espnId:e,status:inj.status,reported:inj.reported,weight:w,points:round(POSITION_POINTS[group]*w,2)});}
  for(const [key,ids] of Object.entries(depth)){const group=DEPTH_GROUP[key];if(!group||!ids[0]||seen.has(ids[0]))continue;seen.add(ids[0]);
   const inj=statusOf(ids[0]),w=statusWeight(inj?.status);if(w>0)items.push({group,position:key.toUpperCase(),player:inj.name,espnId:ids[0],status:inj.status,reported:inj.reported,weight:w,points:round(POSITION_POINTS[group]*w,2)});}
- return {team:abbr,loss:teamLoss(items),items,notes};
+ return {team:abbr,loss:teamLoss(items),starter:starter?{name:starter.name,espnId:starter.espnId,basis:starter.basis}:null,items,notes};
+}
+/** NFL-only starter resolution with sanity checks; every choice records its basis. */
+export function resolveStarter({depth,teamUse,statusOf,espnToGsis,gsisToEspn,names=new Map(),abbr,notes=[]}){
+ const leader=Object.values(teamUse?.players||{}).filter(p=>p.position==='QB'&&p.qbPlays>0).sort((a,b)=>b.qbPlays-a.qbPlays)[0]??null;
+ const d1=(depth.qb||[])[0]??null;
+ const make=(espnId,basis)=>{const gsis=espnId?espnToGsis.get(espnId)??null:null;return {espnId,gsis,name:(gsis&&names.get(gsis))||statusOf(espnId)?.name||(gsis&&teamUse?.players?.[gsis]?.name)||`ESPN ${espnId}`,basis};};
+ let pick=null;
+ if(d1&&statusWeight(statusOf(d1)?.status)>0)pick=make(d1,'depth chart QB1 (injured)');
+ else if(leader&&gsisToEspn.get(leader.id)&&gsisToEspn.get(leader.id)!==d1&&statusWeight(statusOf(gsisToEspn.get(leader.id))?.status)>0)pick=make(gsisToEspn.get(leader.id),'season usage leader (injured; dropped from depth chart)');
+ else if(d1)pick=make(d1,'depth chart QB1');
+ else if(leader){pick=make(gsisToEspn.get(leader.id)??null,'season usage leader (no depth chart)');pick.gsis=leader.id;pick.name=leader.name;notes.push('No ESPN depth chart QB; used season usage.');}
+ if(!pick){notes.push('No starter resolved.');return null;}
+ // Sanity checks: the starter must be an NFL player id we can map, and on this team when nflverse has usage.
+ if(!pick.gsis)notes.push(`Starter ${pick.name} has no nflverse id; value uses the starter prior.`);
+ else if(teamUse&&!teamUse.players[pick.gsis]&&leader)notes.push(`Starter ${pick.name} has no ${abbr} snaps this season (usage leader ${leader.name}).`);
+ if(leader&&pick.gsis!==leader.id)notes.push(`Usage leader ${leader.name} is not the resolved starter.`);
+ return pick;
 }
 const round=(x,d)=>Math.round(x*10**d)/10**d;
 const injuriesName=(inj,id)=>id?inj.get(id)?.name??null:null;

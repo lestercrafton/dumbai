@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-21T00:35:01.656Z",
+ "generatedAt": "2026-10-21T00:38:33.163Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -15,6 +15,11 @@
   "ARI": {
    "team": "ARI",
    "loss": 0.18,
+   "starter": {
+    "name": "Jacoby Brissett",
+    "espnId": "2578570",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "rb1",
@@ -42,6 +47,11 @@
   "ATL": {
    "team": "ATL",
    "loss": 0.25,
+   "starter": {
+    "name": "Michael Penix Jr.",
+    "espnId": "4360423",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lb",
@@ -79,12 +89,18 @@
   "BAL": {
    "team": "BAL",
    "loss": 0.98,
+   "starter": {
+    "name": "Lamar Jackson",
+    "espnId": "3916387",
+    "basis": "depth chart QB1 (injured)"
+   },
    "items": [
     {
      "group": "qb",
      "position": "QB",
      "player": "Lamar Jackson",
      "espnId": "3916387",
+     "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
      "reported": "2026-10-20T16:10Z",
      "weight": 0.25,
@@ -124,6 +140,11 @@
   "BUF": {
    "team": "BUF",
    "loss": 0.43,
+   "starter": {
+    "name": "Josh Allen",
+    "espnId": "3918298",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "edge",
@@ -141,7 +162,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-21T00:33Z",
+     "reported": "2026-10-21T00:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -151,12 +172,22 @@
   "CAR": {
    "team": "CAR",
    "loss": 0,
+   "starter": {
+    "name": "Bryce Young",
+    "espnId": "4685720",
+    "basis": "depth chart QB1"
+   },
    "items": [],
    "notes": []
   },
   "CHI": {
    "team": "CHI",
    "loss": 0.14,
+   "starter": {
+    "name": "Caleb Williams",
+    "espnId": "4431611",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lb",
@@ -184,12 +215,22 @@
   "CIN": {
    "team": "CIN",
    "loss": 0,
+   "starter": {
+    "name": "Joe Burrow",
+    "espnId": "3915511",
+    "basis": "depth chart QB1"
+   },
    "items": [],
    "notes": []
   },
   "CLE": {
    "team": "CLE",
    "loss": 0.26,
+   "starter": {
+    "name": "Deshaun Watson",
+    "espnId": "3122840",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "rb1",
@@ -227,6 +268,11 @@
   "DAL": {
    "team": "DAL",
    "loss": 0.31,
+   "starter": {
+    "name": "Dak Prescott",
+    "espnId": "2577417",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lb",
@@ -254,6 +300,11 @@
   "DEN": {
    "team": "DEN",
    "loss": 0.8,
+   "starter": {
+    "name": "Bo Nix",
+    "espnId": "4426338",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "cb",
@@ -281,12 +332,22 @@
   "DET": {
    "team": "DET",
    "loss": 0,
+   "starter": {
+    "name": "Jared Goff",
+    "espnId": "3046779",
+    "basis": "depth chart QB1"
+   },
    "items": [],
    "notes": []
   },
   "GB": {
    "team": "GB",
    "loss": 0.08,
+   "starter": {
+    "name": "Jordan Love",
+    "espnId": "4036378",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lg",
@@ -304,6 +365,11 @@
   "HOU": {
    "team": "HOU",
    "loss": 0.08,
+   "starter": {
+    "name": "C.J. Stroud",
+    "espnId": "4432577",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "s",
@@ -321,6 +387,11 @@
   "IND": {
    "team": "IND",
    "loss": 0.66,
+   "starter": {
+    "name": "Daniel Jones",
+    "espnId": "3917792",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "te1",
@@ -358,6 +429,11 @@
   "JAX": {
    "team": "JAX",
    "loss": 0.21,
+   "starter": {
+    "name": "Trevor Lawrence",
+    "espnId": "4360310",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "s",
@@ -385,6 +461,11 @@
   "KC": {
    "team": "KC",
    "loss": 0.25,
+   "starter": {
+    "name": "Patrick Mahomes",
+    "espnId": "3139477",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",
@@ -412,6 +493,11 @@
   "LV": {
    "team": "LV",
    "loss": 0.13,
+   "starter": {
+    "name": "Kirk Cousins",
+    "espnId": "14880",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "edge",
@@ -429,6 +515,11 @@
   "LAC": {
    "team": "LAC",
    "loss": 0.59,
+   "starter": {
+    "name": "Justin Herbert",
+    "espnId": "4038941",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr1",
@@ -486,6 +577,11 @@
   "LAR": {
    "team": "LAR",
    "loss": 0.53,
+   "starter": {
+    "name": "Matthew Stafford",
+    "espnId": "12483",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",
@@ -513,6 +609,11 @@
   "MIA": {
    "team": "MIA",
    "loss": 0.21,
+   "starter": {
+    "name": "Malik Willis",
+    "espnId": "4242512",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "cb",
@@ -540,6 +641,11 @@
   "MIN": {
    "team": "MIN",
    "loss": 0.35,
+   "starter": {
+    "name": "Kyler Murray",
+    "espnId": "3917315",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",
@@ -577,6 +683,11 @@
   "NE": {
    "team": "NE",
    "loss": 1.23,
+   "starter": {
+    "name": "Drake Maye",
+    "espnId": "4431452",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",
@@ -604,7 +715,7 @@
      "player": "Alijah Vera-Tucker",
      "espnId": "4259646",
      "status": "Doubtful",
-     "reported": "2026-10-21T00:22Z",
+     "reported": "2026-10-20T18:19Z",
      "weight": 1,
      "points": 0.3
     },
@@ -624,7 +735,7 @@
      "player": "Morgan Moses",
      "espnId": "16771",
      "status": "Questionable",
-     "reported": "2026-10-21T00:24Z",
+     "reported": "2026-10-18T20:43Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -634,6 +745,11 @@
   "NO": {
    "team": "NO",
    "loss": 0.48,
+   "starter": {
+    "name": "Tyler Shough",
+    "espnId": "4360689",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "dt",
@@ -691,6 +807,11 @@
   "NYG": {
    "team": "NYG",
    "loss": 0.37,
+   "starter": {
+    "name": "Jameis Winston",
+    "espnId": "2969939",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lb",
@@ -728,7 +849,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-21T00:33Z",
+     "reported": "2026-10-21T00:00Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -738,6 +859,11 @@
   "NYJ": {
    "team": "NYJ",
    "loss": 0.54,
+   "starter": {
+    "name": "Geno Smith",
+    "espnId": "15864",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",
@@ -775,12 +901,18 @@
   "PHI": {
    "team": "PHI",
    "loss": 3.88,
+   "starter": {
+    "name": "Jalen Hurts",
+    "espnId": "4040715",
+    "basis": "season usage leader (injured; dropped from depth chart)"
+   },
    "items": [
     {
      "group": "qb",
      "position": "QB",
      "player": "Jalen Hurts",
      "espnId": "4040715",
+     "starterBasis": "season usage leader (injured; dropped from depth chart)",
      "status": "Injured Reserve",
      "reported": "2026-10-19T14:18Z",
      "weight": 1,
@@ -820,12 +952,22 @@
   "PIT": {
    "team": "PIT",
    "loss": 0,
+   "starter": {
+    "name": "Aaron Rodgers",
+    "espnId": "8439",
+    "basis": "depth chart QB1"
+   },
    "items": [],
    "notes": []
   },
   "SF": {
    "team": "SF",
    "loss": 0.81,
+   "starter": {
+    "name": "Brock Purdy",
+    "espnId": "4361741",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr1",
@@ -873,6 +1015,11 @@
   "SEA": {
    "team": "SEA",
    "loss": 0.06,
+   "starter": {
+    "name": "Sam Darnold",
+    "espnId": "3912547",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "lb",
@@ -889,8 +1036,32 @@
   },
   "TB": {
    "team": "TB",
-   "loss": 0.43,
+   "loss": 0.92,
+   "starter": {
+    "name": "Baker Mayfield",
+    "espnId": "3052587",
+    "basis": "depth chart QB1 (injured)"
+   },
    "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Baker Mayfield",
+     "espnId": "3052587",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-10-20T16:10Z",
+     "weight": 0.25,
+     "replacement": "Jalon Daniels",
+     "starterEpaPerPlay": -0.006,
+     "starterPlays": 437,
+     "backupEpaPerPlay": -0.089,
+     "backupPlays": 127,
+     "gapEpaPerPlay": 0.08,
+     "fullPoints": 2.55,
+     "alreadyInRatings": 0.24,
+     "points": 0.49
+    },
     {
      "group": "s",
      "position": "FS",
@@ -912,11 +1083,18 @@
      "points": 0.13
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Jalon Daniels is not the resolved starter."
+   ]
   },
   "TEN": {
    "team": "TEN",
    "loss": 0.08,
+   "starter": {
+    "name": "Cam Ward",
+    "espnId": "4688380",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "s",
@@ -934,6 +1112,11 @@
   "WAS": {
    "team": "WAS",
    "loss": 0.93,
+   "starter": {
+    "name": "Jayden Daniels",
+    "espnId": "4426348",
+    "basis": "depth chart QB1"
+   },
    "items": [
     {
      "group": "wr2",

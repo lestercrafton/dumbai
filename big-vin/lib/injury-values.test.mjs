@@ -64,3 +64,16 @@ test('new challengers: injury values, gap guard and market blend',()=>{
  assert.equal(predict(v('market-blend',{marketWeight:0.5}),{base,market}).predictedMargin,4);
  assert.equal(predict(v('injury-gap-guard',{sport:'nfl'}),{base:{...base,predictedMargin:9},market,injury:null}).predictedMargin,5.5);
 });
+import {resolveStarter} from '../scripts/injury-lines.mjs';
+test('starter resolution: depth QB1 wins over a fill-in usage leader; an injured leader dropped from the chart still counts',()=>{
+ const p=(id,name,qbPlays)=>({id,name,position:'QB',qbPlays,games:new Set(),weeks:[]});
+ const maps={espnToGsis:new Map([['1','BM'],['2','JD']]),gsisToEspn:new Map([['BM','1'],['JD','2']]),names:new Map([['BM','Baker Mayfield'],['JD','Jalon Daniels']])};
+ const teamUse={players:{BM:p('BM','Baker Mayfield',100),JD:p('JD','Jalon Daniels',110)}};
+ const q=new Map([['1',{status:'Questionable'}]]);
+ const tb=resolveStarter({depth:{qb:['1','2']},teamUse,statusOf:id=>q.get(id),...maps,abbr:'TB'});
+ assert.equal(tb.name,'Baker Mayfield');assert.match(tb.basis,/QB1 \(injured\)/);
+ const ir=new Map([['2',{status:'Injured Reserve'}]]);
+ const phi=resolveStarter({depth:{qb:['1']},teamUse,statusOf:id=>ir.get(id),...maps,abbr:'PHI'});
+ assert.equal(phi.name,'Jalon Daniels');assert.match(phi.basis,/usage leader/);
+ assert.equal(resolveStarter({depth:{qb:['1','2']},teamUse,statusOf:()=>null,...maps,abbr:'TB'}).name,'Baker Mayfield');
+});
