@@ -61,8 +61,8 @@ function makePhoneHandler({ env = process.env, db, transport = null, userTranspo
       const tok = S.verify(String(req.headers.authorization || '').replace(/^Bearer\s+/i, ''), env.SESSION_SECRET);
       if (!tok || tok.k !== 'device' || !validEmail(tok.e)) return json(res, 401, { error: 'Please sign in with Google again' });
       const email = await s.ensureUser(tok.e, tok.n);
-      if (p === '/api/phone/me' && req.method === 'GET') { const st = await s.settings(email), g = await s.google.status(email), tr = await s.transportFor(email);
-        return json(res, 200, { email, name: (await s.user(email)).name, sugar: st.sugar.to, sugarCc: st.sugar.cc, nextBatch: s.nextBatch(st).toISOString(),
+      if (p === '/api/phone/me' && req.method === 'GET') { const st = await s.settings(email), g = await s.google.status(email), tr = await s.transportFor(email), pb = await s.pendingBatch(email);
+        return json(res, 200, { email, name: (await s.user(email)).name, sugar: st.sugar.to, sugarCc: st.sugar.cc, nextBatch: s.nextBatch(st).toISOString(), pending: { count: pb.count, miles: pb.miles },
           emailReady: !!tr, emailVia: tr ? (tr.t.kind === 'gmail' ? 'gmail' : 'smtp') : null, driveReady: !!(s.google.configured && g.drive && g.linked), google: g }); }
       if (p === '/api/phone/settings' && req.method === 'PUT') { const b = await body(req); const st = await s.setRecipient(email, { to: b.sugar, cc: b.sugarCc }); return json(res, 200, { sugar: st.sugar.to, sugarCc: st.sugar.cc }); }
       if (p === '/api/phone/auth/signout' && req.method === 'POST') { if ((await body(req)).revoke) await s.google.revoke(email); return json(res, 200, { ok: true }); }
@@ -72,6 +72,7 @@ function makePhoneHandler({ env = process.env, db, transport = null, userTranspo
       if (p === '/api/phone/trips' && req.method === 'GET') { const vs = await s.cars(email), since = q.get('since') || '';
         return json(res, 200, { trips: (await s.trips(email)).filter(t => t.startTime >= since).map(t => ({ ...t, ...s.status(t, vs) })) }); }
       if (p === '/api/phone/export' && req.method === 'POST') { const b = await body(req); return json(res, 200, await s.exportSheet(email, b.from, b.to)); }
+      if (p === '/api/phone/send-batch' && req.method === 'POST') return json(res, 200, await s.sendBatch(email));
       if (p === '/api/phone/send' && req.method === 'POST') { const ids = (await body(req)).ids; return json(res, 200, await s.send(email, Array.isArray(ids) ? ids.map(String) : [], 'phone')); }
       return json(res, 404, { error: 'not found' });
     } catch (e) {

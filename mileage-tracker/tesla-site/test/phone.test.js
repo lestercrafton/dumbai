@@ -264,3 +264,14 @@ test('a queued trip later marked personal is dropped from the Friday batch', asy
   setNow('2026-10-23T22:05:00Z'); await svc.tickAll();
   assert.equal(sent.length, 1); assert.match(sent[0].subject, /\(10 miles \//); assert.ok(!sent[0].text.includes('40'));
 });
+
+test('Send now from Settings sends only the pending reimbursable batch, then nothing is pending', async () => {
+  const { svc, sent } = setup(); await withCars(svc);
+  await svc.receive(LESTER, [trip({ clientId: 'b1', miles: 10, action: 'batch' }), trip({ clientId: 'b2', miles: 5, action: 'batch' }),
+    trip({ clientId: 'p1', miles: 77, category: 'personal' }), trip({ clientId: 'v1', miles: 33, carId: 'van', action: 'batch' }), trip({ clientId: 'l1', miles: 9 })]);
+  assert.deepEqual((await svc.pendingBatch(LESTER)).count, 2);
+  const r = await svc.sendBatch(LESTER); assert.equal(r.count, 2); assert.equal(r.miles, 15); assert.equal(sent.length, 1);
+  assert.ok(!/77|33/.test(sent[0].text));
+  assert.equal((await svc.pendingBatch(LESTER)).count, 0);
+  await assert.rejects(svc.sendBatch(LESTER), /Nothing is waiting/); assert.equal(sent.length, 1);
+});

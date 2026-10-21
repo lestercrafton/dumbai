@@ -33,8 +33,9 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
   if (!r.ok) throw new Error(j.error || 'Server error ' + r.status);
   return j as T;
 }
-export type Me = { email: string; name: string; sugar: string; sugarCc: string; nextBatch: string; emailReady: boolean; emailVia: 'gmail' | 'smtp' | null; driveReady: boolean };
+export type Me = { email: string; name: string; sugar: string; sugarCc: string; nextBatch: string; pending?: { count: number; miles: number }; emailReady: boolean; emailVia: 'gmail' | 'smtp' | null; driveReady: boolean };
 export const saveRecipient = (sugar: string, sugarCc: string) => call<{ sugar: string; sugarCc: string }>('PUT', '/api/phone/settings', { sugar, sugarCc });
+export const sendBatch = () => call<{ count: number; miles: number; amount: number; to: string }>('POST', '/api/phone/send-batch', {});
 export const me = () => call<Me>('GET', '/api/phone/me');
 export async function pullCars(): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('GET', '/api/phone/cars'); await replaceCars(cars); return cars; }
 export async function pushCars(list: Car[]): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('PUT', '/api/phone/cars', { cars: list }); await replaceCars(cars); return cars; }
