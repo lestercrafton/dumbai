@@ -12,6 +12,7 @@ const { Google } = require('./google');
 const validEmail = e => typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length < 200;
 const round = (n, p) => Math.round(n * 10 ** p) / 10 ** p;
 const OWN = ['personal', 'business'];
+const SUGAR = 'sugar@ovanova.co', isOvanova = e => /@ovanova\.co$/i.test(String(e || '').trim());
 const isIso = s => typeof s === 'string' && !Number.isNaN(Date.parse(s));
 const cleanLoc = l => l && Number.isFinite(+l.lat) && Number.isFinite(+l.lon) ? { lat: +(+l.lat).toFixed(6), lon: +(+l.lon).toFixed(6), ...(l.name ? { name: String(l.name).slice(0, 200) } : {}) } : null;
 
@@ -57,8 +58,17 @@ class PhoneService extends WebService {
     if (!(await this.db.get(K.veh(email)))) await this.db.set(K.veh(email), []);
     return email;
   }
+  // Recipient rules: @ovanova.co accounts default to Sugar and may only send to @ovanova.co addresses.
+  // Everyone else has no default (blank until they enter one) and is never sent to Sugar implicitly.
+  async settings(email) { const st = await super.settings(email), u = await this.user(email), stored = u && u.settings && u.settings.sugar && u.settings.sugar.to;
+    if (!isOvanova(email)) st.sugar.to = stored && stored.toLowerCase() !== SUGAR ? stored : '';
+    else if (!stored || !isOvanova(stored)) st.sugar.to = SUGAR;
+    return st; }
   async setRecipient(email, { to, cc }) {
-    if (to != null && !validEmail(String(to).trim())) throw new HttpError(400, 'Recipient must be an email address');
+    if (to != null && String(to).trim() === '' && !isOvanova(email)) to = '';
+    else if (to != null && !validEmail(String(to).trim())) throw new HttpError(400, 'Recipient must be an email address');
+    else if (to != null && isOvanova(email) && !isOvanova(String(to).trim())) throw new HttpError(400, 'Ovanova accounts send reimbursements to an @ovanova.co address');
+    if (to != null && !isOvanova(email) && String(to).trim().toLowerCase() === SUGAR) throw new HttpError(400, 'Enter the address that handles your reimbursements');
     const ccs = cc == null ? null : String(cc).split(',').map(x => x.trim()).filter(Boolean);
     if (ccs && ccs.some(x => !validEmail(x))) throw new HttpError(400, 'CC must be email addresses');
     return this.saveSettings(email, { sugar: { ...(to != null ? { to: String(to).trim() } : {}), ...(ccs ? { cc: ccs.join(', ') } : {}) } });
@@ -145,7 +155,7 @@ class PhoneService extends WebService {
   async build(email, list) {
     if (list.every(t => t.startOdo != null)) return super.build(email, list); // legacy Tesla-tool trips keep the odometer email; phone trips never carry odometers
     const s = await this.settings(email), u = await this.user(email), vs = await this.vehicles(email);
-    const m = gpsEmail(list, vs, u, { rate: s.rate, signature: s.signature || undefined, ...(list.length > 1 ? { title: 'Weekly Business' } : {}) });
+    const m = gpsEmail(list, vs, u, { ...(s.sugar.to.toLowerCase() === SUGAR ? {} : { greeting: 'Hello' }), rate: s.rate, signature: s.signature || undefined, ...(list.length > 1 ? { title: 'Weekly Business' } : {}) });
     return { ...m, s, u };
   }
   // Same guarantees as WebService.send (per-account lock, only unsent reimbursable trips, marked once SMTP accepts),
@@ -154,7 +164,7 @@ class PhoneService extends WebService {
     if (!(await this.db.setnx(K.lock(email), 1, 120))) throw new HttpError(409, 'A send is already in progress');
     let result;
     try {
-      const s = await this.settings(email); if (!s.sugar.to) throw new HttpError(400, 'Set the Sugar recipient in Settings');
+      const s = await this.settings(email); if (!s.sugar.to) throw new HttpError(400, 'Add the address your reimbursements go to in Settings');
       const tr = await this.transportFor(email);
       if (!tr) throw new HttpError(503, `Email is not set up for ${email}: sign in with Google again and allow sending email`);
       const transport = tr.t, own = tr.own;
@@ -184,7 +194,7 @@ class PhoneService extends WebService {
     return this.send(email, p.ids, 'manual-batch'); }
   // Friday batch for every user (called by the Vercel cron).
   async tickAll() { const out = [];
-    for (const email of await this.db.smembers(K.users)) { try { const r = await this.tick(email); if (r.length) out.push({ email, sent: r }); } catch (e) { out.push({ email, error: e.message }); } }
+    for (const email of await this.db.smembers(K.users)) { try { if (!(await this.settings(email)).sugar.to) continue; const r = await this.tick(email); if (r.length) out.push({ email, sent: r }); } catch (e) { out.push({ email, error: e.message }); } }
     return out; }
 
   // Export a date range (inclusive, YYYY-MM-DD in Central time) to a new Google Sheet in the user's own Drive.

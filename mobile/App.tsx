@@ -6,6 +6,7 @@ import * as Notifications from 'expo-notifications';
 import * as Location from 'expo-location';
 import * as Crypto from 'expo-crypto';
 import * as Haptics from 'expo-haptics';
+import { recipientError } from './src/recipient';
 import { promptFor, type Car, type Point } from './src/detector';
 import * as DB from './src/db';
 import * as API from './src/api';
@@ -321,9 +322,11 @@ function ExportCard({ onMsg }: { onMsg: (m: string) => void }) {
   </View>;
 }
 
+
 function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSignedOut: () => void }) {
   const [tracking, setTracking] = useState(false), [me, setMe] = useState<API.Me | null>(null);
   const [to, setTo] = useState(''), [cc, setCc] = useState(''), [sending, setSending] = useState(false);
+  const ovanova = !!me && /@ovanova\.co$/i.test(me.email), hasTo = !!me?.sugar, canSend = hasTo && !!me?.pending?.count;
   const load = async () => { try { const m = await API.me(); setMe(m); setTo(m.sugar); setCc(m.sugarCc || ''); } catch (e: any) { onMsg(e.message); } };
   useEffect(() => { isTracking().then(setTracking); load(); }, []);
   return (<>
@@ -341,12 +344,12 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
     </View>}
     {me && <View style={s.card}>
       <Text style={s.cardTitle}>Reimbursements go to</Text>
-      <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 10 }]} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder="sugar@ovanova.co" placeholderTextColor={C.muted} />
+      <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 10 }]} autoCapitalize="none" keyboardType="email-address" value={to} onChangeText={setTo} placeholder={ovanova ? 'sugar@ovanova.co' : 'name@company.com'} placeholderTextColor={C.muted} />
       <TextInput returnKeyType="done" submitBehavior="blurAndSubmit" style={[s.input, { marginTop: 8 }]} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional)" placeholderTextColor={C.muted} />
-      <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn alt title="Save" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
-      <Text style={[s.muted, { marginTop: 10 }]}>Batched trips are sent automatically every Friday at 5 PM to this address. Next: {new Date(me.nextBatch).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}.</Text>
-      <Pressable disabled={sending || !me.pending?.count} accessibilityRole="button" accessibilityState={{ disabled: sending || !me.pending?.count, busy: sending }}
-        style={({ pressed }) => [s.big, s.bigPrimary, { marginTop: 12, flex: 0 }, !me.pending?.count && { opacity: 0.4 }, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}
+      <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn alt title="Save" onPress={async () => { const err = recipientError(to, ovanova); if (err) { onMsg(err); return; } try { const r = await API.saveRecipient(to.trim(), cc); setTo(r.sugar); setCc(r.sugarCc || ''); setMe({ ...me, sugar: r.sugar }); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
+      {hasTo ? <Text style={[s.muted, { marginTop: 10 }]}>Batched trips are sent automatically every Friday at 5 PM to this address. Next: {new Date(me.nextBatch).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}.</Text> : <Text style={[s.muted, { marginTop: 10 }]}>Add the address that handles your reimbursements. Until then, nothing is sent automatically.</Text>}
+      <Pressable disabled={sending || !canSend} accessibilityRole="button" accessibilityState={{ disabled: sending || !canSend, busy: sending }}
+        style={({ pressed }) => [s.big, s.bigPrimary, { marginTop: 12, flex: 0 }, !canSend && { opacity: 0.4 }, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}
         onPress={() => { tap(); const n = me.pending!.count;
           Alert.alert('Send now?', `${n} business trip${n === 1 ? '' : 's'} (${me.pending!.miles} mi) will be emailed to ${me.sugar} now instead of Friday.`, [{ text: 'Cancel', style: 'cancel' },
             { text: 'Send', onPress: async () => { setSending(true);
@@ -354,7 +357,7 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
               catch (e: any) { onMsg(e.message); } finally { setSending(false); } } }]); }}>
         {sending ? <ActivityIndicator color="#fff" /> : <Text style={s.btnTxt}>Send now</Text>}
       </Pressable>
-      <Text style={[s.muted, { marginTop: 6, textAlign: 'center' }]}>{me.pending?.count ? `${me.pending.count} business trip${me.pending.count === 1 ? '' : 's'} · ${me.pending.miles} mi waiting for Friday` : 'Nothing waiting for Friday'}</Text>
+      <Text style={[s.muted, { marginTop: 6, textAlign: 'center' }]}>{!hasTo ? 'Add an address to send' : me.pending?.count ? `${me.pending.count} business trip${me.pending.count === 1 ? '' : 's'} · ${me.pending.miles} mi waiting for Friday` : 'Nothing waiting for Friday'}</Text>
     </View>}
     {me && <ExportCard onMsg={onMsg} />}
     <Pressable style={({ pressed }) => [s.link, pressed && { opacity: 0.6 }]} onPress={async () => { tap(); await stopTracking().catch(() => {}); await scheduleReviewReminder(0).catch(() => {}); await API.signOut(); onSignedOut(); }}><Text style={s.linkTxt}>Sign out</Text></Pressable>

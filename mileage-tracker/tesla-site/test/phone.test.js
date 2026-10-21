@@ -14,7 +14,7 @@ function setup(nowIso = '2026-10-20T15:00:00Z') {
     async upsertCsv(email, ym, name, csv) { this.writes.push({ email, name, csv }); return 'f-' + ym; } };
   let now = new Date(nowIso);
   const transport = { sendMail: async m => { sent.push(m); return { messageId: '<m' + sent.length + '@x>' }; } };
-  const svc = new PhoneService({ db, env: { SESSION_SECRET: 's' }, userTransport: e => e === LESTER ? transport : null, transport: null, google: drive, tesla: null, now: () => now, retryBaseMs: 1 });
+  const svc = new PhoneService({ db, env: { SESSION_SECRET: 's' }, userTransport: e => e === LESTER || e === 'ryankellow@gmail.com' ? transport : null, transport: null, google: drive, tesla: null, now: () => now, retryBaseMs: 1 });
   return { db, svc, sent, drive, setNow: d => { now = new Date(d); } };
 }
 async function withCars(svc) {
@@ -190,7 +190,7 @@ test('Google sign-in from the app: any Google account, one-time code, session to
   assert.equal((await call('POST', '/api/phone/auth/exchange', { code: back.searchParams.get('code') })).statusCode, 400); // code is single-use
   const stored = await db.get('google:pat@gmail.com'); assert.ok(stored.rt && !JSON.stringify(stored).includes('rt-secret'));
   const tok = 'Bearer ' + ex.body.token;
-  const me = await call('GET', '/api/phone/me', undefined, tok); assert.equal(me.body.emailVia, 'gmail'); assert.equal(me.body.driveReady, true); assert.equal(me.body.sugar, 'sugar@ovanova.co');
+  const me = await call('GET', '/api/phone/me', undefined, tok); assert.equal(me.body.emailVia, 'gmail'); assert.equal(me.body.driveReady, true); assert.equal(me.body.sugar, '');
   assert.equal((await call('PUT', '/api/phone/settings', { sugar: 'not-an-email' }, tok)).statusCode, 400);
   assert.equal((await call('PUT', '/api/phone/settings', { sugar: 'ap@example.com', sugarCc: 'boss@example.com' }, tok)).body.sugar, 'ap@example.com');
   await call('PUT', '/api/phone/cars', { cars: [{ id: 'civic', name: 'Civic', ownership: 'personal' }] }, tok);
@@ -208,7 +208,7 @@ test('expired Google grant (e.g. 7-day Testing limit) asks the user to sign in a
   const google = new Google({ env, db, fetch: G.f, retryBaseMs: 1 });
   await db.set('google:pat@gmail.com', { rt: encrypt(env, 'rt'), scopes: ['https://www.googleapis.com/auth/gmail.send'] });
   const svc = new PhoneService({ db, env, google, transport: null, userTransport: () => null, tesla: null, now: () => new Date('2026-10-20T15:00:00Z'), retryBaseMs: 1 });
-  await svc.ensureUser('pat@gmail.com', 'Pat'); await svc.saveCars('pat@gmail.com', [{ id: 'c', name: 'Civic' }]);
+  await svc.ensureUser('pat@gmail.com', 'Pat'); await svc.saveCars('pat@gmail.com', [{ id: 'c', name: 'Civic' }]); await svc.setRecipient('pat@gmail.com', { to: 'ap@example.com' });
   G.failRefresh();
   const r = await svc.receive('pat@gmail.com', [trip({ carId: 'c', action: 'send' })]);
   assert.match(r.sendError, /Sign in with Google again/); assert.equal(r.results[0].status, 'reimbursable');
@@ -274,4 +274,22 @@ test('Send now from Settings sends only the pending reimbursable batch, then not
   assert.ok(!/77|33/.test(sent[0].text));
   assert.equal((await svc.pendingBatch(LESTER)).count, 0);
   await assert.rejects(svc.sendBatch(LESTER), /Nothing is waiting/); assert.equal(sent.length, 1);
+});
+
+test('recipient rules: Ovanova accounts stay on @ovanova.co, others have no default and never go to Sugar', async () => {
+  const { svc, sent, setNow } = setup(); const RYAN = 'ryankellow@gmail.com';
+  await withCars(svc); assert.equal((await svc.settings(LESTER)).sugar.to, 'sugar@ovanova.co');
+  await assert.rejects(svc.setRecipient(LESTER, { to: 'me@gmail.com' }), /@ovanova\.co/);
+  await svc.setRecipient(LESTER, { to: 'ap@ovanova.co' }); assert.equal((await svc.settings(LESTER)).sugar.to, 'ap@ovanova.co');
+  await svc.ensureUser(RYAN, 'Ryan Kellow'); assert.equal((await svc.settings(RYAN)).sugar.to, '');
+  await assert.rejects(svc.setRecipient(RYAN, { to: 'sugar@ovanova.co' }), /address/);
+  await svc.saveCars(RYAN, [{ id: 'f150', name: 'Truck', ownership: 'personal' }]);
+  await svc.receive(RYAN, [trip({ clientId: 'r1', action: 'batch' })]);
+  await assert.rejects(svc.sendBatch(RYAN), /Add the address/);
+  setNow('2026-10-23T22:05:00Z'); await svc.tickAll(); assert.equal(sent.length, 0);
+  // a legacy stored Sugar address for a non-Ovanova user is treated as blank
+  const u = await svc.user(RYAN); u.settings = { sugar: { to: 'sugar@ovanova.co', cc: '' } }; await svc.db.set('user:' + RYAN, u);
+  assert.equal((await svc.settings(RYAN)).sugar.to, '');
+  await svc.setRecipient(RYAN, { to: 'books@kellow.com' }); const r = await svc.sendBatch(RYAN);
+  assert.equal(r.to, 'books@kellow.com'); assert.equal(sent[0].to, 'books@kellow.com'); assert.match(sent[0].text, /^Hello,/);
 });
