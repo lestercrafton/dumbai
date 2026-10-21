@@ -214,3 +214,25 @@ test('expired Google grant (e.g. 7-day Testing limit) asks the user to sign in a
   assert.match(r.sendError, /Sign in with Google again/); assert.equal(r.results[0].status, 'reimbursable');
   assert.equal((await db.get('google:pat@gmail.com')).error, 'expired');
 });
+
+test('export: date range becomes a Google Sheet with a totals row, per user only', async () => {
+  const { svc, drive } = setup(); await withCars(svc);
+  drive.hasScope = async () => true; drive.configured = true; let made;
+  drive.createSheet = async (email, name, csv) => { made = { email, name, csv }; return { id: 's1', url: 'https://docs.google.com/spreadsheets/d/s1/edit' }; };
+  await svc.receive(LESTER, [trip({ category: 'personal' }), trip({ clientId: 'c2', carId: 'van', startTime: '2026-10-20T14:00:00Z', endTime: '2026-10-20T14:45:00Z', miles: 8 }), trip({ clientId: 'c3', startTime: '2026-11-02T14:00:00Z', endTime: '2026-11-02T14:10:00Z' })]);
+  const r = await svc.exportSheet(LESTER, '2026-10-19', '2026-10-31');
+  assert.equal(r.url, 'https://docs.google.com/spreadsheets/d/s1/edit'); assert.equal(made.email, LESTER); assert.match(made.name, /2026-10-19 to 2026-10-31/);
+  const lines = made.csv.trim().split('\n'); assert.equal(lines.length, 4);
+  assert.match(lines[0], /^Date,Start time,Start place,End place,Miles,Duration \(min\),Business\/Personal,Car,Car type,Reimbursable amount,Status$/);
+  assert.match(lines[1], /Dunlap HQ,12\.4,30,Personal,F-150,Personal,0\.00,Personal$/);
+  assert.match(lines[2], /,8\.0,45,Business,Shop van,Company,0\.00,Logged$/);
+  assert.equal(lines[3], 'Total,,,,=SUM(E2:E3),=SUM(F2:F3),,,,=SUM(J2:J3),');
+  await assert.rejects(svc.exportSheet(LESTER, '2026-10-31', '2026-10-01'), /start and end/);
+});
+
+test('cars are stored per user and never shared', async () => {
+  const { svc } = setup(); await withCars(svc); const JOHN = 'john@ovanova.co'; await svc.ensureUser(JOHN, 'John');
+  assert.deepEqual(await svc.cars(JOHN), []);
+  await svc.saveCars(JOHN, [{ id: 'j1', name: 'Tahoe', ownership: 'personal' }]);
+  assert.deepEqual((await svc.cars(JOHN)).map(c => c.name), ['Tahoe']); assert.ok(!(await svc.cars(LESTER)).some(c => c.name === 'Tahoe'));
+});

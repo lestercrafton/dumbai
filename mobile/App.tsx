@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Alert, AppState, Image, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, Image, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
@@ -32,7 +32,11 @@ const STATUS: Record<string, [string, 'ok' | 'muted' | 'warn']> = {
 
 export default function App() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
-  useEffect(() => { API.getToken().then(t => setSignedIn(!!t)); }, []);
+  useEffect(() => { (async () => {
+    const t = await API.getToken();
+    // Older installs did not record who is signed in: ask the server once, so the right per-user data opens.
+    if (t && !(await DB.currentUser())) { try { await DB.setCurrentUser((await API.me()).email); } catch {} }
+    setSignedIn(!!t); })(); }, []);
   if (signedIn === null) return <View style={[s.root, s.center]}><ActivityIndicator color={C.brand} /></View>;
   if (!signedIn) return <Welcome onDone={() => setSignedIn(true)} />;
   return <Main onSignedOut={() => setSignedIn(false)} />;
@@ -268,6 +272,39 @@ function Cars({ cars, onSave }: { cars: Car[]; onSave: (c: Car[]) => Promise<voi
   </>);
 }
 
+const ymdLocal = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const RANGES: { label: string; get: () => [Date, Date] }[] = [
+  { label: 'This month', get: () => { const n = new Date(); return [new Date(n.getFullYear(), n.getMonth(), 1), n]; } },
+  { label: 'Last month', get: () => { const n = new Date(); return [new Date(n.getFullYear(), n.getMonth() - 1, 1), new Date(n.getFullYear(), n.getMonth(), 0)]; } },
+  { label: 'This year', get: () => { const n = new Date(); return [new Date(n.getFullYear(), 0, 1), n]; } }];
+// Pick a date range, build a Google Sheet in the user's own Drive, and open it.
+function ExportCard({ onMsg }: { onMsg: (m: string) => void }) {
+  const [from, setFrom] = useState(() => ymdLocal(RANGES[0].get()[0])), [to, setTo] = useState(() => ymdLocal(new Date()));
+  const [busy, setBusy] = useState(false), [range, setRange] = useState('This month');
+  const valid = /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to) && from <= to;
+  return <View style={s.card}>
+    <Text style={s.cardTitle}>Export to Google Sheet</Text>
+    <Text style={s.muted}>A new sheet in your Drive → Mileage logs, with totals. Reimbursement emails keep working as before.</Text>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, marginTop: 10 }}>
+      {RANGES.map(r => <Pressable key={r.label} onPress={() => { pick(); const [a, b] = r.get(); setFrom(ymdLocal(a)); setTo(ymdLocal(b)); setRange(r.label); }}
+        accessibilityState={{ selected: range === r.label }} style={({ pressed }) => [s.chip, range === r.label && s.chipOn, pressed && { opacity: 0.7 }]}>
+        <Text style={[s.chipTxt, range === r.label && { color: C.brand }]}>{range === r.label ? '✓ ' : ''}{r.label}</Text></Pressable>)}
+    </ScrollView>
+    <View style={{ flexDirection: 'row', gap: 8, marginTop: 10 }}>
+      <View style={{ flex: 1 }}><Text style={s.label}>From</Text><TextInput style={[s.input, { marginTop: 4 }]} value={from} onChangeText={v => { setFrom(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
+      <View style={{ flex: 1 }}><Text style={s.label}>To</Text><TextInput style={[s.input, { marginTop: 4 }]} value={to} onChangeText={v => { setTo(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
+    </View>
+    <View style={{ flexDirection: 'row', marginTop: 10, opacity: valid ? 1 : 0.5 }}>
+      <Btn title={busy ? 'Building sheet…' : 'Export & open'} onPress={async () => {
+        if (busy) return; if (!valid) { onMsg('Dates must be YYYY-MM-DD, start before end'); return; }
+        setBusy(true);
+        try { await API.sync().catch(() => {}); const r = await API.exportSheet(from, to); done(); onMsg('Sheet ready in Drive → Mileage logs'); await Linking.openURL(r.url); }
+        catch (e: any) { onMsg('Export failed: ' + e.message); } finally { setBusy(false); } }} />
+    </View>
+    <Text style={[s.muted, { marginTop: 6 }]}>Only answered trips are included; answer anything in Needs review first.</Text>
+  </View>;
+}
+
 function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSignedOut: () => void }) {
   const [tracking, setTracking] = useState(false), [me, setMe] = useState<API.Me | null>(null);
   const [to, setTo] = useState(''), [cc, setCc] = useState('');
@@ -293,7 +330,8 @@ function Settings({ onMsg, onSignedOut }: { onMsg: (m: string) => void; onSigned
       <TextInput style={[s.input, { marginTop: 8 }]} autoCapitalize="none" keyboardType="email-address" value={cc} onChangeText={setCc} placeholder="CC (optional)" placeholderTextColor={C.muted} />
       <View style={{ flexDirection: 'row', marginTop: 10 }}><Btn title="Save" onPress={async () => { try { const r = await API.saveRecipient(to, cc); setTo(r.sugar); setCc(r.sugarCc || ''); onMsg('Saved'); } catch (e: any) { onMsg(e.message); } }} /></View>
     </View>}
-    <Pressable style={s.link} onPress={async () => { await API.signOut(); onSignedOut(); }}><Text style={s.linkTxt}>Sign out</Text></Pressable>
+    {me && <ExportCard onMsg={onMsg} />}
+    <Pressable style={({ pressed }) => [s.link, pressed && { opacity: 0.6 }]} onPress={async () => { tap(); await stopTracking().catch(() => {}); await scheduleReviewReminder(0).catch(() => {}); await API.signOut(); onSignedOut(); }}><Text style={s.linkTxt}>Sign out</Text></Pressable>
   </>);
 }
 
