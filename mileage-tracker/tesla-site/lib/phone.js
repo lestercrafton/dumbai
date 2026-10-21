@@ -5,7 +5,7 @@ const C = require('./core');
 const { WebService, K } = require('./service');
 const { withRetry, HttpError } = require('./retry');
 const { gpsEmail, ymd } = require('./gpsmail');
-const { reimbursable, isTeslaTrip } = require('./dedup');
+const { reimbursable } = require('./dedup');
 const { logCsv } = require('./log');
 const { Google } = require('./google');
 
@@ -139,11 +139,11 @@ class PhoneService extends WebService {
     return { status: 'reimbursable', rate, amount };
   }
 
-  async queue(email, ids) { const vs = await this.cars(email), ok = (await this.trips(email)).filter(t => ids.includes(t.id) && (isTeslaTrip(t) || reimbursable({ ...t, category: 'business' }, vs))).map(t => t.id);
+  async queue(email, ids) { const vs = await this.cars(email), ok = (await this.trips(email)).filter(t => ids.includes(t.id) && t.category !== 'personal' && reimbursable({ ...t, category: 'business' }, vs)).map(t => t.id);
     return super.queue(email, ok); }
 
   async build(email, list) {
-    if (list.every(t => t.startOdo != null)) return super.build(email, list); // all-Tesla batches keep the odometer email
+    if (list.every(t => t.startOdo != null)) return super.build(email, list); // legacy Tesla-tool trips keep the odometer email; phone trips never carry odometers
     const s = await this.settings(email), u = await this.user(email), vs = await this.vehicles(email);
     const m = gpsEmail(list, vs, u, { rate: s.rate, signature: s.signature || undefined, ...(list.length > 1 ? { title: 'Weekly Business' } : {}) });
     return { ...m, s, u };
@@ -159,7 +159,7 @@ class PhoneService extends WebService {
       if (!tr) throw new HttpError(503, `Email is not set up for ${email}: sign in with Google again and allow sending email`);
       const transport = tr.t, own = tr.own;
       const vs = await this.cars(email);
-      const list = (await this.trips(email)).filter(t => ids.includes(t.id) && !t.reimbursedAt && (isTeslaTrip(t) ? t.category === 'business' : reimbursable(t, vs)));
+      const list = (await this.trips(email)).filter(t => ids.includes(t.id) && !t.reimbursedAt && reimbursable(t, vs)); // only business trips in a personally owned car
       if (!list.length) throw new HttpError(400, 'No unsent reimbursable trips selected');
       const m = await this.build(email, list), u = m.u, fromAddr = own ? email : (this.env.SMTP_FROM || this.env.SMTP_USER);
       const info = await withRetry(() => transport.sendMail({ from: `${u.name} <${fromAddr}>`, replyTo: own ? undefined : email, to: s.sugar.to,
