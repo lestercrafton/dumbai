@@ -3,15 +3,15 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import * as Crypto from 'expo-crypto';
 import { feed, flush, initialState, type Fix } from './detector';
-import { getDetector, setDetector, saveTrip, cars, getLastCarId, type LocalTrip } from './db';
-import { notifyTripEnded } from './notify';
+import { getDetector, setDetector, saveTrip, cars, getLastCarId, needsReviewCount, type LocalTrip } from './db';
+import { notifyTripEnded, scheduleReviewReminder } from './notify';
 
 export const LOCATION_TASK = 'mileage-location';
 
 async function onTrip(t: NonNullable<ReturnType<typeof feed>['trip']>) {
   const lastId = await getLastCarId(), list = await cars(), car = list.find(c => c.id === lastId);
   const local: LocalTrip = { ...t, clientId: Crypto.randomUUID(), carId: car ? car.id : null, category: null, action: null, purpose: '', synced: 0, serverStatus: null, serverError: null };
-  await saveTrip(local); await notifyTripEnded(local, car);
+  await saveTrip(local); await notifyTripEnded(local, car); await scheduleReviewReminder(await needsReviewCount());
 }
 export async function processFixes(fixes: Fix[], now = Date.now()) {
   let s = (await getDetector()) || initialState();

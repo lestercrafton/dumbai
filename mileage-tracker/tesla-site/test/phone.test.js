@@ -65,11 +65,18 @@ test('personal trips are not reimbursed', async () => {
   assert.equal(r.results[0].status, 'personal'); assert.equal(sent.length, 0);
 });
 
-test('Tesla dedup: Tesla selected on the phone => superseded and kept', async () => {
-  const { svc, sent } = setup(); await withCars(svc);
+test('Tesla dedup: linked Tesla selected on the phone => superseded and kept', async () => {
+  const { svc, db, sent } = setup(); await withCars(svc);
+  await db.set('vehicles:' + LESTER, (await db.get('vehicles:' + LESTER)).map(v => v.id === 'micro' ? { ...v, teslaId: 1 } : v));
   const r = await svc.receive(LESTER, [trip({ carId: 'micro', action: 'send' })]);
   assert.equal(r.results[0].status, 'superseded'); assert.equal(sent.length, 0);
   assert.equal((await svc.trips(LESTER)).length, 1);
+});
+
+test('No Tesla linked: a car marked Tesla still counts phone miles normally', async () => {
+  const { svc, sent } = setup(); await withCars(svc);
+  const r = await svc.receive(LESTER, [trip({ carId: 'micro', action: 'send' })]);
+  assert.notEqual(r.results[0].status, 'superseded'); assert.equal(sent.length, 1);
 });
 
 test('Tesla dedup: overlap within ±5 min of a logged Tesla trip => superseded', async () => {

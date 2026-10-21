@@ -33,5 +33,13 @@ export async function replaceCars(list: Car[]) {
 
 export async function trips(limit = 100): Promise<LocalTrip[]> { return (await (await db()).getAllAsync<{ json: string }>('SELECT json FROM trips ORDER BY startTime DESC LIMIT ?', limit)).map(r => JSON.parse(r.json)); }
 export async function trip(clientId: string): Promise<LocalTrip | null> { const r = await (await db()).getFirstAsync<{ json: string }>('SELECT json FROM trips WHERE clientId = ?', clientId); return r ? JSON.parse(r.json) : null; }
-export async function saveTrip(t: LocalTrip) { await (await db()).runAsync('INSERT OR REPLACE INTO trips (clientId, json, startTime, synced) VALUES (?, ?, ?, ?)', t.clientId, JSON.stringify(t), t.startTime, t.synced); }
+// All trip writes go through one queue so a slow writer (route lookup, sync) can never overwrite a newer answer.
+let chain: Promise<unknown> = Promise.resolve();
+function serial<T>(fn: () => Promise<T>): Promise<T> { const p = chain.then(fn, fn); chain = p.catch(() => {}); return p; }
+async function write(t: LocalTrip) { await (await db()).runAsync('INSERT OR REPLACE INTO trips (clientId, json, startTime, synced) VALUES (?, ?, ?, ?)', t.clientId, JSON.stringify(t), t.startTime, t.synced); }
+export const saveTrip = (t: LocalTrip) => serial(() => write(t));
+// Read-modify-write one trip atomically. The updater gets the current row; return null to leave it unchanged.
+export const patchTrip = (clientId: string, fn: (cur: LocalTrip) => LocalTrip | null) => serial(async () => {
+  const cur = await trip(clientId); if (!cur) return null; const next = fn(cur); if (next) await write(next); return next; });
 export async function unsynced(): Promise<LocalTrip[]> { return (await (await db()).getAllAsync<{ json: string }>('SELECT json FROM trips WHERE synced = 0 ORDER BY startTime')).map(r => JSON.parse(r.json)); }
+export async function needsReviewCount() { return (await trips(500)).filter(t => !t.category).length; }

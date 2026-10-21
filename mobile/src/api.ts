@@ -2,7 +2,7 @@
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import type { Car } from './detector';
-import { getKv, setKv, unsynced, saveTrip, replaceCars, type LocalTrip } from './db';
+import { getKv, setKv, unsynced, patchTrip, replaceCars } from './db';
 
 export const DEFAULT_SERVER = 'https://ovanova-mileage-tesla.vercel.app';
 export const getServer = () => getKv<string>('server', DEFAULT_SERVER);
@@ -44,9 +44,10 @@ export async function sync(): Promise<{ uploaded: number; sendError?: string | n
   if (!pending.length) return { uploaded: 0 };
   const res = await call<{ results: Result[]; sendError: string | null }>('POST', '/api/phone/trips', { trips: pending.map(t => ({
     clientId: t.clientId, startTime: t.startTime, endTime: t.endTime, miles: t.miles, startLoc: t.startLoc, endLoc: t.endLoc,
-    carId: t.carId, category: t.category, action: t.action, purpose: t.purpose })) });
+    carId: t.carId, category: t.category, action: t.action, purpose: t.purpose, route: t.route })) });
   for (const t of pending) { const r = res.results.find(x => x.clientId === t.clientId); if (!r) continue;
-    const upd: LocalTrip = { ...t, serverStatus: r.status || null, serverError: r.error || null, synced: r.error ? 0 : 1 };
-    await saveTrip(upd); }
+    // If the driver changed the answer while this upload was in flight, keep it unsynced so the new answer goes up next.
+    await patchTrip(t.clientId, cur => { const same = cur.category === t.category && cur.action === t.action && cur.carId === t.carId;
+      return { ...cur, serverStatus: same ? r.status || null : cur.serverStatus, serverError: r.error || null, synced: same && !r.error ? 1 : 0 }; }); }
   return { uploaded: pending.length, sendError: res.sendError };
 }
