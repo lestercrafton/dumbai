@@ -161,53 +161,68 @@ function useRoute(t: DB.LocalTrip) {
   return route;
 }
 
-function TripCard({ t, cars, lastCar, open, onToggle, onAnswer }: { t: DB.LocalTrip; cars: Car[]; lastCar: string | null; open: boolean; onToggle?: () => void; onAnswer: (t: DB.LocalTrip, a: Answer, carId: string | null) => void }) {
-  const [carId, setCarId] = useState<string | null>(t.carId || lastCar || cars[0]?.id || null);
-  useEffect(() => { if (!carId && (lastCar || cars[0])) setCarId(lastCar || cars[0].id); }, [lastCar, cars]);
-  const car = cars.find(c => c.id === carId), d = new Date(t.startTime), route = useRoute(t);
-  const [label, tone] = t.serverStatus ? STATUS[t.serverStatus] || [t.serverStatus, 'muted'] : t.category === 'personal' ? ['Personal', 'muted'] : t.category ? ['Business · saving…', 'muted'] : ['Business or personal?', 'warn'];
-  const locked = t.serverStatus === 'sent';
+// Trip card. Hero: date + miles. Unanswered: one calm question. Answered: a quiet summary with a "Change" link.
+function TripCard({ t, cars, open, onToggle, onAnswer }: { t: DB.LocalTrip; cars: Car[]; lastCar?: string | null; open: boolean; onToggle?: () => void; onAnswer: (t: DB.LocalTrip, a: Answer, carId: string | null) => void }) {
+  const d = new Date(t.startTime), route = useRoute(t), answered = !!t.category, locked = t.serverStatus === 'sent';
+  const car = t.category === 'business' ? cars.find(c => c.id === t.carId) : undefined; // only a car the driver picked
+  const editing = !answered || (open && !locked);
   return (
-    <View style={[s.card, !t.category && s.cardPending]}>
-      <Pressable onPress={onToggle} disabled={!onToggle} style={({ pressed }) => [s.tripTop, pressed && { opacity: 0.7 }]}>
+    <View style={[s.card, !answered && s.cardPending]}>
+      <View style={s.tripTop}>
         <View style={{ flex: 1 }}>
-          <Text style={s.when}>{d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })} · {d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</Text>
-          {!!route && <Text style={s.route} numberOfLines={1}>{route}</Text>}
-          <Pill tone={tone as any}>{label}{t.serverError ? ' · ' + t.serverError : ''}</Pill>
+          <Text style={s.when}>{d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
+          <Text style={s.time}>{d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} · {t.durationMin} min</Text>
         </View>
-        <View style={{ alignItems: 'flex-end' }}><Text style={s.miles}>{t.miles.toFixed(1)}</Text><Text style={s.unit}>mi · {t.durationMin} min</Text></View>
-      </Pressable>
-      {open && !locked && <AnswerPanel cars={cars} carId={carId} setCarId={setCarId} current={t} onAnswer={(a, c) => onAnswer(t, a, c)} />}
-      {open && locked && <Text style={[s.muted, { marginTop: 10 }]}>Already emailed for reimbursement, so it can't be changed here.</Text>}
+        <Text style={s.miles}>{t.miles.toFixed(1)}<Text style={s.unit}> mi</Text></Text>
+      </View>
+      {!!route && <Text style={s.route} numberOfLines={1}>{route}</Text>}
+      {answered && <View style={s.summary}>
+        <Summary t={t} car={car} />
+        {!locked && onToggle && <Pressable hitSlop={12} onPress={onToggle} style={press}><Text style={s.linkSmall}>{open ? 'Done' : 'Change'}</Text></Pressable>}
+      </View>}
+      {editing && <AnswerFlow cars={cars} initial={answered ? t : undefined} onAnswer={(a, c) => onAnswer(t, a, c)} />}
     </View>);
+}
+function Summary({ t, car }: { t: DB.LocalTrip; car?: Car }) {
+  const label = t.category === 'personal' ? 'Personal' : t.serverStatus === 'sent' ? 'Sent for reimbursement' : t.action === 'send' ? 'Sending now' : t.action === 'batch' ? 'Friday batch' : 'Business · logged';
+  const tone = t.category === 'personal' ? C.muted : C.brand;
+  return <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1, flexWrap: 'wrap' }}>
+    <View style={[s.dot, { backgroundColor: tone }]} /><Text style={[s.sumTxt, { color: t.category === 'personal' ? C.ink : C.brand }]}>{t.category === 'business' ? 'Business' : 'Personal'}</Text>
+    {t.category === 'business' && <Text style={s.sumMeta}>{label}</Text>}
+    {car && <View style={s.carTag}><Text style={s.carTagTxt}>{car.name}</Text></View>}
+    {!!t.serverError && <Text style={[s.sumMeta, { color: C.warn }]}>{t.serverError}</Text>}
+  </View>;
 }
 
-// Car chips plus clear choices. A personal car on business shows both "Send now" and "Friday batch"; a company car logs only.
-function AnswerPanel({ cars, carId, setCarId, current, onAnswer }: { cars: Car[]; carId: string | null; setCarId: (id: string) => void; current?: DB.LocalTrip; onAnswer: (a: Answer, carId: string | null) => void }) {
-  const car = cars.find(c => c.id === carId), p = promptFor(car), logOnly = p.actions.includes('log');
-  const chosen = (a: Answer) => !!current && (a === 'personal' ? current.category === 'personal' : current.category === 'business' && current.action === a);
-  return (
-    <View style={{ marginTop: 14, gap: 10 }}>
-      {cars.length > 0 ? <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
-        {cars.map(c => <Pressable key={c.id} onPress={() => { pick(); setCarId(c.id); }} accessibilityState={{ selected: carId === c.id }} style={({ pressed }) => [s.chip, carId === c.id && s.chipOn, pressed && { opacity: 0.7 }]}>
-          <Text style={[s.chipTxt, carId === c.id && { color: C.brand }]}>{carId === c.id ? '✓ ' : ''}{c.name}{c.ownership === 'business' ? ' · company' : ''}</Text></Pressable>)}
-      </ScrollView> : <Text style={s.muted}>Add your car in the Cars tab to log business trips.</Text>}
-      {!!p.note && car && <Text style={s.muted}>{p.note}</Text>}
-      {car && !logOnly ? <>
-        <Text style={s.label}>Business — get reimbursed</Text>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Choice primary on={chosen('send')} title="Send now" sub="Email today" onPress={() => onAnswer('send', carId)} />
-          <Choice primary on={chosen('batch')} title="Friday batch" sub="Sent Fri 5 PM" onPress={() => onAnswer('batch', carId)} />
-        </View>
-      </> : <Choice primary on={chosen('log')} title="Business" sub={car ? 'Logged, not reimbursed' : 'Pick a car first'} onPress={() => onAnswer('log', carId)} />}
-      <Choice on={chosen('personal')} title="Personal" sub="Not reimbursed" onPress={() => onAnswer('personal', carId)} />
-    </View>);
+// Step 1: Business or Personal. Step 2 (business only): which car. Step 3: send now / Friday batch only for a personal car;
+// a company car just logs. Nothing is pre-picked, so a card never shows a guessed car.
+function AnswerFlow({ cars, initial, onAnswer }: { cars: Car[]; initial?: DB.LocalTrip; onAnswer: (a: Answer, carId: string | null) => void }) {
+  const [biz, setBiz] = useState(false), [carId, setCarId] = useState<string | null>(initial?.category === 'business' ? initial.carId : null);
+  const car = cars.find(c => c.id === carId), company = car?.ownership === 'business';
+  if (!biz) return <View style={s.actions}>
+    <Choice primary title="Business" onPress={() => setBiz(true)} />
+    <Choice title="Personal" onPress={() => onAnswer('personal', null)} />
+  </View>;
+  return <View style={{ marginTop: 16, gap: 12 }}>
+    <Text style={s.ask}>Which car?</Text>
+    {cars.length ? <View style={s.chips}>
+      {cars.map(c => <Pressable key={c.id} onPress={() => { pick(); setCarId(c.id); }} accessibilityRole="radio" accessibilityState={{ selected: carId === c.id }}
+        style={({ pressed }) => [s.chip, carId === c.id && s.chipOn, pressed && { opacity: 0.7 }]}>
+        <Text style={[s.chipTxt, carId === c.id && s.chipTxtOn]}>{c.name}</Text></Pressable>)}
+    </View> : <Text style={s.muted}>Add your car in the Cars tab first.</Text>}
+    {car && (company
+      ? <><Text style={s.muted}>Company car: logged, not reimbursed.</Text><View style={s.actions}><Choice primary title="Log trip" onPress={() => onAnswer('log', carId)} /></View></>
+      : <View style={s.actions}>
+          <Choice primary title="Friday batch" onPress={() => onAnswer('batch', carId)} />
+          <Choice title="Send now" onPress={() => onAnswer('send', carId)} />
+        </View>)}
+    <Pressable hitSlop={10} onPress={() => { pick(); setBiz(false); }} style={({ pressed }) => [{ alignSelf: 'center', paddingVertical: 4 }, pressed && { opacity: 0.6 }]}><Text style={s.linkSmall}>Back</Text></Pressable>
+  </View>;
 }
-const Choice = ({ title, sub, onPress, primary, on }: { title: string; sub?: string; onPress: () => void; primary?: boolean; on?: boolean }) =>
-  <Pressable onPress={() => { tap(); onPress(); }} accessibilityRole="button" accessibilityState={{ selected: !!on }}
-    style={({ pressed }) => [s.big, primary ? { backgroundColor: C.brand } : s.bigAlt, on && s.bigOn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]}>
-    <Text style={[s.bigTxt, !primary && { color: C.ink }]}>{on ? '✓ ' : ''}{title}</Text>
-    {!!sub && <Text style={[s.bigSub, !primary && { color: C.muted }]}>{sub}</Text>}
+const Choice = ({ title, onPress, primary }: { title: string; onPress: () => void; primary?: boolean }) =>
+  <Pressable onPress={() => { tap(); onPress(); }} accessibilityRole="button"
+    style={({ pressed }) => [s.big, primary ? s.bigPrimary : s.bigAlt, pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] }]}>
+    <Text style={[s.bigTxt, !primary && { color: C.brand }]}>{title}</Text>
   </Pressable>;
 
 function SelectRow({ t, on, onPress }: { t: DB.LocalTrip; on: boolean; onPress: () => void }) {
@@ -221,14 +236,13 @@ function SelectRow({ t, on, onPress }: { t: DB.LocalTrip; on: boolean; onPress: 
     <Text style={[s.miles, { fontSize: 22, lineHeight: 26 }]}>{t.miles.toFixed(1)} <Text style={s.unit}>mi</Text></Text>
   </Pressable>;
 }
-function BulkBar({ count, total, cars, lastCar, onAll, onAnswer }: { count: number; total: number; cars: Car[]; lastCar: string | null; onAll: () => void; onAnswer: (a: Answer, carId: string | null) => void }) {
-  const [carId, setCarId] = useState<string | null>(lastCar || cars[0]?.id || null);
+function BulkBar({ count, total, cars, onAll, onAnswer }: { count: number; total: number; cars: Car[]; lastCar?: string | null; onAll: () => void; onAnswer: (a: Answer, carId: string | null) => void }) {
   return <View style={[s.card, { borderColor: C.brand, borderWidth: 1.5 }]}>
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <Text style={[s.cardTitle, { flex: 1 }]}>{count} of {total} selected</Text>
       <Pressable hitSlop={10} onPress={onAll} style={press}><Text style={s.sectionAction}>{count === total ? 'Select none' : 'Select all'}</Text></Pressable>
     </View>
-    {count > 0 ? <AnswerPanel cars={cars} carId={carId} setCarId={setCarId} onAnswer={onAnswer} /> : <Text style={s.muted}>Tap trips below to select them.</Text>}
+    {count > 0 ? <AnswerFlow cars={cars} onAnswer={onAnswer} /> : <Text style={s.muted}>Tap trips below to select them.</Text>}
   </View>;
 }
 
@@ -288,7 +302,7 @@ function ExportCard({ onMsg }: { onMsg: (m: string) => void }) {
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, marginTop: 10 }}>
       {RANGES.map(r => <Pressable key={r.label} onPress={() => { pick(); const [a, b] = r.get(); setFrom(ymdLocal(a)); setTo(ymdLocal(b)); setRange(r.label); }}
         accessibilityState={{ selected: range === r.label }} style={({ pressed }) => [s.chip, range === r.label && s.chipOn, pressed && { opacity: 0.7 }]}>
-        <Text style={[s.chipTxt, range === r.label && { color: C.brand }]}>{range === r.label ? '✓ ' : ''}{r.label}</Text></Pressable>)}
+        <Text style={[s.chipTxt, range === r.label && s.chipTxtOn]}>{r.label}</Text></Pressable>)}
     </ScrollView>
     <View style={{ flexDirection: 'row', gap: 8, marginTop: 10 }}>
       <View style={{ flex: 1 }}><Text style={s.label}>From</Text><TextInput style={[s.input, { marginTop: 4 }]} value={from} onChangeText={v => { setFrom(v); setRange(''); }} placeholder="YYYY-MM-DD" placeholderTextColor={C.muted} keyboardType="numbers-and-punctuation" maxLength={10} /></View>
@@ -354,17 +368,23 @@ const s = StyleSheet.create({
   header: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 4 }, hTitle: { fontSize: 30, fontWeight: '800', color: C.ink },
   toast: { marginHorizontal: 16, marginTop: 8, backgroundColor: C.ink, borderRadius: 12, padding: 12 }, toastTxt: { color: '#fff', fontSize: T.small + 1 },
   section: { fontSize: T.small, fontWeight: '700', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginTop: 4 },
-  card: { backgroundColor: C.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: C.line }, cardPending: { borderColor: C.osc, borderWidth: 1.5 },
+  card: { backgroundColor: C.card, borderRadius: 18, padding: 18, shadowColor: '#1B2430', shadowOpacity: 0.06, shadowRadius: 12, shadowOffset: { width: 0, height: 4 } }, cardPending: { borderLeftWidth: 3, borderLeftColor: C.osc },
   cardTitle: { fontSize: T.title - 2, fontWeight: '700', color: C.ink },
-  tripTop: { flexDirection: 'row', alignItems: 'flex-start' }, when: { fontSize: T.body, fontWeight: '600', color: C.ink }, route: { fontSize: T.small + 1, color: C.muted, marginTop: 2, marginBottom: 8 },
-  miles: { fontSize: T.big, fontWeight: '800', color: C.ink, lineHeight: 38 }, unit: { fontSize: T.small, color: C.muted },
+  tripTop: { flexDirection: 'row', alignItems: 'flex-start' }, when: { fontSize: T.body + 1, fontWeight: '600', color: C.ink, letterSpacing: -0.2 }, time: { fontSize: T.small + 1, color: C.muted, marginTop: 2 },
+  route: { fontSize: T.small + 1, color: C.muted, marginTop: 10 },
+  miles: { fontSize: T.big, fontWeight: '700', color: C.ink, lineHeight: 38, letterSpacing: -0.8, fontVariant: ['tabular-nums'] }, unit: { fontSize: T.body - 1, fontWeight: '500', color: C.muted, letterSpacing: 0 },
   pill: { alignSelf: 'flex-start', borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, marginTop: 6 }, pillTxt: { fontSize: T.small, fontWeight: '600' },
-  chip: { minHeight: 40, paddingHorizontal: 14, borderRadius: 999, borderWidth: 1, borderColor: C.line, justifyContent: 'center', backgroundColor: '#fff' },
-  chipOn: { borderColor: C.brand, backgroundColor: C.brandSoft }, chipTxt: { fontSize: T.small + 1, fontWeight: '600', color: C.muted },
+  chip: { minHeight: 38, paddingHorizontal: 16, borderRadius: 999, justifyContent: 'center', backgroundColor: '#F1EFEC' }, chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  chipOn: { backgroundColor: C.brand }, chipTxt: { fontSize: T.small + 2, fontWeight: '500', color: C.ink }, chipTxtOn: { color: '#fff', fontWeight: '600' },
   seg: { flexDirection: 'row', backgroundColor: '#EFEDEA', borderRadius: 10, padding: 3, alignSelf: 'flex-start' }, segItem: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
   segOn: { backgroundColor: '#fff' }, segTxt: { fontSize: T.small, fontWeight: '600', color: C.muted },
-  big: { flex: 1, minHeight: 56, borderRadius: 14, alignItems: 'center', justifyContent: 'center' }, bigAlt: { backgroundColor: '#fff', borderWidth: 1.5, borderColor: C.line },
-  bigTxt: { color: '#fff', fontSize: T.body + 2, fontWeight: '700' }, bigSub: { color: '#E3F1E6', fontSize: T.small - 1, marginTop: 2 },
+  big: { flex: 1, minHeight: 50, borderRadius: 14, alignItems: 'center', justifyContent: 'center' }, bigPrimary: { backgroundColor: C.brand }, bigAlt: { backgroundColor: C.brandSoft },
+  actions: { flexDirection: 'row', gap: 10, marginTop: 16 }, ask: { fontSize: T.small + 1, fontWeight: '600', color: C.muted },
+  summary: { flexDirection: 'row', alignItems: 'center', marginTop: 14, paddingTop: 14, borderTopWidth: StyleSheet.hairlineWidth, borderColor: C.line },
+  dot: { width: 8, height: 8, borderRadius: 4 }, sumTxt: { fontSize: T.body - 1, fontWeight: '600' }, sumMeta: { fontSize: T.small + 1, color: C.muted },
+  carTag: { backgroundColor: '#F1EFEC', borderRadius: 999, paddingHorizontal: 10, paddingVertical: 3 }, carTagTxt: { fontSize: T.small, color: C.ink, fontWeight: '500' },
+  linkSmall: { color: C.brand, fontSize: T.small + 2, fontWeight: '600' },
+  bigTxt: { color: '#fff', fontSize: T.body + 1, fontWeight: '600', letterSpacing: -0.2 }, bigSub: { color: '#E3F1E6', fontSize: T.small - 1, marginTop: 2 },
   bigOn: { borderWidth: 3, borderColor: C.osc }, label: { fontSize: T.small, fontWeight: '700', color: C.ink },
   sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, sectionAction: { color: C.brand, fontWeight: '700', fontSize: T.small + 1 },
   selRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12 }, selOn: { borderColor: C.brand, backgroundColor: C.brandSoft },
