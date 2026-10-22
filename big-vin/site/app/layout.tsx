@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://big-vin-grind-to-win.sunlightisfree.chatgpt.site'),
+  metadataBase: new URL('https://big-vin.sitetime.workers.dev'),
   title: 'Big Vin | Grind to Win',
   description: 'Big Vin — independent sports lines, start-time and team search, live scores, ranked edges and visible results. Grind to Win.',
   icons: {
