@@ -105,17 +105,8 @@ export function worstPlayablePrice(probability, minValue = 0.03) {
   const odds = win >= 1 ? Math.ceil(win * 100 - 1e-9) : -Math.floor(100 / win + 1e-9);
   return Math.abs(odds) < 100 ? 100 : odds;
 }
-/** NHL +1.5 picks: cover rate of the saved 2026 puck line picks (88-48 through
- * Oct 22, shrunk by one win and one loss). Game-level cover chances from the
- * model margin were overconfident, so the price bar uses this record. */
-export const NHL_PUCK_COVER = (88 + 1) / (136 + 2);
 /** "playable to -143" for an NHL/MLB moneyline pick. */
 export function playablePriceText(game, sport) {
-  if (sport === 'nhl') {
-    if (game.side !== 'home' && game.side !== 'away') return null;
-    const odds = worstPlayablePrice(NHL_PUCK_COVER);
-    return odds === null ? null : `playable to ${signedOdds(odds)}`;
-  }
   if (sport !== 'mlb') return null;
   const margin = game.predictedMargin ?? game.projection?.predictedHomeMargin;
   if (!Number.isFinite(margin)) return null;
