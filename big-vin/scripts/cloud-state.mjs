@@ -9,7 +9,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const checkout=fileURLToPath(new URL('..',import.meta.url));
 const defaultRoot=()=>path.join(os.homedir(),'.local/share/big-vin');
-const defaultSite=()=>process.env.BIG_VIN_SITE_URL||'https://big-vin.sitetime.workers.dev';
+const defaultSite=()=>process.env.BIG_VIN_SITE_URL||'https://big-vin.lestercrafton.workers.dev';
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const dayAt=(time,zone='America/New_York')=>new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(time);
 const entryKeys=['id','sport','weekKey','kind','modelVersion','title','learned','decision','priors','evidence','nextTest'];

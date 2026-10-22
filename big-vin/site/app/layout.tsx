@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://big-vin.sitetime.workers.dev'),
+  metadataBase: new URL('https://big-vin.lestercrafton.workers.dev'),
   other: {'big-vin-build': BUILD},
   title: 'Big Vin | Grind to Win',
   description: 'Big Vin — independent sports lines, start-time and team search, live scores, ranked edges and visible results. Grind to Win.',

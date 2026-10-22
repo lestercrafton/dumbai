@@ -4,7 +4,7 @@
 import http from 'node:http';
 import readline from 'node:readline';
 
-const SITE = process.env.BIG_VIN_SITE_URL || 'https://big-vin.sitetime.workers.dev';
+const SITE = process.env.BIG_VIN_SITE_URL || 'https://big-vin.lestercrafton.workers.dev';
 const SPORTS = ['nfl', 'cfb', 'nba', 'wnba', 'cbb', 'nhl', 'mlb'];
 const VERSION = '1.0.0';
 

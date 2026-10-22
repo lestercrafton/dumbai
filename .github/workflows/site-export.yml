@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      BIG_VIN_SITE_URL: https://big-vin.sitetime.workers.dev
+      BIG_VIN_SITE_URL: https://big-vin.lestercrafton.workers.dev
       EXPORT_AUDIENCE: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/api/site-export
     steps:
       - uses: actions/checkout@v4

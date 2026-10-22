@@ -19,14 +19,14 @@
   // The home page HTML is cached per deployment, so a new deploy never serves old asset links.
   "version_metadata": { "binding": "CF_VERSION" },
   // The runner requests a GitHub OIDC token with this audience when it writes here.
-  "vars": { "COLLECTOR_AUDIENCE": "https://big-vin.sitetime.workers.dev" },
+  "vars": { "COLLECTOR_AUDIENCE": "https://big-vin.lestercrafton.workers.dev" },
   // The site reads env.DB through cloudflare:workers (lib/db.ts), so the binding name stays DB.
   // Created October 19, 2026 in Lester's Cloudflare account; separate from the other projects there.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "big-vin",
-      "database_id": "aa66b317-ad92-48d4-842a-fcfc4f63e56d",
+      "database_id": "b35ed0e6-909d-496b-ab8c-1583d982f462",
       "migrations_dir": "drizzle"
     }
   ]

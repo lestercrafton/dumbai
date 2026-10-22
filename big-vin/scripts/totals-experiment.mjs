@@ -16,7 +16,7 @@ export const ledgerFile=sport=>fileURLToPath(new URL(`../../playbook/totals/${sp
 export const summaryFile=sport=>fileURLToPath(new URL(`../data/totals/${sport}.json`,import.meta.url));
 export const TOTALS_SPORTS=['nfl','cfb','nba','wnba','cbb'];
 const LABEL={nfl:'NFL',cfb:'college football',nba:'NBA',wnba:'WNBA',cbb:'men’s college basketball'};
-const SITE=process.env.BIG_VIN_SITE_URL||'https://big-vin.sitetime.workers.dev';
+const SITE=process.env.BIG_VIN_SITE_URL||'https://big-vin.lestercrafton.workers.dev';
 const GAMES_CSV='https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
 const ALIAS={WSH:'WAS',LA:'LAR',JAC:'JAX'};const abbr=t=>ALIAS[t?.abbreviation]||t?.abbreviation;
 const QUOTE_MAX_AGE=30*60000,START=500,STAKE=0.02;

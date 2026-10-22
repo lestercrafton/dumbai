@@ -46,7 +46,7 @@ export function pendingDocuments(events,queued=new Set()){
 }
 export function chunks(list,size=400){const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;}
 
-export const PLAYBOOK_URL='https://big-vin.sitetime.workers.dev';
+export const PLAYBOOK_URL='https://big-vin.lestercrafton.workers.dev';
 export function readQueue(dir){const f=path.join(dir,'queued.json');return fs.existsSync(f)?new Set(JSON.parse(fs.readFileSync(f,'utf8'))):new Set();}
 /** Outbox files and the key each document is tracked by. */
 export const KINDS=[

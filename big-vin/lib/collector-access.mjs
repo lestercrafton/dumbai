@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 // The runner's OIDC audience; the site checks it against COLLECTOR_AUDIENCE.
-export const SITE_URL='https://big-vin.sitetime.workers.dev';
+export const SITE_URL='https://big-vin.lestercrafton.workers.dev';
 const IDENTITY_ATTEMPTS=5,MAX_RETRY_DELAY=30000;
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 let identity;

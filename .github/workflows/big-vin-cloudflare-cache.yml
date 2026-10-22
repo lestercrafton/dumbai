@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      BV_SITE: https://big-vin.sitetime.workers.dev
+      BV_SITE: https://big-vin.lestercrafton.workers.dev
       BV_RENDER_DB: /tmp/bv-render/site.sqlite
     defaults:
       run:

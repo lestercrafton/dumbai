@@ -6,7 +6,7 @@
 // a visitor's request makes), then uploads the finished response bodies.
 // Visitor requests then read one row instead of recomputing on the free plan.
 //
-// Env: BV_SITE (default https://big-vin.sitetime.workers.dev), BV_RENDER_DB
+// Env: BV_SITE (default https://big-vin.lestercrafton.workers.dev), BV_RENDER_DB
 // (local copy, default /tmp/bv-render/site.sqlite), and either GitHub's OIDC
 // request variables or BV_RENDER_TOKEN_FILE (the site's admin token, for runs
 // outside Actions).
@@ -176,7 +176,7 @@ export async function render(handlers,key,origin){
 }
 
 export async function main(){
- const origin=(process.env.BV_SITE||'https://big-vin.sitetime.workers.dev').replace(/\/$/,'');
+ const origin=(process.env.BV_SITE||'https://big-vin.lestercrafton.workers.dev').replace(/\/$/,'');
  const file=process.env.BV_RENDER_DB||'/tmp/bv-render/site.sqlite';
  const remote=new Remote(origin);
  const t0=Date.now();

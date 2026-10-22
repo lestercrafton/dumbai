@@ -2,7 +2,7 @@
 
 ## Current state (October 19, 2026)
 
-**Cut over.** https://big-vin.sitetime.workers.dev (Worker `big-vin`, D1 `big-vin`) is the only site the runner writes to: `BIG_VIN_SITE_URL` in `big-vin-daily.yml`, the runner's OIDC audience (`SITE_URL` in `big-vin/lib/collector-access.mjs`, matching `COLLECTOR_AUDIENCE` here), the playbook URL and the MCP server all point at it. The dual write (`scripts/mirror-writes.mjs`) is no longer loaded.
+**Cut over.** https://big-vin.lestercrafton.workers.dev (Worker `big-vin`, D1 `big-vin`) is the only site the runner writes to: `BIG_VIN_SITE_URL` in `big-vin-daily.yml`, the runner's OIDC audience (`SITE_URL` in `big-vin/lib/collector-access.mjs`, matching `COLLECTOR_AUDIENCE` here), the playbook URL and the MCP server all point at it. The dual write (`scripts/mirror-writes.mjs`) is no longer loaded.
 
 - The ChatGPT Sites export (Site data export run 39300555834, Oct 19) was imported with `scripts/d1-import-from-export.mjs --additive`. Every exported row's key is present in D1; rows that were already here were kept.
 - The ChatGPT Sites site is no longer written to and its data stops at that export.
@@ -46,8 +46,8 @@ Computing a slate or a results page reads thousands of rows and takes 30 to 850 
 - **Edge cache.** `cache.enabled` in `wrangler.cloudflare.jsonc` turns on Workers Cache. `edge.mjs` gives read-cache responses an edge-only `Cloudflare-CDN-Cache-Control` (API reads 60 s, `/` and navigation payloads 5 min but never past Eastern midnight, each with 5 min stale-while-revalidate), so repeat requests are answered without running the Worker or reading D1, and a burst for one URL runs it once. Browsers still get the app's own `Cache-Control`. Every other Worker response is marked `no-store` at the edge. With the cache on, static asset requests count toward the 100,000 requests a day.
 - **Measuring.** Set `BV_D1_METER` in the config vars to log rows read and written per D1 statement, then `wrangler tail big-vin --format json`.
 
-## Deploy token
+## Deploy
 
-Personal Cloudflare API token (Edit Workers, account 7c5cec2f54f27b75fceca3553b1aa9fe) lives at `~/.config/big-vin-cloudflare/token` on the box (mode 600, never in the repo). Deploy from big-vin/site:
+Big Vin lives on Lester's personal Cloudflare account (workers.dev subdomain `lestercrafton`). Deploy from big-vin/site after `npm run build:cloudflare`, signed in with `wrangler login` (personal account only):
 
-    CLOUDFLARE_API_TOKEN="$(cat ~/.config/big-vin-cloudflare/token)" CLOUDFLARE_ACCOUNT_ID=7c5cec2f54f27b75fceca3553b1aa9fe npx -p node@22 -p wrangler@latest wrangler deploy --config wrangler.cloudflare.jsonc
+    npx -p node@22 -p wrangler@latest wrangler deploy --config wrangler.cloudflare.jsonc

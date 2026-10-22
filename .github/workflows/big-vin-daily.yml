@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 100
     env:
       # The Cloudflare site is the only site the runner writes to.
-      BIG_VIN_SITE_URL: https://big-vin.sitetime.workers.dev
+      BIG_VIN_SITE_URL: https://big-vin.lestercrafton.workers.dev
     defaults:
       run:
         working-directory: big-vin
@@ -180,7 +180,7 @@ jobs:
             'Hourly score refreshes do not create or rewrite the daily journal. GitHub may delay scheduled starts.',
             'All seven sports use saved pregame forecasts and original captured prices.',
             'Each formula/sport/cohort keeps its separate $500 paper bankroll; risk is 2% of the Eastern day\'s opening balance.',
-            'Site: https://big-vin.sitetime.workers.dev/learning-log',
+            'Site: https://big-vin.lestercrafton.workers.dev/learning-log',
             'A failed or partial run requires attention; it is not a successful fresh report.']
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('\n\n'.join(summary)+'\n')
           PY

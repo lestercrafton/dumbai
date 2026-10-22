@@ -141,14 +141,14 @@ test('outbox replays to the Cloudflare site with its own audience and a labeled 
   return {ok:true,text:async()=>JSON.stringify({received:(body.picks||body.lines||[1]).length,inserted:(body.picks||body.lines||[1]).length})};
  };
  const env={ACTIONS_ID_TOKEN_REQUEST_URL:'https://token.example/request',ACTIONS_ID_TOKEN_REQUEST_TOKEN:'x'};
- const r=await flush(dir,{siteUrl:'https://big-vin.sitetime.workers.dev',fresh,ref:'run-1',fetchImpl,now:()=>now,authorize:(u,o)=>playbookAuthorization(u,{...o,env,now:()=>now})});
+ const r=await flush(dir,{siteUrl:'https://big-vin.lestercrafton.workers.dev',fresh,ref:'run-1',fetchImpl,now:()=>now,authorize:(u,o)=>playbookAuthorization(u,{...o,env,now:()=>now})});
  assert.equal(r.error,null);
- assert.equal(calls[0].audience,'https://big-vin.sitetime.workers.dev');
- assert.ok(calls.slice(1).every(c=>c.url==='https://big-vin.sitetime.workers.dev/api/playbook'));
+ assert.equal(calls[0].audience,'https://big-vin.lestercrafton.workers.dev');
+ assert.ok(calls.slice(1).every(c=>c.url==='https://big-vin.lestercrafton.workers.dev/api/playbook'));
  const picks=calls.filter(c=>c.kind==='challenger-picks');
  assert.deepEqual(picks.map(c=>[c.n,c.backfill?.source??null]),[[1,null],[1,'checkpoint-outbox']]);
  assert.equal(calls.filter(c=>c.kind==='odds-snapshots').length,1);
- const again=await flush(dir,{siteUrl:'https://big-vin.sitetime.workers.dev',fetchImpl,authorize:async()=>'Bearer t'});
+ const again=await flush(dir,{siteUrl:'https://big-vin.lestercrafton.workers.dev',fetchImpl,authorize:async()=>'Bearer t'});
  assert.deepEqual(again.posted,{},'nothing is posted twice');
 });
 test('a failed post keeps documents queued and does not throw',async()=>{

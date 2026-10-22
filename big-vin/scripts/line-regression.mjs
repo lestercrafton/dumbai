@@ -2,7 +2,7 @@
  * Fits final margin = a + b*(market line) + c*(our line - market line) on saved,
  * graded live picks. c near 0 means our difference adds nothing. Public API only. */
 import fs from 'node:fs';
-const site=process.env.BIG_VIN_SITE_URL||'https://big-vin.sitetime.workers.dev';
+const site=process.env.BIG_VIN_SITE_URL||'https://big-vin.lestercrafton.workers.dev';
 const SPORTS=['nfl','cfb','nba','wnba','cbb'];
 const out='data/regression/spread.json';
 const once=async path=>{const r=await fetch(site+path,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`${path} ${r.status}`);return r.json();};
