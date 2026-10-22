@@ -174,3 +174,9 @@
 .vin-game-learn .vin-visible-result>span{color:#dfd3aa}
 .vin-board-motto{margin:16px 0 0;color:#c8dbad;font-size:15px;line-height:1.6;font-style:italic}
 @media(max-width:560px){.vin-board-motto{font-size:13px;max-width:290px;margin-top:14px}.vin-result-settled .vin-outcome-badge{font-size:21px}}
+
+.vin-pick-stack{display:flex;flex-direction:column}
+.vin-pick-stack>.vin-game-pick+.vin-game-pick{margin-top:-8px}
+.vin-total-pick small{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:#c3d6a9}
+.vin-total-pick>div:first-child>strong{font-size:22px}
+.vin-total-loss{border-color:#7d8973;background:#ffffff05}

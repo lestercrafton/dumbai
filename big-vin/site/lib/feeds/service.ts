@@ -59,6 +59,12 @@ export async function scoreboard(sport:string,startDate:string,endDate=startDate
   return {...snap,offlineSnapshot:true,retrievedAt:boards.map(b=>b.retrievedAt).sort().at(-1)||snap.retrievedAt,warnings:[...new Set(['Server feed unavailable. Showing the latest saved observations; browser refresh attempts the current feed.',...boards.flatMap(b=>b.warnings||[])])],games};
  }
 }
+/** Over/under experiment summary, built hourly on GitHub Actions; separate from the spread record. */
+export async function totalsTable(sport:string){
+ if(sport!=='nfl')return null;
+ try{return await cached<any>('totals:'+sport,600,async()=>{const r=await fetch('https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/totals/nfl.json',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Totals table returned ${r.status}`);return r.json();});}
+ catch(e){console.error('Totals table unavailable',e);return null;}
+}
 /** Injury table built on GitHub Actions; a missing table means no adjustment, never an error. */
 export async function injuryTable(sport:string){
  if(!INJURY_SPORTS.has(sport))return null;
@@ -93,7 +99,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  if(!Object.hasOwn(SPORT_PATHS,sport))throw new Error('Unsupported sport');
  try{await refreshLiveResults(sport);}catch(e){console.error('Slate finals check unavailable',e);}
  const endDate=day(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*DAY);
- const [board,hist,rawForecasts,injuries]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false),injuryTable(sport)]);
+ const [board,hist,rawForecasts,injuries,totals]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false),injuryTable(sport),totalsTable(sport)]);
  const injuryFor=(g:any)=>{const c=canonical({...g,sport});return gameInjury(injuries,sport,c.homeId,c.awayId);};
  let forecasts=rawForecasts;
  const now=sportsDay();const asOf=date<now?date:now;
@@ -180,7 +186,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:homeEdge>0?'home':'away');
   const lowEvidence=hasLimitedData({sport,projection});
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.
-  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,injury:f?.injury??projection?.injury??null,injuryAdjustment:f?.injuryAdjustment??projection?.injuryAdjustment??null,baseMargin:f?.baseMargin??projection?.baseHomeMargin??null,marketCheck:f?.marketCheck??null,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:g.status==='not-on-schedule'?'If-necessary playoff game no longer on the league schedule. No pick.':lowEvidence?'Picks with limited data':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
+  return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,overUnder:totals?.games?.[g.id]?{...totals.games[g.id],record:totals.record}:null,injury:f?.injury??projection?.injury??null,injuryAdjustment:f?.injuryAdjustment??projection?.injuryAdjustment??null,baseMargin:f?.baseMargin??projection?.baseHomeMargin??null,marketCheck:f?.marketCheck??null,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:g.status==='not-on-schedule'?'If-necessary playoff game no longer on the league schedule. No pick.':lowEvidence?'Picks with limited data':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
  });
  matches.sort((a:any,b:any)=>(a.lowEvidence?1:0)-(b.lowEvidence?1:0)||(b.edge??-1)-(a.edge??-1)||String(a.startTime).localeCompare(String(b.startTime))||a.id.localeCompare(b.id));
  let rank=0;for(const g of matches){if(g.marketCheck?.review&&g.status==='scheduled'){g.rankReason='Marked for review: far from the market with no injury explanation. Edge halved; outside ranked picks.';continue;}if(g.edge!==null&&g.edge>0&&g.side&&!g.stale&&!g.lowEvidence)g.rank=++rank;}
