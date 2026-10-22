@@ -43,7 +43,7 @@ export function validPregameQuote(f,g,now=Date.now(),lockAt=f.startTime){
   &&finite(observed)&&observed>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)&&observed<=now&&now-observed<=QUOTE_MAX_AGE;
 }
 const odds=value=>finite(value)&&Number.isInteger(value)&&Math.abs(value)>=100?value:null;
-const sameOffer=(a,b)=>['side','marketHomeSpread','odds','marketHomePrice','marketAwayPrice','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
+const sameOffer=(a,b)=>['side','marketHomeSpread','odds','marketHomePrice','marketAwayPrice','runLineHomeSpread','runLineHomePrice','runLineAwayPrice','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
 
 /** Pure prospective state transition. Original forecasts are never rewritten.
  * Earliest observed kickoff and a started/unknown-status latch only tighten. */
@@ -66,7 +66,7 @@ export function advancePickState(f,previous,g,recordedAt=new Date().toISOString(
  const selected=spreadSelection(live.margin,q.homeSpread,quotePrices(f.sport,q));
  const revision={id:f.id+':'+q.observedAt,forecastId:f.id,gameId:f.gameId,homeId:f.homeId,awayId:f.awayId,
   modelVersion:f.modelVersion,predictedMargin:live.margin,...(live.margin!==f.predictedMargin?{baseMargin:base}:{}),
-  ...(live.injuryAdjustment!==null?{injuryAdjustment:live.injuryAdjustment,injury:g.injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:q.homeSpread,marketHomePrice:odds(q.homeSpreadPrice),marketAwayPrice:odds(q.awaySpreadPrice),...selected,
+  ...(live.injuryAdjustment!==null?{injuryAdjustment:live.injuryAdjustment,injury:g.injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:q.homeSpread,marketHomePrice:odds(q.homeSpreadPrice),marketAwayPrice:odds(q.awaySpreadPrice),...(finite(q.runLineHomeSpread)?{runLineHomeSpread:q.runLineHomeSpread,runLineHomePrice:odds(q.runLineHomePrice),runLineAwayPrice:odds(q.runLineAwayPrice)}:{}),...selected,
   odds:odds(selected.side==='home'?q.homeSpreadPrice:selected.side==='away'?q.awaySpreadPrice:null),
   provider:q.provider||'Sportsbook',observedAt:q.observedAt,recordedAt,startTime:g.startTime,lockAt,sourceUrl:g.sourceUrl};
  const last=state.revisions.at(-1);
@@ -88,7 +88,7 @@ export function withPickState(f,state){
  const selected=[...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1);
  const originalPick={side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,marketObservedAt:f.marketObservedAt,capturedAt:f.capturedAt,recordedAt:f.firstMarket?.recordedAt??f.capturedAt,provider:f.provider};
  const validOriginal=at(f.capturedAt)<cutoff&&(!finite(f.marketHomeSpread)||at(f.marketObservedAt)<cutoff);
- return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
+ return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,...(finite(selected.runLineHomeSpread)?{runLineHomeSpread:selected.runLineHomeSpread,runLineHomePrice:selected.runLineHomePrice,runLineAwayPrice:selected.runLineAwayPrice}:{}),edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
   originalPick,pickRevision:selected??null,pickRevisions:state.revisions,pickLock:{lockAt:state.lockAt,closedAt:state.closedAt,verifiedAt:state.verifiedAt,protocol:PICK_PROTOCOL}};
 }
 

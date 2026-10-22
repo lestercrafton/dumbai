@@ -97,11 +97,11 @@ export function worstPlayablePrice(probability, minValue = 0.03) {
   const odds = win >= 1 ? Math.ceil(win * 100 - 1e-9) : -Math.floor(100 / win + 1e-9);
   return Math.abs(odds) < 100 ? 100 : odds;
 }
-/** "@ -143 or better" for an NHL/MLB moneyline pick. */
+/** "playable to -143" for an NHL/MLB moneyline pick. */
 export function playablePriceText(game, sport) {
   if (!['nhl', 'mlb'].includes(sport) || (game.side !== 'home' && game.side !== 'away')) return null;
   const margin = game.predictedMargin ?? game.projection?.predictedHomeMargin;
   const p = winProbability(game.side === 'home' ? margin : -margin, sport);
   const odds = worstPlayablePrice(p);
-  return odds === null ? null : `@ ${signedOdds(odds)} or better`;
+  return odds === null ? null : `playable to ${signedOdds(odds)}`;
 }
