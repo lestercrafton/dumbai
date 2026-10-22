@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-22T15:38:21.969Z",
+ "generatedAt": "2026-10-22T17:14:56.272Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -27,7 +27,7 @@
      "player": "Jeremiyah Love",
      "espnId": "4870808",
      "status": "Questionable",
-     "reported": "2026-10-21T19:11Z",
+     "reported": "2026-10-22T15:57Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -132,7 +132,7 @@
      "espnId": "3916387",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-10-21T20:37Z",
+     "reported": "2026-10-22T17:09Z",
      "weight": 0.25,
      "replacement": "Tyler Huntley",
      "starterEpaPerPlay": 0.116,
@@ -232,7 +232,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-22T15:24Z",
+     "reported": "2026-10-22T17:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -535,7 +535,7 @@
      "player": "Matthew Golden",
      "espnId": "4701936",
      "status": "Questionable",
-     "reported": "2026-10-21T20:20Z",
+     "reported": "2026-10-22T16:33Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -545,7 +545,7 @@
      "player": "Christian Watson",
      "espnId": "4248528",
      "status": "Questionable",
-     "reported": "2026-10-21T20:17Z",
+     "reported": "2026-10-22T16:26Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -587,7 +587,7 @@
      "player": "Dalton Schultz",
      "espnId": "3117256",
      "status": "Questionable",
-     "reported": "2026-10-21T21:29Z",
+     "reported": "2026-10-22T16:38Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -730,7 +730,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.35,
+   "loss": 0.3,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -758,14 +758,14 @@
      "points": 0.1
     },
     {
-     "group": "lt",
-     "position": "LT",
-     "player": "Josh Simmons",
-     "espnId": "4569659",
+     "group": "rt",
+     "position": "RT",
+     "player": "Jaylon Moore",
+     "espnId": "4043041",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-18T22:41Z",
      "weight": 0.25,
-     "points": 0.15
+     "points": 0.1
     }
    ],
    "notes": []
@@ -1001,7 +1001,7 @@
   },
   "NE": {
    "team": "NE",
-   "loss": 1.82,
+   "loss": 1.22,
    "starter": {
     "name": "Drake Maye",
     "espnId": "4431452",
@@ -1057,26 +1057,6 @@
      "reported": "2026-10-21T23:45Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Alijah Vera-Tucker",
-     "espnId": "4259646",
-     "status": "Out",
-     "reported": "2026-10-22T01:30Z",
-     "weight": 1,
-     "points": 0.3
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Ben Brown",
-     "espnId": "4362890",
-     "status": "Out",
-     "reported": "2026-10-22T01:33Z",
-     "weight": 1,
-     "points": 0.3
     },
     {
      "group": "rt",
@@ -1198,7 +1178,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-22T15:24Z",
+     "reported": "2026-10-22T17:00Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1209,7 +1189,7 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.32,
+   "loss": 0.26,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -1235,16 +1215,6 @@
      "reported": "2026-10-21T20:18Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Kiko Mauigoa",
-     "espnId": "4700136",
-     "status": "Questionable",
-     "reported": "2026-10-22T15:00Z",
-     "weight": 0.25,
-     "points": 0.06
     },
     {
      "group": "lg",
@@ -1460,7 +1430,7 @@
      "player": "Emeka Egbuka",
      "espnId": "4567750",
      "status": "Questionable",
-     "reported": "2026-10-21T19:26Z",
+     "reported": "2026-10-22T16:01Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -1470,7 +1440,7 @@
      "player": "Bucky Irving",
      "espnId": "4596448",
      "status": "Questionable",
-     "reported": "2026-10-21T19:30Z",
+     "reported": "2026-10-22T16:03Z",
      "weight": 0.25,
      "points": 0.1
     },
