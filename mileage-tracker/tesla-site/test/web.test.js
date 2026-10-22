@@ -66,6 +66,7 @@ test('full flow: sign-in, Tesla link, trip detection, push, tag, send now, batch
     W.car.shift = 'P'; now = new Date(now.getTime() + 300000); const c4 = await cron();
     assert.deepStrictEqual(c4.results[0].ended.length, 1);
     st = (await call(h, 'GET', '/api/state', { cookie: sess })).json(); assert.strictEqual(st.trips.length, 1); assert.strictEqual(st.trips[0].miles, 12.4);
+    assert.strictEqual(st.trips[0].status, 'untagged'); assert.strictEqual(st.trips[0].amount, undefined); // the page shows the server's verdict
     // asleep car is not read
     W.car.state = 'asleep'; const before = W.calls.filter(u => /vehicle_data/.test(u)).length; await cron();
     assert.strictEqual(W.calls.filter(u => /vehicle_data/.test(u)).length, before); W.car.state = 'online';
@@ -77,6 +78,7 @@ test('full flow: sign-in, Tesla link, trip detection, push, tag, send now, batch
     assert.strictEqual(smtp.mails.length, 0);
     r = await call(h, 'POST', new URL(sendUrl).pathname + new URL(sendUrl).search); assert.match(r.text, /Sent to Sugar/);
     assert.strictEqual(smtp.mails.length, 1); const m = smtp.mails[0];
+    st = (await call(h, 'GET', '/api/state', { cookie: sess })).json(); assert.strictEqual(st.trips[0].status, 'sent'); assert.strictEqual(st.trips[0].amount, 9.42);
     assert.match(m.subject, /^Mileage Reimbursement Request – Oct 20, 2026 .*\(12\.4 miles \/ \$9\.42\)$/);
     assert.strictEqual(m.to.text, 'sugar@ovanova.co'); assert.match(m.text, /^Sugar,/); assert.match(m.text, /VIN 7SAYGDEE4RA246655/);
     assert.deepStrictEqual(m.attachments.map(a => a.contentType).sort(), ['text/csv', 'text/html']);
