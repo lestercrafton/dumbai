@@ -45,3 +45,9 @@ Computing a slate or a results page reads thousands of rows and takes 30 to 850 
 - **Freshness.** Bodies are at most one renderer run old (10 to 20 minutes, depending on GitHub's schedule). A body older than 45 minutes is ignored and the request computes live, so a stalled renderer slows the site down rather than freezing it.
 - **Edge cache.** `cache.enabled` in `wrangler.cloudflare.jsonc` turns on Workers Cache. `edge.mjs` gives read-cache responses an edge-only `Cloudflare-CDN-Cache-Control` (API reads 60 s, `/` and navigation payloads 5 min but never past Eastern midnight, each with 5 min stale-while-revalidate), so repeat requests are answered without running the Worker or reading D1, and a burst for one URL runs it once. Browsers still get the app's own `Cache-Control`. Every other Worker response is marked `no-store` at the edge. With the cache on, static asset requests count toward the 100,000 requests a day.
 - **Measuring.** Set `BV_D1_METER` in the config vars to log rows read and written per D1 statement, then `wrangler tail big-vin --format json`.
+
+## Deploy token
+
+Personal Cloudflare API token (Edit Workers, account 7c5cec2f54f27b75fceca3553b1aa9fe) lives at `~/.config/big-vin-cloudflare/token` on the box (mode 600, never in the repo). Deploy from big-vin/site:
+
+    CLOUDFLARE_API_TOKEN="$(cat ~/.config/big-vin-cloudflare/token)" CLOUDFLARE_ACCOUNT_ID=7c5cec2f54f27b75fceca3553b1aa9fe npx -p node@22 -p wrangler@latest wrangler deploy --config wrangler.cloudflare.jsonc
