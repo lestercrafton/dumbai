@@ -23,3 +23,13 @@ test('moneyline picks need value at the price, the same bar on both sides', () =
   assert.equal(spreadSelection(1, 0, {sport: 'nhl', homePrice: 100}).side, null);
   assert.equal(spreadSelection(0.5, 1.5).side, 'home');
 });
+
+test('playable price is the worst quote that still clears the value bar', async () => {
+  const {worstPlayablePrice, moneylineExpectedValue} = await import('./moneyline.mjs');
+  for (const p of [0.35, 0.48, 0.5, 0.6, 0.72]) {
+    const o = worstPlayablePrice(p);
+    assert.ok(moneylineExpectedValue(p, o) / 100 >= 0.03 - 1e-9, `p=${p} o=${o}`);
+    const worse = o > 0 ? (o - 1 < 100 ? -101 : o - 1) : o - 1;
+    assert.ok(moneylineExpectedValue(p, worse) / 100 < 0.03, `p=${p} worse=${worse}`);
+  }
+});

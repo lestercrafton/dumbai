@@ -9,7 +9,7 @@ export {DonateButton} from '@/components/donate-button';
 import {useRefreshingResource} from '@/components/use-refreshing-resource';
 import CfbNewsReview, {CfbNewsFlag} from '@/components/cfb-news-review';
 import {handicap, spreadDecision} from '@/lib/spread-display.mjs';
-import {moneylineComparison} from '@/lib/moneyline.mjs';
+import {moneylineComparison, playablePriceText} from '@/lib/moneyline.mjs';
 import {centralDay, centralTime, featuredGame, featuredLeaders, SUPPORTED_SPORTS, sportLabel, visibleOutcome} from '@/lib/presentation.mjs';
 import {shortScoreUnit, scoreUnit} from '@/lib/sport-copy';
 import {displayLines} from '@/lib/board-presentation.mjs';
@@ -111,6 +111,9 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
     const pregame = game.actionable && currentBoardPick(game,now);
     const comparisonLine = lines.marketLine;
     const comparisonEdge = lines.edge;
+    const gameSport = game.sport || sport;
+    const mlSport = ['nhl','mlb'].includes(gameSport);
+    const playable = playablePriceText(game, gameSport);
     const awaitingQuote = game.status==='scheduled' && Date.parse(game.startTime)>now && !pregame;
     const synthetic = game.paperWager?.kind === 'synthetic-winner-even';
     const settled = !synthetic && ['win','loss','push','void'].includes(decision.outcome);
@@ -133,13 +136,13 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       <div className="vin-game-lines" role="group" aria-label={`Spread comparison for ${lines.teamName}`}><div><span className="vin-label">{synthetic ? 'PAPER CONTRACT' : pregame ? 'VEGAS LINE (LATEST)' : 'VEGAS LINE'}</span><strong>{synthetic ? 'Synthetic winner · +100' : comparisonLine!=null?`${lines.teamShort} ${handicap(comparisonLine)}`:'No market spread'}</strong><small>{synthetic ? 'No sportsbook quote' : 'Spread'}</small></div><div><span className="vin-label">BIG VIN LINE</span><strong>{lines.fairLine!=null?`${lines.teamShort} ${handicap(lines.fairLine)}`:'No projection'}</strong><small>Fair spread</small></div><div><span className="vin-label">{pregame?'VALUE (LATEST)':'VALUE'}</span><strong>{comparisonEdge!=null?pointValue(comparisonEdge):'—'}</strong><small>{shortScoreUnit(sport)} of edge</small>{pregame&&comparisonEdge!=null&&comparisonEdge<=0&&<small>No current spread edge</small>}</div></div>
       {moneyline && <dl className="vin-moneyline" aria-label={`Moneyline comparison for ${moneyline.teamName}`}><div><dt>{moneyline.quote?.label || 'Vegas ML'}</dt><dd>{moneyline.team} <strong aria-label={moneyline.quote ? undefined : 'Unavailable'}>{moneyline.vegas}</strong></dd></div><div><dt>BV ML <span>(est.)</span></dt><dd>{moneyline.team} <strong>{moneyline.implied}</strong></dd></div><div className="vin-ml-ev"><dt>ML EV <span>(est.)</span></dt><dd><strong aria-label={moneyline.evPer100 === null ? 'Unavailable' : `${moneyline.ev.replace(/u$/, ' units')} estimated net profit or loss per 100 units wagered`}>{moneyline.ev}</strong><small>per 100 units wagered</small>{moneyline.evPer100 !== null && moneyline.evPer100 < 0 && <small>No ML edge</small>}</dd></div></dl>}
       <div className="vin-pick-stack">
-      <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK · SPREAD</span><strong>{lines.pick || (comparisonEdge===0?'No edge · Pass':'No spread pick')}</strong></div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : pregame ? 'Current pick' : awaitingQuote ? 'Last saved' : 'Locked pick'}</span></div>
+      <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK · {mlSport?'MONEYLINE':'SPREAD'}</span><strong>{lines.pick || (mlSport?'No pick':comparisonEdge===0?'No edge · Pass':'No spread pick')}</strong>{lines.pick&&playable&&<small className="vin-ml-price">{playable}</small>}</div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : pregame ? 'Current pick' : awaitingQuote ? 'Last saved' : 'Locked pick'}</span></div>
       {!game.overUnder && ['nfl','cfb','nba','wnba','cbb'].includes(sport) && <div className="vin-game-pick vin-total-pick vin-total-open"><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>No pick saved</strong><small>{Number.isFinite((game.moneylineMarket??game.market)?.total)?`Vegas total ${(game.moneylineMarket??game.market).total} · `:''}{Date.parse(game.startTime)<=now?'No total points pick was saved before kickoff.':'Waiting for the next hourly total points run.'}</small></div><span className="vin-pick-kind">Total points</span></div>}
       {game.overUnder && <div className={`vin-game-pick vin-total-pick vin-total-${game.overUnder.result??'open'}`}><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>{game.overUnder.side?`${game.overUnder.side==='over'?'Over':'Under'} ${game.overUnder.marketTotal}`:'No edge · Pass'}</strong><small>Vegas total {game.overUnder.marketTotal} · Big Vin total {pointValue(game.overUnder.total)}{game.overUnder.result?` · Final ${game.overUnder.actualTotal}, ${game.overUnder.result==='win'?'win':game.overUnder.result==='loss'?'learn':'push'}`:''}</small></div><span className="vin-pick-kind">Total points record {game.overUnder.record.wins}–{game.overUnder.record.losses}{game.overUnder.record.pushes?`–${game.overUnder.record.pushes}`:''}</span></div>}
       </div>
       <div className={`vin-game-status vin-visible-result ${settled?'vin-result-settled':liveResult?'vin-result-live':''}`}>
         {(settled || liveResult) && <span className="vin-result-heading">{settled ? decision.outcome==='void'?'SETTLED':'FINAL' : 'LIVE'} · AGAINST THE SPREAD</span>}
-        <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:decision.outcome}`}>{liveResult ? livePick.label : pregame&&comparisonEdge===0 ? 'Pass · No spread edge' : visibleOutcome(decision, synthetic)}</strong>
+        <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:decision.outcome}`}>{liveResult ? livePick.label : pregame&&mlSport&&!lines.pick ? 'No pick' : pregame&&comparisonEdge===0 ? 'Pass · No spread edge' : visibleOutcome(decision, synthetic)}</strong>
         {decision.score && <span className="vin-final-score">Final · {teamCode(game.away)} {decision.score.split('–')[0]} – {decision.score.split('–')[1]} {teamCode(game.home)}</span>}
         <span>{pregame ? 'Updates until kickoff' : awaitingQuote ? 'Current recommendation unavailable' : game.archived ? 'Uses the locked pregame line' : game.stale ? 'Stale price' : 'Feed observation'}{liveResult?' · provisional':decision.outcome==='pending'?' · awaiting final':''}</span>
         {liveResult && livePick.state==='not-covering' && <span>Net {scoreUnit(sport)} needed to move past the spread.</span>}
