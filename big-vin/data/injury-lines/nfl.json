@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-22T00:47:21.921Z",
+ "generatedAt": "2026-10-22T01:17:49.193Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -57,7 +57,7 @@
      "player": "Budda Baker",
      "espnId": "3127287",
      "status": "Questionable",
-     "reported": "2026-10-21T23:47Z",
+     "reported": "2026-10-22T01:00Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -89,7 +89,7 @@
      "player": "Divine Deablo",
      "espnId": "4037626",
      "status": "Questionable",
-     "reported": "2026-10-18T18:07Z",
+     "reported": "2026-10-22T00:56Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -109,7 +109,7 @@
      "player": "C.J. Henderson",
      "espnId": "4240596",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T01:01Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -232,7 +232,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-22T00:01Z",
+     "reported": "2026-10-22T01:01Z",
      "weight": 1,
      "points": 0.3
     }
@@ -483,7 +483,7 @@
      "player": "Talanoa Hufanga",
      "espnId": "4360853",
      "status": "Doubtful",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T00:56Z",
      "weight": 1,
      "points": 0.3
     }
@@ -1106,7 +1106,7 @@
      "player": "Kaden Elliss",
      "espnId": "3124890",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T00:45Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1208,7 +1208,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-22T00:01Z",
+     "reported": "2026-10-22T01:01Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1429,7 +1429,7 @@
      "player": "Drake Thomas",
      "espnId": "4428659",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T00:57Z",
      "weight": 0.25,
      "points": 0.06
     }
