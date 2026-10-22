@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-22T01:17:49.193Z",
+ "generatedAt": "2026-10-22T01:49:05.861Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -805,7 +805,7 @@
      "player": "Quay Walker",
      "espnId": "4379416",
      "status": "Questionable",
-     "reported": "2026-10-21T02:04Z",
+     "reported": "2026-10-22T01:14Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1064,7 +1064,7 @@
      "player": "Alijah Vera-Tucker",
      "espnId": "4259646",
      "status": "Out",
-     "reported": "2026-10-21T18:30Z",
+     "reported": "2026-10-22T01:30Z",
      "weight": 1,
      "points": 0.3
     },
@@ -1074,7 +1074,7 @@
      "player": "Ben Brown",
      "espnId": "4362890",
      "status": "Out",
-     "reported": "2026-10-21T18:31Z",
+     "reported": "2026-10-22T01:33Z",
      "weight": 1,
      "points": 0.3
     },
@@ -1084,7 +1084,7 @@
      "player": "Morgan Moses",
      "espnId": "16771",
      "status": "Questionable",
-     "reported": "2026-10-21T00:24Z",
+     "reported": "2026-10-22T01:41Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1252,7 +1252,7 @@
      "player": "Kiko Mauigoa",
      "espnId": "4700136",
      "status": "Doubtful",
-     "reported": "2026-10-21T17:10Z",
+     "reported": "2026-10-22T01:26Z",
      "weight": 1,
      "points": 0.25
     },
@@ -1262,7 +1262,7 @@
      "player": "Dylan Parham",
      "espnId": "4243375",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T01:11Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1387,7 +1387,7 @@
      "player": "Jaden Dugger",
      "espnId": "5086161",
      "status": "Questionable",
-     "reported": "2026-10-21T01:37Z",
+     "reported": "2026-10-22T01:14Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1397,7 +1397,7 @@
      "player": "Marques Sigle",
      "espnId": "4693337",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T01:05Z",
      "weight": 0.25,
      "points": 0.08
     }
