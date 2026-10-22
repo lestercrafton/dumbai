@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-22T10:53:20.352Z",
+ "generatedAt": "2026-10-22T14:06:22.283Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -232,7 +232,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-22T10:01Z",
+     "reported": "2026-10-22T13:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -1208,7 +1208,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-22T10:01Z",
+     "reported": "2026-10-22T13:00Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1303,7 +1303,7 @@
      "player": "Saquon Barkley",
      "espnId": "3929630",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-22T13:45Z",
      "weight": 0.25,
      "points": 0.1
     },
