@@ -35,7 +35,7 @@ async function cachedOrLive(request,env,ctx,key,{maxAge,source}){
  // serve the last snapshot and let the rebuild finish (and refill) in the background.
  const stale=hit&&hit.status===200?hit:null;
  const response=stale?await Promise.race([live,new Promise(r=>setTimeout(()=>r(null),STALE_WAIT_MS))]):await live;
- if(!response){ctx.waitUntil(live.then(r=>storableLive(r)?fill(env,key,r,source):null).catch(error=>console.error('Background refresh failed',key,error)));return withEdge(cachedResponse(stale,'stale',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),kind==='api'?edgeDirective('api'):EDGE_NO_STORE);}
+ if(!response){ctx.waitUntil(live.then(r=>storableLive(r)?fill(env,key,r,source):null).catch(error=>console.error('Background refresh failed',key,error)));return withEdge(cachedResponse(stale,'stale',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),EDGE_NO_STORE);}
  const storable=storableLive(response);
  if(storable)ctx.waitUntil(fill(env,key,response.clone(),source));
  return withEdge(response,storable?edgeDirective(kind):EDGE_NO_STORE);
