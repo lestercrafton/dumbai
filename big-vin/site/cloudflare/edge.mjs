@@ -17,6 +17,11 @@ async function register(env,key){
  try{await env.DB.prepare("INSERT INTO read_cache (key,status,headers,rendered_at,source,parts,body,registered_at) VALUES (?,0,'[]','1970-01-01T00:00:00.000Z','miss',1,'',?) ON CONFLICT(key) DO NOTHING").bind(key,new Date().toISOString()).run();}
  catch(error){console.error('Read cache registration failed',key,error);}
 }
+export const STALE_WAIT_MS=2500;
+function storableLive(response){
+ const type=response.headers.get('content-type')||'';
+ return response.status===200&&(type.startsWith('application/json')||type.startsWith('text/html')||type.startsWith('text/x-component'))&&!response.headers.has('set-cookie');
+}
 async function cachedOrLive(request,env,ctx,key,{maxAge,source}){
  let hit=null;
  const meter=env.BV_D1_METER?meta=>console.log(JSON.stringify({d1read:meta?.rows_read??0,d1write:meta?.rows_written??0})):undefined;
@@ -25,9 +30,13 @@ async function cachedOrLive(request,env,ctx,key,{maxAge,source}){
  if(hit&&(maxAge===null||fresh({rendered_at:hit.renderedAt},Date.now(),maxAge)))return withEdge(cachedResponse(hit,'hit',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),hit.status===200?edgeDirective(kind):EDGE_NO_STORE);
  // Register the key first, so the renderer picks it up even if this request fails.
  if(!hit&&source==='miss')ctx.waitUntil(register(env,key));
- const response=await app.fetch(request,env,ctx);
- const type=response.headers.get('content-type')||'';
- const storable=response.status===200&&(type.startsWith('application/json')||type.startsWith('text/html')||type.startsWith('text/x-component'))&&!response.headers.has('set-cookie');
+ const live=app.fetch(request,env,ctx);
+ // A stale saved copy beats waiting: give the live rebuild a short head start, then
+ // serve the last snapshot and let the rebuild finish (and refill) in the background.
+ const stale=hit&&hit.status===200?hit:null;
+ const response=stale?await Promise.race([live,new Promise(r=>setTimeout(()=>r(null),STALE_WAIT_MS))]):await live;
+ if(!response){ctx.waitUntil(live.then(r=>storableLive(r)?fill(env,key,r,source):null).catch(error=>console.error('Background refresh failed',key,error)));return withEdge(cachedResponse(stale,'stale',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),kind==='api'?edgeDirective('api'):EDGE_NO_STORE);}
+ const storable=storableLive(response);
  if(storable)ctx.waitUntil(fill(env,key,response.clone(),source));
  return withEdge(response,storable?edgeDirective(kind):EDGE_NO_STORE);
 }

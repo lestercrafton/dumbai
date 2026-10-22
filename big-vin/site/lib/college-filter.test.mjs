@@ -9,3 +9,8 @@ test('college filters hide cards only',()=>{
  assert.deepEqual(filterCollege(games,'top25').map(g=>g.id),['a']);
  assert.deepEqual(filterCollege(games,'major').map(g=>g.id),['a','c']);
 });
+test('pro games always pass college filters',()=>{
+ const rows=[{id:'nfl',sport:'nfl'},{id:'cfb',sport:'cfb',homeConference:'Sun Belt',awayConference:'Sun Belt'}];
+ assert.deepEqual(filterCollege(rows,'top25').map(g=>g.id),['nfl']);
+ assert.deepEqual(filterCollege(rows,'major').map(g=>g.id),['nfl']);
+});

@@ -138,9 +138,10 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
      predictedMargin:live.margin,...(live.margin!==projection.predictedHomeMargin?{baseMargin:projection.predictedHomeMargin}:{}),...(injury?{injuryAdjustment:live.injuryAdjustment,injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:fresh?q.homeSpread:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
      marketObservedAt:fresh?q.observedAt:null,provider:fresh?q.provider:null,sourceUrl:g.sourceUrl,trainingCutoff:asOf,modelVersion:gameSpec.id,parameters:fitted.config,homeAdvantage:fitted.homeAdvantage,restCoefficient:fitted.restCoefficient,trainingGames:fitted.trainingGames,lastTrainingDate:fitted.lastTrainingDate}];
    });
-   if(initial.length){await saveForecasts(initial,true);forecasts=await readForecastRecords(sport,false);}
+   // Saving is best effort: a failed write (e.g. the daily D1 limit) must never block the board.
+   if(initial.length){try{await saveForecasts(initial,true);forecasts=await readForecastRecords(sport,false);}catch(error){console.error('Forecast capture skipped',error);}}
   }
-  await capturePickRevisions(forecasts,board.games.map((g:any)=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId,injury:injuryFor(g)})));
+  try{await capturePickRevisions(forecasts,board.games.map((g:any)=>({...g,homeId:canonical(g).homeId,awayId:canonical(g).awayId,injury:injuryFor(g)})));}catch(error){console.error('Pick revision capture skipped',error);}
  }
  const states=await pickStates(sport);
  forecasts=forecasts.map(f=>withPickState(f,states.get(f.id)));
