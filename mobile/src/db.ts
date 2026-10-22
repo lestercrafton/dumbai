@@ -5,7 +5,8 @@ import type { Car, CompletedTrip, DetectorState } from './detector';
 export type Category = 'business' | 'personal' | null;
 export type Action = 'send' | 'batch' | 'log' | null;
 export type LocalTrip = CompletedTrip & { clientId: string; carId: string | null; category: Category; action: Action; purpose: string;
-  synced: 0 | 1; serverStatus: string | null; serverError: string | null; route?: string };
+  synced: 0 | 1; serverStatus: string | null; serverError: string | null; route?: string;
+  amount?: number | null; reimbursedAt?: string | null };
 
 // Each signed-in Google account gets its own database file, so cars and trips never mix between users on one phone.
 // The original mileage.db stays with the first account that signs in after this change (the phone's owner).

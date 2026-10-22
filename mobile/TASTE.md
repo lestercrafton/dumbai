@@ -26,10 +26,14 @@ The bar for every screen. When in doubt, remove something.
 
 ## Behavior
 - Progressive disclosure: ask Business or Personal first; only Business asks for the car; only a personal car asks Send now vs Friday batch.
-- Answered things collapse to a one-line summary with a quiet "Change" link.
+- Answered things collapse to a one-line summary with a quiet "Change" link. The summary reads the server's verdict: "Sent Oct 21 · $11.32", "Friday batch · $9.42", "Not sent yet · $4.10", "Logged · company car". Personal says just "Personal".
+- Notes are optional, always. The purpose field says "(optional)" and nothing waits on it; an empty purpose reads "Business" in the email.
+- Name the car on a card only when the driver has more than one, and only the car they picked, in the time line ("2:14 PM · 22 min · F-150"), never as a badge.
+- When trips are waiting for the batch, one muted line at the top of Trips says how many, the miles, and when it goes out.
+- The phone and the web page are one product: same tokens, same words, same card. Change one, change the other.
 - Every tap answers back: pressed state (fade + 0.98 scale), light haptic, the screen updates immediately, and a short confirmation.
 - Empty states are friendly and give the single next step.
 
 ## Never
-- Two filled buttons side by side. Emoji as decoration in content. Status text that repeats what's already visible.
+- Two filled buttons side by side. Emoji as decoration in content, tab bars or empty states (use the line icons). Status text that repeats what's already visible.
 - Showing options that don't apply (e.g. Send now on a personal trip).
