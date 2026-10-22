@@ -177,6 +177,6 @@
 
 .vin-pick-stack{display:flex;flex-direction:column}
 .vin-pick-stack>.vin-game-pick+.vin-game-pick{margin-top:-8px}
-.vin-total-pick small{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:#c3d6a9}
+.vin-total-pick small{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:inherit;opacity:.75}
 .vin-total-pick>div:first-child>strong{font-size:22px}
 .vin-total-loss{border-color:#7d8973;background:#ffffff05}

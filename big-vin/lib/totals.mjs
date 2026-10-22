@@ -67,10 +67,9 @@ export function totalPick({sport,total,marketTotal,injuryEffect=0,weatherEffect=
  if(!Number.isFinite(total)||!Number.isFinite(marketTotal))return {side:null,edge:null,total,check:null};
  const threshold=TOTALS_CONFIGS[sport].threshold;let gap=total-marketTotal,check=null,final=total;
  if(Math.abs(gap)>=threshold){
-  const explain=injuryEffect+weatherEffect;
-  const explained=Math.abs(explain)>=1.5&&Math.sign(explain)===Math.sign(gap);
-  if(explained)check={flagged:true,review:false,gap:r2(gap),note:`Gap of ${r2(Math.abs(gap))} points is explained by ${Math.abs(injuryEffect)>=Math.abs(weatherEffect)?'injuries':'weather'}.`};
-  else{final=marketTotal+gap/2;check={flagged:true,review:true,gap:r2(gap),unshrunkTotal:r2(total),note:`Gap of ${r2(Math.abs(gap))} points vs the market total has no injury or weather explanation; halved toward the market and marked for review.`};}
+  const explain=injuryEffect+weatherEffect,covered=Math.sign(explain)===Math.sign(gap)?Math.min(Math.abs(explain),Math.abs(gap)):0,rest=Math.abs(gap)-covered;
+  if(rest<threshold)check={flagged:true,review:false,gap:r2(gap),note:`Gap of ${r2(Math.abs(gap))} points vs the market total; injuries and weather account for ${r2(covered)} of it.`};
+  else{final=marketTotal+Math.sign(gap)*(covered+rest/2);check={flagged:true,review:true,gap:r2(gap),unshrunkTotal:r2(total),note:`Gap of ${r2(Math.abs(gap))} points vs the market total${covered?`, of which injuries and weather explain ${r2(covered)}`:''}; the unexplained part is halved toward the market and marked for review.`};}
  }
  const edge=final-marketTotal;
  return {side:Math.abs(edge)<1e-9?null:edge>0?'over':'under',edge:r2(Math.abs(edge)),total:r2(final),check};

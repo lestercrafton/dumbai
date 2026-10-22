@@ -77,3 +77,7 @@ test('starter resolution: depth QB1 wins over a fill-in usage leader; an injured
  assert.equal(phi.name,'Jalon Daniels');assert.match(phi.basis,/usage leader/);
  assert.equal(resolveStarter({depth:{qb:['1','2']},teamUse,statusOf:()=>null,...maps,abbr:'TB'}).name,'Baker Mayfield');
 });
+test('injuries explain only their own size of a market gap',()=>{
+ const r=marketCheck({sport:'nfl',margin:11.36,homeSpread:-3,injuryDelta:2.13});
+ assert.equal(r.check.review,true);assert.ok(r.margin>5.13&&r.margin<8.36);
+});

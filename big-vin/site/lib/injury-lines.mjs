@@ -26,10 +26,12 @@ export function marketCheck({sport,margin,homeSpread,injuryDelta=0}){
  if(!threshold||!finite(margin)||!finite(homeSpread))return {margin,check:null};
  const edge=margin+homeSpread;
  if(Math.abs(edge)<threshold)return {margin,check:null};
- const explained=finite(injuryDelta)&&Math.abs(injuryDelta)>=EXPLAINING_INJURY&&Math.sign(injuryDelta)===Math.sign(edge);
- if(explained)return {margin,check:{flagged:true,gap:r2(edge),threshold,explanation:'injury',review:false,note:`Gap of ${r2(Math.abs(edge))} points is explained by injuries worth ${r2(Math.abs(injuryDelta))} points.`}};
- const shrunk=r2(-homeSpread+edge*GAP_SHRINK);
- return {margin:shrunk,check:{flagged:true,gap:r2(edge),threshold,explanation:null,review:true,unshrunkMargin:r2(margin),note:`Gap of ${r2(Math.abs(edge))} points vs the market has no injury explanation; edge halved toward the market and marked for review.`}};
+ // Injuries pushing the same way explain only their own size; the rest must stay under the threshold.
+ const covered=finite(injuryDelta)&&Math.sign(injuryDelta)===Math.sign(edge)?Math.min(Math.abs(injuryDelta),Math.abs(edge)):0;
+ const rest=Math.abs(edge)-covered;
+ if(rest<threshold)return {margin,check:{flagged:true,gap:r2(edge),threshold,explanation:'injury',review:false,note:`Gap of ${r2(Math.abs(edge))} points vs the market; injuries account for ${r2(covered)} of it.`}};
+ const shrunk=r2(-homeSpread+Math.sign(edge)*(covered+rest*GAP_SHRINK));
+ return {margin:shrunk,check:{flagged:true,gap:r2(edge),threshold,explanation:covered?'partly injury':null,review:true,unshrunkMargin:r2(margin),note:`Gap of ${r2(Math.abs(edge))} points vs the market${covered?`, of which injuries explain ${r2(covered)}`:''}; the unexplained part is halved toward the market and marked for review.`}};
 }
 /** Full live margin: frozen model margin + current injury effect, then the market check. */
 export function liveMargin({sport,baseMargin,homeSpread,injury}){
