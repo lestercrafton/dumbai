@@ -8,10 +8,10 @@ const earlier=(...dates)=>new Date(Math.min(...dates.map(at).filter(finite))).to
 
 /** All sports use a home-margin model. A positive home edge selects home;
  * a negative edge selects away. Zero is an explicit no-pick revision. */
-/** NHL/MLB moneyline: the side whose quoted price beats the model's win
+/** MLB moneyline: the side whose quoted price beats the model's win
  * chance by at least MIN_ML_VALUE per unit staked; otherwise pass. Same bar both sides. */
 export const MIN_ML_VALUE=0.03;
-const ML_SPORTS=new Set(['nhl','mlb']);
+const ML_SPORTS=new Set(['mlb']);
 export const quotePrices=(sport,q)=>({sport,homePrice:q?.homeSpreadPrice??q?.marketHomePrice??null,awayPrice:q?.awaySpreadPrice??q?.marketAwayPrice??null});
 export function spreadSelection(margin,homeSpread,{sport,homePrice,awayPrice}={}){
  if(!finite(margin)||!finite(homeSpread))return {side:null,edge:null};

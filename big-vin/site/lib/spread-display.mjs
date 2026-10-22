@@ -16,7 +16,7 @@ export function spreadDecision(record){
  const side=synthetic?null:record.side!==undefined?record.side:(edge===null||Math.abs(edge)<1e-9?null:edge>0?'home':'away');
  const modelTeam=finite(margin)&&Math.abs(margin)>=0.05?(margin>0?home:away):null;
  const modelLine=finite(margin)?modelTeam?`${modelTeam} ${handicap(-Math.abs(margin))}`:'Pick’em':null;
- const ml=['nhl','mlb'].includes(record.sport)&&spread===0;
+ const ml=record.sport==='mlb'&&spread===0;
  const pick=finite(spread)&&side?`${side==='home'?home:away} ${ml?'ML':handicap(side==='home'?spread:-spread)}`:null;
  const result=record.result;
  const grade=gradeSpreadPick({...record,origin:record.origin??record.forecastOrigin,predictedMargin:margin,marketHomeSpread:spread,side});

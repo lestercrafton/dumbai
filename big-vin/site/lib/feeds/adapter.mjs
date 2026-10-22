@@ -92,10 +92,10 @@ export function scoreboardPayloadLimited(sport, payload, limit = 200) {
   return sport === 'cfb' && (!Array.isArray(payload?.events) || payload.events.length >= limit);
 }
 
-/** NHL and MLB pick the moneyline side: the market line becomes a
+/** MLB picks the moneyline side: the market line becomes a
  * pick'em (no ties, so 0 grades as a moneyline) priced at each side's ML.
  * The original puck/run line is kept for reference only. */
-export const MONEYLINE_SPORTS = new Set(['nhl', 'mlb']);
+export const MONEYLINE_SPORTS = new Set(['mlb']);
 export function moneylineMarket(market, sport) {
   if (!market || !MONEYLINE_SPORTS.has(sport)) return market;
   const priced = market.homeMoneyline !== null && market.awayMoneyline !== null;

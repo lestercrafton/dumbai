@@ -103,6 +103,6 @@ export function displayLines(game = {}) {
   const fairLine = perspective(homeFair, side);
   const edge = !synthetic && finite(game.edge) ? game.edge : null;
   const pick = side && marketLine !== null && decision.pick
-    ? `${teamShort} ${['nhl','mlb'].includes(game.sport) && marketLine === 0 ? 'ML' : handicap(marketLine)}` : null;
+    ? `${teamShort} ${game.sport === 'mlb' && marketLine === 0 ? 'ML' : handicap(marketLine)}` : null;
   return {side, teamName, teamShort, marketLine, fairLine, edge, pick};
 }
