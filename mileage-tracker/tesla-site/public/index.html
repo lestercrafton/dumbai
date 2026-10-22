@@ -1,102 +1,516 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ovanova Mileage Tracker</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ovanova Moves</title>
+<meta name="theme-color" content="#F7F5F2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3CclipPath id='c'%3E%3Ccircle cx='50' cy='50' r='50'/%3E%3C/clipPath%3E%3Ccircle cx='50' cy='50' r='50' fill='%2378BA89'/%3E%3Ccircle cx='45' cy='45' r='47' fill='%2340804F' clip-path='url(%23c)'/%3E%3Cg transform='translate(27 25) scale(0.74)'%3E%3Cpath fill='%23fff' d='M33 22.2c0 0-4.6-3.6-4.6-11.1S33 0 33 0s4.6 3.6 4.6 11.1-4.6 11.1-4.6 11.1zm10-4.8c0 0-.7-1.8.6-4s3.2-2.5 3.2-2.5.7 1.8-.6 4-3.2 2.5-3.2 2.5zm6.8 7.5c0 0 .3-2.3 2.9-3.8s4.7-.6 4.7-.6-.3 2.3-2.9 3.8-4.7.6-4.7.6zm2 9.5c0 0 1.7-2.1 5.1-2.1s5.1 2.1 5.1 2.1-1.7 2.1-5.1 2.1-5.1-2.1-5.1-2.1zm-3.1 8.9c0 0 2.8-1.2 6.2.8s3.8 5.7 3.8 5.7-2.8 1.2-6.2-.8-3.8-5.7-3.8-5.7zm-6.9 5.8c0 0 3.3.5 5.5 4.2s.9 6.8.9 6.8-3.3-.5-5.5-4.2-.9-6.8-.9-6.8zM33 50.8c0 0 3 2.3 3 7.1S33 65 33 65s-3-2.3-3-7.1 3-7.1 3-7.1zm-8-2.8c0 0 1.6 3.8-1 8.3s-6.7 5-6.7 5-1.6-3.8 1-8.3 6.7-5 6.7-5zm-5.2-6.1c0 0-.6 4.5-5.5 7.3s-9.1 1.1-9.1 1.1.6-4.5 5.5-7.3 9.1-1.1 9.1-1.1zm-1.5-7.5c0 0-3 3.8-9.1 3.8S.2 34.4.2 34.4s3-3.8 9.1-3.8 9.1 3.8 9.1 3.8zm2.6-6.8c0 0-4.8 1.9-10.5-1.3S4 17.9 4 17.9s4.8-1.9 10.5 1.3 6.4 8.4 6.4 8.4zm5.5-4.4c0 0-5.5-.8-9-6.8S16 5.1 16 5.1s5.5.8 9 6.8 1.4 11.3 1.4 11.3z'/%3E%3C/g%3E%3C/svg%3E">
 <style>
-body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;background:#f5f6f8;color:#1b1f24}
-header{background:#14213d;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-header a{color:#fff}main{max-width:900px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:10px;padding:16px;margin:12px 0;box-shadow:0 1px 3px #0002}
-button,.btn{background:#1d4ed8;color:#fff;border:0;border-radius:6px;padding:8px 12px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;margin:2px}
-button.alt{background:#e5e7eb;color:#111}button.ok{background:#15803d}
-nav button{background:none;color:#1d4ed8;border-bottom:2px solid transparent;border-radius:0}nav button.on{border-color:#1d4ed8}
-table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
-input,select,textarea{font:inherit;padding:6px;border:1px solid #ccc;border-radius:6px;width:100%;box-sizing:border-box}
-.muted{color:#666;font-size:13px}.err{color:#b91c1c}pre{white-space:pre-wrap;background:#f3f4f6;padding:10px;border-radius:6px;font-size:13px}
-.tag{font-size:12px;padding:2px 6px;border-radius:10px;background:#eef}
+/* Ovanova Moves — web. The same taste as the phone app (mobile/TASTE.md): calm, one idea per card, one filled
+   button per card, OSC green, the system font, an 8-pt grid, soft shadows instead of borders. */
+:root {
+  --brand: #40804F; --osc: #78BA89; --tint: #E8F4EB;
+  --ink: #1B2430; --muted: #6B7280; --line: #E7E2DB; --bg: #F7F5F2; --card: #FFFFFF; --chip: #F1EFEC; --seg: #EFEDEA;
+  --ok: #2F9E44; --ok-soft: #E3F5E7; --warn: #B45309; --warn-soft: #FEF3C7; --danger: #C92A2A;
+  --shadow: 0 4px 12px rgba(27,36,48,.06);
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.4; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; }
+a { color: var(--brand); }
+:focus-visible { outline: 3px solid var(--osc); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left, 0px)) 0 max(16px, env(safe-area-inset-right, 0px)); }
+
+/* top: brand line, then the screen title like the phone app */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); min-height: 44px; }
+.brand { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: var(--muted); text-decoration: none; }
+.brand svg { width: 28px; height: 28px; display: block; }
+.who { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); min-width: 0; }
+.who b { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.who a { color: var(--muted); text-decoration: none; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; padding: 16px 0 12px; }
+
+/* tabs: segmented at the top on wide screens, a bar at the bottom on phones */
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; background: var(--card); box-shadow: 0 -1px 0 var(--line); display: flex; padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+.tab { flex: 1; min-height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding-top: 6px; color: var(--muted); font-size: 11px; font-weight: 600; position: relative; }
+.tab svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
+.tab.on { color: var(--brand); } .tab.on svg { opacity: 1; }
+.tab .badge { position: absolute; top: 6px; left: calc(50% + 6px); background: var(--brand); color: #fff; border-radius: 9px; min-width: 18px; height: 18px; font-size: 11px; font-weight: 700; display: grid; place-items: center; padding: 0 5px; }
+main { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 720px) {
+  .tabs { position: static; background: var(--seg); box-shadow: none; border-radius: 10px; padding: 3px; margin: 4px 0 8px; display: flex; }
+  .tab { flex-direction: row; gap: 8px; min-height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; }
+  .tab svg { width: 18px; height: 18px; }
+  .tab.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(27,36,48,.08); }
+  .tab .badge { position: static; margin-left: 2px; }
+  main { padding-bottom: 48px; }
+}
+
+/* cards and text roles */
+.stack { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+.card { background: var(--card); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+.card.pending { border-left: 3px solid var(--osc); }
+.title { font-size: 18px; font-weight: 700; }
+.muted { color: var(--muted); font-size: 15px; }
+.small { color: var(--muted); font-size: 13px; }
+.section { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-top: 4px; }
+.section-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.section-action { color: var(--brand); font-weight: 700; font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; }
+.note { font-size: 15px; color: var(--muted); }
+.empty { text-align: center; padding: 48px 24px; display: grid; gap: 8px; justify-items: center; }
+.empty .title { font-size: 22px; font-weight: 800; }
+.empty .muted { font-size: 16px; max-width: 34ch; }
+.empty .btn { margin-top: 8px; }
+
+/* trip card: date and hero miles, route, then a summary with a quiet Change link, or the question */
+.trip-top { display: flex; align-items: flex-start; gap: 12px; }
+.trip-top > div:first-child { flex: 1; min-width: 0; }
+.trip-top .miles { flex: 0 0 auto; }
+.when { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
+.time { font-size: 14px; color: var(--muted); margin-top: 2px; }
+.nw { white-space: nowrap; }
+.miles { font-size: 34px; font-weight: 700; line-height: 38px; letter-spacing: -0.8px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.miles .unit { font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.route { font-size: 14px; color: var(--muted); margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.route a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.purpose-line { font-size: 14px; color: var(--ink); margin-top: 4px; overflow-wrap: anywhere; }
+.summary { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.summary .dot { width: 8px; height: 8px; border-radius: 4px; background: var(--brand); flex: 0 0 auto; }
+.summary .dot.off { background: var(--muted); }
+.summary b { font-size: 15px; font-weight: 600; color: var(--brand); flex: 0 0 auto; }
+.summary b.off { color: var(--ink); }
+.summary .meta { font-size: 14px; color: var(--muted); flex: 1 1 auto; min-width: 0; }
+.summary .meta.warn { color: var(--warn); }
+.summary .change { margin-left: auto; flex: 0 0 auto; min-height: 32px; }
+.link { color: var(--brand); font-weight: 600; font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; padding: 0 4px; }
+.link.quiet { color: var(--muted); }
+
+/* the answer flow: one filled button, the other tinted, full-width pairs */
+.actions { display: flex; gap: 10px; margin-top: 16px; }
+.big { flex: 1; min-height: 50px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 17px; font-weight: 600; letter-spacing: -0.2px; background: var(--tint); color: var(--brand); text-decoration: none; transition: transform .08s ease, opacity .08s ease; }
+.big.primary { background: var(--brand); color: #fff; }
+.big:active { transform: scale(.98); opacity: .85; }
+.big:disabled { opacity: .45; cursor: default; transform: none; }
+.btn { min-height: 48px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 16px; font-weight: 700; background: var(--brand); color: #fff; text-decoration: none; transition: transform .08s ease, opacity .08s ease; }
+.btn.alt { background: var(--tint); color: var(--ink); }
+.btn:active { transform: scale(.97); opacity: .8; }
+.btn:disabled { opacity: .45; cursor: default; transform: none; }
+.step { margin-top: 16px; display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+.ask { font-size: 15px; font-weight: 600; color: var(--muted); }
+.back { justify-self: center; }
+.input { width: 100%; min-height: 48px; background: var(--bg); border: 0; border-radius: 12px; padding: 0 14px; font-size: 16px; color: var(--ink); min-width: 0; }
+.input:focus { outline: 3px solid var(--osc); outline-offset: 0; }
+textarea.input { padding: 12px 14px; min-height: 84px; resize: vertical; }
+select.input { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+.label { font-size: 13px; font-weight: 700; display: block; margin-bottom: 4px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 10px; }
+@media (max-width: 480px) { .grid3 { grid-template-columns: 1fr 1fr; } .grid3 > :last-child { grid-column: 1 / -1; } }
+.row { display: flex; align-items: center; gap: 12px; min-height: 48px; }
+.row > div { flex: 1; min-width: 0; }
+.row-label { font-size: 16px; font-weight: 600; }
+
+/* pills, chips, segmented */
+.pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 600; background: var(--chip); color: var(--muted); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 38px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; background: var(--chip); color: var(--ink); font-size: 15px; font-weight: 500; transition: transform .08s ease, opacity .08s ease; }
+.chip.on { background: var(--brand); color: #fff; font-weight: 600; }
+.chip:active { transform: scale(.97); opacity: .8; }
+.chip:disabled { opacity: .45; cursor: default; }
+.chip .n { width: 64px; min-height: 30px; border: 0; border-radius: 8px; background: var(--card); text-align: center; padding: 0 6px; font-size: 16px; font-variant-numeric: tabular-nums; }
+.chip .n:focus { outline: 2px solid var(--osc); }
+button.chip, .seg button { position: relative; }
+button.chip::after, .seg button::after { content: ""; position: absolute; inset: -4px 0; }
+.chip .link { min-height: 38px; padding: 0 8px; }
+.chip.wide { padding-left: 10px; }
+.seg { display: flex; background: var(--seg); border-radius: 10px; padding: 3px; }
+.seg button { flex: 1; min-height: 36px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); padding: 0 12px; }
+.seg button.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(27,36,48,.08); }
+
+/* select rows for "review all at once" */
+.sel-row { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.sel-row .sel-main { flex: 1; min-width: 0; }
+.sel-row.on { box-shadow: 0 0 0 1.5px var(--brand), var(--shadow); }
+.box { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; background: var(--card); color: #fff; font-weight: 800; flex: 0 0 auto; }
+.box.on { background: var(--brand); border-color: var(--brand); }
+.bulk { box-shadow: 0 0 0 1.5px var(--brand), var(--shadow); }
+
+/* cars */
+.car-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+.car-row + .car-row { border-top: 1px solid var(--line); }
+.car-row > div { flex: 1; min-width: 0; }
+.car-name { font-size: 17px; font-weight: 700; }
+
+/* controls */
+.say { display: flex; gap: 8px; }
+.say .input { flex: 1; }
+.icon-btn { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 12px; background: var(--tint); color: var(--brand); display: grid; place-items: center; }
+.icon-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.group { display: grid; gap: 8px; margin-top: 16px; }
+.cmsg { border-radius: 12px; padding: 12px 14px; background: var(--chip); font-size: 15px; display: grid; gap: 10px; margin-top: 12px; }
+.cmsg.ok { background: var(--ok-soft); color: var(--ok); }
+.cmsg.warn { background: var(--warn-soft); color: var(--warn); }
+.cmsg .actions { margin-top: 0; }
+ol.steps { padding-left: 22px; display: grid; gap: 6px; font-size: 15px; margin-top: 10px; }
+
+/* toast and sheet */
+#toast { position: fixed; left: 0; right: 0; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; z-index: 40; padding: 0 16px; pointer-events: none; }
+#toast .t { pointer-events: auto; background: var(--ink); color: #fff; border-radius: 12px; padding: 12px 16px; font-size: 14px; max-width: 560px; box-shadow: 0 8px 24px rgba(27,36,48,.25); cursor: pointer; opacity: 0; transform: translateY(8px); transition: opacity .18s, transform .18s; overflow-wrap: anywhere; }
+#toast .t.show { opacity: 1; transform: none; }
+#toast .t.warn { background: var(--warn); }
+@media (min-width: 720px) { #toast { bottom: 24px; } }
+.scrim { position: fixed; inset: 0; background: rgba(27,36,48,.45); z-index: 30; display: flex; align-items: flex-end; justify-content: center; cursor: pointer; }
+.sheet { background: var(--card); width: 100%; max-width: 600px; border-radius: 18px 18px 0 0; padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; max-height: 88vh; max-height: 88dvh; overflow: auto; overscroll-behavior: contain; cursor: auto; }
+.sheet pre { white-space: pre-wrap; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border-radius: 12px; padding: 12px 14px; max-height: 42vh; overflow: auto; overflow-wrap: anywhere; }
+@media (min-width: 720px) { .scrim { align-items: center; padding: 24px; } .sheet { border-radius: 18px; } }
+
+/* sign-in */
+.welcome { background: var(--brand); color: #fff; border-radius: 22px; padding: 32px 24px; margin-top: 24px; display: grid; gap: 14px; justify-items: center; text-align: center; }
+.welcome svg { width: 84px; height: 84px; }
+.welcome h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; }
+.welcome p { color: #E3F1E6; font-size: 17px; line-height: 24px; max-width: 34ch; }
+.welcome .wbtn { background: #fff; color: var(--brand); border-radius: 14px; min-height: 56px; width: 100%; max-width: 360px; display: inline-flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; text-decoration: none; margin-top: 6px; }
+.welcome .fine { color: #E3F1E6; font-size: 13px; line-height: 18px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style></head><body>
-<header><b>Ovanova Mileage Tracker</b><span id="who"></span></header>
-<main id="app"><div class="card">Loading…</div></main>
+<div class="wrap">
+  <header class="top"><a class="brand" href="#trips"><span id="mark"></span>Ovanova Moves</a><span class="who" id="who"></span></header>
+  <nav class="tabs" id="tabs" aria-label="Sections" hidden></nav>
+  <main id="app"><div class="empty"><div class="muted">Loading…</div></div></main>
+</div>
+<div id="toast" aria-live="polite"></div>
+<div id="sheet"></div>
 <script>
-const $ = s => document.querySelector(s), app = $('#app');
-const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-let S = null, tab = (location.hash || '#trips').slice(1), msg = '';
-async function api(p, b) { const r = await fetch(p, b ? { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MT': '1' }, body: JSON.stringify(b) } : {});
-  const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.error || r.status), { status: r.status }); return j; }
-async function load() { try { S = await api('/api/state'); render(); } catch (e) { if (e.status === 401) signin(); else app.innerHTML = `<div class="card err">${esc(e.message)}</div>`; } }
-function signin() { $('#who').innerHTML = ''; app.innerHTML = `<div class="card" style="text-align:center;padding:40px">
-  <h2>Sign in</h2><p>Log business trips from your Tesla and send mileage reimbursement to Sugar.</p>
-  <a class="btn" href="/auth/google">Sign in with Google</a><p class="muted">Ovanova (@ovanova.co) accounts only.</p></div>`; }
-const fmt = d => new Date(d).toLocaleString('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' CT';
-const route = t => t.route || [t.startLoc, t.endLoc].map(l => l ? (l.name || `${l.lat.toFixed(3)}, ${l.lon.toFixed(3)}`) : '?').join(' → ');
-async function act(fn) { try { msg = (await fn()) || ''; } catch (e) { msg = '<span class="err">' + esc(e.message) + '</span>'; } await load(); }
+'use strict';
+const $ = (s, r) => (r || document).querySelector(s), app = $('#app');
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const TZ = 'America/Chicago', DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const TABS = [['trips', 'Trips'], ['vehicles', 'Cars'], ['commands', 'Controls'], ['settings', 'Settings']];
+const PETALS = 'M33 22.2c0 0-4.6-3.6-4.6-11.1S33 0 33 0s4.6 3.6 4.6 11.1-4.6 11.1-4.6 11.1zm10-4.8c0 0-.7-1.8.6-4s3.2-2.5 3.2-2.5.7 1.8-.6 4-3.2 2.5-3.2 2.5zm6.8 7.5c0 0 .3-2.3 2.9-3.8s4.7-.6 4.7-.6-.3 2.3-2.9 3.8-4.7.6-4.7.6zm2 9.5c0 0 1.7-2.1 5.1-2.1s5.1 2.1 5.1 2.1-1.7 2.1-5.1 2.1-5.1-2.1-5.1-2.1zm-3.1 8.9c0 0 2.8-1.2 6.2.8s3.8 5.7 3.8 5.7-2.8 1.2-6.2-.8-3.8-5.7-3.8-5.7zm-6.9 5.8c0 0 3.3.5 5.5 4.2s.9 6.8.9 6.8-3.3-.5-5.5-4.2-.9-6.8-.9-6.8zM33 50.8c0 0 3 2.3 3 7.1S33 65 33 65s-3-2.3-3-7.1 3-7.1 3-7.1zm-8-2.8c0 0 1.6 3.8-1 8.3s-6.7 5-6.7 5-1.6-3.8 1-8.3 6.7-5 6.7-5zm-5.2-6.1c0 0-.6 4.5-5.5 7.3s-9.1 1.1-9.1 1.1.6-4.5 5.5-7.3 9.1-1.1 9.1-1.1zm-1.5-7.5c0 0-3 3.8-9.1 3.8S.2 34.4.2 34.4s3-3.8 9.1-3.8 9.1 3.8 9.1 3.8zm2.6-6.8c0 0-4.8 1.9-10.5-1.3S4 17.9 4 17.9s4.8-1.9 10.5 1.3 6.4 8.4 6.4 8.4zm5.5-4.4c0 0-5.5-.8-9-6.8S16 5.1 16 5.1s5.5.8 9 6.8 1.4 11.3 1.4 11.3z';
+const MARK = `<svg viewBox="0 0 100 100" aria-hidden="true"><clipPath id="mk"><circle cx="50" cy="50" r="50"/></clipPath><circle cx="50" cy="50" r="50" fill="#78BA89"/><circle cx="45" cy="45" r="47" fill="#40804F" clip-path="url(#mk)"/><g transform="translate(27 25) scale(0.74)"><path fill="#fff" d="${PETALS}"/></g></svg>`;
+const ICON = {
+  trips: '<svg viewBox="0 0 24 24"><circle cx="5" cy="18" r="3"/><circle cx="19" cy="6" r="3"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></svg>',
+  vehicles: '<svg viewBox="0 0 24 24"><path d="M3 12l2-5.5A2 2 0 0 1 6.9 5h10.2a2 2 0 0 1 1.9 1.5L21 12v6H3z"/><path d="M5 18v2M19 18v2M3 12h18"/><circle cx="7.5" cy="15" r="1.2"/><circle cx="16.5" cy="15" r="1.2"/></svg>',
+  commands: '<svg viewBox="0 0 24 24"><path d="M4 7h8M16 7h4M4 17h4M12 17h8"/><circle cx="14" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>',
+  settings: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>',
+  mic: '<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>',
+};
+
+let S = null, CS = null, tab = hashTab(), open = null, biz = null, selecting = false, sel = [], showAll = false, pollResult = null, cmsg = null, cbusy = false, cvin = null, sheetIds = null, sending = false, adding = false, addBusy = false;
+const drafts = {}, ctl = { tf: 72, cl: 80, ca: 32, ct: '' };   // what is being typed survives a re-render
+const ntfySuggest = 'ovanova-moves-' + Math.random().toString(36).slice(2, 8);
+function hashTab() { const h = (location.hash || '').slice(1); return TABS.some(t => t[0] === h) ? h : 'trips'; }
+
+async function api(p, b) {
+  const r = await fetch(p, b ? { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MT': '1' }, body: JSON.stringify(b) } : {});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(j.error || ('Request failed (' + r.status + ')')), { status: r.status });
+  return j;
+}
+// ---- formatting (Central time, like the office)
+const ms = d => typeof d === 'number' ? d : Date.parse(d);
+const fmtDay = d => new Date(ms(d)).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
+const fmtTime = d => new Date(ms(d)).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
+const fmtShort = d => new Date(ms(d)).toLocaleDateString('en-US', { timeZone: TZ, month: 'short', day: 'numeric' });
+const fmtWhen = d => new Date(ms(d)).toLocaleString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const todayKey = () => new Date().toLocaleDateString('en-CA', { timeZone: TZ });
+const mi = n => (Math.round(Number(n || 0) * 10) / 10).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const usd = n => '$' + Number(n || 0).toFixed(2);
+const sumMi = a => Math.round(a.reduce((n, t) => n + Number(t.miles || 0), 0) * 10) / 10;
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+const dayName = () => DAYS[Number(S?.settings?.weekEnd?.day ?? 5)] || 'Friday';
+function minutes(t) { if (!t.endTime || t.endTime === t.startTime) return null; const m = Math.round((ms(t.endTime) - ms(t.startTime)) / 60000); return m > 0 ? m : null; }
+const durText = m => m == null ? '' : m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : '');
+const place = l => !l ? '' : l.name || (Number.isFinite(l.lat) && Number.isFinite(l.lon) ? l.lat.toFixed(3) + ', ' + l.lon.toFixed(3) : '');
+const routeOf = t => t.route || [place(t.startLoc), place(t.endLoc)].filter(Boolean).join(' → ');
+const carOf = t => (S.vehicles || []).find(v => v.id === t.vehicleId);
+// Logged, never reimbursed: a company car, or a trip the server counts elsewhere (lib/dedup.js reimbursable)
+const logOnly = t => !!(t.logOnly || t.supersededBy || t.status === 'superseded' || t.status === 'log only' || (carOf(t) && carOf(t).ownership === 'business'));
+// A place the car only knows as coordinates opens on a map, so the numbers mean something.
+const coord = l => l && !l.name && Number.isFinite(l.lat) && Number.isFinite(l.lon) ? l.lat.toFixed(5) + ',' + l.lon.toFixed(5) : null;
+const mapUrl = t => !t.route && coord(t.startLoc) && coord(t.endLoc) ? 'https://www.google.com/maps/dir/' + coord(t.startLoc) + '/' + coord(t.endLoc) : null;
+// The server decides what a trip is (lib/phone.js status); older servers without it are read the same way here.
+function statusOf(t) {
+  if (t.status) return t.status;
+  if (t.reimbursedAt) return 'sent'; if (t.category === 'personal') return 'personal'; if (t.category !== 'business') return 'untagged';
+  const c = carOf(t); if (t.logOnly || (c && c.ownership === 'business')) return 'log only';
+  return t.queuedAt ? 'queued' : 'reimbursable';
+}
+const batchName = () => dayName() + ' batch';
+
+// ---- toast, load, render
+let toastTimer = null;
+function toast(text, warn) {
+  const box = $('#toast'); box.innerHTML = `<div class="t ${warn ? 'warn' : ''}" role="status">${esc(text)}</div>`;
+  const el = box.firstChild; el.onclick = () => { box.innerHTML = ''; };
+  requestAnimationFrame(() => el.classList.add('show'));
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.classList.remove('show'); setTimeout(() => { if (box.firstChild === el) box.innerHTML = ''; }, 250); }, warn ? 8000 : 4000);
+}
+async function act(fn) {
+  try { const m = await fn(); if (m) toast(m); await load(); }
+  catch (e) { if (e.status === 401) return signin(); toast(e.message || String(e), true); }
+}
+async function load() {
+  try { S = await api('/api/state'); render(); }
+  catch (e) { if (e.status === 401) signin(); else app.innerHTML = `<div class="card"><div class="pill warn">${esc(e.message)}</div></div>`; }
+}
+function signin() {
+  S = null; $('#who').innerHTML = ''; $('#tabs').hidden = true; $('#sheet').innerHTML = ''; $('.top').hidden = true;
+  app.innerHTML = `<div class="welcome">${MARK}<h2>Ovanova Moves</h2>
+    <p>Your Tesla's trips, sorted into business and personal, with the business miles sent on for reimbursement.</p>
+    <a class="wbtn" href="/auth/google">Sign in with Google</a>
+    <div class="fine">Ovanova (@ovanova.co) accounts only.</div></div>`;
+}
 function render() {
-  $('#who').innerHTML = `${esc(S.user.name || S.user.email)} · <a href="/auth/logout">Sign out</a>`;
-  const tabs = ['trips', 'vehicles', 'commands', 'settings'].map(t => `<button class="${t === tab ? 'on' : ''}" onclick="tab='${t}';location.hash=tab;msg='';render()">${t[0].toUpperCase() + t.slice(1)}</button>`).join('');
-  app.innerHTML = `<nav>${tabs}</nav>${msg ? `<div class="card">${msg}</div>` : ''}` + ({ trips, vehicles, commands, settings })[tab]();
+  if (!S) return signin();
+  $('.top').hidden = false;
+  $('#who').innerHTML = `<b>${esc(S.user.name || S.user.email)}</b><a href="/auth/logout">Sign out</a>`;
+  const pending = (S.trips || []).filter(t => statusOf(t) === 'untagged').length;
+  const tabs = $('#tabs'); tabs.hidden = false;
+  tabs.innerHTML = TABS.map(([k, label]) => `<button class="tab ${k === tab ? 'on' : ''}" data-act="tab" data-tab="${k}" role="tab" aria-selected="${k === tab}">${ICON[k]}<span>${label}</span>${k === 'trips' && pending ? `<span class="badge">${pending}</span>` : ''}</button>`).join('');
+  app.innerHTML = `<h1>${TABS.find(t => t[0] === tab)[1]}</h1>` + ({ trips, vehicles, commands, settings })[tab]();
+  if (open) { const el = $(`[data-trip="${CSS.escape(String(open))}"] .input`); if (el && document.activeElement !== el && !el.value) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } }
+}
+
+// ---- Trips
+function tripCard(t) {
+  const st = statusOf(t), id = esc(t.id), car = carOf(t), locked = st === 'sent' || !!t.reimbursedAt, editing = st === 'untagged' || (open === t.id && !locked);
+  const mins = minutes(t), manyCars = (S.vehicles || []).filter(v => !v.phoneHidden).length > 1;   // name the car only when there is a choice of cars
+  const timeBits = [t.source === 'manual' ? 'Added by hand' : fmtTime(t.startTime), t.source === 'manual' ? '' : durText(mins), t.inferred ? 'estimated' : '', manyCars && car ? car.name : ''].filter(Boolean).map(b => `<span class="nw">${esc(b)}</span>`).join(' · ');
+  let summary = '';
+  if (st !== 'untagged') {
+    const personal = st === 'personal';
+    const meta = personal ? '' : st === 'sent' ? `Sent ${fmtShort(t.reimbursedAt)}${t.amount != null ? ' · ' + usd(t.amount) : ''}` : st === 'queued' ? `${batchName()}${t.amount != null ? ' · ' + usd(t.amount) : ''}`
+      : st === 'reimbursable' ? `Not sent yet${t.amount != null ? ' · ' + usd(t.amount) : ''}` : st === 'superseded' ? 'Logged' : 'Logged · company car';
+    summary = `<div class="summary"><span class="dot ${personal ? 'off' : ''}"></span><b class="${personal ? 'off' : ''}">${personal ? 'Personal' : 'Business'}</b>${meta ? `<span class="meta">${esc(meta)}</span>` : ''}
+      ${locked ? '' : `<button class="link change" data-act="toggle" data-id="${id}">${open === t.id ? 'Done' : 'Change'}</button>`}</div>`;
+  }
+  return `<div class="card ${st === 'untagged' ? 'pending' : ''}" data-trip="${id}">
+    <div class="trip-top"><div><div class="when">${esc(fmtDay(t.startTime))}</div><div class="time">${timeBits}</div></div><div class="miles">${mi(t.miles)}<span class="unit"> mi</span></div></div>
+    ${routeOf(t) ? `<div class="route" title="${esc(routeOf(t))}">${mapUrl(t) ? `<a href="${esc(mapUrl(t))}" target="_blank" rel="noopener">${esc(routeOf(t))}</a>` : esc(routeOf(t))}</div>` : ''}
+    ${t.purpose && !editing ? `<div class="purpose-line">${esc(t.purpose)}</div>` : ''}
+    ${summary}${editing ? answerFlow(t) : ''}</div>`;
+}
+// Step 1: Business or Personal. Step 2 (business only): the purpose, then Friday batch or Send now for a personal car;
+// a company car is logged, not reimbursed. Nothing is guessed.
+function answerFlow(t, bulk) {
+  const id = bulk ? '' : `data-id="${esc(t.id)}"`, st = bulk ? null : statusOf(t);
+  const company = bulk ? sel.length > 0 && sel.every(x => { const tt = (S.trips || []).find(y => String(y.id) === String(x)); return tt && logOnly(tt); }) : logOnly(t);
+  const key = bulk ? 'bulk' : t.id;
+  if (biz !== key) return `<div class="actions"><button class="big primary" data-act="biz" data-key="${esc(key)}">Business</button><button class="big" data-act="answer" data-a="personal" ${id}>Personal</button></div>`;
+  let main;
+  if (company) main = `<div class="muted">Company car: logged, not reimbursed.</div><div class="actions"><button class="big primary" data-act="answer" data-a="log" ${id}>Log ${bulk && sel.length > 1 ? 'trips' : 'trip'}</button></div>`;
+  else main = `${bulk ? '' : `<input class="input" id="pp" placeholder="What was it for? (optional)" value="${esc(drafts[t.id] ?? t.purpose)}" autocomplete="off" aria-label="Purpose">`}
+    <div class="actions"><button class="big primary" data-act="answer" data-a="batch" ${id}>${esc(batchName())}</button><button class="big" data-act="answer" data-a="send" ${id}>Send now</button></div>
+    ${st === 'queued' ? `<button class="link quiet back" data-act="answer" data-a="unqueue" ${id}>Take it out of the ${esc(batchName())}</button>` : ''}`;
+  return `<div class="step">${main}<button class="link back" data-act="back">Back</button></div>`;
 }
 function trips() {
-  const rows = S.trips.map(t => `<tr><td>${fmt(t.startTime)}<div class="muted">${esc(route(t))}</div></td><td>${t.miles} mi${t.inferred ? ' *' : ''}</td>
-    <td><input value="${esc(t.purpose)}" placeholder="Purpose" onchange="act(()=>api('/api/tag',{id:'${esc(t.id)}',category:'business',purpose:this.value}).then(()=>'Saved'))"></td>
-    <td>${t.reimbursedAt ? `<span class="tag">sent ${fmt(t.reimbursedAt)}</span>` : t.queuedAt ? `<span class="tag">batched for Friday</span> <button class="alt" onclick="act(()=>api('/api/unqueue',{ids:['${esc(t.id)}']}))">Unbatch</button>`
-      : `${t.category ? `<span class="tag">${t.category}</span><br>` : '<b>Business?</b><br>'}
-        <button class="ok" onclick="send(['${esc(t.id)}'])">Yes · Send now</button><button onclick="act(()=>api('/api/queue',{ids:['${esc(t.id)}']}).then(()=>'Queued for Friday'))">Yes · Batch</button><button class="alt" onclick="act(()=>api('/api/tag',{id:'${esc(t.id)}',category:'personal'}).then(()=>'Marked personal'))">No</button>`}</td></tr>`).join('');
-  return `<div class="card"><h3>Trips</h3><p class="muted">Next end-of-week email: ${fmt(S.nextBatch)}. ${S.smtpConfigured ? '' : '<span class="err">Email is not configured on the server.</span>'}</p>
-    ${S.trips.length ? `<table><tr><th>When</th><th>Miles</th><th>Purpose</th><th></th></tr>${rows}</table>` : '<p>No trips yet. Trips appear here a few minutes after you park.</p>'}</div>
-    <div class="card"><h3>Add a trip by hand</h3><div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:6px">
-    <input id="md" type="date"><input id="mm" type="number" step="0.1" placeholder="Miles"><input id="mp" placeholder="Purpose / route">
-    <button onclick="act(()=>api('/api/manual',{date:$('#md').value,miles:$('#mm').value,purpose:$('#mp').value}).then(()=>'Added'))">Add</button></div></div>`;
+  const all = S.trips || [];
+  if (!all.length) return `<div class="empty"><div class="title">No trips yet</div><div class="muted">Connect your Tesla and your drives show up here a few minutes after you park. We'll ask "business or personal?"</div><button class="btn" data-act="tab" data-tab="vehicles">Open Cars</button></div>` + manualCard();
+  const pending = all.filter(t => statusOf(t) === 'untagged'), answered = all.filter(t => statusOf(t) !== 'untagged');
+  const queued = all.filter(t => statusOf(t) === 'queued'), shown = showAll ? answered : answered.slice(0, 30);
+  let h = '<div class="stack">';
+  if (queued.length && S.nextBatch) h += `<div class="note">${esc(plural(queued.length, 'trip'))} · ${mi(sumMi(queued))} mi waiting for the ${esc(batchName())}. Goes out ${esc(fmtWhen(S.nextBatch))}.</div>`;
+  if (pending.length) {
+    h += `<div class="section-row"><div class="section">Needs review · ${pending.length}</div>${pending.length > 1 ? `<button class="section-action" data-act="selecting">${selecting ? 'Cancel' : 'Review all at once'}</button>` : ''}</div>`;
+    if (!selecting) h += '<div class="muted">Unanswered trips are never sent or reimbursed. They wait here until you choose.</div>';
+    else h += `<div class="card bulk"><div class="section-row"><div class="title">${sel.length} of ${pending.length} selected</div><button class="section-action" data-act="selAll">${sel.length === pending.length ? 'Select none' : 'Select all'}</button></div>
+      ${sel.length ? answerFlow(null, true) : '<div class="muted">Tap trips below to select them.</div>'}</div>`;
+    h += pending.map(t => selecting ? selRow(t) : tripCard(t)).join('');
+  }
+  if (answered.length) h += '<div class="section">Recent</div>' + shown.map(tripCard).join('');
+  if (answered.length > shown.length) h += `<button class="link" data-act="showAll">Show ${answered.length - shown.length} more</button>`;
+  return h + manualCard() + '</div>';
 }
-async function send(ids) { try { const p = await api('/api/preview', { ids: [] .concat(ids) }).catch(async e => { if (/business/.test(e.message)) { await api('/api/tag', { id: ids[0], category: 'business' }); return api('/api/preview', { ids }); } throw e; });
-  if (!confirm(`Send to ${p.to}?\n\n${p.subject}\n\n${p.text}`)) return; } catch (e) { msg = '<span class="err">' + esc(e.message) + '</span>'; return render(); }
-  act(() => api('/api/send', { ids }).then(r => `Sent ${r.count} trip(s) to ${esc(r.to)} · ${r.miles} mi · $${r.amount.toFixed(2)}`)); }
-function vehicles() {
-  return `<div class="card"><h3>Vehicles</h3>${S.teslaError ? `<p class="err">${esc(S.teslaError)}</p>` : ''}
-    <table>${S.vehicles.map(v => `<tr><td><b>${esc(v.name)}</b><div class="muted">${esc(v.model)} · VIN ${esc(v.vin)}</div></td><td>${v.connected ? '<span class="tag">connected</span>' : 'not connected'}</td></tr>`).join('') || '<tr><td>No cars yet.</td></tr>'}</table>
-    <p><a class="btn" href="/auth/tesla">${S.teslaConnected ? 'Reconnect / add Tesla' : 'Connect my Tesla'}</a>
-    ${S.teslaConnected ? `<button class="alt" onclick="act(()=>api('/api/poll',{}).then(r=>'Checked: '+esc(JSON.stringify(r.states||r))))">Check car now</button>` : ''}</p>
-    <p class="muted">Read-only access to vehicle info and location. A sleeping car is never woken.</p></div>`;
+function selRow(t) { const on = sel.includes(t.id);
+  return `<div class="card sel-row ${on ? 'on' : ''}" data-act="sel" data-id="${esc(t.id)}" role="checkbox" aria-checked="${on}" tabindex="0"><div class="box ${on ? 'on' : ''}">${on ? '✓' : ''}</div>
+    <div class="sel-main"><div class="when">${esc(fmtDay(t.startTime))} · ${esc(fmtTime(t.startTime))}</div>${routeOf(t) ? `<div class="route" style="margin-top:4px">${esc(routeOf(t))}</div>` : ''}</div>
+    <div class="miles" style="font-size:22px;line-height:26px">${mi(t.miles)}<span class="unit"> mi</span></div></div>`;
 }
-function settings() { const s = S.settings;
-  return `<div class="card"><h3>Settings</h3>
-    <label>Send reimbursements to<input id="st" value="${esc(s.sugar.to)}"></label><br><br>
-    <label>CC (optional)<input id="sc" value="${esc(s.sugar.cc)}"></label><br><br>
-    <label>Signature<textarea id="sg" rows="3">${esc(s.signature)}</textarea></label><br><br>
-    <label>Phone push: ntfy topic (install the ntfy app and subscribe to this topic)<input id="nt" value="${esc(s.ntfy.topic)}" placeholder="e.g. ovanova-mileage-${Math.random().toString(36).slice(2, 8)}"></label><br><br>
-    <label>End-of-week email (Central time)<div style="display:flex;gap:6px"><select id="wd">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => `<option value="${i}" ${i == s.weekEnd.day ? 'selected' : ''}>${d}</option>`).join('')}</select><input id="wt" type="time" value="${esc(s.weekEnd.time)}"></div></label><br>
-    <button onclick="act(()=>api('/api/settings',{sugar:{to:$('#st').value,cc:$('#sc').value},signature:$('#sg').value,ntfy:{topic:$('#nt').value},weekEnd:{day:+$('#wd').value,time:$('#wt').value}}).then(()=>'Settings saved'))">Save</button></div>`; }
+function manualCard() {
+  if (!adding) return `<div style="text-align:center"><button class="link quiet" data-act="adding">Add a trip by hand</button></div>`;
+  const today = todayKey();
+  return `<div class="card"><div class="title">Add a trip by hand</div><div class="muted" style="margin-top:2px">A business drive the car did not record. You pick ${esc(batchName())} or Send now next.</div>
+    <div class="grid3" style="margin-top:12px"><div class="field"><label class="label" for="md">Date</label><input class="input" id="md" type="date" value="${today}" max="${today}"></div>
+    <div class="field"><label class="label" for="mm">Miles</label><input class="input" id="mm" type="number" step="0.1" min="0.1" inputmode="decimal" placeholder="0.0"></div>
+    <div class="field"><label class="label" for="mp">Purpose or route</label><input class="input" id="mp" placeholder="e.g. Jackson supply run"></div></div>
+    <div class="actions"><button class="big" data-act="adding">Cancel</button><button class="big primary" data-act="manual">Add trip</button></div></div>`;
+}
+const purposeTyped = () => { const el = $('#pp'); return el ? el.value.trim() : null; };
+async function tagBusiness(ids, purpose) { for (const id of ids) await api('/api/tag', { id, category: 'business', ...(purpose != null ? { purpose } : {}) }); }
+// One answer for one or many trips. Every path ends with a reload so the card shows what the server decided.
+async function answer(a, ids) {
+  if (!ids.length) return;
+  const purpose = ids.length === 1 ? purposeTyped() : null, many = ids.length > 1 ? ids.length + ' trips' : 'Trip';
+  try {
+    if (a === 'personal') { for (const id of ids) await api('/api/tag', { id, category: 'personal' }); finish(ids); return act(() => many + ' marked personal'); }
+    if (a === 'log') { await tagBusiness(ids, purpose); finish(ids); return act(() => many + ' logged · business'); }
+    if (a === 'unqueue') { await api('/api/unqueue', { ids }); finish(ids); return act(() => 'Taken out of the ' + batchName()); }
+    if (a === 'batch') { await tagBusiness(ids, purpose); const r = await api('/api/queue', { ids }); const n = Number(r.queued || 0); finish(ids);
+      return act(() => n === ids.length ? many + ' marked business · ' + batchName() : n === 0 ? many + ' logged · business (company car, not reimbursed)' : `${n} of ${ids.length} batched · ${ids.length - n} logged (company car)`); }
+    if (a === 'send') { await tagBusiness(ids, purpose); finish(ids);
+      const reimb = ids.filter(id => { const t = (S.trips || []).find(x => String(x.id) === String(id)); return t && !logOnly(t); });   // the server prices every business trip but sends only these
+      if (!reimb.length) return act(() => many + ' logged · business (company car, nothing to reimburse)');
+      return send(reimb, ids.length - reimb.length); }
+  } catch (e) { if (e.status === 401) return signin(); toast(e.message, true); }
+}
+function finish(ids) { open = null; biz = null; selecting = false; sel = []; for (const k of ids || []) delete drafts[k]; }
+async function send(ids, loggedOnly) {
+  try {
+    const p = await api('/api/preview', { ids }); sheetIds = ids; sending = false;
+    $('#sheet').innerHTML = `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+      <div class="title" id="sh-t">Send to ${esc(p.to)}</div>${loggedOnly ? `<div class="muted">${esc(plural(loggedOnly, 'company-car trip'))} logged, not included.</div>` : ''}<div class="small">Subject</div><div style="font-weight:600;overflow-wrap:anywhere">${esc(p.subject)}</div><pre>${esc(p.text)}</pre>
+      <div class="actions" style="margin-top:4px"><button class="big" data-act="closeSheet" id="sh-cancel">Cancel</button><button class="big primary" data-act="confirmSend" id="sh-send">Send ${ids.length > 1 ? ids.length + ' trips' : 'now'}</button></div></div></div>`;
+    $('#sh-send').focus();
+  } catch (e) { if (e.status === 401) return signin(); toast(e.message, true); await load(); }
+}
+function closeSheet() { if (sending) return; $('#sheet').innerHTML = ''; sheetIds = null; }   // the email is already on its way: no closing it
+async function confirmSend() {
+  if (!sheetIds || sending) return; sending = true; const b = $('#sh-send'); if (b) { b.disabled = true; b.textContent = 'Sending…'; } const c = $('#sh-cancel'); if (c) c.disabled = true;
+  const ids = sheetIds;
+  await act(() => api('/api/send', { ids }).then(r => { sending = false; closeSheet(); return `Sent ${plural(r.count, 'trip')} · ${mi(r.miles)} mi · ${usd(r.amount)} to ${r.to}`; }));
+  sending = false; const b2 = $('#sh-send'); if (b2) { b2.disabled = false; b2.textContent = `Send ${ids.length > 1 ? ids.length + ' trips' : 'now'}`; } const c2 = $('#sh-cancel'); if (c2) c2.disabled = false;
+}
+async function addManual() {
+  if (addBusy) return;
+  const date = $('#md').value, miles = Number($('#mm').value), purpose = $('#mp').value.trim();
+  if (!date) return toast('Pick the date of the trip.', true);
+  if (!(miles > 0)) return toast('Enter the miles driven.', true);
+  addBusy = true; const b = $('[data-act="manual"]'); if (b) b.disabled = true;
+  await act(async () => { const t = await api('/api/manual', { date, miles: $('#mm').value, purpose }); adding = false; open = t && t.id ? t.id : null; biz = open; showAll = showAll || !!open; return 'Trip added · pick ' + batchName() + ' or Send now'; });
+  addBusy = false;
+}
 
-let CS = null, cmsg = '', cbusy = false;
+// ---- Cars
+function vehicles() {
+  const cars = S.vehicles || [];
+  let h = '<div class="stack">';
+  if (S.teslaError) h += `<div><span class="pill warn">${esc(S.teslaError)}</span></div>`;
+  h += `<div class="card">${cars.length ? cars.map(v => `<div class="car-row"><div><div class="car-name">${esc(v.name)}</div><div class="muted" style="font-size:14px">${esc(v.model || '')}${v.vin ? ' · ' + esc(String(v.vin).slice(-6)) : ''}${v.ownership === 'business' ? ' · company car, log only' : ''}</div></div>
+      <span class="pill ${v.connected ? 'ok' : ''}">${v.connected ? 'Connected' : 'Not connected'}</span></div>`).join('') : '<div class="muted">No cars yet. Connect your Tesla and your cars show up here.</div>'}
+    ${pollResult ? `<div class="pills" style="margin-top:12px">${Object.entries(pollResult).map(([k, v]) => `<span class="pill">${esc((cars.find(c => c.id === k) || {}).name || k)} · ${esc(typeof v === 'object' ? JSON.stringify(v) : v)}</span>`).join('')}</div>` : ''}
+    <div class="actions">${S.teslaConnected ? `<button class="big primary" data-act="poll">Check cars now</button>` : `<a class="big primary" href="/auth/tesla">Connect my Tesla</a>`}</div>
+    ${S.teslaConnected ? '<div style="text-align:center;margin-top:4px"><a class="link quiet" href="/auth/tesla">Reconnect or add a Tesla</a></div>' : ''}</div>
+    <div class="note">Read-only access to vehicle info and location. A sleeping car is never woken. Trips are recorded a few minutes after you park.</div></div>`;
+  return h;
+}
+
+// ---- Controls
 function commands() {
-  if (!CS) { api('/api/commands').then(j => { CS = j; render(); }).catch(e => { CS = { error: e.message }; render(); }); return '<div class="card">Loading your cars…</div>'; }
-  if (CS.error) return `<div class="card err">${esc(CS.error)}</div>`;
-  const help = `<ol><li><a href="${esc(CS.approveUrl)}">Approve command access</a> (Tesla page; approve Vehicle Commands and Charging).</li><li>On your phone with the Tesla app, open <a href="${esc(CS.pairUrl)}">${esc(CS.pairUrl)}</a> and add the key to your car.</li></ol>`;
-  if (!CS.connected) return `<div class="card"><h3>Commands</h3><p>Connect your Tesla on the Vehicles tab first, then:</p>${help}</div>`;
-  if (!CS.approved) return `<div class="card"><h3>Commands</h3><p class="err">Command access isn't approved for your Tesla account yet.</p>${help}</div>`;
-  if (!CS.cars.length) return `<div class="card"><h3>Commands</h3><p>No cars on your Tesla account.</p></div>`;
-  const B = (c, l) => `<button ${cbusy ? 'disabled' : ''} onclick="sendCmd({cmd:'${c}'})">${l}</button>`;
-  const N = (c, l, id, v) => `<span style="display:inline-flex;gap:4px;align-items:center;margin:2px"><input id="${id}" type="number" value="${v}" style="width:70px"><button ${cbusy ? 'disabled' : ''} onclick="sendCmd({cmd:'${c}',arg:+$('#${id}').value})">${l}</button></span>`;
-  return `<div class="card"><h3>Commands</h3>
-    <label>Car <select id="cv">${CS.cars.map(c => `<option value="${esc(c.vin)}">${esc(c.name)} · ${esc(c.vin.slice(-6))} (${esc(c.state)})</option>`).join('')}</select></label>
-    ${cmsg ? `<div class="card" style="box-shadow:none;background:#f3f4f6">${cmsg}</div>` : ''}
-    <p><b>Say or type it</b></p><div style="display:flex;gap:6px"><input id="ct" placeholder="e.g. set temp 72, charge limit 80, amps 20, vent windows" onkeydown="if(event.key==='Enter')sendCmd({text:this.value})">
-    <button class="alt" id="mic" title="Speak" onclick="listen()">🎤</button><button ${cbusy ? 'disabled' : ''} onclick="sendCmd({text:$('#ct').value})">Go</button></div>
-    <p><b>Windows</b><br>${B('windows-vent', 'Vent')}${B('windows-close', 'Close')}</p>
-    <p><b>Climate</b><br>${B('climate-on', 'On')}${B('climate-off', 'Off')}${N('set-temp', 'Set °F', 'tf', 72)}</p>
-    <p><b>Charging</b><br>${B('charge-start', 'Start')}${B('charge-stop', 'Stop')}${N('charge-limit', 'Limit %', 'cl', 80)}${N('charge-amps', 'Amps', 'ca', 32)}</p>
-    <p><b>Car</b><br>${B('lock', 'Lock')}${B('unlock', 'Unlock')}${B('honk', 'Honk')}${B('flash', 'Flash lights')}${B('wake', 'Wake')}</p>
-    <p class="muted">Commands only work on cars in your own Tesla account. A sleeping car is woken first, which can take up to 30 seconds.</p></div>`;
+  if (!CS) { api('/api/commands').then(j => { CS = j; render(); }).catch(e => { if (e.status === 401) return signin(); CS = { error: e.message }; render(); }); return '<div class="empty"><div class="muted">Loading your cars…</div></div>'; }
+  if (CS.error) return `<div class="card"><span class="pill warn">${esc(CS.error)}</span></div>`;
+  const help = `<ol class="steps"><li><a href="${esc(CS.approveUrl)}">Approve command access</a> on Tesla's page (Vehicle Commands and Charging).</li><li>On your phone with the Tesla app, open <a href="${esc(CS.pairUrl)}">${esc(CS.pairUrl)}</a> and add the key to your car.</li></ol>`;
+  if (!CS.connected) return `<div class="card"><div class="title">Connect your Tesla first</div><div class="muted" style="margin-top:4px">On the Cars tab. Then:</div>${help}</div>`;
+  if (!CS.approved) return `<div class="card"><div class="title">Command access is not approved yet</div>${help}</div>`;
+  if (!CS.cars.length) return '<div class="empty"><div class="title">No cars</div><div class="muted">There are no cars on your Tesla account.</div></div>';
+  if (!cvin || !CS.cars.some(c => c.vin === cvin)) cvin = CS.cars[0].vin;
+  const B = (c, l) => `<button class="chip" ${cbusy ? 'disabled' : ''} data-act="cmd" data-cmd="${c}">${l}</button>`;
+  const N = (c, l, id, v, unit) => `<span class="chip wide"><input class="n" id="${id}" type="number" value="${esc(ctl[id] ?? v)}" inputmode="numeric" aria-label="${l}" data-ctl="${id}"><span class="small">${unit}</span><button class="link" ${cbusy ? 'disabled' : ''} data-act="cmdn" data-cmd="${c}" data-for="${id}">${l}</button></span>`;
+  let msg = '';
+  if (cmsg?.confirm) msg = `<div class="cmsg"><div><b>${esc(cmsg.confirm.label)} the car?</b> Anyone nearby could open it.</div><div class="actions"><button class="big" data-act="cmdCancel">Cancel</button><button class="big primary" data-act="cmdConfirm">${esc(cmsg.confirm.label)}</button></div></div>`;
+  else if (cmsg) msg = `<div class="cmsg ${cmsg.kind || ''}"><div>${esc(cmsg.text)}${cmsg.links ? ` · <a href="${esc(CS.approveUrl)}">Approve</a> · <a href="${esc(CS.pairUrl)}">Pair key</a>` : ''}</div></div>`;
+  const carPick = CS.cars.length === 1 ? `<div class="muted" id="cv-one">${esc(CS.cars[0].name)} · ${esc(CS.cars[0].state)}</div>` : CS.cars.length <= 3 ? `<div class="seg" id="cv-seg">${CS.cars.map(c => `<button class="${c.vin === cvin ? 'on' : ''}" data-act="car" data-vin="${esc(c.vin)}">${esc(c.name)} · ${esc(c.state)}</button>`).join('')}</div>`
+    : `<select class="input" id="cv" data-sel="cv">${CS.cars.map(c => `<option value="${esc(c.vin)}" ${c.vin === cvin ? 'selected' : ''}>${esc(c.name)} · ${esc(String(c.vin).slice(-6))} (${esc(c.state)})</option>`).join('')}</select>`;
+  return `<div class="card">${carPick}${msg}
+    <div class="group"><label class="label" for="ct">Say or type it</label><div class="say"><input class="input" id="ct" placeholder="set temp 72 · charge limit 80 · vent windows" autocomplete="off" value="${esc(ctl.ct)}" data-ctl="ct"><button class="icon-btn" id="mic" data-act="listen" aria-label="Speak a command" title="Speak">${ICON.mic}</button><button class="btn alt" ${cbusy ? 'disabled' : ''} data-act="cmdtext">Go</button></div></div>
+    <div class="group"><div class="label">Windows</div><div class="chips">${B('windows-vent', 'Vent')}${B('windows-close', 'Close')}</div></div>
+    <div class="group"><div class="label">Climate</div><div class="chips">${B('climate-on', 'On')}${B('climate-off', 'Off')}${N('set-temp', 'Set', 'tf', 72, '°F')}</div></div>
+    <div class="group"><div class="label">Charging</div><div class="chips">${B('charge-start', 'Start')}${B('charge-stop', 'Stop')}${N('charge-limit', 'Limit', 'cl', 80, '%')}${N('charge-amps', 'Amps', 'ca', 32, 'A')}</div></div>
+    <div class="group"><div class="label">Car</div><div class="chips">${B('lock', 'Lock')}${B('unlock', 'Unlock')}${B('honk', 'Honk')}${B('flash', 'Flash lights')}${B('wake', 'Wake')}</div></div>
+    <div class="small" style="margin-top:16px">Commands only work on cars in your own Tesla account. A sleeping car is woken first, which can take up to 30 seconds.</div></div>`;
 }
 async function sendCmd(o, confirmed) {
-  const vin = $('#cv') && $('#cv').value; cbusy = true; cmsg = 'Sending…'; render(); if ($('#cv')) $('#cv').value = vin;
+  const vin = cvin; cbusy = true; cmsg = { text: 'Sending…' }; render();
   try { const r = await api('/api/command', { vin, ...o, confirmed: !!confirmed });
-    if (r.needsConfirm) { cbusy = false; if (confirm(r.label + ' the car? Anyone nearby could open it.')) return sendCmd({ cmd: r.cmd, arg: r.arg }, true); cmsg = 'Cancelled'; }
-    else cmsg = '<span style="color:#15803d">✓ ' + esc(r.done) + '</span>'; }
-  catch (e) { cmsg = '<span class="err">' + esc(e.message) + '</span>' + (/approved|pair|key/i.test(e.message) ? ` · <a href="${esc(CS.approveUrl)}">Approve</a> · <a href="${esc(CS.pairUrl)}">Pair key</a>` : ''); }
-  cbusy = false; render(); if ($('#cv')) $('#cv').value = vin;
+    cmsg = r.needsConfirm ? { confirm: { label: r.label, cmd: r.cmd, arg: r.arg } } : { kind: 'ok', text: r.done || 'Done' }; }
+  catch (e) { if (e.status === 401) return signin(); cmsg = { kind: 'warn', text: e.message, links: /approved|pair|key/i.test(e.message) }; }
+  cbusy = false; render();
 }
-function listen() { const R = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!R) { cmsg = '<span class="err">Voice input isn\'t supported in this browser. Try Chrome or Safari, or type the command.</span>'; return render(); }
-  const r = new R(); r.lang = 'en-US'; r.interimResults = false; $('#mic').textContent = '…';
-  r.onresult = e => { $('#ct').value = e.results[0][0].transcript; }; r.onend = () => { const m = $('#mic'); if (m) m.textContent = '🎤'; };
-  r.onerror = e => { cmsg = '<span class="err">Mic: ' + esc(e.error) + '</span>'; render(); }; r.start(); }
+function listen() {
+  const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R) { cmsg = { kind: 'warn', text: 'Voice input is not supported in this browser. Try Chrome or Safari, or type the command.' }; return render(); }
+  const r = new R(); r.lang = 'en-US'; r.interimResults = false; $('#mic').style.background = 'var(--brand)'; $('#mic').style.color = '#fff';
+  r.onresult = e => { $('#ct').value = e.results[0][0].transcript; };
+  r.onend = () => { const m = $('#mic'); if (m) { m.style.background = ''; m.style.color = ''; } };
+  r.onerror = e => { cmsg = { kind: 'warn', text: 'Mic: ' + e.error }; render(); };
+  r.start();
+}
+
+// ---- Settings
+function settings() {
+  const s = S.settings || {}, sugar = s.sugar || {}, ntfy = s.ntfy || {}, we = s.weekEnd || {};
+  const queued = (S.trips || []).filter(t => statusOf(t) === 'queued');
+  return `<div class="stack">
+    <div class="card"><div class="title">Reimbursements go to</div>
+      <input class="input" id="st" type="email" value="${esc(sugar.to)}" placeholder="sugar@ovanova.co" style="margin-top:10px" autocapitalize="off">
+      <input class="input" id="sc" type="email" value="${esc(sugar.cc)}" placeholder="CC (optional)" style="margin-top:8px" autocapitalize="off">
+      <div class="row-label" style="margin-top:16px">${esc(batchName())}</div><div class="muted" style="font-size:14px">Batched trips go out together, every week at this time (Central).</div>
+      <div class="grid2" style="margin-top:8px"><select class="input" id="wd" aria-label="Day">${DAYS.map((d, i) => `<option value="${i}" ${i == we.day ? 'selected' : ''}>${d}</option>`).join('')}</select>
+        <input class="input" id="wt" type="time" value="${esc(we.time)}" aria-label="Time"></div>
+      <div class="muted" style="margin-top:8px;font-size:14px">${S.nextBatch ? 'Next: ' + esc(fmtWhen(S.nextBatch)) + '.' : ''} ${queued.length ? esc(plural(queued.length, 'trip')) + ' · ' + mi(sumMi(queued)) + ' mi waiting.' : 'Nothing waiting.'}</div>
+      ${queued.length ? `<div class="actions"><button class="big" data-act="sendBatch">Send now</button></div>` : ''}</div>
+    <div class="card"><div class="title">Signature</div><textarea class="input" id="sg" rows="3" style="margin-top:10px" placeholder="How the email signs off">${esc(s.signature)}</textarea></div>
+    <div class="card"><div class="title">Phone alerts</div><div class="muted" style="margin-top:2px;font-size:14px">Install the free ntfy app, subscribe to this topic, and each trip asks "business or personal?" on your phone. Pick a topic nobody would guess.</div>
+      <input class="input" id="nt" value="${esc(ntfy.topic)}" placeholder="e.g. ${ntfySuggest}" style="margin-top:10px" autocapitalize="off" autocomplete="off"></div>
+    <div class="actions" style="margin-top:4px"><button class="big primary" data-act="saveSettings">Save settings</button></div></div>`;
+}
+function settingsDirty() {
+  const s = S.settings || {}, sugar = s.sugar || {}, ntfy = s.ntfy || {}, we = s.weekEnd || {};
+  const same = (id, v) => { const el = $('#' + id); return !el || el.value === String(v ?? ''); };
+  return !(same('st', sugar.to) && same('sc', sugar.cc) && same('sg', s.signature) && same('nt', ntfy.topic) && same('wd', we.day) && same('wt', we.time));
+}
+function saveSettings() {
+  return act(() => api('/api/settings', { sugar: { to: $('#st').value.trim(), cc: $('#sc').value.trim() }, signature: $('#sg').value, ntfy: { topic: $('#nt').value.trim() }, weekEnd: { day: +$('#wd').value, time: $('#wt').value } }).then(() => 'Settings saved'));
+}
+
+// ---- events: one listener, data-act on every control
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act, id = el.dataset.id;
+  if (a === 'closeSheet' && el.classList.contains('scrim') && e.target !== el) return;
+  if (a === 'tab') { tab = el.dataset.tab; if (location.hash !== '#' + tab) location.hash = tab; else render(); window.scrollTo(0, 0); }
+  else if (a === 'biz') { biz = el.dataset.key; render(); }
+  else if (a === 'back') { biz = null; render(); }
+  else if (a === 'toggle') { open = open === id ? null : id; biz = null; render(); }
+  else if (a === 'answer') answer(el.dataset.a, id ? [id] : sel.slice());
+  else if (a === 'selecting') { selecting = !selecting; sel = selecting ? (S.trips || []).filter(t => statusOf(t) === 'untagged').map(t => t.id) : []; biz = null; render(); }
+  else if (a === 'selAll') { const all = (S.trips || []).filter(t => statusOf(t) === 'untagged').map(t => t.id); sel = sel.length === all.length ? [] : all; render(); }
+  else if (a === 'sel') { sel = sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]; render(); }
+  else if (a === 'showAll') { showAll = true; render(); }
+  else if (a === 'adding') { adding = !adding; render(); if (adding) { const m = $('#mm'); if (m) m.focus(); } }
+  else if (a === 'manual') addManual();
+  else if (a === 'closeSheet') closeSheet();
+  else if (a === 'confirmSend') confirmSend();
+  else if (a === 'sendBatch') { if (settingsDirty()) toast('Save your settings first, then send.', true); else send((S.trips || []).filter(t => statusOf(t) === 'queued').map(t => t.id)); }
+  else if (a === 'poll') act(async () => { const r = await api('/api/poll', {}); pollResult = r.states || r; return ''; });
+  else if (a === 'car') { cvin = el.dataset.vin; render(); }
+  else if (a === 'cmd') sendCmd({ cmd: el.dataset.cmd });
+  else if (a === 'cmdn') sendCmd({ cmd: el.dataset.cmd, arg: +$('#' + el.dataset.for).value });
+  else if (a === 'cmdtext') { const v = $('#ct').value.trim(); if (v) sendCmd({ text: v }); }
+  else if (a === 'cmdConfirm') { const c = cmsg?.confirm; if (c) sendCmd({ cmd: c.cmd, arg: c.arg }, true); }
+  else if (a === 'cmdCancel') { cmsg = { text: 'Cancelled' }; render(); }
+  else if (a === 'listen') listen();
+  else if (a === 'saveSettings') saveSettings();
+});
+document.addEventListener('change', e => { if (e.target.dataset.sel === 'cv') cvin = e.target.value; });
+document.addEventListener('input', e => {
+  if (e.target.id === 'pp') { const c = e.target.closest('[data-trip]'); if (c) drafts[c.dataset.trip] = e.target.value; }
+  if (e.target.dataset.ctl) ctl[e.target.dataset.ctl] = e.target.value;
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && sheetIds) closeSheet();
+  if (e.key === 'Enter' && e.target.id === 'ct' && !cbusy) { const v = e.target.value.trim(); if (v) sendCmd({ text: v }); }
+  if (e.key === 'Enter' && e.target.id === 'mm') addManual();
+  if ((e.key === ' ' || e.key === 'Enter') && e.target.dataset.act === 'sel') { e.preventDefault(); e.target.click(); }
+});
+window.addEventListener('hashchange', () => { tab = hashTab(); if (S) render(); });
+$('#mark').innerHTML = MARK;
 load();
 </script></body></html>

@@ -149,6 +149,11 @@ class PhoneService extends WebService {
     return { status: 'reimbursable', rate, amount };
   }
 
+  // The web page shows what these rules decide: every trip in /api/state carries its status (untagged, personal,
+  // log only, reimbursable, queued, sent) and, when it is worth money, the IRS rate for its date and the amount.
+  async state(email) { const st = await super.state(email), vs = await this.cars(email);
+    st.trips = st.trips.map(t => ({ ...t, ...this.status(t, vs) })); return st; }
+
   async queue(email, ids) { const vs = await this.cars(email), ok = (await this.trips(email)).filter(t => ids.includes(t.id) && t.category !== 'personal' && reimbursable({ ...t, category: 'business' }, vs)).map(t => t.id);
     return super.queue(email, ok); }
 
