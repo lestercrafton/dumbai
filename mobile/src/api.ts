@@ -40,6 +40,19 @@ export const me = () => call<Me>('GET', '/api/phone/me');
 export async function pullCars(): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('GET', '/api/phone/cars'); await replaceCars(cars); return cars; }
 export async function pushCars(list: Car[]): Promise<Car[]> { const { cars } = await call<{ cars: Car[] }>('PUT', '/api/phone/cars', { cars: list }); await replaceCars(cars); return cars; }
 
+// The server's verdict on each synced trip (status, amount, when it was sent), so cards read like the web page.
+export async function pullStatus(): Promise<number> {
+  const since = new Date(Date.now() - 120 * 86400000).toISOString();
+  const { trips } = await call<{ trips: { id: string; status?: string; amount?: number; reimbursedAt?: string }[] }>('GET', '/api/phone/trips?since=' + encodeURIComponent(since));
+  let n = 0;
+  for (const r of trips) { if (!String(r.id).startsWith('phone:') || !r.status) continue; const cid = String(r.id).slice(6);
+    await patchTrip(cid, cur => {
+      const amount = r.amount ?? null, reimbursedAt = r.reimbursedAt ?? null;
+      if (!cur.synced || (cur.serverStatus === r.status && cur.amount === amount && cur.reimbursedAt === reimbursedAt)) return null;
+      n++; return { ...cur, serverStatus: r.status!, amount, reimbursedAt }; }); }
+  return n;
+}
+
 type Result = { clientId: string; status?: string; error?: string };
 // Upload every tagged trip that the server hasn't accepted yet. Untagged trips stay local until answered.
 export async function sync(): Promise<{ uploaded: number; sendError?: string | null }> {

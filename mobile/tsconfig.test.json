@@ -1,2 +1,2 @@
 { "compilerOptions": { "target": "ES2022", "module": "commonjs", "strict": true, "outDir": ".test-build", "esModuleInterop": true, "skipLibCheck": true, "types": ["node"] },
-  "include": ["src/detector.ts", "src/recipient.ts", "test/*.ts"] }
+  "include": ["src/detector.ts", "src/recipient.ts", "src/status.ts", "test/*.ts"] }
