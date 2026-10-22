@@ -20,6 +20,7 @@ jobs:
     timeout-minutes: 60
     env:
       BIG_VIN_SITE_URL: https://big-vin.sitetime.workers.dev
+      EXPORT_AUDIENCE: https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/api/site-export
     steps:
       - uses: actions/checkout@v4
         with:

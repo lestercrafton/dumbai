@@ -130,7 +130,7 @@ export async function scanForPrivate(out,{allowEmails=[]}={}){
 if(import.meta.url===`file://${process.argv[1]}`){
  const [site,out]=process.argv.slice(2);
  if(!site||!out){console.error('Usage: site-export-client.mjs <site-url> <out-dir> [--scan-private]');process.exit(2);}
- const audience=new URL('/api/site-export',site).href;
+ const audience=process.env.EXPORT_AUDIENCE||new URL('/api/site-export',site).href;
  const counts=await exportSite({site,out,token:githubTokenSource(audience)});
  let findings=[];
  if(process.argv.includes('--scan-private')){
