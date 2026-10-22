@@ -57,6 +57,8 @@ export function canonicalTeamKey(sport, abbreviation, id = '') {
   const abbr = String(abbreviation ?? '').toUpperCase();
   return `${sport}:${aliases[sport]?.[abbr] ?? (abbr || id)}`;
 }
+/** AP poll rank from the scoreboard (ESPN sends 99 for unranked). */
+const apRank = (c) => { const r = Number(c?.curatedRank?.current); return Number.isInteger(r) && r >= 1 && r <= 25 ? r : null; };
 const team = (x, sport) => ({ id: String(x?.id ?? ''), key: canonicalTeamKey(sport, x?.abbreviation, x?.id), abbreviation: x?.abbreviation ?? null, name: x?.displayName ?? x?.shortDisplayName ?? x?.name ?? null });
 /** ESPN conferenceId -> short label. IDs/names verified against ESPN's own
  * 2026 standings endpoints (FBS/FCS football, Division I men's hoops). */
@@ -187,6 +189,7 @@ export function normalizeScoreboard(payload, sport, { retrievedAt = new Date().t
       homeMargin: homeScore !== null && awayScore !== null ? homeScore - awayScore : null,
       totalScore: homeScore !== null && awayScore !== null ? homeScore + awayScore : null,
       conferences: [...new Set([conferenceName(sport, home.team.conferenceId), conferenceName(sport, away.team.conferenceId)].filter(Boolean))],
+      homeApRank: apRank(home), awayApRank: apRank(away),
       homeConference: conferenceName(sport, home.team.conferenceId), awayConference: conferenceName(sport, away.team.conferenceId),
       neutralSite: typeof competition.neutralSite === 'boolean' ? competition.neutralSite : null,
       venue: competition.venue?.fullName ?? null,
