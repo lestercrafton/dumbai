@@ -63,7 +63,15 @@ export function moneylinePair(record, sport) {
  * converted. The book price must be a real American-odds quote and retains its
  * own snapshot metadata; a saved ATS price is never substituted for it. */
 export function moneylineComparison(record, sport) {
-  const lines = displayLines(record);
+  let lines = displayLines(record);
+  // NHL/MLB: on a pass, still compare the model's favored team at its ML.
+  if (!lines.side && ['nhl', 'mlb'].includes(sport)) {
+    const m = record.predictedMargin ?? record.projection?.predictedHomeMargin;
+    if (Number.isFinite(m) && m !== 0) {
+      const side = m > 0 ? 'home' : 'away', team = record[side];
+      lines = {...lines, side, teamShort: team?.abbreviation || team?.name || 'Team', teamName: team?.displayName || team?.name || 'Team', fairLine: -Math.abs(m)};
+    }
+  }
   if (!lines.side || !Number.isFinite(lines.fairLine)
     || record.paperWager?.kind === 'synthetic-winner-even') return null;
   const probability = winProbability(-lines.fairLine, sport);
@@ -99,9 +107,14 @@ export function worstPlayablePrice(probability, minValue = 0.03) {
 }
 /** "playable to -143" for an NHL/MLB moneyline pick. */
 export function playablePriceText(game, sport) {
-  if (!['nhl', 'mlb'].includes(sport) || (game.side !== 'home' && game.side !== 'away')) return null;
+  if (!['nhl', 'mlb'].includes(sport)) return null;
   const margin = game.predictedMargin ?? game.projection?.predictedHomeMargin;
-  const p = winProbability(game.side === 'home' ? margin : -margin, sport);
-  const odds = worstPlayablePrice(p);
-  return odds === null ? null : `playable to ${signedOdds(odds)}`;
+  if (!Number.isFinite(margin)) return null;
+  const picked = game.side === 'home' || game.side === 'away';
+  const side = picked ? game.side : margin > 0 ? 'home' : margin < 0 ? 'away' : null;
+  if (!side) return null;
+  const odds = worstPlayablePrice(winProbability(side === 'home' ? margin : -margin, sport));
+  if (odds === null) return null;
+  const team = game[side];
+  return `${picked ? '' : `${team?.abbreviation || team?.name || 'Team'} `}playable to ${signedOdds(odds)}`;
 }
