@@ -92,6 +92,17 @@ export function scoreboardPayloadLimited(sport, payload, limit = 200) {
   return sport === 'cfb' && (!Array.isArray(payload?.events) || payload.events.length >= limit);
 }
 
+/** NHL and MLB pick the moneyline side: the market line becomes a
+ * pick'em (no ties, so 0 grades as a moneyline) priced at each side's ML.
+ * The original puck/run line is kept for reference only. */
+export const MONEYLINE_SPORTS = new Set(['nhl', 'mlb']);
+export function moneylineMarket(market, sport) {
+  if (!market || !MONEYLINE_SPORTS.has(sport)) return market;
+  const priced = market.homeMoneyline !== null && market.awayMoneyline !== null;
+  return {...market, runLineHomeSpread: market.homeSpread, runLineHomePrice: market.homeSpreadPrice, runLineAwayPrice: market.awaySpreadPrice,
+    homeSpread: priced ? 0 : null, awaySpread: priced ? 0 : null, homeExpectedMargin: null, spreadMethod: priced ? 'moneyline' : null,
+    homeSpreadPrice: market.homeMoneyline, awaySpreadPrice: market.awayMoneyline};
+}
 function normalizeOdds(o, completed, retrievedAt) {
   let homeSpread = line(o?.pointSpread?.home?.close?.line);
   let awaySpread = line(o?.pointSpread?.away?.close?.line);
@@ -164,7 +175,7 @@ export function normalizeScoreboard(payload, sport, { retrievedAt = new Date().t
     // ESPN supplies zero placeholders for future events. Never train on these.
     const homeScore = completed ? score(home.score) : null;
     const awayScore = completed ? score(away.score) : null;
-    const markets = (Array.isArray(competition.odds) ? competition.odds : []).map(o => normalizeOdds(o, completed, retrievedAt)).filter(Boolean);
+    const markets = (Array.isArray(competition.odds) ? competition.odds : []).map(o => moneylineMarket(normalizeOdds(o, completed, retrievedAt), sport)).filter(Boolean);
     return [{
       id: String(event.id), sport, sportLabel: SPORT_LABELS[sport],
       gamecastUrl: espnGamecastUrl({...event,sport,source:'ESPN scoreboard'}),

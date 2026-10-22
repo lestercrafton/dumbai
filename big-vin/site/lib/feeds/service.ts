@@ -7,7 +7,7 @@ import {fitRatings,projectCollegeGame,projectGame} from '../ratings.mjs';
 import {readForecastRecords,saveForecasts} from '../result-store';
 import {gradeForecast,MODEL_VERSION,reportingWeek} from '../results.mjs';
 import {capturePickRevisions,pickStates} from '../pick-revision-store';
-import {withPickState,actionablePick,spreadSelection} from '../pick-revisions.mjs';
+import {withPickState,actionablePick,spreadSelection,quotePrices} from '../pick-revisions.mjs';
 import {modelSpec,modelLabel,eligibleForModel,historicalModelSpecs} from '../model-versions';
 import {historyModelForGame} from '../tracked-history.mjs';
 import {savedBoardHistory,canProjectUncapturedGame} from '../saved-board-history.mjs';
@@ -132,10 +132,10 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
     const capturedAt=new Date().toISOString(),q=g.market;
     const fresh=q?.timing==='current-displayed-snapshot'&&Number.isFinite(q.homeSpread)&&Date.parse(q.observedAt)<=Date.parse(capturedAt)&&Date.parse(capturedAt)-Date.parse(q.observedAt)<=1800000;
     const injury=injuryFor(g),live=liveMargin({sport,baseMargin:projection.predictedHomeMargin,homeSpread:fresh?q.homeSpread:null,injury});
-    const selection=spreadSelection(live.margin,fresh?q.homeSpread:null);
+    const selection=spreadSelection(live.margin,fresh?q.homeSpread:null,quotePrices(sport,q));
     return [{id,gameId:g.id,sport,season:g.season,seasonType:g.seasonType,postseason:g.postseason??null,week:g.week,weekKey:reportingWeek(g),cohort:'live',origin:'collector',startTime:g.startTime,capturedAt,
      rank:null,rankBasis:'First server pregame capture',projection,ratingCoverage:projection.ratingCoverage??null,home:g.home.name,away:g.away.name,homeId:base.homeId,awayId:base.awayId,
-     predictedMargin:live.margin,...(live.margin!==projection.predictedHomeMargin?{baseMargin:projection.predictedHomeMargin}:{}),...(injury?{injuryAdjustment:live.injuryAdjustment,injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:fresh?q.homeSpread:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
+     predictedMargin:live.margin,...(live.margin!==projection.predictedHomeMargin?{baseMargin:projection.predictedHomeMargin}:{}),...(injury?{injuryAdjustment:live.injuryAdjustment,injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:fresh?q.homeSpread:null,marketHomePrice:fresh?q.homeSpreadPrice??null:null,marketAwayPrice:fresh?q.awaySpreadPrice??null:null,side:selection.side,odds:selection.side==='home'?q.homeSpreadPrice:selection.side==='away'?q.awaySpreadPrice:null,
      marketObservedAt:fresh?q.observedAt:null,provider:fresh?q.provider:null,sourceUrl:g.sourceUrl,trainingCutoff:asOf,modelVersion:gameSpec.id,parameters:fitted.config,homeAdvantage:fitted.homeAdvantage,restCoefficient:fitted.restCoefficient,trainingGames:fitted.trainingGames,lastTrainingDate:fitted.lastTrainingDate}];
    });
    // Saving is best effort: a failed write (e.g. the daily D1 limit) must never block the board.
@@ -178,7 +178,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   if(g.status==='scheduled'&&Date.parse(g.startTime)<=Date.now())g={...g,status:'awaiting-update'};
   const archived=!!f&&Number.isFinite(f.predictedMargin);
   const paper=f?.paperWager??null;
-  const market=archived?Number.isFinite(f.marketHomeSpread)?{provider:f.provider||'Saved market',homeSpread:f.marketHomeSpread,awaySpread:-f.marketHomeSpread,homeSpreadPrice:f.side==='home'?f.odds:null,awaySpreadPrice:f.side==='away'?f.odds:null,observedAt:f.marketObservedAt}:paper?{provider:paper.kind==='archived-opening-spread'?'DraftKings opener':'Paper pick’em',homeSpread:paper.homeSpread,awaySpread:-paper.homeSpread,homeSpreadPrice:paper.side==='home'?paper.odds:null,awaySpreadPrice:paper.side==='away'?paper.odds:null,observedAt:paper.retrievedAt}:null:g.market;
+  const market=archived?Number.isFinite(f.marketHomeSpread)?{provider:f.provider||'Saved market',homeSpread:f.marketHomeSpread,awaySpread:-f.marketHomeSpread,homeSpreadPrice:f.marketHomePrice??(f.side==='home'?f.odds:null),awaySpreadPrice:f.marketAwayPrice??(f.side==='away'?f.odds:null),observedAt:f.marketObservedAt}:paper?{provider:paper.kind==='archived-opening-spread'?'DraftKings opener':'Paper pick’em',homeSpread:paper.homeSpread,awaySpread:-paper.homeSpread,homeSpreadPrice:paper.side==='home'?paper.odds:null,awaySpreadPrice:paper.side==='away'?paper.odds:null,observedAt:paper.retrievedAt}:null:g.market;
   const project=sport==='cfb'?projectCollegeGame:projectGame;
   const projection=archived?{...f.projection,predictedHomeMargin:f.predictedMargin,fairHomeSpread:-f.predictedMargin,homeEdgePoints:Number.isFinite(f.marketHomeSpread)?f.predictedMargin+f.marketHomeSpread:paper?.kind==='archived-opening-spread'?f.predictedMargin+paper.homeSpread:null,homeAdvantage:f.homeAdvantage??f.projection?.homeAdvantage}:canProjectUncapturedGame(g)?withInjury(project(base,tracked?modelForGame(gameSpec):eligible?model:baseline),g):null;
   const upcoming=g.status==='scheduled'&&Date.parse(g.startTime)>Date.now();
@@ -186,7 +186,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const stale=upcoming?!actionable:!archived&&!!market&&Date.now()-Date.parse(market.observedAt)>30*60*1000;
   const homeEdge=projection?.homeEdgePoints;
   const edge=Number.isFinite(homeEdge)?Math.abs(homeEdge):null;
-  const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:homeEdge>0?'home':'away');
+  const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:spreadSelection(projection.predictedHomeMargin,market?.homeSpread,quotePrices(sport,market)).side);
   const lowEvidence=hasLimitedData({sport,projection});
   const rankSignal=edge!==null&&edge>0&&side&&market?scoreGame(signal,{sport,side,homeSpread:market.homeSpread,edge,odds:side==='home'?market.homeSpreadPrice:market.awaySpreadPrice}):null;
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.

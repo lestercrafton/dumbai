@@ -63,6 +63,18 @@ export function pointsEffects(homeItems=[],awayItems=[],share=0.6){
  return {home:share*(-off(homeItems)+def(awayItems)),away:share*(-off(awayItems)+def(homeItems))};
 }
 /** Over/under pick vs the market total, with the same gap guard as the spread line. */
+/** Minimum edge to take a side (same both ways); CFB overs need more. */
+export const MIN_TOTAL_EDGE={nfl:1,cfb:1,nba:1.5,wnba:1.5,cbb:1.5};
+export const CFB_OVER_MIN=3;
+/** NBA/WNBA: games this season per team; early-season totals lean on the market until a team has SEASON_FULL games. */
+export const SEASON_FULL=20;
+export function seasonGames(games,asOf,gapDays=60){
+ const cut=dayOf(asOf),days=games.map(g=>dayOf(g.date)).filter(d=>d!==null&&d<cut).sort((a,b)=>a-b);
+ let start=days[0]??cut;for(let i=1;i<days.length;i++)if(days[i]-days[i-1]>=gapDays)start=days[i];
+ const n={};for(const g of games){const d=dayOf(g.date);if(d===null||d<start||d>=cut||g.homeScore===null||g.homeScore==='')continue;n[g.homeId]=(n[g.homeId]||0)+1;n[g.awayId]=(n[g.awayId]||0)+1;}
+ return n;
+}
+export const seasonBlend=(total,marketTotal,played)=>Number.isFinite(marketTotal)?marketTotal+Math.min(1,played/SEASON_FULL)*(total-marketTotal):total;
 export function totalPick({sport,total,marketTotal,injuryEffect=0,weatherEffect=0}){
  if(!Number.isFinite(total)||!Number.isFinite(marketTotal))return {side:null,edge:null,total,check:null};
  const threshold=TOTALS_CONFIGS[sport].threshold;let gap=total-marketTotal,check=null,final=total;
@@ -71,8 +83,8 @@ export function totalPick({sport,total,marketTotal,injuryEffect=0,weatherEffect=
   if(rest<threshold)check={flagged:true,review:false,gap:r2(gap),note:`Gap of ${r2(Math.abs(gap))} points vs the market total; injuries and weather account for ${r2(covered)} of it.`};
   else{final=marketTotal+Math.sign(gap)*(covered+rest/2);check={flagged:true,review:true,gap:r2(gap),unshrunkTotal:r2(total),note:`Gap of ${r2(Math.abs(gap))} points vs the market total${covered?`, of which injuries and weather explain ${r2(covered)}`:''}; the unexplained part is halved toward the market and marked for review.`};}
  }
- const edge=final-marketTotal;
- return {side:Math.abs(edge)<1e-9?null:edge>0?'over':'under',edge:r2(Math.abs(edge)),total:r2(final),check};
+ const edge=final-marketTotal,need=sport==='cfb'&&edge>0?CFB_OVER_MIN:MIN_TOTAL_EDGE[sport]??0;
+ return {side:Math.abs(edge)<Math.max(need,1e-9)?null:edge>0?'over':'under',edge:r2(Math.abs(edge)),total:r2(final),check};
 }
 export function gradeTotal(side,line,actual){if(!side||!Number.isFinite(line)||!Number.isFinite(actual))return null;if(actual===line)return 'push';return (actual>line)===(side==='over')?'win':'loss';}
 const r2=x=>Math.round(x*100)/100;

@@ -5,7 +5,7 @@ name: Big Vin Cloudflare read cache
 # Cloudflare site; the ChatGPT site is not touched.
 on:
   schedule:
-    - cron: '4-59/10 * * * *'
+    - cron: '4-59/20 * * * *'
   workflow_run:
     workflows: ['Big Vin daily sports experiment']
     types: [completed]

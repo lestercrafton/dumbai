@@ -1,4 +1,5 @@
 import {liveMargin} from './injury-lines.mjs';
+import {winProbability,moneylineExpectedValue} from './moneyline.mjs';
 const at=value=>typeof value==='string'?Date.parse(value):NaN;
 const finite=Number.isFinite;
 export const PICK_PROTOCOL='pregame-revisions-v1';
@@ -7,8 +8,20 @@ const earlier=(...dates)=>new Date(Math.min(...dates.map(at).filter(finite))).to
 
 /** All sports use a home-margin model. A positive home edge selects home;
  * a negative edge selects away. Zero is an explicit no-pick revision. */
-export function spreadSelection(margin,homeSpread){
+/** NHL/MLB moneyline: the side whose quoted price beats the model's win
+ * chance by at least MIN_ML_VALUE per unit staked; otherwise pass. Same bar both sides. */
+export const MIN_ML_VALUE=0.03;
+const ML_SPORTS=new Set(['nhl','mlb']);
+export const quotePrices=(sport,q)=>({sport,homePrice:q?.homeSpreadPrice??q?.marketHomePrice??null,awayPrice:q?.awaySpreadPrice??q?.marketAwayPrice??null});
+export function spreadSelection(margin,homeSpread,{sport,homePrice,awayPrice}={}){
  if(!finite(margin)||!finite(homeSpread))return {side:null,edge:null};
+ if(ML_SPORTS.has(sport)&&homeSpread===0){
+  const p=winProbability(margin,sport);
+  const home=moneylineExpectedValue(p,homePrice),away=moneylineExpectedValue(1-p,awayPrice);
+  if(home===null||away===null)return {side:null,edge:null};
+  const best=home>=away?{side:'home',value:home/100}:{side:'away',value:away/100};
+  return best.value>=MIN_ML_VALUE?{side:best.side,edge:Math.round(best.value*1000)/1000}:{side:null,edge:0};
+ }
  const homeEdge=margin+homeSpread;
  return {side:Math.abs(homeEdge)<1e-9?null:homeEdge>0?'home':'away',edge:Math.abs(homeEdge)<1e-9?0:Math.abs(homeEdge)};
 }
@@ -30,7 +43,7 @@ export function validPregameQuote(f,g,now=Date.now(),lockAt=f.startTime){
   &&finite(observed)&&observed>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)&&observed<=now&&now-observed<=QUOTE_MAX_AGE;
 }
 const odds=value=>finite(value)&&Number.isInteger(value)&&Math.abs(value)>=100?value:null;
-const sameOffer=(a,b)=>['side','marketHomeSpread','odds','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
+const sameOffer=(a,b)=>['side','marketHomeSpread','odds','marketHomePrice','marketAwayPrice','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
 
 /** Pure prospective state transition. Original forecasts are never rewritten.
  * Earliest observed kickoff and a started/unknown-status latch only tighten. */
@@ -50,10 +63,10 @@ export function advancePickState(f,previous,g,recordedAt=new Date().toISOString(
  const q=g.market;
  if(at(q.observedAt)<at(state.verifiedAt))return next;
  const base=baseMargin(f),live=liveMargin({sport:f.sport,baseMargin:base,homeSpread:q.homeSpread,injury:g.injury});
- const selected=spreadSelection(live.margin,q.homeSpread);
+ const selected=spreadSelection(live.margin,q.homeSpread,quotePrices(f.sport,q));
  const revision={id:f.id+':'+q.observedAt,forecastId:f.id,gameId:f.gameId,homeId:f.homeId,awayId:f.awayId,
   modelVersion:f.modelVersion,predictedMargin:live.margin,...(live.margin!==f.predictedMargin?{baseMargin:base}:{}),
-  ...(live.injuryAdjustment!==null?{injuryAdjustment:live.injuryAdjustment,injury:g.injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:q.homeSpread,...selected,
+  ...(live.injuryAdjustment!==null?{injuryAdjustment:live.injuryAdjustment,injury:g.injury}:{}),...(live.marketCheck?{marketCheck:live.marketCheck}:{}),marketHomeSpread:q.homeSpread,marketHomePrice:odds(q.homeSpreadPrice),marketAwayPrice:odds(q.awaySpreadPrice),...selected,
   odds:odds(selected.side==='home'?q.homeSpreadPrice:selected.side==='away'?q.awaySpreadPrice:null),
   provider:q.provider||'Sportsbook',observedAt:q.observedAt,recordedAt,startTime:g.startTime,lockAt,sourceUrl:g.sourceUrl};
  const last=state.revisions.at(-1);
@@ -71,18 +84,18 @@ export function withPickState(f,state){
  const revisions=state.revisions.filter(r=>r.forecastId===f.id&&r.gameId===f.gameId&&r.homeId===f.homeId&&r.awayId===f.awayId
   &&(r.baseMargin??r.predictedMargin)===baseMargin(f)&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
   &&at(r.recordedAt)<cutoff&&at(r.observedAt)<=at(r.recordedAt)&&at(r.observedAt)>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)
-  &&r.side===spreadSelection(r.predictedMargin,r.marketHomeSpread).side);
+  &&r.side===spreadSelection(r.predictedMargin,r.marketHomeSpread,quotePrices(f.sport,r)).side);
  const selected=[...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1);
  const originalPick={side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,marketObservedAt:f.marketObservedAt,capturedAt:f.capturedAt,recordedAt:f.firstMarket?.recordedAt??f.capturedAt,provider:f.provider};
  const validOriginal=at(f.capturedAt)<cutoff&&(!finite(f.marketHomeSpread)||at(f.marketObservedAt)<cutoff);
- return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
+ return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
   originalPick,pickRevision:selected??null,pickRevisions:state.revisions,pickLock:{lockAt:state.lockAt,closedAt:state.closedAt,verifiedAt:state.verifiedAt,protocol:PICK_PROTOCOL}};
 }
 
 export function actionablePick(f,g,now=Date.now()){
  if(!f?.pickLock||f.pickLock.closedAt||!validPregameQuote(f,g,now,f.pickLock.lockAt))return false;
  // Persistence must confirm the same current offer, including an explicit pass.
- return f.pickRevision?.marketHomeSpread===g.market.homeSpread&&f.side===spreadSelection(f.predictedMargin,g.market.homeSpread).side
+ return f.pickRevision?.marketHomeSpread===g.market.homeSpread&&f.side===spreadSelection(f.predictedMargin,g.market.homeSpread,quotePrices(f.sport,g.market)).side
   &&at(f.pickLock.verifiedAt)>=at(g.market.observedAt);
 }
 

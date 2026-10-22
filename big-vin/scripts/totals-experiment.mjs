@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {fitTotals,projectTotal,totalPick,gradeTotal} from '../lib/totals.mjs';
+import {fitTotals,projectTotal,totalPick,gradeTotal,seasonGames,seasonBlend} from '../lib/totals.mjs';
 import {parse,nflGames,backtest,backtestHistory,summarize} from './totals-backtest.mjs';
 import {build as buildHistory,historyFile,WINDOWS} from './totals-history.mjs';
 import {TOTALS_CONFIGS} from '../lib/totals.mjs';
@@ -49,6 +49,7 @@ export async function run({sport='nfl',fetchImpl=globalThis.fetch,now=new Date()
  else{try{await buildHistory(sport,{fetchImpl,today:now.slice(0,10)});}catch(e){warnings.push('History refresh failed, using the saved history: '+e.message);}
   games=JSON.parse(fs.readFileSync(historyFile(sport),'utf8')).games.map(g=>({...g,marketTotal:g.total}));}
  const model=fitTotals(games,{sport,asOf:now});
+ const played=['nba','wnba'].includes(sport)?seasonGames(games,now):null;
  let injuries=null;if(nfl)try{injuries=JSON.parse(fs.readFileSync(injuryFile,'utf8'));if(!(Date.parse(now)-Date.parse(injuries.generatedAt)<=36*3600000)){warnings.push('Injury table is stale; no injury effect.');injuries=null;}}catch(e){warnings.push('Injury table unavailable: '+e.message);}
  let slate={games:[]};try{const r=await fetchImpl(`${SITE}/api/slate?sport=${sport}`,{signal:AbortSignal.timeout(90000)});if(!r.ok)throw new Error('HTTP '+r.status);slate=await r.json();}catch(e){warnings.push('Slate unavailable: '+e.message);}
  const events=read(ledger),last=effectivePicks(events),added=[];
@@ -59,6 +60,7 @@ export async function run({sport='nfl',fetchImpl=globalThis.fetch,now=new Date()
   const sched=nfl?games.find(x=>x.homeId===homeId&&x.awayId===awayId&&Math.abs(Date.parse(x.date)-Date.parse(easternDay(g.startTime)))<=86400000):null;
   const inj=injuries?{home:injuries.teams[homeId]?.items||[],away:injuries.teams[awayId]?.items||[]}:null;
   const p=projectTotal({homeId,awayId,neutral:g.neutralSite===true},model,{injuries:inj,dome:sched?.dome});if(!p||(!nfl&&p.sparse))continue;
+  if(played){const n=Math.min(played[homeId]||0,played[awayId]||0);p.total=seasonBlend(p.total,q.total,n);p.seasonGames=n;}
   const pick=totalPick({sport,total:p.total,marketTotal:q.total,injuryEffect:p.injuryEffect,weatherEffect:p.weatherEffect});
   const price=pick.side==='over'?q.overPrice:pick.side==='under'?q.underPrice:null;
   const e={type:'pick',version:`bv-${sport}-totals-v1`,gameId:g.id,startTime:g.startTime,homeId,awayId,home:g.home.name,away:g.away.name,
