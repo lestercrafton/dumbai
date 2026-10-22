@@ -147,18 +147,6 @@ button.chip::after, .seg button::after { content: ""; position: absolute; inset:
 .car-row > div { flex: 1; min-width: 0; }
 .car-name { font-size: 17px; font-weight: 700; }
 
-/* controls */
-.say { display: flex; gap: 8px; }
-.say .input { flex: 1; }
-.icon-btn { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 12px; background: var(--tint); color: var(--brand); display: grid; place-items: center; }
-.icon-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.group { display: grid; gap: 8px; margin-top: 16px; }
-.cmsg { border-radius: 12px; padding: 12px 14px; background: var(--chip); font-size: 15px; display: grid; gap: 10px; margin-top: 12px; }
-.cmsg.ok { background: var(--ok-soft); color: var(--ok); }
-.cmsg.warn { background: var(--warn-soft); color: var(--warn); }
-.cmsg .actions { margin-top: 0; }
-ol.steps { padding-left: 22px; display: grid; gap: 6px; font-size: 15px; margin-top: 10px; }
-
 /* toast and sheet */
 #toast { position: fixed; left: 0; right: 0; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; z-index: 40; padding: 0 16px; pointer-events: none; }
 #toast .t { pointer-events: auto; background: var(--ink); color: #fff; border-radius: 12px; padding: 12px 16px; font-size: 14px; max-width: 560px; box-shadow: 0 8px 24px rgba(27,36,48,.25); cursor: pointer; opacity: 0; transform: translateY(8px); transition: opacity .18s, transform .18s; overflow-wrap: anywhere; }
@@ -191,19 +179,17 @@ ol.steps { padding-left: 22px; display: grid; gap: 6px; font-size: 15px; margin-
 const $ = (s, r) => (r || document).querySelector(s), app = $('#app');
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const TZ = 'America/Chicago', DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const TABS = [['trips', 'Trips'], ['vehicles', 'Cars'], ['commands', 'Controls'], ['settings', 'Settings']];
+const TABS = [['trips', 'Trips'], ['vehicles', 'Cars'], ['settings', 'Settings']];
 const PETALS = 'M33 22.2c0 0-4.6-3.6-4.6-11.1S33 0 33 0s4.6 3.6 4.6 11.1-4.6 11.1-4.6 11.1zm10-4.8c0 0-.7-1.8.6-4s3.2-2.5 3.2-2.5.7 1.8-.6 4-3.2 2.5-3.2 2.5zm6.8 7.5c0 0 .3-2.3 2.9-3.8s4.7-.6 4.7-.6-.3 2.3-2.9 3.8-4.7.6-4.7.6zm2 9.5c0 0 1.7-2.1 5.1-2.1s5.1 2.1 5.1 2.1-1.7 2.1-5.1 2.1-5.1-2.1-5.1-2.1zm-3.1 8.9c0 0 2.8-1.2 6.2.8s3.8 5.7 3.8 5.7-2.8 1.2-6.2-.8-3.8-5.7-3.8-5.7zm-6.9 5.8c0 0 3.3.5 5.5 4.2s.9 6.8.9 6.8-3.3-.5-5.5-4.2-.9-6.8-.9-6.8zM33 50.8c0 0 3 2.3 3 7.1S33 65 33 65s-3-2.3-3-7.1 3-7.1 3-7.1zm-8-2.8c0 0 1.6 3.8-1 8.3s-6.7 5-6.7 5-1.6-3.8 1-8.3 6.7-5 6.7-5zm-5.2-6.1c0 0-.6 4.5-5.5 7.3s-9.1 1.1-9.1 1.1.6-4.5 5.5-7.3 9.1-1.1 9.1-1.1zm-1.5-7.5c0 0-3 3.8-9.1 3.8S.2 34.4.2 34.4s3-3.8 9.1-3.8 9.1 3.8 9.1 3.8zm2.6-6.8c0 0-4.8 1.9-10.5-1.3S4 17.9 4 17.9s4.8-1.9 10.5 1.3 6.4 8.4 6.4 8.4zm5.5-4.4c0 0-5.5-.8-9-6.8S16 5.1 16 5.1s5.5.8 9 6.8 1.4 11.3 1.4 11.3z';
 const MARK = `<svg viewBox="0 0 100 100" aria-hidden="true"><clipPath id="mk"><circle cx="50" cy="50" r="50"/></clipPath><circle cx="50" cy="50" r="50" fill="#78BA89"/><circle cx="45" cy="45" r="47" fill="#40804F" clip-path="url(#mk)"/><g transform="translate(27 25) scale(0.74)"><path fill="#fff" d="${PETALS}"/></g></svg>`;
 const ICON = {
   trips: '<svg viewBox="0 0 24 24"><circle cx="5" cy="18" r="3"/><circle cx="19" cy="6" r="3"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></svg>',
   vehicles: '<svg viewBox="0 0 24 24"><path d="M3 12l2-5.5A2 2 0 0 1 6.9 5h10.2a2 2 0 0 1 1.9 1.5L21 12v6H3z"/><path d="M5 18v2M19 18v2M3 12h18"/><circle cx="7.5" cy="15" r="1.2"/><circle cx="16.5" cy="15" r="1.2"/></svg>',
-  commands: '<svg viewBox="0 0 24 24"><path d="M4 7h8M16 7h4M4 17h4M12 17h8"/><circle cx="14" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>',
   settings: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>',
-  mic: '<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>',
 };
 
-let S = null, CS = null, tab = hashTab(), open = null, biz = null, selecting = false, sel = [], showAll = false, pollResult = null, cmsg = null, cbusy = false, cvin = null, sheetIds = null, sending = false, adding = false, addBusy = false;
-const drafts = {}, ctl = { tf: 72, cl: 80, ca: 32, ct: '' };   // what is being typed survives a re-render
+let S = null, tab = hashTab(), open = null, biz = null, selecting = false, sel = [], showAll = false, pollResult = null, sheetIds = null, sending = false, adding = false, addBusy = false;
+const drafts = {};   // what is being typed survives a re-render
 const ntfySuggest = 'ovanova-moves-' + Math.random().toString(36).slice(2, 8);
 function hashTab() { const h = (location.hash || '').slice(1); return TABS.some(t => t[0] === h) ? h : 'trips'; }
 
@@ -274,7 +260,7 @@ function render() {
   const pending = (S.trips || []).filter(t => statusOf(t) === 'untagged').length;
   const tabs = $('#tabs'); tabs.hidden = false;
   tabs.innerHTML = TABS.map(([k, label]) => `<button class="tab ${k === tab ? 'on' : ''}" data-act="tab" data-tab="${k}" role="tab" aria-selected="${k === tab}">${ICON[k]}<span>${label}</span>${k === 'trips' && pending ? `<span class="badge">${pending}</span>` : ''}</button>`).join('');
-  app.innerHTML = `<h1>${TABS.find(t => t[0] === tab)[1]}</h1>` + ({ trips, vehicles, commands, settings })[tab]();
+  app.innerHTML = `<h1>${TABS.find(t => t[0] === tab)[1]}</h1>` + ({ trips, vehicles, settings })[tab]();
   if (open) { const el = $(`[data-trip="${CSS.escape(String(open))}"] .input`); if (el && document.activeElement !== el && !el.value) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } }
 }
 
@@ -402,47 +388,6 @@ function vehicles() {
   return h;
 }
 
-// ---- Controls
-function commands() {
-  if (!CS) { api('/api/commands').then(j => { CS = j; render(); }).catch(e => { if (e.status === 401) return signin(); CS = { error: e.message }; render(); }); return '<div class="empty"><div class="muted">Loading your cars…</div></div>'; }
-  if (CS.error) return `<div class="card"><span class="pill warn">${esc(CS.error)}</span></div>`;
-  const help = `<ol class="steps"><li><a href="${esc(CS.approveUrl)}">Approve command access</a> on Tesla's page (Vehicle Commands and Charging).</li><li>On your phone with the Tesla app, open <a href="${esc(CS.pairUrl)}">${esc(CS.pairUrl)}</a> and add the key to your car.</li></ol>`;
-  if (!CS.connected) return `<div class="card"><div class="title">Connect your Tesla first</div><div class="muted" style="margin-top:4px">On the Cars tab. Then:</div>${help}</div>`;
-  if (!CS.approved) return `<div class="card"><div class="title">Command access is not approved yet</div>${help}</div>`;
-  if (!CS.cars.length) return '<div class="empty"><div class="title">No cars</div><div class="muted">There are no cars on your Tesla account.</div></div>';
-  if (!cvin || !CS.cars.some(c => c.vin === cvin)) cvin = CS.cars[0].vin;
-  const B = (c, l) => `<button class="chip" ${cbusy ? 'disabled' : ''} data-act="cmd" data-cmd="${c}">${l}</button>`;
-  const N = (c, l, id, v, unit) => `<span class="chip wide"><input class="n" id="${id}" type="number" value="${esc(ctl[id] ?? v)}" inputmode="numeric" aria-label="${l}" data-ctl="${id}"><span class="small">${unit}</span><button class="link" ${cbusy ? 'disabled' : ''} data-act="cmdn" data-cmd="${c}" data-for="${id}">${l}</button></span>`;
-  let msg = '';
-  if (cmsg?.confirm) msg = `<div class="cmsg"><div><b>${esc(cmsg.confirm.label)} the car?</b> Anyone nearby could open it.</div><div class="actions"><button class="big" data-act="cmdCancel">Cancel</button><button class="big primary" data-act="cmdConfirm">${esc(cmsg.confirm.label)}</button></div></div>`;
-  else if (cmsg) msg = `<div class="cmsg ${cmsg.kind || ''}"><div>${esc(cmsg.text)}${cmsg.links ? ` · <a href="${esc(CS.approveUrl)}">Approve</a> · <a href="${esc(CS.pairUrl)}">Pair key</a>` : ''}</div></div>`;
-  const carPick = CS.cars.length === 1 ? `<div class="muted" id="cv-one">${esc(CS.cars[0].name)} · ${esc(CS.cars[0].state)}</div>` : CS.cars.length <= 3 ? `<div class="seg" id="cv-seg">${CS.cars.map(c => `<button class="${c.vin === cvin ? 'on' : ''}" data-act="car" data-vin="${esc(c.vin)}">${esc(c.name)} · ${esc(c.state)}</button>`).join('')}</div>`
-    : `<select class="input" id="cv" data-sel="cv">${CS.cars.map(c => `<option value="${esc(c.vin)}" ${c.vin === cvin ? 'selected' : ''}>${esc(c.name)} · ${esc(String(c.vin).slice(-6))} (${esc(c.state)})</option>`).join('')}</select>`;
-  return `<div class="card">${carPick}${msg}
-    <div class="group"><label class="label" for="ct">Say or type it</label><div class="say"><input class="input" id="ct" placeholder="set temp 72 · charge limit 80 · vent windows" autocomplete="off" value="${esc(ctl.ct)}" data-ctl="ct"><button class="icon-btn" id="mic" data-act="listen" aria-label="Speak a command" title="Speak">${ICON.mic}</button><button class="btn alt" ${cbusy ? 'disabled' : ''} data-act="cmdtext">Go</button></div></div>
-    <div class="group"><div class="label">Windows</div><div class="chips">${B('windows-vent', 'Vent')}${B('windows-close', 'Close')}</div></div>
-    <div class="group"><div class="label">Climate</div><div class="chips">${B('climate-on', 'On')}${B('climate-off', 'Off')}${N('set-temp', 'Set', 'tf', 72, '°F')}</div></div>
-    <div class="group"><div class="label">Charging</div><div class="chips">${B('charge-start', 'Start')}${B('charge-stop', 'Stop')}${N('charge-limit', 'Limit', 'cl', 80, '%')}${N('charge-amps', 'Amps', 'ca', 32, 'A')}</div></div>
-    <div class="group"><div class="label">Car</div><div class="chips">${B('lock', 'Lock')}${B('unlock', 'Unlock')}${B('honk', 'Honk')}${B('flash', 'Flash lights')}${B('wake', 'Wake')}</div></div>
-    <div class="small" style="margin-top:16px">Commands only work on cars in your own Tesla account. A sleeping car is woken first, which can take up to 30 seconds.</div></div>`;
-}
-async function sendCmd(o, confirmed) {
-  const vin = cvin; cbusy = true; cmsg = { text: 'Sending…' }; render();
-  try { const r = await api('/api/command', { vin, ...o, confirmed: !!confirmed });
-    cmsg = r.needsConfirm ? { confirm: { label: r.label, cmd: r.cmd, arg: r.arg } } : { kind: 'ok', text: r.done || 'Done' }; }
-  catch (e) { if (e.status === 401) return signin(); cmsg = { kind: 'warn', text: e.message, links: /approved|pair|key/i.test(e.message) }; }
-  cbusy = false; render();
-}
-function listen() {
-  const R = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!R) { cmsg = { kind: 'warn', text: 'Voice input is not supported in this browser. Try Chrome or Safari, or type the command.' }; return render(); }
-  const r = new R(); r.lang = 'en-US'; r.interimResults = false; $('#mic').style.background = 'var(--brand)'; $('#mic').style.color = '#fff';
-  r.onresult = e => { $('#ct').value = e.results[0][0].transcript; };
-  r.onend = () => { const m = $('#mic'); if (m) { m.style.background = ''; m.style.color = ''; } };
-  r.onerror = e => { cmsg = { kind: 'warn', text: 'Mic: ' + e.error }; render(); };
-  r.start();
-}
-
 // ---- Settings
 function settings() {
   const s = S.settings || {}, sugar = s.sugar || {}, ntfy = s.ntfy || {}, we = s.weekEnd || {};
@@ -490,23 +435,13 @@ document.addEventListener('click', e => {
   else if (a === 'confirmSend') confirmSend();
   else if (a === 'sendBatch') { if (settingsDirty()) toast('Save your settings first, then send.', true); else send((S.trips || []).filter(t => statusOf(t) === 'queued').map(t => t.id)); }
   else if (a === 'poll') act(async () => { const r = await api('/api/poll', {}); pollResult = r.states || r; return ''; });
-  else if (a === 'car') { cvin = el.dataset.vin; render(); }
-  else if (a === 'cmd') sendCmd({ cmd: el.dataset.cmd });
-  else if (a === 'cmdn') sendCmd({ cmd: el.dataset.cmd, arg: +$('#' + el.dataset.for).value });
-  else if (a === 'cmdtext') { const v = $('#ct').value.trim(); if (v) sendCmd({ text: v }); }
-  else if (a === 'cmdConfirm') { const c = cmsg?.confirm; if (c) sendCmd({ cmd: c.cmd, arg: c.arg }, true); }
-  else if (a === 'cmdCancel') { cmsg = { text: 'Cancelled' }; render(); }
-  else if (a === 'listen') listen();
   else if (a === 'saveSettings') saveSettings();
 });
-document.addEventListener('change', e => { if (e.target.dataset.sel === 'cv') cvin = e.target.value; });
 document.addEventListener('input', e => {
   if (e.target.id === 'pp') { const c = e.target.closest('[data-trip]'); if (c) drafts[c.dataset.trip] = e.target.value; }
-  if (e.target.dataset.ctl) ctl[e.target.dataset.ctl] = e.target.value;
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && sheetIds) closeSheet();
-  if (e.key === 'Enter' && e.target.id === 'ct' && !cbusy) { const v = e.target.value.trim(); if (v) sendCmd({ text: v }); }
   if (e.key === 'Enter' && e.target.id === 'mm') addManual();
   if ((e.key === ' ' || e.key === 'Enter') && e.target.dataset.act === 'sel') { e.preventDefault(); e.target.click(); }
 });
