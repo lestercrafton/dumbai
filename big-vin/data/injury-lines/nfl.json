@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-22T14:06:22.283Z",
+ "generatedAt": "2026-10-22T15:38:21.969Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -232,7 +232,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-22T13:00Z",
+     "reported": "2026-10-22T15:24Z",
      "weight": 1,
      "points": 0.3
     }
@@ -241,7 +241,7 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.06,
+   "loss": 0.25,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
@@ -253,10 +253,10 @@
      "position": "SLB",
      "player": "Jaelan Phillips",
      "espnId": "4242975",
-     "status": "Questionable",
+     "status": "Doubtful",
      "reported": "2026-10-21T23:38Z",
-     "weight": 0.25,
-     "points": 0.06
+     "weight": 1,
+     "points": 0.25
     }
    ],
    "notes": []
@@ -1093,7 +1093,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.27,
+   "loss": 0.14,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -1109,16 +1109,6 @@
      "reported": "2026-10-22T00:45Z",
      "weight": 0.25,
      "points": 0.06
-    },
-    {
-     "group": "cb",
-     "position": "RCB",
-     "player": "Quincy Riley",
-     "espnId": "4428350",
-     "status": "Questionable",
-     "reported": "2026-10-18T20:59Z",
-     "weight": 0.25,
-     "points": 0.13
     },
     {
      "group": "rg",
@@ -1208,7 +1198,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-22T13:00Z",
+     "reported": "2026-10-22T15:24Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1219,7 +1209,7 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.51,
+   "loss": 0.32,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -1251,10 +1241,10 @@
      "position": "SLB",
      "player": "Kiko Mauigoa",
      "espnId": "4700136",
-     "status": "Doubtful",
-     "reported": "2026-10-22T01:26Z",
-     "weight": 1,
-     "points": 0.25
+     "status": "Questionable",
+     "reported": "2026-10-22T15:00Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "lg",
@@ -1438,7 +1428,7 @@
   },
   "TB": {
    "team": "TB",
-   "loss": 1.45,
+   "loss": 1.23,
    "starter": {
     "name": "Baker Mayfield",
     "espnId": "3052587",
@@ -1509,10 +1499,10 @@
      "position": "FS",
      "player": "Antoine Winfield Jr.",
      "espnId": "4034790",
-     "status": "Doubtful",
+     "status": "Questionable",
      "reported": "2026-10-22T00:01Z",
-     "weight": 1,
-     "points": 0.3
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "rt",
