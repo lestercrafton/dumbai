@@ -180,4 +180,4 @@
 .vin-total-pick small{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:inherit;opacity:.75}
 .vin-total-pick>div:first-child>strong{font-size:22px}
 .vin-total-loss{border-color:#7d8973;background:#ffffff05}
-.vin-line-check{max-width:760px;margin:18px 0 0;font-size:14px;line-height:1.6;opacity:.85}
+.vin-line-check{max-width:760px;margin:28px 0 8px;font-size:14px;line-height:1.6;opacity:.85}
