@@ -24,3 +24,16 @@ if(import.meta.url===`file://${process.argv[1]}`){
  const g=nflGames(parse(text));
  for(const seasons of [[2021,2022],[2023,2024,2025]])console.log(seasons.join('+'),JSON.stringify(summarize(backtest(g,{seasons}))));
 }
+
+/** Walk-forward backtest for an ESPN-history sport: refit each Monday, test games in [start,end]. */
+export function backtestHistory(sport,games,{start,end,config}={}){
+ const test=games.filter(g=>g.date>=start&&g.date<=end&&Number.isFinite(g.total));
+ const week=d=>{const t=Date.parse(d+'T00:00:00Z');const dow=(new Date(t).getUTCDay()+6)%7;return new Date(t-dow*86400000).toISOString().slice(0,10);};
+ const byWeek=new Map();for(const g of test){const w=week(g.date);if(!byWeek.has(w))byWeek.set(w,[]);byWeek.get(w).push(g);}
+ const out=[];
+ for(const [w,wk] of [...byWeek].sort()){const m=fitTotals(games,{sport,asOf:w,config});
+  for(const g of wk){const p=projectTotal(g,m,{dome:g.dome&&['cfb','nfl'].includes(sport)});if(!p||p.sparse)continue;
+   const actual=g.homeScore+g.awayScore,pick=totalPick({sport,total:p.total,marketTotal:g.total});
+   out.push({actual,model:p.total,market:g.total,pick,result:gradeTotal(pick.side,g.total,actual)});}}
+ return out;
+}

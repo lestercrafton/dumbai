@@ -28,3 +28,13 @@ test('last pregame pick counts; bankroll is 2% of the day opening balance',()=>{
  assert.equal(picks.get('1').side,'under');
  const b=replay([...picks.values()],new Map([['1',{result:'win'}]]));assert.equal(b.bankroll,510);assert.equal(b.wins,1);
 });
+import {parseEvents} from '../scripts/totals-history.mjs';
+test('ESPN history keeps only completed games with scores',()=>{
+ const ev=(id,done)=>({id,date:'2026-01-10T01:00Z',competitions:[{status:{type:{completed:done}},neutralSite:true,competitors:[{homeAway:'home',score:'80',team:{id:'1'}},{homeAway:'away',score:'71',team:{id:'2'}}]}]});
+ const g=parseEvents({events:[ev('9',true),ev('8',false)]});
+ assert.equal(g.length,1);assert.equal(g[0].homeScore+g[0].awayScore,151);assert.equal(g[0].neutral,true);
+});
+test('basketball gap guard uses its own threshold',()=>{
+ assert.equal(totalPick({sport:'nba',total:228,marketTotal:221}).check,null);
+ assert.equal(totalPick({sport:'nba',total:232,marketTotal:221}).check.review,true);
+});

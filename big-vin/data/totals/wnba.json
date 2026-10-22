@@ -1,0 +1,48 @@
+{
+ "schema": "big-vin-totals/1",
+ "version": "bv-wnba-totals-v1",
+ "sport": "wnba",
+ "generatedAt": "2026-10-22T01:14:07.985Z",
+ "method": "WNBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
+ "record": {
+  "wins": 0,
+  "losses": 0,
+  "pushes": 0,
+  "pending": 0,
+  "bankroll": 500,
+  "bankrollStart": 500
+ },
+ "backtest": {
+  "seasons": "2025-05-16 to 2025-10-12",
+  "computedAt": "2026-10-22T01:14:07.985Z",
+  "games": 269,
+  "modelMae": 13.36,
+  "marketMae": 12.95,
+  "all": {
+   "picks": 269,
+   "wins": 129,
+   "losses": 140,
+   "hitRate": 0.48
+  },
+  "edge2plus": {
+   "picks": 150,
+   "wins": 68,
+   "losses": 82,
+   "hitRate": 0.453
+  },
+  "edge3plus": {
+   "picks": 100,
+   "wins": 48,
+   "losses": 52,
+   "hitRate": 0.48
+  },
+  "reviewed": {
+   "picks": 15,
+   "wins": 9,
+   "losses": 6,
+   "hitRate": 0.6
+  }
+ },
+ "warnings": [],
+ "games": {}
+}

@@ -61,8 +61,8 @@ export async function scoreboard(sport:string,startDate:string,endDate=startDate
 }
 /** Over/under experiment summary, built hourly on GitHub Actions; separate from the spread record. */
 export async function totalsTable(sport:string){
- if(sport!=='nfl')return null;
- try{return await cached<any>('totals:'+sport,600,async()=>{const r=await fetch('https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/totals/nfl.json',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Totals table returned ${r.status}`);return r.json();});}
+ if(!['nfl','cfb','nba','wnba','cbb'].includes(sport))return null;
+ try{return await cached<any>('totals:'+sport,600,async()=>{const r=await fetch(`https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/totals/${sport}.json`,{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Totals table returned ${r.status}`);return r.json();});}
  catch(e){console.error('Totals table unavailable',e);return null;}
 }
 /** Injury table built on GitHub Actions; a missing table means no adjustment, never an error. */
