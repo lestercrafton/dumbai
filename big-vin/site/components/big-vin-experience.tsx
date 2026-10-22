@@ -171,15 +171,26 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
   })}</div>;
 }
 
+const LINE_CHECK_URL='https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/regression/spread.json';
+function LineCheck(){
+  const [check,setCheck]=useState<any>(null);
+  useEffect(()=>{let live=true;fetch(LINE_CHECK_URL).then(r=>r.ok?r.json():null).then(data=>{if(live)setCheck(data);}).catch(()=>{});return()=>{live=false;};},[]);
+  const all=check?.all;
+  if(!all?.ready)return null;
+  const verdict=all.addsInformation?'Our line adds information the market line does not have.':all.hurts?'Our line is pulling the wrong way compared with the market.':'Not enough evidence yet that our line adds anything beyond the market.';
+  return <p className="vin-line-check"><strong>Weekly line check.</strong> {verdict} On {all.games} graded picks, each point our line differs from Vegas moved the final score {all.ourExtraWeight.toFixed(2)} points our way (give or take {all.standardError.toFixed(2)}). Updated {new Date(check.updatedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'America/New_York'})}.</p>;
+}
+
 export function ModelSection() {
   return <section id="method" className="vin-section vin-method" aria-labelledby="model-title">
     <div className="vin-section-heading"><div><p className="vin-kicker">01 / THE THINKING</p><h2 id="model-title">No black box.<br/>Just a different line.</h2></div><p>We turn game results into a fair spread, then measure where our number and the market part ways.</p></div>
     <ol className="vin-process">
       <li><span className="vin-process-number">01</span><Database size={25}/><h3>Start with the games.</h3><p>Schedules, final scores and available sportsbook lines from ESPN’s public scoreboards. NFL history from nflverse.</p><span className="vin-source-tag">ESPN + NFLVERSE</span></li>
       <li><span className="vin-process-number">02</span><Scale size={25}/><h3>Build our own line.</h3><p>Opponent-adjusted ratings weigh recent results, account for home field and add rest for the NFL. Thin histories are pulled toward average.</p><span className="vin-source-tag">BIG VIN RATINGS</span></li>
-      <li><span className="vin-process-number">03</span><TrendingUp size={25}/><h3>Find the difference.</h3><p>Compare the fair spread with the available Vegas line. The gap ranks each sport’s card in its own units: points, runs or goals. Update the pick before kickoff, then lock its recorded price for the results.</p><span className="vin-source-tag">EDGE, NOT PROBABILITY</span></li>
+      <li><span className="vin-process-number">03</span><TrendingUp size={25}/><h3>Find the difference.</h3><p>Compare the fair spread with the available Vegas line. Each sport’s card is ranked by our estimated chance the pick wins. Update the pick before kickoff, then lock its recorded price for the results.</p><span className="vin-source-tag">RANKED BY CHANCE TO WIN</span></li>
     </ol>
     <div className="vin-equation"><span>Vegas line</span><b aria-hidden="true">−</b><span>Our fair line</span><b aria-hidden="true">=</b><strong>The edge.</strong><small>For the selected team · points / runs / goals</small></div>
+    <LineCheck/>
     <details className="vin-method-details"><summary>The sources, the limits, the honest benchmark <ChevronDown size={17}/></summary><div>
       <p>The live model uses opponent-adjusted ridge regression, recency weighting, home advantage and NFL rest. It does not currently include injuries, quarterbacks, pitchers, goalies or weather. The original Sagarin, White Owl, Golden Mean and Momentum blend inspired the workflow; those proprietary inputs are not today’s live feeds.</p>
       <p>On 855 held-out NFL games from 2023–25, mean absolute error was {research.test.same_games_with_market.candidate.mae.toFixed(2)} points for Big Vin versus {research.test.same_games_with_market.market.mae.toFixed(2)} for the market. Lower is better. That test does not establish an advantage over Vegas. Later tuning is tracked separately in the learning log.</p>

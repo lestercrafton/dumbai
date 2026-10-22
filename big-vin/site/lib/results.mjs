@@ -15,6 +15,13 @@ export function reportingWeek(game){
 }
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
 const easternDay=value=>{const parts=EASTERN_US.formatToParts(new Date(value));return ['year','month','day'].map(type=>parts.find(p=>p.type===type).value).join('-');};
+// ESPN's public scoreboard keeps the last pregame (closing) spread on a finished
+// game. Save it with new grades only when it is a real book line.
+function closingLine(f,game){
+ const q=game.market,spread=q?.homeSpread;
+ if(!finite(spread)||!q.provider||q.timing==='archived-opening')return {};
+ return {closingHomeSpread:spread,closingProvider:q.provider};
+}
 export function gradeForecast(f,game,observedAt=new Date().toISOString()){
  if(game.startTime&&Date.parse(game.startTime)>Date.parse(observedAt))return null;
  // A postponed MLB event is not the separately forecast makeup game. Release
@@ -29,7 +36,7 @@ export function gradeForecast(f,game,observedAt=new Date().toISOString()){
  const pnl=!priced||cover===null?null:outcome==='push'?0:outcome==='loss'?-1:f.odds>0?f.odds/100:100/-f.odds;
  // Preserve the frozen pregame schedule; settlement follows the verified day played.
  const playedAt=f.sport==='mlb'&&game.startTime&&f.startTime&&easternDay(game.startTime)!==easternDay(f.startTime)?game.startTime:null;
- return {status:'completed',homeScore:game.homeScore,awayScore:game.awayScore,actualMargin,residual,absoluteError:residual===null?null:Math.abs(residual),marketAbsoluteError:finite(f.marketHomeSpread)?Math.abs(actualMargin+f.marketHomeSpread):null,outcome,pnl,observedAt,sourceUrl:game.sourceUrl,...(playedAt?{playedAt}:{}),...(f.pickRevision?{pickRevisionId:f.pickRevision.id,pickRecordedAt:f.pickRevision.recordedAt,pickLockedAt:f.pickLock.lockAt}:{}),...(f.firstMarket?{marketObservation:{forecastId:f.id,observedAt:f.firstMarket.observedAt,recordedAt:f.firstMarket.recordedAt,protocol:f.firstMarket.protocol}}:{})};
+ return {status:'completed',homeScore:game.homeScore,awayScore:game.awayScore,actualMargin,residual,absoluteError:residual===null?null:Math.abs(residual),marketAbsoluteError:finite(f.marketHomeSpread)?Math.abs(actualMargin+f.marketHomeSpread):null,outcome,pnl,observedAt,sourceUrl:game.sourceUrl,...(playedAt?{playedAt}:{}),...(closingLine(f,game)),...(f.pickRevision?{pickRevisionId:f.pickRevision.id,pickRecordedAt:f.pickRevision.recordedAt,pickLockedAt:f.pickLock.lockAt}:{}),...(f.firstMarket?{marketObservation:{forecastId:f.id,observedAt:f.firstMarket.observedAt,recordedAt:f.firstMarket.recordedAt,protocol:f.firstMarket.protocol}}:{})};
 }
 export function summarizeForecasts(records){
  const finals=records.filter(f=>f.result?.status==='completed');

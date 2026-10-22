@@ -1,5 +1,5 @@
 /** Board ordering and conference filtering. Rank numbers are assigned by the
- * server from model-market difference and never change with these views;
+  * server from the model chance to win and never change with these views;
  * sorting only changes the order games are listed in. */
 const startMs = (g) => {
   const ms = Date.parse(g.startTime || '');
