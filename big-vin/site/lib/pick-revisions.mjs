@@ -95,5 +95,5 @@ export function currentBoardPick(game,now=Date.now()){
 }
 export function expireBoardPick(game,now=Date.now()){
  return game.status==='scheduled'&&game.actionable!==undefined&&!currentBoardPick(game,now)
-  ?{...game,actionable:false,stale:true,rank:null,rankReason:'Current pregame quote unavailable'}:game;
+  ?{...game,actionable:false,stale:true}:game; // keep the server's rank number; only the live pick expires
 }

@@ -93,6 +93,6 @@ test('locked revision grades and totals agree; original Top-N ranks do not chang
  const board=row(current,game);board.rank=1;board.actionable=true;
  assert.equal(featuredGame([{sport:'cfb',games:[board]}],Date.parse(t))?.side,current.side);
  assert.equal(currentBoardPick(board,Date.parse(t)+1800001),false);
- assert.equal(expireBoardPick(board,Date.parse(t)+1800001).rank,null);
+ {const expired=expireBoardPick(board,Date.parse(t)+1800001);assert.equal(expired.rank,board.rank);assert.equal(expired.actionable,false);}
  assert.equal(featuredGame([{sport:'cfb',games:[board]}],Date.parse(t)+1800001),null);
 });
