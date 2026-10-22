@@ -1,6 +1,7 @@
 'use client';
 
 import {useCallback, useEffect, useState} from 'react';
+import {BUILD} from '@/lib/build-info';
 import {ArrowDown, ArrowRight, ArrowUpRight, ChevronDown, Database, Radio, RefreshCw, Scale, TrendingUp} from 'lucide-react';
 import {DonateButton} from '@/components/donate-button';
 import {VersionBadge} from '@/components/version-badge';
@@ -56,6 +57,15 @@ export function TodayHero({readSlate, onOpenGame, refreshKey = 0}: {readSlate: (
     return {slates, partial: results.some(result => result.status === 'rejected') || slates.some(slate => slate.partialLiveCoverage || slate.offlineSnapshot)};
   }, [readSlate, today]);
   const {data, busy, error, load} = useRefreshingResource<{slates: Row[]; partial: boolean}>('featured:' + today, read);
+  // A tab left open across a deploy keeps its old code; reload once the site reports a newer build.
+  useEffect(() => {
+    if (BUILD === 'dev') return;
+    const check = () => {void fetch('/api/build', {cache: 'no-store'}).then(r => r.ok ? r.json() : null).then((v: any) => {if (v?.build && v.build !== BUILD) location.reload();}).catch(() => {});};
+    const onVisible = () => {if (document.visibilityState === 'visible') check();};
+    const timer = setInterval(check, 5 * 60 * 1000);
+    document.addEventListener('visibilitychange', onVisible);window.addEventListener('focus', check);check();
+    return () => {clearInterval(timer);document.removeEventListener('visibilitychange', onVisible);window.removeEventListener('focus', check);};
+  }, []);
   useEffect(() => {if (refreshKey > 0) void load();}, [refreshKey, load]);
   useEffect(() => {
     const check = () => {if (document.visibilityState === 'visible') {setToday(centralDay()!); void load();}};
@@ -195,5 +205,5 @@ export function SupportSection() {
 }
 
 export function SiteFooter() {
-  return <footer className="vin-footer"><div><a className="vin-footer-brand" href="#top">BIG VIN<span>↗</span></a><p>Independent thinking. Visible assumptions. Honest results.</p></div><p className="vin-risk">An experimental research project, not financial or betting advice. An edge measures disagreement, not a guaranteed return. Past and simulated results don’t predict future performance. Never risk money you can’t afford to lose.</p><span>BUILT FROM THE SHEETS.<br/>ALWAYS LEARNING.</span></footer>;
+  return <footer className="vin-footer"><div><a className="vin-footer-brand" href="#top">BIG VIN<span>↗</span></a><p>Independent thinking. Visible assumptions. Honest results.</p></div><p className="vin-risk">An experimental research project, not financial or betting advice. An edge measures disagreement, not a guaranteed return. Past and simulated results don’t predict future performance. Never risk money you can’t afford to lose.</p><span>BUILT FROM THE SHEETS.<br/>ALWAYS LEARNING.<br/><small className="vin-build">Build {BUILD}</small></span></footer>;
 }

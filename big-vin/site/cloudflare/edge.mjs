@@ -50,4 +50,12 @@ async function route(request,env,ctx){
   const notFoundPage=request.method==='GET'&&response.status===404&&!routerRequest(request)&&!new URL(request.url).pathname.startsWith('/api/')&&(response.headers.get('content-type')||'').startsWith('text/html')&&!response.headers.has('set-cookie');
   return withEdge(response,notFoundPage?EDGE_NOT_FOUND:EDGE_NO_STORE);
 }
-export default {fetch:route};
+// Browsers must revalidate HTML every visit so a deploy is picked up on the next load.
+async function fetchWithBrowserPolicy(request,env,ctx){
+ const response=await route(request,env,ctx);
+ const type=response.headers.get('content-type')||'';
+ if(!type.startsWith('text/html')||response.headers.has('cache-control'))return response;
+ try{response.headers.set('cache-control','no-cache');return response;}
+ catch{const copy=new Response(response.body,response);copy.headers.set('cache-control','no-cache');return copy;}
+}
+export default {fetch:fetchWithBrowserPolicy};

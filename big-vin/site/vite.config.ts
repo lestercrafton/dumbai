@@ -2,6 +2,7 @@ import { sites } from '@openai/sites-vite-plugin';
 import tailwindcss from '@tailwindcss/postcss';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
+import { execSync } from 'node:child_process';
 import hostingConfig from './.openai/hosting.json';
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
@@ -44,7 +45,11 @@ export default defineConfig(async () => {
   // Wrangler snapshots its log path while the Cloudflare plugin is imported.
   const { cloudflare } = await import('@cloudflare/vite-plugin');
 
+  // Build marker: shown in the page and checked by open tabs so they reload after a deploy.
+  const sha=(() => { try { return execSync('git rev-parse --short HEAD').toString().trim(); } catch { return 'local'; } })();
+  const build = `${sha}-${new Date().toISOString().slice(0,16).replace(/[-:T]/g,'')}`;
   return {
+    define: { __BV_BUILD__: JSON.stringify(build) },
     css: { postcss: { plugins: [tailwindcss()] } },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }

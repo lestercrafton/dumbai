@@ -5,6 +5,7 @@ import './big-vin.css';
 import './fiji-theme.css';
 import './playbook.css';
 import TopLinks from '@/components/top-links';
+import {BUILD} from '@/lib/build-info';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,6 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://big-vin.sitetime.workers.dev'),
+  other: {'big-vin-build': BUILD},
   title: 'Big Vin | Grind to Win',
   description: 'Big Vin — independent sports lines, start-time and team search, live scores, ranked edges and visible results. Grind to Win.',
   icons: {
@@ -49,7 +51,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+       data-build={BUILD}>
         <TopLinks />
         {children}
       </body>
