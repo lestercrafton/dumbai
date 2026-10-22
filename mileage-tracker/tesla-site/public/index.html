@@ -326,7 +326,7 @@ function manualCard() {
   return `<div class="card"><div class="title">Add a trip by hand</div><div class="muted" style="margin-top:2px">A business drive the car did not record. You pick ${esc(batchName())} or Send now next.</div>
     <div class="grid3" style="margin-top:12px"><div class="field"><label class="label" for="md">Date</label><input class="input" id="md" type="date" value="${today}" max="${today}"></div>
     <div class="field"><label class="label" for="mm">Miles</label><input class="input" id="mm" type="number" step="0.1" min="0.1" inputmode="decimal" placeholder="0.0"></div>
-    <div class="field"><label class="label" for="mp">Purpose or route</label><input class="input" id="mp" placeholder="e.g. Jackson supply run"></div></div>
+    <div class="field"><label class="label" for="mp">Purpose or route (optional)</label><input class="input" id="mp" placeholder="e.g. Jackson supply run"></div></div>
     <div class="actions"><button class="big" data-act="adding">Cancel</button><button class="big primary" data-act="manual">Add trip</button></div></div>`;
 }
 const purposeTyped = () => { const el = $('#pp'); return el ? el.value.trim() : null; };
