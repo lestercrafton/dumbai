@@ -293,3 +293,14 @@ test('recipient rules: Ovanova accounts stay on @ovanova.co, others have no defa
   await svc.setRecipient(RYAN, { to: 'books@kellow.com' }); const r = await svc.sendBatch(RYAN);
   assert.equal(r.to, 'books@kellow.com'); assert.equal(sent[0].to, 'books@kellow.com'); assert.match(sent[0].text, /^Hello,/);
 });
+
+test('notes are optional: no purpose never blocks tag, batch, send, manual or Send now, and the email falls back to "Business"', async () => {
+  const { svc, sent } = setup(); await withCars(svc);
+  const r = await svc.receive(LESTER, [trip({ clientId: 'n1', purpose: '', action: 'send' }), trip({ clientId: 'n2', purpose: undefined, action: 'batch' })]);
+  assert.equal(r.results[0].status, 'sent'); assert.equal(sent.length, 1);
+  assert.match(sent[0].subject, /Business Trip/); assert.match(sent[0].text, /\| Business \|/); assert.doesNotMatch(sent[0].text + sent[0].subject, /undefined|null/);
+  const m = await svc.addManual(LESTER, { date: '2026-10-20', miles: 7, purpose: '', vehicleId: 'f150' });
+  await svc.tag(LESTER, m.id, 'business'); await svc.queue(LESTER, [m.id]);
+  const b = await svc.sendBatch(LESTER); assert.equal(b.count, 2);
+  assert.doesNotMatch(sent[1].text + sent[1].subject, /undefined|null/);
+});
