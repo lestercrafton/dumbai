@@ -31,9 +31,35 @@ export function livePickStatus(game = {}, options = {}) {
   const margin = selectedScore - opponentScore + lines.marketLine;
   const coverMargin = Math.abs(margin) < 1e-9 ? 0 : margin;
   const state = coverMargin > 0 ? 'covering' : coverMargin < 0 ? 'not-covering' : 'push';
+  const moneyline = row.sport === 'mlb' && lines.marketLine === 0;
+  const need = Math.floor(-coverMargin) + 1;
   return {...base, state,
-    label:state === 'covering' ? `Covering by ${coverMargin.toFixed(1)}`
-      : state === 'not-covering' ? `Needs ${(Math.floor(-coverMargin) + 1).toFixed(1)} to Cover` : 'Currently a push',
+    label:moneyline ? (state === 'covering' ? `Winning by ${coverMargin}` : state === 'not-covering' ? `Needs ${need} to win` : 'Tied')
+      : state === 'covering' ? `Covering by ${coverMargin.toFixed(1)}`
+      : state === 'not-covering' ? `Needs ${need.toFixed(1)} to Cover` : 'Currently a push',
     isWinning:state === 'covering', tone:state === 'covering' ? 'winning' : 'neutral',
     provisional:true, coverMargin, reason:null};
+}
+
+/** Live status of the saved total pick against its market total. */
+export function liveTotalStatus(game = {}, options = {}) {
+  const row = game && typeof game === 'object' ? game : {};
+  const pick = row.overUnder;
+  const score = liveScorePresentation(row, options);
+  const none = {state:'unavailable', label:null, isWinning:false, provisional:false};
+  if (!pick?.side || pick.result || !finite(pick.marketTotal) || score.kind !== 'live'
+    || !score.completeScore || score.freshness !== 'live') return none;
+  const total = score.homeScore + score.awayScore;
+  const diff = pick.side === 'over' ? total - pick.marketTotal : pick.marketTotal - total;
+  const word = pick.side === 'over' ? 'Over' : 'Under';
+  if (pick.side === 'under') {
+    const room = diff;
+    return {state:room > 0 ? 'covering' : room < 0 ? 'not-covering' : 'push',
+      label:room > 0 ? `Under by ${room.toFixed(1)}` : room < 0 ? `Over by ${(-room).toFixed(1)}` : 'At the total',
+      isWinning:room > 0, provisional:true};
+  }
+  const need = Math.floor(-diff) + 1;
+  return {state:diff > 0 ? 'covering' : diff < 0 ? 'not-covering' : 'push',
+    label:diff > 0 ? `${word} by ${diff.toFixed(1)}` : diff < 0 ? `Needs ${need} more` : 'At the total',
+    isWinning:diff > 0, provisional:true};
 }

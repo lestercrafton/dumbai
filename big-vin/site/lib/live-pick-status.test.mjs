@@ -159,3 +159,16 @@ test('the displayed ATS recommendation wins over model projected outright winner
   // Undefined side may use the same recommendation that displayLines renders.
   assert.equal(status({side:undefined,predictedMargin:2,marketHomeSpread:-4,liveHomeScore:20,liveAwayScore:17}).side,'away');
 });
+
+test('live moneyline and total status labels', async () => {
+  const {livePickStatus, liveTotalStatus} = await import('./live-pick-status.mjs');
+  const now = Date.parse('2026-10-22T20:00:00Z'), t = '2026-10-22T19:59:00Z';
+  const g = {sport:'mlb', status:'live', side:'home', marketHomeSpread:0, edge:1, predictedMargin:1, liveHomeScore:3, liveAwayScore:1, scoreObservedAt:t,
+    overUnder:{side:'over', marketTotal:8.5}};
+  assert.equal(liveTotalStatus(g,{now}).label, 'Needs 5 more');
+  assert.equal(liveTotalStatus({...g, liveHomeScore:9},{now}).label, 'Over by 1.5');
+  assert.equal(liveTotalStatus({...g, overUnder:{side:'under', marketTotal:8.5}},{now}).label, 'Under by 4.5');
+  assert.equal(liveTotalStatus({...g, scoreObservedAt:'2026-10-22T19:00:00Z'},{now}).provisional, false);
+  const ml = livePickStatus(g,{now});
+  if (ml.provisional) assert.equal(ml.label, 'Winning by 2');
+});

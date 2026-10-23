@@ -1,5 +1,5 @@
 // Big Vin browser transport; existing one-day and week requests stay intact.
-import {scoreboardUrl,scoreboardUrls,isThreeDayScoreboardWindow,scoreboardPayloadLimited} from '@/lib/feeds/adapter.mjs';
+import {scoreboardUrl,scoreboardUrls,isThreeDayScoreboardWindow,scoreboardPayloadLimited,normalizeScoreboard} from '@/lib/feeds/adapter.mjs';
 type Row=Record<string,any>;
 export async function api(url:string,options?:RequestInit){const r=await fetch(url,options);const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
 const browserCache=new Map<string,{time:number,payload:any}>();
@@ -37,7 +37,24 @@ export async function fetchSlate(sport:string,date:string,days=1){
  const endDate=new Date(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*86400000).toISOString().slice(0,10);
  // Server observations can persist the current pregame pick before returning
  // it. Browser feeds are a read-only fallback and cannot revise the ledger.
- try{return await api(`/api/slate?sport=${sport}&date=${date}&days=${days}`);}
+ try{return await withLiveScores(sport,date,endDate,await api(`/api/slate?sport=${sport}&date=${date}&days=${days}`));}
  catch{return api('/api/slate',JsonCall({sport,date,days,payload:await browserBoard(sport,date,endDate)}));}
 }
 export function JsonCall(body:Row,method='POST'){return {method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};}
+
+const LIVE_FIELDS=['status','statusDescription','statusName','statusDetail','statusShortDetail','period','clock','scoreObservedAt','outs','isTopInning','liveHomeScore','liveAwayScore'];
+// The server slate is a cached render, so its live scores age past the
+// freshness window between renders. Overlay scores read directly from the
+// scoreboard for games that have started and are not final yet.
+export async function withLiveScores(sport:string,date:string,endDate:string,slate:any){
+ const games:Row[]=Array.isArray(slate?.games)?slate.games:[];
+ const now=Date.now();
+ const active=games.some(g=>!g.completed&&!g.result?.status&&(g.status==='live'||(Date.parse(g.startTime)<=now&&now-Date.parse(g.startTime)<8*3600000)));
+ if(!active)return slate;
+ try{
+  const fresh=normalizeScoreboard(await browserBoard(sport,date,endDate),sport,{retrievedAt:new Date().toISOString()}).games as Row[];
+  const byId=new Map(fresh.map(g=>[String(g.id),g]));
+  return {...slate,games:games.map(g=>{const f=byId.get(String(g.id));if(!f||g.completed||g.result?.status||f.status!=='live')return g;
+   return {...g,...Object.fromEntries(LIVE_FIELDS.map(k=>[k,f[k]]))};})};
+ }catch{return slate;}
+}
