@@ -32,3 +32,4 @@
 {"type":"refresh","id":"refresh:wnba:2026-10-23T07:56:30.417Z","at":"2026-10-23T07:56:30.417Z","sport":"wnba","gameIds":["401918308"],"source":"https://big-vin.lestercrafton.workers.dev/api/slate?sport=wnba"}
 {"type":"refresh","id":"refresh:wnba:2026-10-23T13:48:46.975Z","at":"2026-10-23T13:48:46.975Z","sport":"wnba","gameIds":["401918308"],"source":"https://big-vin.lestercrafton.workers.dev/api/slate?sport=wnba"}
 {"type":"refresh","id":"refresh:wnba:2026-10-23T17:14:59.775Z","at":"2026-10-23T17:14:59.775Z","sport":"wnba","gameIds":["401918308"],"source":"https://big-vin.lestercrafton.workers.dev/api/slate?sport=wnba"}
+{"type":"refresh","id":"refresh:wnba:2026-10-23T18:43:04.510Z","at":"2026-10-23T18:43:04.510Z","sport":"wnba","gameIds":["401918308"],"source":"https://big-vin.lestercrafton.workers.dev/api/slate?sport=wnba"}
