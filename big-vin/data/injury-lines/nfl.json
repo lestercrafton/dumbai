@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-23T01:54:49.304Z",
+ "generatedAt": "2026-10-23T07:56:15.262Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -242,7 +242,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-23T01:00Z",
+     "reported": "2026-10-23T07:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -576,7 +576,7 @@
      "player": "Aaron Banks",
      "espnId": "4242390",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-23T01:56Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -934,7 +934,7 @@
      "player": "Christian Darrisaw",
      "espnId": "4361985",
      "status": "Questionable",
-     "reported": "2026-10-13T17:10Z",
+     "reported": "2026-10-23T01:56Z",
      "weight": 0.25,
      "points": 0.15
     }
@@ -1070,7 +1070,7 @@
      "player": "Andrew Thomas",
      "espnId": "4259566",
      "status": "Questionable",
-     "reported": "2026-10-21T20:15Z",
+     "reported": "2026-10-23T01:49Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -1080,7 +1080,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-23T01:00Z",
+     "reported": "2026-10-23T07:00Z",
      "weight": 0.25,
      "points": 0.1
     }
