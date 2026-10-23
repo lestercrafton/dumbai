@@ -28,7 +28,7 @@ function RecordCard({title,caption,summary,loading,error}:{title:string;caption:
   <span className={styles.scoreLabel}>Profit per $1 risked</span>
   <b className={styles.score}>{available&&summary.winRate!==null?`${(summary.winRate*100).toFixed(1)}% won`:'—'}</b>
   <span className={styles.scoreLabel}>{available?`${summary.wins}–${summary.losses}–${summary.pushes} win · loss · push`:'Win · Loss · Push'}{available&&summary.decided?` · break-even ${(summary.breakEvenSum!/summary.decided*100).toFixed(1)}%`:''}</span>
-  {available&&meter!==null&&<p className={styles.meter} title="Starts at 1×. Reaching 20× means luck alone is less than a 5% explanation.">Truth meter <b>{meter<10?meter.toFixed(1):Math.round(meter)}×</b> of 20× proof</p>}
+  {available&&meter!==null&&<div className={styles.meter}>Truth meter <b>{meter<10?meter.toFixed(1):Math.round(meter)}×</b> of 20× proof <details className={styles.what}><summary>What’s this?</summary><p>It’s a running bet against luck that starts at 1×. It rises when picks win more often than break-even would predict and falls when they don’t. At 20×, luck alone is less than a 5% explanation.</p></details></div>}
   {available&&!!summary.clvCount&&<p className={styles.status}>Line moved our way {(summary.clvSum!/summary.clvCount>0?'+':'')+(summary.clvSum!/summary.clvCount).toFixed(1)} points on average by kickoff ({summary.clvCount} picks)</p>}
   <p className={styles.status}>{available?`${summary.graded} graded · ${summary.recorded} saved`:error?'Unavailable':loading?'Loading…':'Unavailable'}</p>
   {available&&!!summary.pending&&<p className={styles.status}>{summary.pending} pending</p>}

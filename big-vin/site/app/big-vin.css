@@ -183,4 +183,4 @@
 .vin-line-check{max-width:760px;margin:28px 0 8px;font-size:14px;line-height:1.6;opacity:.85}
 .vin-rank-basis{font-size:11px;letter-spacing:0;opacity:.6;font-weight:400}
 .vin-ml-price{display:block;margin-top:4px;font-size:11px;letter-spacing:0;color:var(--fiji-secondary,#acb3a7);font-variant-numeric:tabular-nums}
-.vin-live-total{display:block;font-weight:600;font-size:12px;margin-top:4px}.vin-live-total-covering{color:var(--primary)}.vin-live-total-not-covering{color:#efd477}
+.vin-live-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 20px}.vin-live-box{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid #555b53;border-radius:8px;background:#ffffff03}.vin-live-box>strong{font-size:18px}.vin-live-box>span:last-child{font-size:11px;opacity:.75}.vin-live-box-covering{background:#c9ef7514;border-color:#879e59}.vin-live-box-covering>strong{color:var(--primary)}.vin-live-box-not-covering{background:#efd4770f;border-color:#a8954f}.vin-live-box-not-covering>strong{color:#efd477}@media(max-width:520px){.vin-live-split{gap:8px;margin:0 14px 16px}.vin-live-box{padding:10px}.vin-live-box>strong{font-size:15px}}
