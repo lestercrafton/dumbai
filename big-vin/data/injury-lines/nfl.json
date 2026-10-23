@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-23T07:56:15.262Z",
+ "generatedAt": "2026-10-23T13:48:29.417Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -242,7 +242,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-23T07:00Z",
+     "reported": "2026-10-23T13:23Z",
      "weight": 1,
      "points": 0.3
     }
@@ -850,7 +850,7 @@
      "player": "Puka Nacua",
      "espnId": "4426515",
      "status": "Questionable",
-     "reported": "2026-10-22T22:21Z",
+     "reported": "2026-10-23T12:48Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -985,7 +985,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.14,
+   "loss": 0.16,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -993,14 +993,14 @@
    },
    "items": [
     {
-     "group": "lb",
-     "position": "LILB",
-     "player": "Kaden Elliss",
-     "espnId": "3124890",
+     "group": "dt",
+     "position": "NT",
+     "player": "Nathan Shepherd",
+     "espnId": "4076951",
      "status": "Questionable",
-     "reported": "2026-10-22T00:45Z",
+     "reported": "2026-10-23T13:37Z",
      "weight": 0.25,
-     "points": 0.06
+     "points": 0.08
     },
     {
      "group": "rg",
@@ -1080,7 +1080,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-23T07:00Z",
+     "reported": "2026-10-23T13:23Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1254,34 +1254,13 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0.12,
+   "loss": 0,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "lb",
-     "position": "WLB",
-     "player": "T.J. Watt",
-     "espnId": "3045282",
-     "status": "Questionable",
-     "reported": "2026-10-22T21:40Z",
-     "weight": 0.25,
-     "points": 0.06
-    },
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Alex Highsmith",
-     "espnId": "4037333",
-     "status": "Questionable",
-     "reported": "2026-10-21T21:34Z",
-     "weight": 0.25,
-     "points": 0.06
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "SF": {
