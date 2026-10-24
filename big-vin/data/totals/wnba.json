@@ -2,7 +2,7 @@
  "schema": "big-vin-totals/1",
  "version": "bv-wnba-totals-v1",
  "sport": "wnba",
- "generatedAt": "2026-10-24T06:26:53.782Z",
+ "generatedAt": "2026-10-24T11:35:34.023Z",
  "method": "WNBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 0,
