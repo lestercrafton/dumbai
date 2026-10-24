@@ -233,9 +233,23 @@
 .bk-th:hover{opacity:1;color:#6b2f86}
 
 
-/* Bankroll nav pills — larger and higher contrast than plain header links */
+/* Bankroll nav pills — white on solid purple, same readability as Boost */
 .vin-nav-bankrolls{display:inline-flex;align-items:center;gap:8px;margin-left:6px}
-.vin-nav-bankroll{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:750;letter-spacing:.02em;line-height:1;background:var(--primary);color:#142010;text-decoration:none;border:1.5px solid var(--primary);box-shadow:0 0 0 1px #14201022}
-.vin-nav-bankroll:hover{color:#142010;filter:brightness(1.06);transform:translateY(-1px)}
-.vin-nav-bankroll-mine{background:#1a2214;color:var(--primary);border-color:var(--primary)}
-.vin-nav-bankroll-mine:hover{background:#24301c;color:#e8ffc4;filter:none}
+.vin-header nav .vin-nav-bankroll,
+.vin-header nav .vin-nav-bankroll-mine,
+a.vin-nav-bankroll,
+a.vin-nav-bankroll-mine{
+  display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 14px;border-radius:999px;
+  font-size:13px;font-weight:750;letter-spacing:.02em;line-height:1;text-decoration:none;
+  background:#6b218a;border:1px solid #6b218a;color:#fff!important;
+  box-shadow:0 4px 14px #52097533;
+}
+.vin-header nav .vin-nav-bankroll:hover,
+.vin-header nav .vin-nav-bankroll-mine:hover,
+a.vin-nav-bankroll:hover,
+a.vin-nav-bankroll-mine:hover,
+.vin-header nav .vin-nav-bankroll:focus-visible,
+.vin-header nav .vin-nav-bankroll-mine:focus-visible{
+  background:#581c72;border-color:#581c72;color:#fff!important;filter:none;transform:translateY(-1px);
+}
+.vin-header nav .vin-nav-bankroll-mine{background:#520975;border-color:#520975}

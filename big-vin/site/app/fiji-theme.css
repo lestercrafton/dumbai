@@ -905,3 +905,22 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-live-box-covering > strong { color: var(--fiji-green); }
 .vin-live-box-not-covering { background: var(--fiji-yellow-tint); border-color: var(--fiji-yellow-line); }
 .vin-live-box-not-covering > strong { color: var(--fiji-ochre); }
+
+/* Bankroll pills: force Boost-level contrast (white on purple) */
+.vin-site .vin-nav-bankroll,
+.vin-site .vin-nav-bankroll-mine,
+.vin-header .vin-nav-bankroll,
+.vin-header .vin-nav-bankroll-mine {
+  background: var(--fiji-purple, #6b218a) !important;
+  border-color: var(--fiji-purple, #6b218a) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px #52097533;
+}
+.vin-site .vin-nav-bankroll:hover,
+.vin-site .vin-nav-bankroll-mine:hover,
+.vin-header .vin-nav-bankroll:hover,
+.vin-header .vin-nav-bankroll-mine:hover {
+  background: #6b218a !important;
+  border-color: #6b218a !important;
+  color: #fff !important;
+}
