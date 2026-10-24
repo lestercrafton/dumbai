@@ -117,7 +117,7 @@ test('daily and weekly summaries reconcile and push, void, pending and unlined h
 test('rescheduled settlement uses played day without changing rank or model ownership',()=>{
  const rows=[game('moved',{sport:'mlb',version:sep14.mlb.id,date:'2026-10-15',edge:20,result:{status:'completed',actualMargin:7,outcome:'win',playedAt:'2026-10-17T18:00:00Z'}}),...Array.from({length:4},(_,i)=>game('today'+i,{sport:'mlb',version:sep14.mlb.id,date:'2026-10-17',edge:10-i}))];
  const result=summarizeTrackedHistory(rows,{sport:'mlb',models:registry('mlb'),rankPeriod:'day'});
- assert.equal(result.rankedCards['3'].spreadDays[0].date,'2026-10-17');assert.equal(result.rankedCards['3'].spreadDays[0].recorded,4);
+ assert.equal(result.rankedCards['3'].spreadDays[0].date,'2026-10-17');assert.equal(result.rankedCards['3'].spreadDays[0].legacyRunLine.recorded,4);
  assert.equal(result.records.find(row=>row.id==='moved').cardRank,1);
 });
 

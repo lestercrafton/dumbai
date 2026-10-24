@@ -1,0 +1,44 @@
+/** Bankroll replay of graded tracked picks, in kickoff order.
+ * Kelly sizing uses only information known before each game: the win chance
+ * learned from picks graded before that kickoff (rank-signal buckets, pulled
+ * toward break-even) and the price taken. Flat sizing is replayed alongside. */
+import {gradeSpreadPick,spreadOffer,breakEven,ASSUMED_ODDS,isLegacyRunLine} from './spread-record.mjs';
+import {learnRankSignal,scoreGame} from './rank-signal.mjs';
+
+export const START_BANKROLL=1_000_000;
+export const KELLY_FRACTION=1;
+export const MAX_STAKE=1;
+export const FLAT_STAKE=0.01;
+const finite=x=>typeof x==='number'&&Number.isFinite(x);
+const payout=odds=>odds>0?odds/100:100/-odds;
+
+export function kellyStake(p,odds,{fraction=KELLY_FRACTION,cap=MAX_STAKE}={}){
+ if(!finite(p))return 0;
+ const b=payout(odds),full=(p*(b+1)-1)/b;
+ return full>0?Math.min(cap,fraction*full):0;
+}
+
+export function replayKellyBankroll(records,{start=START_BANKROLL}={}){
+ const graded=records.filter(r=>!isLegacyRunLine(r)).map(r=>({r,offer:spreadOffer(r),outcome:gradeSpreadPick(r).outcome}))
+  .filter(x=>x.offer&&x.offer.basis!=='synthetic-winner-even'&&['win','loss','push'].includes(x.outcome)&&Number.isFinite(Date.parse(x.r.startTime)))
+  .sort((a,b)=>Date.parse(a.r.startTime)-Date.parse(b.r.startTime)||String(a.r.id).localeCompare(String(b.r.id)));
+ let kelly=start,flat=start,peak=start,maxDrawdown=0,bets=0,staked=0,maxStake=0,maxStakeDollars=0;
+ const series=[{t:graded[0]?.r.startTime??null,kelly,flat}];
+ const learnFrom=graded.map(x=>({...x.r,cohort:'live'}));
+ for(const {r,offer,outcome} of graded){
+  const odds=finite(r.odds)&&Math.abs(r.odds)>=100?r.odds:ASSUMED_ODDS;
+  const signal=learnRankSignal(learnFrom,{before:Date.parse(r.startTime)});
+  const edge=finite(r.predictedMargin)?Math.abs(r.predictedMargin+offer.homeSpread):null;
+  const p=scoreGame(signal,{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport})?.winChance;
+  const f=kellyStake(p,odds);
+  const ret=outcome==='win'?payout(odds):outcome==='loss'?-1:0;
+  if(f>0){bets++;staked+=f;if(f>maxStake)maxStake=f;maxStakeDollars=Math.max(maxStakeDollars,kelly*f);}
+  kelly+=kelly*f*ret;flat+=flat*FLAT_STAKE*ret;
+  peak=Math.max(peak,kelly);maxDrawdown=Math.max(maxDrawdown,(peak-kelly)/peak);
+  series.push({t:r.startTime,kelly,flat});
+ }
+ let fpeak=start,flatDrawdown=0;for(const s of series){fpeak=Math.max(fpeak,s.flat);flatDrawdown=Math.max(flatDrawdown,(fpeak-s.flat)/fpeak);}
+ return {start,picks:graded.length,bets,averageStake:bets?staked/bets:0,maxStake,maxStakeDollars,
+  kelly:{bankroll:kelly,change:kelly/start-1,maxDrawdown},flat:{bankroll:flat,change:flat/start-1,maxDrawdown:flatDrawdown},
+  series,breakEven:breakEven(ASSUMED_ODDS)};
+}

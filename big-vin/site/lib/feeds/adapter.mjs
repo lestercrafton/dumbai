@@ -59,6 +59,9 @@ export function canonicalTeamKey(sport, abbreviation, id = '') {
 }
 /** AP poll rank from the scoreboard (ESPN sends 99 for unranked). */
 const apRank = (c) => { const r = Number(c?.curatedRank?.current); return Number.isInteger(r) && r >= 1 && r <= 25 ? r : null; };
+/** Overall record and AP-style rank from an ESPN competitor (99 = unranked). */
+export const competitorRecord = c => { const r = (Array.isArray(c?.records) ? c.records : []).find(x => x?.type === 'total' || x?.name === 'overall') ?? c?.records?.[0]; const v = typeof r?.summary === 'string' ? r.summary.trim() : ''; return /^\d+(-\d+){1,2}$/.test(v) ? v : null; };
+export const competitorRank = c => { const n = Number(c?.curatedRank?.current); return Number.isInteger(n) && n >= 1 && n <= 25 ? n : null; };
 const team = (x, sport) => ({ id: String(x?.id ?? ''), key: canonicalTeamKey(sport, x?.abbreviation, x?.id), abbreviation: x?.abbreviation ?? null, name: x?.displayName ?? x?.shortDisplayName ?? x?.name ?? null });
 /** ESPN conferenceId -> short label. IDs/names verified against ESPN's own
  * 2026 standings endpoints (FBS/FCS football, Division I men's hoops). */
@@ -195,6 +198,8 @@ export function normalizeScoreboard(payload, sport, { retrievedAt = new Date().t
       outs: outs !== null && Number.isInteger(outs) && outs >= 0 && outs <= 3 ? outs : null,
       isTopInning: sport === 'mlb' && typeof situation.isTopInning === 'boolean' ? situation.isTopInning : null,
       completed, home: team(home.team, sport), away: team(away.team, sport),
+      homeRecord: competitorRecord(home), awayRecord: competitorRecord(away),
+      homeRank: ['cfb','cbb'].includes(sport) ? competitorRank(home) : null, awayRank: ['cfb','cbb'].includes(sport) ? competitorRank(away) : null,
       liveHomeScore: gameStatus==='live'?score(home.score):null, liveAwayScore: gameStatus==='live'?score(away.score):null,
       homeScore, awayScore,
       homeMargin: homeScore !== null && awayScore !== null ? homeScore - awayScore : null,

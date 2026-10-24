@@ -9,7 +9,7 @@ import {activeProviderSeason} from '@/lib/provider-season.mjs';
 import {truthMeter} from '@/lib/spread-record.mjs';
 import styles from './record-summary.module.css';
 
-type Counts={recorded:number;graded:number;pending:number;wins:number;losses:number;pushes:number;winRate:number|null;voids?:number;unlined?:number;units?:number;risked?:number;breakEvenSum?:number;decided?:number;truthLogs?:number[]|null;clvSum?:number;clvCount?:number;assumedPrices?:number};
+type Counts={recorded:number;graded:number;pending:number;wins:number;losses:number;pushes:number;winRate:number|null;voids?:number;unlined?:number;units?:number;risked?:number;breakEvenSum?:number;decided?:number;truthLogs?:number[]|null;clvSum?:number;clvCount?:number;assumedPrices?:number;legacyRunLine?:Counts};
 type Day=Counts & {date:string};
 type Coverage={saved:number;seasonUnknownCount:number;firstDate:string|null;lastDate:string|null;complete:boolean};
 type SeasonView={spreadOverall:Counts;coverage:Coverage};
@@ -62,13 +62,14 @@ export function RecordSummary({sport,sportLabel,date,refreshKey,card='all',rankP
  const hindsight=tuned&&current&&fresh<300?` · Tuned on past games: ${fresh} of 300 new picks graded`:'';
  const checked=current?.liveCheck?.checkedAt||current?.lastCollectionAt;
  return <section className={styles.summary} aria-label={`${sportLabel} saved pick record`} aria-busy={loading}>
-  <div className={styles.heading}><div><h2>{sportLabel} record</h2><p>{sport==='mlb'?'Run line':sport==='nhl'?'Puck line':'Against the spread'} · {card==='all'?label:'Saved '+label} · Kickoff-locked picks{hindsight}</p></div><a href={href}>Pick history ↗</a></div>
+  <div className={styles.heading}><div><h2>{sportLabel} record</h2><p>{sport==='mlb'?'Moneyline':sport==='nhl'?'Puck line':'Against the spread'} · {card==='all'?label:'Saved '+label} · Kickoff-locked picks{hindsight}</p></div><a href={href}>Pick history ↗</a></div>
   <div className={styles.grid}>
    <RecordCard title="Day" caption={dateLabel(date)+' · ET'} summary={daily} loading={loading} error={error}/>
    <RecordCard title="Week" caption={week?`${dateLabel(week.start)}–${dateLabel(week.end)}`:'Mon–Sun ET'} summary={weekly} loading={loading} error={error}/>
    <RecordCard title="Tracked season" caption={season!==null?`${seasonContext?.label||season} · partial`:'Season unverified'} summary={seasonView?.spreadOverall} loading={loading} error={error}/>
   </div>
 
+  {sport==='mlb'&&seasonView?.spreadOverall?.legacyRunLine&&(()=>{const o=seasonView.spreadOverall.legacyRunLine!;return <p className={styles.status}>Earlier +1.5 run line picks (before the switch to moneyline): {o.wins}–{o.losses}{o.pushes?`–${o.pushes}`:''}{o.risked?`, ${money(o.units!/o.risked)} per $1`:''}. Not included above.</p>;})()}
   {error&&<p className={styles.warning} role="alert">Could not load the saved record. Refresh to try again.</p>}
   {refreshError&&current&&<p className={styles.warning} role="status">Refresh unavailable. Showing the last checked record.</p>}
   <details className={styles.details}><summary>Record method &amp; coverage</summary><div>

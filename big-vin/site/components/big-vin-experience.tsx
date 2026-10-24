@@ -38,10 +38,15 @@ function stakeNote(game: Row) {
   return `${label}: full-card funding required`;
 }
 
+function TeamTag({game, side}: {game: Row; side: 'home'|'away'}) {
+  const rank = game[side+'Rank'], record = game[side+'Record'];
+  return <>{rank ? <small className="vin-team-meta">#{rank} </small> : null}{teamName(game[side])}{record ? <small className="vin-team-meta"> {String(record).replaceAll('-','–')}</small> : null}</>;
+}
+
 export function SiteHeader({onBoard, onResults}: {onBoard: () => void; onResults: () => void}) {
   return <header className="vin-header">
     <a className="vin-wordmark" href="#top" aria-label="Big Vin home"><span className="vin-mark" aria-hidden="true">b<span>v</span><i/></span><span>BIG VIN<span className="vin-wordmark-sub">AN INDEPENDENT EDGE.</span></span></a>
-    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a></nav>
+    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a><a href="/bankroll">Bankroll</a></nav>
     <DonateButton className="vin-header-donate"/>
   </header>;
 }
@@ -128,7 +133,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       : score.kind === 'live' && livePick.provisional && livePick.state === 'not-covering' ? 'vin-game-not-covering' : 'vin-game-neutral';
     return <article className={`vin-game-card ${game.lowEvidence ? 'vin-game-limited' : ''} ${cardState}`} key={game.id} data-game-id={game.id} data-rank={game.rank??''} data-result-outcome={decision.outcome} data-live-pick-status={score.kind==='live'?livePick.state:undefined}>
       <div className="vin-game-top"><span className="vin-game-rank">{game.rank ? <><span>#</span>{String(game.rank).padStart(2, '0')}{game.rankLabel&&<small className="vin-rank-basis" title={game.rankLabel.title}> · {game.rankLabel.short}</small>}</> : 'UNRANKED'}</span><span>{score.kind==='live' && <b className={livePick.isWinning?'vin-live':'vin-score-neutral'}>{score.label.toUpperCase()} · </b>}{centralTime(game.startTime)} <VersionBadge record={game} sport={sport}/></span></div>
-      <div className="vin-game-matchup"><h3>{teamName(game.away)} <span>at</span> {teamName(game.home)}</h3><span className="vin-game-league">{sport.toUpperCase()}{game.neutralSite ? ' · Neutral' : ''}</span></div>
+      <div className="vin-game-matchup"><h3><TeamTag game={game} side="away"/> <span>at</span> <TeamTag game={game} side="home"/></h3><span className="vin-game-league">{sport.toUpperCase()}{game.neutralSite ? ' · Neutral' : ''}</span></div>
       {(score.kind==='live'||score.kind==='final')&&<ScorePanel href={gamecast??undefined} target={gamecast?'_blank':undefined} rel={gamecast?'noopener noreferrer':undefined} className={`vin-scoreboard ${gamecast?'vin-scoreboard-link':''} vin-scoreboard-${score.freshness} ${score.kind==='live'&&livePick.provisional?livePick.state==='covering'?'vin-scoreboard-covering':livePick.state==='not-covering'?'vin-scoreboard-not-covering':'':''}`} aria-label={`${score.label}: ${teamName(game.away)} ${score.awayScore??'unavailable'}, ${teamName(game.home)} ${score.homeScore??'unavailable'}${progress?'. '+progress.label:''}${gamecast?'. Open ESPN Gamecast in a new tab':''}`}>
        <div className="vin-scoreboard-top"><strong>{score.label}</strong>{progress&&<span className="vin-game-progress">{progress.label}</span>}</div>
        <div className="vin-scoreboard-teams"><div><span>{teamCode(game.away)}</span><strong>{score.awayScore??'—'}</strong></div><span aria-hidden="true">–</span><div><strong>{score.homeScore??'—'}</strong><span>{teamCode(game.home)}</span></div></div>

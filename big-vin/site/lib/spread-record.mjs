@@ -41,7 +41,14 @@ export function truthMeter(logs){
  if(!Array.isArray(logs)||logs.length!==TRUTH_STAKES.length||!logs.every(finite))return null;
  return logs.reduce((sum,value)=>sum+Math.exp(value),0)/logs.length;
 }
+/** MLB picks moved from the +1.5 run line to the moneyline. The main MLB
+ * record counts moneyline picks only; old run line picks are summarized apart. */
+export const isLegacyRunLine=record=>record?.sport==='mlb'&&finite(spreadOffer(record)?.homeSpread)&&spreadOffer(record).homeSpread!==0;
 export function summarizeSpreadPicks(records){
+ if(records.some(isLegacyRunLine))return {...summarizePicks(records.filter(r=>!isLegacyRunLine(r))),legacyRunLine:summarizePicks(records.filter(isLegacyRunLine))};
+ return summarizePicks(records);
+}
+function summarizePicks(records){
  const outcomes=records.map(gradeSpreadPick);
  const proof={units:0,risked:0,breakEvenSum:0,decided:0,truthLogs:TRUTH_STAKES.map(()=>0),clvSum:0,clvCount:0,assumedPrices:0};
  records.forEach((record,index)=>{
