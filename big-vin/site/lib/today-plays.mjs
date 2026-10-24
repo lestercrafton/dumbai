@@ -4,7 +4,7 @@
  * Cover status uses the same livePickStatus function as the game cards. */
 import {kellyStake} from './kelly-bankroll.mjs';
 import {compareKelly,pickPrice} from './kelly-rank.mjs';
-import {livePickStatus} from './live-pick-status.mjs';
+import {livePickStatus,provisionalFinalLabel} from './live-pick-status.mjs';
 import {liveGameProgress,clockBadge} from './live-game-progress.mjs';
 import {visibleOutcome} from './presentation.mjs';
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
@@ -13,12 +13,17 @@ const abbr=t=>t?.abbreviation||t?.name?.split(/\s+/).pop()?.slice(0,4)?.toUpperC
 export function ctDate(t){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));}
 export function playCover(g,now=Date.now()){
  if(g.result?.status==='completed'||g.completed&&g.result){
-  const o=g.result?.outcome||g.decision?.outcome;const label=visibleOutcome({outcome:o});
+  const o=g.result?.outcome||g.decision?.outcome;
+  const label=({win:'Win',loss:'Loss',push:'Push'})[o]||visibleOutcome({outcome:o});
   return {state:o==='win'?'covering':o==='loss'?'not-covering':'push',label,final:true};
  }
  const s=livePickStatus(g,{now});
+ if(g.finalPendingGrade&&s.provisional){
+  const label=provisionalFinalLabel(s.state,{short:true});
+  return {state:s.state,label:label||s.label,final:true};
+ }
  if(!s.provisional)return {state:'unavailable',label:g.finalPendingGrade||g.statusDescription==='Final'?'Final':'—',final:!!g.finalPendingGrade};
- return {state:s.state,label:s.label,final:!!g.finalPendingGrade};
+ return {state:s.state,label:s.label,final:false};
 }
 export function scoreClock(g,now=Date.now()){
  const home=Number.isFinite(g.liveHomeScore)?g.liveHomeScore:g.homeScore;

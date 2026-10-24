@@ -21,5 +21,7 @@ test('live cover status matches the card labels and colors',()=>{
  assert.deepEqual(scoreClock(game,now),{score:'YALE 21–24 PENN',clock:'Q4 · 7:14'});
  const need=playCover({...game,liveHomeScore:10},now);assert.equal(need.state,'not-covering');assert.match(need.label,/^Needs /);
  assert.equal(scoreClock({...game,finalPendingGrade:true},now).clock,'FINAL');
- assert.equal(playCover({...game,result:{status:'completed',outcome:'loss'}},now).label,'Learn');
+ assert.equal(playCover({...game,result:{status:'completed',outcome:'loss'}},now).label,'Loss');
+ assert.equal(playCover({...game,finalPendingGrade:true},now).label,'Win');
+ assert.equal(playCover({...game,finalPendingGrade:true,liveHomeScore:10},now).label,'Loss');
 });

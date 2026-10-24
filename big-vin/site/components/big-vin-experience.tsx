@@ -16,7 +16,7 @@ import {shortScoreUnit, scoreUnit} from '@/lib/sport-copy';
 import {displayLines} from '@/lib/board-presentation.mjs';
 import {liveScorePresentation} from '@/lib/board-discovery.mjs';
 import {liveGameProgress,clockBadge} from '@/lib/live-game-progress.mjs';
-import {livePickStatus,liveTotalStatus} from '@/lib/live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from '@/lib/live-pick-status.mjs';
 import {espnGamecastUrl} from '@/lib/gamecast.mjs';
 import {SITE_CONFIG} from '@/lib/site-config';
 import {currentBoardPick} from '@/lib/pick-revisions.mjs';
@@ -124,12 +124,15 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
     const playable = playablePriceText(game, gameSport);
     const awaitingQuote = game.status==='scheduled' && Date.parse(game.startTime)>now && !pregame;
     const synthetic = game.paperWager?.kind === 'synthetic-winner-even';
-    const settled = !synthetic && ['win','loss','push','void'].includes(decision.outcome);
+    const provisionalOutcome = game.finalPendingGrade && livePick.provisional ? coverToOutcome(livePick.state) : null;
+    const provisionalTotal = game.finalPendingGrade && liveTotal.provisional ? coverToOutcome(liveTotal.state) : null;
+    const settled = !synthetic && (['win','loss','push','void'].includes(decision.outcome) || !!provisionalOutcome);
     const liveResult = !settled && livePick.provisional;
+    const displayDecision = provisionalOutcome ? {...decision, outcome: provisionalOutcome} : decision;
     const gamecast = espnGamecastUrl(game,sport);
     const ScorePanel = gamecast ? 'a' : 'div';
-    const cardState = decision.outcome === 'win' && !synthetic ? 'vin-game-win'
-      : decision.outcome === 'loss' && !synthetic ? 'vin-game-learn'
+    const cardState = displayDecision.outcome === 'win' && !synthetic ? 'vin-game-win'
+      : displayDecision.outcome === 'loss' && !synthetic ? 'vin-game-learn'
       : score.kind === 'live' && livePick.provisional && livePick.state === 'covering' ? 'vin-game-covering'
       : score.kind === 'live' && livePick.provisional && livePick.state === 'not-covering' ? 'vin-game-not-covering' : 'vin-game-neutral';
     return <article className={`vin-game-card ${cardState}`} key={game.id} data-game-id={game.id} data-rank={game.rank??''} data-result-outcome={decision.outcome} data-live-pick-status={score.kind==='live'?livePick.state:undefined}>
@@ -146,18 +149,19 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       <div className="vin-pick-stack">
       <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK · {mlSport?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'SPREAD'}</span><strong>{lines.pick || (mlSport?'No pick':comparisonEdge===0?'No edge · Pass':'No spread pick')}</strong>{playable&&(mlSport||lines.pick)&&<small className="vin-ml-price">{playable}</small>}</div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : pregame ? 'Current pick' : awaitingQuote ? 'Last saved' : 'Locked pick'}</span></div>
       {!game.overUnder && ['nfl','cfb','nba','wnba','cbb'].includes(sport) && <div className="vin-game-pick vin-total-pick vin-total-open"><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>No pick saved</strong><small>{Number.isFinite((game.moneylineMarket??game.market)?.total)?`Vegas total ${(game.moneylineMarket??game.market).total} · `:''}{Date.parse(game.startTime)<=now?'No total points pick was saved before kickoff.':'Waiting for the next hourly total points run.'}</small></div><span className="vin-pick-kind">Total points</span></div>}
-      {game.overUnder && <div className={`vin-game-pick vin-total-pick vin-total-${game.overUnder.result??'open'}`}><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>{game.overUnder.side?`${game.overUnder.side==='over'?'Over':'Under'} ${game.overUnder.marketTotal}`:'No pick'}</strong>{game.overUnder.side&&!game.overUnder.result&&!liveTotal.provisional&&playableTotal(gameSport,game.overUnder.side,game.overUnder.total)!==null&&<small className="vin-ml-price">playable to {playableTotal(gameSport,game.overUnder.side,game.overUnder.total)}</small>}<small>Vegas total {game.overUnder.marketTotal} · Big Vin total {pointValue(game.overUnder.total)}{game.overUnder.result?` · Final ${game.overUnder.actualTotal}, ${game.overUnder.result==='win'?'win':game.overUnder.result==='loss'?'learn':'push'}`:''}</small></div><span className="vin-pick-kind">Total points record {game.overUnder.record.wins}–{game.overUnder.record.losses}{game.overUnder.record.pushes?`–${game.overUnder.record.pushes}`:''}</span></div>}
+      {game.overUnder && <div className={`vin-game-pick vin-total-pick vin-total-${game.overUnder.result??provisionalTotal??'open'}`}><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>{game.overUnder.side?`${game.overUnder.side==='over'?'Over':'Under'} ${game.overUnder.marketTotal}`:'No pick'}</strong>{game.overUnder.side&&!game.overUnder.result&&!liveTotal.provisional&&playableTotal(gameSport,game.overUnder.side,game.overUnder.total)!==null&&<small className="vin-ml-price">playable to {playableTotal(gameSport,game.overUnder.side,game.overUnder.total)}</small>}<small>Vegas total {game.overUnder.marketTotal} · Big Vin total {pointValue(game.overUnder.total)}{game.overUnder.result?` · Final ${game.overUnder.actualTotal}, ${game.overUnder.result==='win'?'win':game.overUnder.result==='loss'?'learn':'push'}`:''}</small></div><span className="vin-pick-kind">Total points record {game.overUnder.record.wins}–{game.overUnder.record.losses}{game.overUnder.record.pushes?`–${game.overUnder.record.pushes}`:''}</span></div>}
       </div>
       {liveResult ? <div className="vin-live-split" style={liveTotal.provisional?undefined:{gridTemplateColumns:'1fr'}}>
-        <div className={`vin-live-box vin-live-box-${livePick.state}`}><span className="vin-result-heading">{game.finalPendingGrade?'FINAL':'LIVE'} · {mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'SPREAD'}</span><strong>{livePick.label}</strong><span>{lines.pick}</span></div>
-        {liveTotal.provisional && <div className={`vin-live-box vin-live-box-${liveTotal.state}`}><span className="vin-result-heading">{game.finalPendingGrade?'FINAL':'LIVE'} · TOTAL</span><strong>{liveTotal.label}</strong><span>{game.overUnder.side==='over'?'Over':'Under'} {game.overUnder.marketTotal}</span></div>}
+        <div className={`vin-live-box vin-live-box-${livePick.state}`}><span className="vin-result-heading">LIVE · {mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'SPREAD'}</span><strong>{livePick.label}</strong><span>{lines.pick}</span></div>
+        {liveTotal.provisional && <div className={`vin-live-box vin-live-box-${liveTotal.state}`}><span className="vin-result-heading">LIVE · TOTAL</span><strong>{liveTotal.label}</strong><span>{game.overUnder.side==='over'?'Over':'Under'} {game.overUnder.marketTotal}</span></div>}
       </div> :
       <div className={`vin-game-status vin-visible-result ${settled?'vin-result-settled':liveResult?'vin-result-live':''}`}>
-        {(settled || liveResult) && <span className="vin-result-heading">{settled ? decision.outcome==='void'?'SETTLED':'FINAL' : 'LIVE'} · {mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'AGAINST THE SPREAD'}</span>}
-        <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:decision.outcome}`}>{liveResult ? livePick.label : pregame&&mlSport&&!lines.pick ? 'No pick' : pregame&&comparisonEdge===0 ? 'Pass · No spread edge' : visibleOutcome(decision, synthetic)}</strong>
-        {decision.score && <span className="vin-final-score">Final · {teamCode(game.away)} {decision.score.split('–')[0]} – {decision.score.split('–')[1]} {teamCode(game.home)}</span>}
-        <span>{pregame ? 'Updates until kickoff' : awaitingQuote ? 'Current recommendation unavailable' : game.archived ? 'Uses the locked pregame line' : game.stale ? 'Stale price' : 'Feed observation'}{liveResult?' · provisional':decision.outcome==='pending'?' · awaiting final':''}</span>
+        {(settled || liveResult) && <span className="vin-result-heading">{settled ? displayDecision.outcome==='void'?'SETTLED':'FINAL' : 'LIVE'} · {mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'AGAINST THE SPREAD'}</span>}
+        <strong className={`vin-outcome-badge vin-outcome-${liveResult?livePick.state:displayDecision.outcome}`}>{liveResult ? livePick.label : provisionalOutcome ? provisionalFinalLabel(livePick.state) : pregame&&mlSport&&!lines.pick ? 'No pick' : pregame&&comparisonEdge===0 ? 'Pass · No spread edge' : visibleOutcome(displayDecision, synthetic)}</strong>
+        {(decision.score||provisionalOutcome&&score.completeScore) && <span className="vin-final-score">Final · {teamCode(game.away)} {decision.score?decision.score.split('–')[0]:score.awayScore} – {decision.score?decision.score.split('–')[1]:score.homeScore} {teamCode(game.home)}</span>}
+        <span>{pregame ? 'Updates until kickoff' : awaitingQuote ? 'Current recommendation unavailable' : provisionalOutcome ? 'Final score · grading pending' : game.archived ? 'Uses the locked pregame line' : game.stale ? 'Stale price' : 'Feed observation'}{liveResult?' · provisional':!provisionalOutcome&&decision.outcome==='pending'?' · awaiting final':''}</span>
         {liveResult && livePick.state==='not-covering' && <span>{mlSport&&lines.marketLine===0?`${scoreUnit(sport)} needed to take the lead.`:`Net ${scoreUnit(sport)} needed to move past the line.`}</span>}
+        {provisionalTotal && <span className={`vin-total-final vin-outcome-${provisionalTotal}`}>Total · {provisionalFinalLabel(liveTotal.state)} ({game.overUnder.side==='over'?'Over':'Under'} {game.overUnder.marketTotal})</span>}
       </div>}
       {(game.stale || game.rankReason) && <p className="vin-data-note">{game.stale ? 'Waiting for a verified current quote.' : game.rankReason}</p>}
       <details className="vin-game-details"><summary>Behind the line <CfbNewsFlag gameId={game.id} sport={sport}/><ChevronDown size={15}/></summary><div>

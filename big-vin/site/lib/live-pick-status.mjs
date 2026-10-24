@@ -63,3 +63,16 @@ export function liveTotalStatus(game = {}, options = {}) {
     label:diff > 0 ? `${word} by ${diff.toFixed(1)}` : diff < 0 ? `Needs ${need} more` : 'At the total',
     isWinning:diff > 0, provisional:true};
 }
+
+/** Map a live cover state to the graded outcome shown once the clock hits FINAL. */
+export function coverToOutcome(state){
+ return state==='covering'?'win':state==='not-covering'?'loss':state==='push'?'push':null;
+}
+
+/** Card badge text for a provisional final (before the board grades it). */
+export function provisionalFinalLabel(state,{short=false}={}){
+ const outcome=coverToOutcome(state);
+ if(!outcome)return null;
+ if(short)return ({win:'Win',loss:'Loss',push:'Push'})[outcome];
+ return ({win:'Big Vin Wins.',loss:'Learn',push:'Push'})[outcome];
+}

@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mergeLiveScores,hasActiveGames} from './live-overlay.mjs';
 import {liveScoreUrls} from './live-scores.mjs';
-import {livePickStatus,liveTotalStatus} from './live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from './live-pick-status.mjs';
 
 const now=Date.parse('2026-10-24T02:00:00Z');
 const stale='2026-10-24T00:30:00Z',fresh='2026-10-24T01:59:30Z';
@@ -42,12 +42,29 @@ for(const [sport,cfg] of Object.entries(SPORTS)){
   assert.equal(s.provisional,true,s.reason);assert.equal(s.state,'not-covering');
   assert.match(s.label,sport==='mlb'?/^Needs \d+ to win$/:/^Needs [\d.]+ to Cover$/);
  });
- test(`${sport}: just-finished game keeps the cover box until graded`,()=>{
+ test(`${sport}: just-finished game keeps a provisional cover until graded`,()=>{
   const g=overlay(sport,cfg,...scores(cover),'completed');
   assert.equal(g.finalPendingGrade,true);assert.equal(g.statusDescription,'Final');
   const s=livePickStatus(g,{now});assert.equal(s.provisional,true,s.reason);assert.equal(s.state,'covering');
  });
 }
+
+test('FINAL clock switches cover state to Big Vin Wins / Learn / Win-Loss-Push',()=>{
+ assert.equal(coverToOutcome('covering'),'win');
+ assert.equal(coverToOutcome('not-covering'),'loss');
+ assert.equal(coverToOutcome('push'),'push');
+ assert.equal(provisionalFinalLabel('covering'),'Big Vin Wins.');
+ assert.equal(provisionalFinalLabel('not-covering'),'Learn');
+ assert.equal(provisionalFinalLabel('push'),'Push');
+ assert.equal(provisionalFinalLabel('covering',{short:true}),'Win');
+ assert.equal(provisionalFinalLabel('not-covering',{short:true}),'Loss');
+ const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
+ assert.ok(tsx.includes('provisionalOutcome')&&tsx.includes('provisionalFinalLabel'),'card must switch to the graded final block on FINAL');
+ assert.ok(!tsx.includes("game.finalPendingGrade?'FINAL':'LIVE'"),'live boxes must not keep Covering by on FINAL');
+ const today=readFileSync(new URL('./today-plays.mjs',import.meta.url),'utf8');
+ assert.ok(today.includes("provisionalFinalLabel(s.state,{short:true})"),"Today's plays must show Win/Loss/Push on FINAL");
+});
+
 
 test('total box: over/under covering and not covering',()=>{
  const g=overlay('cfb',{...SPORTS.cfb,overUnder:{side:'under',marketTotal:45.5}},20,17);
