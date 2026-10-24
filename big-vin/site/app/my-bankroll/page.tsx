@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useState,FormEvent} from 'react';
-import {MY_KELLY_NOTE,ENTERTAINMENT_NOTE} from '@/lib/bankroll-copy';
+import {MY_KELLY_NOTE,ENTERTAINMENT_NOTE,CARRY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
 import {fetchSlate} from '@/lib/board-client';
 import {todayPlays,ctDate} from '@/lib/today-plays.mjs';
@@ -94,14 +94,24 @@ export default function MyBankroll(){
   if(!v.user){setPhase('login');return;}
   setEmail(v.user.email);
   setStarts(v.user.starts);
-  setDraft(blankDraft(v.user.starts));
   const has=SUPPORTED_SPORTS.some((s:string)=>v.user.starts[s]!=null);
-  setTab(has?'history':'setup');
+  // First screen: Starting bankrolls prefilled with carried Kelly balances (what you'd have if you took Vin's plays).
+  setTab('setup');
   setPhase('app');
   if(has){
    const b=await fetch('/api/my-bankroll',{credentials:'same-origin'});
-   if(b.ok){const j=await b.json();setData(j.sports);}
-  }else setData([]);
+   if(b.ok){
+    const j=await b.json();
+    setData(j.sports);
+    const carried:Record<string,string>={};
+    for(const sport of SUPPORTED_SPORTS){
+     const row=j.sports?.find((x:Sport)=>x.sport===sport);
+     if(row)carried[sport]=String(Math.round(row.kelly.bankroll));
+     else carried[sport]=v.user.starts[sport]==null?'':String(v.user.starts[sport]);
+    }
+    setDraft(carried);
+   }else setDraft(blankDraft(v.user.starts));
+  }else{setData([]);setDraft(blankDraft(v.user.starts));}
  };
 
  useEffect(()=>{refreshMe().catch(()=>{setError('Could not load My Bankroll.');setPhase('login');});},[]);
@@ -147,9 +157,19 @@ export default function MyBankroll(){
    const r=await fetch('/api/my-bankroll/starts',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({starts:startsBody})});
    const v=await r.json();
    if(!r.ok){setError(v.error||'Could not save.');return;}
-   setStarts(v.starts);setDraft(blankDraft(v.starts));setSaved('Saved.');
+   setStarts(v.starts);
    const b=await fetch('/api/my-bankroll',{credentials:'same-origin'});
-   if(b.ok){const j=await b.json();setData(j.sports);setTab('today');}
+   if(b.ok){
+    const j=await b.json();setData(j.sports);
+    const carried:Record<string,string>={};
+    for(const sport of SUPPORTED_SPORTS){
+     const row=j.sports?.find((x:Sport)=>x.sport===sport);
+     if(row)carried[sport]=String(Math.round(row.kelly.bankroll));
+     else carried[sport]=v.starts[sport]==null?'':String(v.starts[sport]);
+    }
+    setDraft(carried);setTab('today');
+   }else setDraft(blankDraft(v.starts));
+   setSaved('Saved.');
   }catch{setError('Could not save.');}
   finally{setBusy(false);}
  };
@@ -190,7 +210,8 @@ export default function MyBankroll(){
    </nav>
 
    {tab==='setup'&&<form className="bk-setup" onSubmit={saveStarts}>
-    <p className="bk-explain">Enter a starting bankroll for each sport you want to follow. Leave blank to skip. Re-ups top you back to that start when you fall below 10%.</p>
+    <p className="bk-explain">Enter a starting bankroll for each sport you want to follow. Leave blank to skip.</p>
+    <p className="bk-note">{CARRY_NOTE}</p>
     <div className="bk-setup-grid">{SUPPORTED_SPORTS.map((s:string)=><label key={s}>{sportLabel(s)}
      <input type="text" inputMode="decimal" placeholder="e.g. 1000" value={draft[s]??''} onChange={e=>setDraft(d=>({...d,[s]:e.target.value}))}/>
     </label>)}</div>
@@ -202,6 +223,7 @@ export default function MyBankroll(){
    {tab==='today'&&(Object.keys(bankrolls).length?<Today bankrolls={bankrolls}/>:<p className="bk-sub">Set at least one starting bankroll first.</p>)}
 
    {tab==='history'&&<>
+    <p className="bk-note">{CARRY_NOTE}</p>
     {total&&<section className="bk-total">
      <div><span>All sports</span><strong>{usd(total.bankroll)}</strong></div>
      <div><span>Put in</span><b>{usd(total.putIn)}</b></div>

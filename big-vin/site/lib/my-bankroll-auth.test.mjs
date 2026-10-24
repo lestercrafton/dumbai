@@ -40,3 +40,17 @@ test('personal start re-ups at 10%', () => {
   assert.equal(empty.kelly.bankroll, 5000);
   assert.equal(empty.start, 5000);
 });
+
+import {ctDate} from './today-plays.mjs';
+
+test('carryforward filters plays on/after effective_from (CT day)', () => {
+  const rows = [
+    { startTime: '2026-10-20T17:00:00Z' },
+    { startTime: '2026-10-22T01:00:00Z' }, // still Oct 21 CT
+    { startTime: '2026-10-23T17:00:00Z' },
+  ];
+  const from = '2026-10-22';
+  const kept = rows.filter((r) => ctDate(r.startTime) >= from);
+  assert.equal(kept.length, 1);
+  assert.equal(ctDate(kept[0].startTime), '2026-10-23');
+});

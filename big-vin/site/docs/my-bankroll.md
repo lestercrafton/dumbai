@@ -28,7 +28,9 @@ XDG_CONFIG_HOME=/home/box/.wrangler-lcrafton \
 
 ## D1
 
-Migration `0008_my_bankroll` adds `my_bankroll_users`, `my_bankroll_starts`, `my_bankroll_otps`.
+Migration `0008_my_bankroll` adds `my_bankroll_users`, `my_bankroll_starts`, `my_bankroll_otps`. Migration `0009_my_bankroll_effective` adds `effective_from` so an override balance only applies Vin’s plays from that Chicago day forward (carryforward display uses full Kelly replay from the saved start).
+
+OTP email copy lives in `lib/my-bankroll-email.mjs` and includes the Cash App karma link `https://cash.app/$bigvinsports` (same as Boost / `SITE_CONFIG.donation.href`).
 
 ## Disclaimer
 

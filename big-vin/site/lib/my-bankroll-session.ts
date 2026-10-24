@@ -25,12 +25,18 @@ export async function currentUser(request:Request){
  return {id:row.id,email:row.email};
 }
 
+export type StartRow={start:number;effectiveFrom:string|null};
 export async function loadStarts(userId:string){
- const {results}=await db().prepare('SELECT sport,start FROM my_bankroll_starts WHERE user_id=?').bind(userId).all<{sport:string;start:number}>();
+ const {results}=await db().prepare('SELECT sport,start,effective_from FROM my_bankroll_starts WHERE user_id=?').bind(userId).all<{sport:string;start:number;effective_from:string|null}>();
  const starts:Record<string,number|null>={};
- for(const s of SUPPORTED_SPORTS)starts[s]=null;
- for(const r of results||[])if(SUPPORTED_SPORTS.includes(r.sport)&&Number.isFinite(r.start)&&r.start>0)starts[r.sport]=r.start;
- return starts;
+ const effectiveFrom:Record<string,string|null>={};
+ for(const s of SUPPORTED_SPORTS){starts[s]=null;effectiveFrom[s]=null;}
+ for(const r of results||[]){
+  if(!SUPPORTED_SPORTS.includes(r.sport)||!Number.isFinite(r.start)||r.start<=0)continue;
+  starts[r.sport]=r.start;
+  effectiveFrom[r.sport]=r.effective_from||null;
+ }
+ return {starts,effectiveFrom};
 }
 
 export async function requestOtp(emailRaw:string){

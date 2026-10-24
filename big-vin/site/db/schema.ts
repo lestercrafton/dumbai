@@ -38,7 +38,7 @@ export const myBankrollUsers=sqliteTable('my_bankroll_users',{
  id:text('id').primaryKey(),email:text('email').notNull().unique(),createdAt:text('created_at').notNull(),lastLoginAt:text('last_login_at')
 });
 export const myBankrollStarts=sqliteTable('my_bankroll_starts',{
- userId:text('user_id').notNull().references(()=>myBankrollUsers.id),sport:text('sport').notNull(),start:real('start').notNull(),updatedAt:text('updated_at').notNull()
+ userId:text('user_id').notNull().references(()=>myBankrollUsers.id),sport:text('sport').notNull(),start:real('start').notNull(),effectiveFrom:text('effective_from'),updatedAt:text('updated_at').notNull()
 },t=>[primaryKey({columns:[t.userId,t.sport]})]);
 export const myBankrollOtps=sqliteTable('my_bankroll_otps',{
  email:text('email').primaryKey(),codeHash:text('code_hash').notNull(),expiresAt:text('expires_at').notNull(),attempts:integer('attempts').notNull().default(0),createdAt:text('created_at').notNull()

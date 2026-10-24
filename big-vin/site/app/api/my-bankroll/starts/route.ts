@@ -1,6 +1,12 @@
 import {sameOrigin,db} from '@/lib/db';
 import {currentUser,parseStarts,loadStarts} from '@/lib/my-bankroll-session';
 import {SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
+
+/** Chicago calendar day as YYYY-MM-DD for effective_from cutovers. */
+function ctDay(d=new Date()){
+ return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+}
+
 export async function PUT(request:Request){
  if(!sameOrigin(request))return Response.json({error:'Invalid origin'},{status:403});
  try{
@@ -9,13 +15,25 @@ export async function PUT(request:Request){
   const body=await request.json() as any;
   const starts=parseStarts(body);
   if(!starts)return Response.json({error:'Enter positive dollar amounts (or leave blank).'},{status:400});
+  const prev=await loadStarts(user.id);
   const now=new Date().toISOString();
+  const today=ctDay();
   const stmts=[db().prepare('DELETE FROM my_bankroll_starts WHERE user_id=?').bind(user.id)];
   for(const sport of SUPPORTED_SPORTS){
    if(starts[sport]==null)continue;
-   stmts.push(db().prepare('INSERT INTO my_bankroll_starts (user_id,sport,start,updated_at) VALUES (?,?,?,?)').bind(user.id,sport,starts[sport],now));
+   const amount=starts[sport] as number;
+   const prevStart=prev.starts[sport];
+   // First-time start: full Vin history from that amount (effective_from null).
+   // Override to a different balance: book from today so old picks aren't re-applied onto the new figure.
+   // Unchanged amount keeps its prior effective_from.
+   let effective:string|null=prev.effectiveFrom[sport];
+   if(prevStart==null)effective=null;
+   else if(Math.abs(prevStart-amount)>0.009)effective=today;
+   stmts.push(db().prepare('INSERT INTO my_bankroll_starts (user_id,sport,start,effective_from,updated_at) VALUES (?,?,?,?,?)')
+    .bind(user.id,sport,amount,effective,now));
   }
   await db().batch(stmts);
-  return Response.json({ok:true,starts:await loadStarts(user.id)},{headers:{'Cache-Control':'no-store'}});
+  const loaded=await loadStarts(user.id);
+  return Response.json({ok:true,starts:loaded.starts,effectiveFrom:loaded.effectiveFrom},{headers:{'Cache-Control':'no-store'}});
  }catch(e){console.error('my-bankroll starts',e);return Response.json({error:'Could not save bankrolls.'},{status:500});}
 }
