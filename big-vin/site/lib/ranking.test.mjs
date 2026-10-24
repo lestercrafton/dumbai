@@ -25,7 +25,7 @@ test('a zero-prior college line remains ATS-comparable but cannot take a top-car
  const [rated,prior]=rankForecasts(records);
  assert.equal(rated.id,'rated');assert.equal(rated.cardRank,1);
  assert.equal(prior.id,'prior');assert.equal(prior.edge,30.5);
- assert.equal(prior.cardRank,null);assert.equal(prior.rankReason,'Picks with limited data');
+ assert.equal(prior.cardRank,null);assert.equal(prior.rankReason,null);
  assert.equal(prior.side,'home');assert.equal(prior.marketHomeSpread,26.5);
  const settled={...prior,cohort:'live',modelVersion:'cfb-weekly-tuned-2026-09-14',odds:-110,
   result:{status:'completed',actualMargin:3,pnl:100/110}};
