@@ -36,6 +36,8 @@ function Today({data}:{data:Sport[]}){
  const odds=(o:number)=>o>0?`+${o}`:`−${-o}`;
  const line=(l:number|null)=>l==null?'ML':l===0?'PK':(l>0?'+':'−')+Math.abs(l);
  return <>
+  <p className="bk-explain">Big Vin handicaps every game, but his betting strategy is to bet by confidence, not on every game. This is how he’d allocate his bankroll today.</p>
+  <p className="bk-foot">For entertainment and educational purposes for humans, and for whatever purpose you choose for agents.</p>
   <section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>
    <div><span>Plays</span><b>{rows.filter(r=>r.wager>0).length} / {rows.length}</b></div>
