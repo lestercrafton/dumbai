@@ -49,6 +49,8 @@ jobs:
           restore-keys: bv-render-db-
       - name: Render and upload
         run: node scripts/render-read-cache.mjs
+      - name: Live cover boxes health check
+        run: node scripts/check-live-covers.mjs
       - name: Save the local database copy
         if: always()
         uses: actions/cache/save@v4

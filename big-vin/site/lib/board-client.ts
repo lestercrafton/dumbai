@@ -1,6 +1,7 @@
 // Big Vin browser transport; existing one-day and week requests stay intact.
 import {scoreboardUrl,scoreboardUrls,isThreeDayScoreboardWindow,scoreboardPayloadLimited,normalizeScoreboard} from '@/lib/feeds/adapter.mjs';
 type Row=Record<string,any>;
+import {hasActiveGames,mergeLiveScores} from './live-overlay.mjs';
 export async function api(url:string,options?:RequestInit){const r=await fetch(url,options);const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
 const browserCache=new Map<string,{time:number,payload:any}>();
 export async function browserBoard(sport:string,startDate:string,endDate?:string){
@@ -42,21 +43,13 @@ export async function fetchSlate(sport:string,date:string,days=1){
 }
 export function JsonCall(body:Row,method='POST'){return {method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};}
 
-const LIVE_FIELDS=['status','statusDescription','statusName','statusDetail','statusShortDetail','period','clock','scoreObservedAt','outs','isTopInning','liveHomeScore','liveAwayScore'];
 // The server slate is a cached render, so its live scores age past the
-// freshness window between renders. Overlay scores read directly from the
-// scoreboard for games that have started and are not final yet.
+// freshness window between renders. Overlay fresh scores for games that have
+// started and are not final yet, read through the server proxy.
 export async function withLiveScores(sport:string,date:string,endDate:string,slate:any){
  const games:Row[]=Array.isArray(slate?.games)?slate.games:[];
- const now=Date.now();
- const active=games.some(g=>!g.completed&&!g.result?.status&&(g.status==='live'||(Date.parse(g.startTime)<=now&&now-Date.parse(g.startTime)<8*3600000)));
- if(!active)return slate;
- try{
-  const fresh=(await api(`/api/live-scores?sport=${sport}&date=${date}&endDate=${endDate}`)).games as Row[];
-  const byId=new Map(fresh.map(g=>[String(g.id),g]));
-  return {...slate,games:games.map(g=>{const f=byId.get(String(g.id));if(!f||g.completed||g.result?.status||!['live','completed'].includes(f.status))return g;
-   // Just finished but not graded yet: keep showing the cover status against the final score.
-   if(f.status==='completed')return {...g,status:'live',statusDescription:'Final',statusDetail:'Final',statusShortDetail:'Final',period:f.period,clock:null,scoreObservedAt:f.scoreObservedAt,liveHomeScore:f.homeScore,liveAwayScore:f.awayScore,finalPendingGrade:true};
-   return {...g,...Object.fromEntries(LIVE_FIELDS.map(k=>[k,f[k]]))};})};
- }catch{return slate;}
+ if(!hasActiveGames(games))return slate;
+ let fresh:Row[]=[];
+ try{fresh=(await api(`/api/live-scores?sport=${sport}&date=${date}&endDate=${endDate}`)).games??[];}catch{}
+ return fresh.length?{...slate,games:mergeLiveScores(games,fresh)}:slate;
 }
