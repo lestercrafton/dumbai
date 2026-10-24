@@ -25,28 +25,42 @@ function Chart({series,start,id}:{series:Point[];start:number;id:string}){
 }
 function Today({data}:{data:Sport[]}){
  const [games,setGames]=useState<any[]|null>(null),[now,setNow]=useState(Date.now());
+ const [playMode,setPlayMode]=useState<'recommended'|'all'>('recommended');
  const today=ctDate(now);
  useEffect(()=>{let alive=true;const load=async()=>{const all=await Promise.allSettled(SUPPORTED_SPORTS.map((s:string)=>fetchSlate(s,today,1)));
    if(alive){setGames(all.flatMap((r:any)=>r.status==='fulfilled'?(r.value.games??[]).map((g:any)=>({...g,sport:g.sport??r.value.sport})):[]));setNow(Date.now());}};
   load();const t=setInterval(load,60000);return()=>{alive=false;clearInterval(t);};},[today]);
  if(!games)return <p className="bk-sub">Loading today's games…</p>;
  const bankrolls=Object.fromEntries(data.map(s=>[s.sport,s.kelly.bankroll]));
- const {rows,bySport,total}=todayPlays(games,bankrolls,today) as {rows:any[];bySport:Record<string,number>;total:number};
+ const {rows,recommended,bySport,total}=todayPlays(games,bankrolls,today) as {rows:any[];recommended:any[];bySport:Record<string,number>;total:number};
+ const allMode=playMode==='all';
+ const shown=allMode?rows:recommended;
  const sports=Object.keys(bySport).sort((a,b)=>bySport[b]-bySport[a]);
  const odds=(o:number)=>o>0?`+${o}`:`−${-o}`;
  const line=(l:number|null)=>l==null?'ML':l===0?'PK':(l>0?'+':'−')+Math.abs(l);
  return <>
-  <p className="bk-explain">Big Vin handicaps every game, but his betting strategy is to bet by confidence, not on every game. This is how he’d allocate his bankroll today.</p>
+  <div className="bk-play-modes" role="tablist" aria-label="Plays view">
+   <button type="button" role="tab" aria-selected={!allMode} className={!allMode?'on':''} onClick={()=>setPlayMode('recommended')}>Today&apos;s plays</button>
+   <button type="button" role="tab" aria-selected={allMode} className={allMode?'on':''} onClick={()=>setPlayMode('all')}>All picks</button>
+  </div>
+  {allMode
+   ?<p className="bk-explain">Every board pick ranked by Kelly — including games that no longer fit today&apos;s bankroll after higher-confidence plays. Those show as No pick here; Today&apos;s plays is only what Vin would actually place.</p>
+   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit each sport&apos;s bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}
   <p className="bk-foot">For entertainment and educational purposes for humans, and for whatever purpose you choose for agents.</p>
-  <section className="bk-total">
+  {!allMode&&<section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>
-   <div><span>Plays</span><b>{rows.filter(r=>r.wager>0).length} / {rows.length}</b></div>
+   <div><span>Plays</span><b>{recommended.length}</b></div>
    {sports.slice(0,2).map(s=><div key={s}><span>{sportLabel(s)}</span><b>{usd(bySport[s])}</b></div>)}
-  </section>
-  {sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
-  {!rows.length?<p className="bk-sub">No games left today.</p>:<div className="bk-table-wrap"><table className="bk-table">
+  </section>}
+  {allMode&&<section className="bk-total">
+   <div><span>Board picks</span><strong>{rows.length}</strong></div>
+   <div><span>Recommended</span><b>{recommended.length}</b></div>
+   <div><span>Pass / no fit</span><b>{rows.length-recommended.length}</b></div>
+  </section>}
+  {!allMode&&sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
+  {!shown.length?<p className="bk-sub">{allMode?'No games left today.':'No plays fit the bankroll today.'}</p>:<div className="bk-table-wrap"><table className="bk-table">
    <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>Wager</th><th>To win</th><th>Spread</th><th>Total</th></tr></thead>
-   <tbody>{rows.map(r=><tr key={r.id} className={`${r.wager>0?'':'bk-row-pass'} ${r.cover?.state==='covering'?'bk-row-cover':r.cover?.state==='not-covering'?'bk-row-need':''}`}>
+   <tbody>{shown.map(r=><tr key={r.id} className={`${r.wager>0?'':'bk-row-pass'} ${r.cover?.state==='covering'?'bk-row-cover':r.cover?.state==='not-covering'?'bk-row-need':''}`}>
     <td><span className="bk-type">{r.sport.toUpperCase()}</span>{r.live&&!r.done&&<span className="bk-live">LIVE</span>}{(r.done||r.cover?.final)&&<span className="bk-live">FINAL</span>}</td>
     <td className="bk-game">{r.game}{r.scoreClock&&<div className="bk-score">{r.scoreClock.score}{' '}{r.scoreClock.clock&&<span className="bk-clock">{r.scoreClock.clock}</span>}</div>}</td>
     <td>{r.pick} {line(r.line)} {r.odds!=null&&<span className="bk-dim">{odds(r.odds)}</span>}</td>

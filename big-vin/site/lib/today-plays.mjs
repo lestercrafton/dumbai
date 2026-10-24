@@ -1,7 +1,12 @@
 /** Today's full-Kelly plays from board games and each sport's current bankroll.
  * Uses the board's pregame pick and win chance; once a game starts its pick is
  * the locked kickoff revision, so live games keep the stake they had at lock.
- * Cover status uses the same livePickStatus function as the game cards. */
+ * Cover status uses the same livePickStatus function as the game cards.
+ *
+ * Wagers are sequential full-Kelly against that sport's day-start bankroll:
+ * take the next highest-Kelly bet at bankroll×Kelly only while it still fits
+ * the dollars left for the day. Later positive-Kelly games stay on All picks
+ * with idealWager set, but wager=0 so Today's plays is what Vin would place. */
 import {kellyStake} from './kelly-bankroll.mjs';
 import {compareKelly,pickPrice} from './kelly-rank.mjs';
 import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel,totalPickOutcome} from './live-pick-status.mjs';
@@ -33,6 +38,32 @@ export function scoreClock(g,now=Date.now()){
  const clock=clockBadge(g,{now});
  return {score,clock};
 }
+/** Apply sequential full-Kelly per sport onto already-sorted rows (mutates wager/toWin). */
+export function fitSequentialKelly(rows,bankrolls){
+ const remaining={};
+ const stopped={};
+ for(const sport of Object.keys(bankrolls||{})){
+  const b=bankrolls[sport];
+  remaining[sport]=finite(b)&&b>0?b:0;
+  stopped[sport]=!(finite(b)&&b>0);
+ }
+ for(const r of rows){
+  const bankroll=bankrolls?.[r.sport];
+  const opening=finite(bankroll)&&bankroll>0?bankroll:0;
+  const ideal=r.stake>0&&opening>0?opening*r.stake:0;
+  r.idealWager=ideal;
+  if(!(r.stake>0)||!(opening>0)){r.wager=0;r.toWin=0;r.recommended=false;continue;}
+  if(stopped[r.sport]){r.wager=0;r.toWin=0;r.recommended=false;continue;}
+  const left=remaining[r.sport]??0;
+  // Full Kelly of the day-start bankroll must still fit in what's left.
+  if(ideal>left+1e-9){stopped[r.sport]=true;r.wager=0;r.toWin=0;r.recommended=false;continue;}
+  r.wager=ideal;
+  r.toWin=finite(r.odds)?ideal*payout(r.odds):0;
+  r.recommended=true;
+  remaining[r.sport]=left-ideal;
+ }
+ return rows;
+}
 export function todayPlays(games,bankrolls,today,now=Date.now()){
  const rows=[];
  for(const g of games){
@@ -44,7 +75,7 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
   const homeSpread=finite(pick.marketHomeSpread)?pick.marketHomeSpread:g.market?.homeSpread;
   const odds=pickPrice(g);const p=g.rankSignal?.winChance;const bankroll=bankrolls[g.sport];
   const ok=finite(odds)&&Math.abs(odds)>=100&&finite(p)&&finite(bankroll);
-  const stake=ok?kellyStake(p,odds):0,wager=ok?bankroll*stake:0;
+  const stake=ok?kellyStake(p,odds):0;
   const moneyline=g.sport==='mlb';const cover=playCover(g,now);
   let totalCover=null;
   if(g.overUnder?.side){
@@ -61,14 +92,16 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
    pickAbbr:side==='home'?g.home?.abbreviation:g.away?.abbreviation,
    market:moneyline?'ml':'spread',
    line:moneyline?null:finite(homeSpread)?(side==='home'?homeSpread:-homeSpread):null,odds:finite(odds)?odds:null,
-   winChance:finite(p)?p:null,stake,wager,toWin:ok?wager*payout(odds):0,scoreClock:scoreClock(g,now),cover,totalCover});
+   winChance:finite(p)?p:null,stake,wager:0,idealWager:0,toWin:0,recommended:false,scoreClock:scoreClock(g,now),cover,totalCover});
  }
  // Rank by Kelly % so public Bankroll and My Bankroll share one order regardless of bankroll size.
  rows.sort((a,b)=>{
   const ds=b.stake-a.stake;if(Math.abs(ds)>1e-12)return ds;
   return compareKelly(a.game_,b.game_);
  });
+ fitSequentialKelly(rows,bankrolls);
  for(const r of rows)delete r.game_;
- const bySport={};for(const r of rows){bySport[r.sport]=(bySport[r.sport]??0)+r.wager;}
- return {rows,bySport,total:rows.reduce((a,r)=>a+r.wager,0)};
+ const recommended=rows.filter(r=>r.recommended);
+ const bySport={};for(const r of recommended){bySport[r.sport]=(bySport[r.sport]??0)+r.wager;}
+ return {rows,recommended,bySport,total:recommended.reduce((a,r)=>a+r.wager,0)};
 }

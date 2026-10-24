@@ -105,7 +105,7 @@ function Today({bankrolls,kalshi,kalshiReferral,kalshiPanel}:{bankrolls:Record<s
  };
   load();const t=setInterval(load,60000);return()=>{alive=false;clearInterval(t);};},[today,Object.keys(bankrolls).join(','),kalshi?.connected,kalshi?.goFull]);
  if(!games)return <p className="bk-sub">Loading today's games…</p>;
- const {rows,bySport,total}=todayPlays(games,bankrolls,today) as {rows:any[];bySport:Record<string,number>;total:number};
+ const {rows,recommended,bySport,total}=todayPlays(games,bankrolls,today) as {rows:any[];recommended:any[];bySport:Record<string,number>;total:number};
  const sports=Object.keys(bySport).sort((a,b)=>bySport[b]-bySport[a]);
  const odds=(o:number)=>o>0?`+${o}`:`−${-o}`;
  const line=(l:number|null)=>l==null?'ML':l===0?'PK':(l>0?'+':'−')+Math.abs(l);
@@ -140,25 +140,25 @@ Entertainment only — confirm to submit with your connected key.`);
    <button type="button" role="tab" aria-selected={allMode} className={allMode?'on':''} onClick={()=>setPlayMode('all')}>All picks</button>
   </div>
   {allMode
-   ?<p className="bk-explain">Every board pick ranked by Kelly / confidence — including Kelly-zero games Big Vin would pass. Type any amount (or leave blank to use the recommended size when there is one). Deep links and Place still work.</p>
-   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence — not on every game. These wagers are sized to <b>your</b> bankroll with full Kelly.</p>}
+   ?<p className="bk-explain">Every board pick ranked by Kelly — including games that no longer fit after higher-confidence plays. Type any amount (or leave blank to use the recommended size when there is one). Deep links and Place still work.</p>
+   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit <b>your</b> bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}
   <p className="bk-foot">{DISCLAIMER}</p>
   {placeMsg&&<p className="bk-ok">{placeMsg}</p>}
   {kalshiPanel}
   {!allMode&&<section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>
-   <div><span>Plays</span><b>{rows.filter(r=>r.wager>0).length} / {rows.length}</b></div>
+   <div><span>Plays</span><b>{recommended.length}</b></div>
    {sports.slice(0,2).map(s=><div key={s}><span>{sportLabel(s)}</span><b>{usd(bySport[s])}</b></div>)}
   </section>}
   {allMode&&<section className="bk-total">
    <div><span>Board picks</span><strong>{rows.length}</strong></div>
-   <div><span>Recommended</span><b>{rows.filter(r=>r.wager>0).length}</b></div>
-   <div><span>Pass / no pick</span><b>{rows.filter(r=>!(r.wager>0)).length}</b></div>
+   <div><span>Recommended</span><b>{recommended.length}</b></div>
+   <div><span>Pass / no fit</span><b>{rows.length-recommended.length}</b></div>
   </section>}
   {!allMode&&sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
-  {!rows.length?<p className="bk-sub">No games left today for sports you’ve set.</p>:<div className="bk-table-wrap"><table className="bk-table">
+  {!(allMode?rows:recommended).length?<p className="bk-sub">{allMode?'No games left today for sports you’ve set.':'No plays fit your bankroll today.'}</p>:<div className="bk-table-wrap"><table className="bk-table">
    <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>{allMode?'Amount':'Wager'}</th><th>To win</th><th>Spread</th><th>Total</th><th>Kalshi</th></tr></thead>
-   <tbody>{rows.map(r=>{
+   <tbody>{(allMode?rows:recommended).map(r=>{
     const m=links[r.id];
     const amt=resolveAmount(r);
     const canPlace=!!(kalshi?.goFull&&m?.placeable&&amt>0);
