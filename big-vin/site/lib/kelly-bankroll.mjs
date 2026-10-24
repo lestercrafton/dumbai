@@ -1,9 +1,14 @@
 /** Bankroll replay of graded tracked picks, in kickoff order.
  * Kelly sizing uses only information known before each game: the win chance
  * learned from picks graded before that kickoff (rank-signal buckets, pulled
- * toward break-even) and the price taken. Flat sizing is replayed alongside. */
+ * toward break-even) and the price taken. Flat sizing is replayed alongside.
+ *
+ * applyFrom (YYYY-MM-DD America/Chicago): still learn from earlier graded
+ * picks, but only stake / P&L / re-ups / series / drawdown on that day forward.
+ * Used by My Bankroll so History starts when the visitor arrived, not day one. */
 import {gradeSpreadPick,spreadOffer,breakEven,ASSUMED_ODDS,isLegacyRunLine} from './spread-record.mjs';
 import {learnRankSignal,scoreGame} from './rank-signal.mjs';
+import {ctDate} from './today-plays.mjs';
 
 export const START_BANKROLL=1_000_000;
 export const KELLY_FRACTION=1;
@@ -13,19 +18,31 @@ export const REUP_FLOOR=100_000;
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
 const payout=odds=>odds>0?odds/100:100/-odds;
 
+/** Later of arrived CT day and optional override effective_from (both YYYY-MM-DD). */
+export function bankrollApplyFrom(arrivedCtDay,effectiveFrom){
+ const a=typeof arrivedCtDay==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(arrivedCtDay)?arrivedCtDay:null;
+ const e=typeof effectiveFrom==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(effectiveFrom)?effectiveFrom:null;
+ if(!a&&!e)return null;
+ if(!a)return e;
+ if(!e)return a;
+ return a>e?a:e;
+}
+
 export function kellyStake(p,odds,{fraction=KELLY_FRACTION,cap=MAX_STAKE}={}){
  if(!finite(p))return 0;
  const b=payout(odds),full=(p*(b+1)-1)/b;
  return full>0?Math.min(cap,fraction*full):0;
 }
 
-export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,includeLegacy=false}={}){
+export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,includeLegacy=false,applyFrom=null}={}){
  const floor=finite(reupFloor)&&reupFloor>0?reupFloor:start*0.1;
  const graded=records.filter(r=>includeLegacy||!isLegacyRunLine(r)).map(r=>({r,offer:spreadOffer(r),outcome:gradeSpreadPick(r).outcome}))
   .filter(x=>x.offer&&x.offer.basis!=='synthetic-winner-even'&&['win','loss','push'].includes(x.outcome)&&Number.isFinite(Date.parse(x.r.startTime)))
   .sort((a,b)=>Date.parse(a.r.startTime)-Date.parse(b.r.startTime)||String(a.r.id).localeCompare(String(b.r.id)));
- const rows=[],bets_=[];let kelly=start,flat=start,peak=start,maxDrawdown=0,bets=0,staked=0,maxStake=0,maxStakeDollars=0,reups=0,putIn=start;
- const series=[{t:graded[0]?.r.startTime??null,kelly,flat,reup:false}];
+ const applyDay=typeof applyFrom==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(applyFrom)?applyFrom:null;
+ const rows=[],bets_=[];let kelly=start,flat=start,peak=start,maxDrawdown=0,bets=0,staked=0,maxStake=0,maxStakeDollars=0,reups=0,putIn=start,applied=0;
+ const firstActive=graded.find(x=>!applyDay||ctDate(x.r.startTime)>=applyDay);
+ const series=[{t:firstActive?.r.startTime??null,kelly,flat,reup:false}];
  const learnFrom=graded.map(x=>({...x.r,cohort:'live'}));
  for(const {r,offer,outcome} of graded){
   const odds=finite(r.odds)&&Math.abs(r.odds)>=100?r.odds:ASSUMED_ODDS;
@@ -33,6 +50,9 @@ export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,incl
   const edge=finite(r.predictedMargin)?Math.abs(r.predictedMargin+offer.homeSpread):null;
   const p=scoreGame(signal,{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport})?.winChance;
   const f=kellyStake(p,odds);
+  // Pre-arrival / pre-override games inform the signal only — no personal stake.
+  if(applyDay&&ctDate(r.startTime)<applyDay)continue;
+  applied++;
   if(outcome!=='push')rows.push({t:r.startTime,p,be:breakEven(odds),odds,edge,dog:(offer.side==='home'?offer.homeSpread:-offer.homeSpread)>0,win:outcome==='win'?1:0});
   const ret=outcome==='win'?payout(odds):outcome==='loss'?-1:0;
   if(f>0){bets++;staked+=f;if(f>maxStake)maxStake=f;maxStakeDollars=Math.max(maxStakeDollars,kelly*f);}
@@ -47,7 +67,7 @@ export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,incl
   bets_.push(bet);
  }
  let fpeak=start,flatDrawdown=0;for(const s of series){fpeak=Math.max(fpeak,s.flat);flatDrawdown=Math.max(flatDrawdown,(fpeak-s.flat)/fpeak);}
- return {start,picks:graded.length,bets,averageStake:bets?staked/bets:0,maxStake,maxStakeDollars,
+ return {start,picks:applied,betCount:bets,averageStake:bets?staked/bets:0,maxStake,maxStakeDollars,applyFrom:applyDay,
   kelly:{bankroll:kelly,change:kelly/start-1,maxDrawdown,putIn,net:kelly-putIn,reups},flat:{bankroll:flat,change:flat/start-1,maxDrawdown:flatDrawdown},
   series,rows,bets:bets_,breakEven:breakEven(ASSUMED_ODDS)};
 }

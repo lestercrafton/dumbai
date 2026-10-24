@@ -30,6 +30,15 @@ XDG_CONFIG_HOME=/home/box/.wrangler-lcrafton \
 
 Migration `0008_my_bankroll` adds `my_bankroll_users`, `my_bankroll_starts`, `my_bankroll_otps`. Migration `0009_my_bankroll_effective` adds `effective_from` so an override balance only applies Vin’s plays from that Chicago day forward (carryforward display uses full Kelly replay from the saved start).
 
+## History window (arrived)
+
+**Arrived** = Chicago calendar day of `my_bankroll_users.created_at` (first successful OTP verify / account create). History balances, nets, drawdowns, sparklines, and bet counts apply Vin’s recommended full-Kelly stakes only on/after that day — not as if the visitor had followed the public bankroll from season day one.
+
+- `replayKellyBankroll(..., { applyFrom })` still **learns** the rank-signal win chance from graded picks before the window (so stake fractions match what Vin would have recommended that day), but only **books** P&amp;L, re-ups, and series points inside the window.
+- `applyFrom` = later of arrived day and per-sport `effective_from` (set to arrived on first save; set to today when the visitor changes a start amount).
+- Put In = their saved start (+ re-ups since the window), never the public $1M story.
+- Sports with no graded Vin plays since arrived stay at the saved start ($0 net).
+
 OTP email copy lives in `lib/my-bankroll-email.mjs` and includes the Cash App karma link `https://cash.app/$bigvinsports` (same as Boost / `SITE_CONFIG.donation.href`).
 
 ## Disclaimer

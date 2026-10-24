@@ -43,7 +43,7 @@ test('personal start re-ups at 10%', () => {
 
 import {ctDate} from './today-plays.mjs';
 
-test('carryforward filters plays on/after effective_from (CT day)', () => {
+test('carryforward / arrived filters plays on/after CT day', () => {
   const rows = [
     { startTime: '2026-10-20T17:00:00Z' },
     { startTime: '2026-10-22T01:00:00Z' }, // still Oct 21 CT

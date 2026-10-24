@@ -254,7 +254,7 @@ export default function MyBankroll(){
  return <main className="bk">
   <div className="bk-navrow"><a href="/bankroll" className="bk-back">← Bankroll</a><a href="/" className="bk-back">Home</a></div>
   <h1>My Bankroll</h1>
-  <p className="bk-sub">Your starting bankroll · full Kelly · re-up below 10%</p>
+  <p className="bk-sub">Your starting bankroll · from the day you arrived · full Kelly · re-up below 10%</p>
   <p className="bk-disclaimer">{DISCLAIMER}</p>
 
   {phase==='loading'&&<p className="bk-sub">Loading…</p>}
@@ -357,7 +357,7 @@ export default function MyBankroll(){
       <div><dt>Put in</dt><dd>{usd(s.kelly.putIn)}</dd></div>
       <div><dt>Re-ups</dt><dd>{s.kelly.reups}</dd></div>
       <div><dt>Max drawdown</dt><dd>{(s.kelly.maxDrawdown*100).toFixed(1)}%</dd></div>
-      <div><dt>Bets</dt><dd>{s.bets} / {s.picks}</dd></div>
+      <div><dt>Bets</dt><dd>{s.betCount ?? 0} / {s.picks}</dd></div>
      </dl>
     </a>)}</div>
    </>}

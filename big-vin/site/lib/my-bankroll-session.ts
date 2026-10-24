@@ -20,9 +20,9 @@ export async function currentUser(request:Request){
  const secret=authSecret();if(!secret)return null;
  const token=readSessionCookie(request);if(!token)return null;
  const sess=await verifySession(token,secret);if(!sess)return null;
- const row=await db().prepare('SELECT id,email FROM my_bankroll_users WHERE id=?').bind(sess.userId).first<{id:string;email:string}>();
+ const row=await db().prepare('SELECT id,email,created_at FROM my_bankroll_users WHERE id=?').bind(sess.userId).first<{id:string;email:string;created_at:string}>();
  if(!row||row.email!==sess.email)return null;
- return {id:row.id,email:row.email};
+ return {id:row.id,email:row.email,createdAt:row.created_at};
 }
 
 export type StartRow={start:number;effectiveFrom:string|null};
