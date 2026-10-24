@@ -32,3 +32,14 @@ export const oddsSnapshots=sqliteTable('odds_snapshots',{id:text('id').primaryKe
 // requests on the Cloudflare free plan read one row instead of recomputing.
 export const readCache=sqliteTable('read_cache',{key:text('key').primaryKey(),status:integer('status').notNull(),headers:text('headers').notNull(),renderedAt:text('rendered_at').notNull(),source:text('source').notNull(),parts:integer('parts').notNull(),body:text('body').notNull(),registeredAt:text('registered_at').notNull()},t=>[index('read_cache_rendered').on(t.renderedAt)]);
 export const readCacheParts=sqliteTable('read_cache_parts',{key:text('key').notNull(),renderedAt:text('rendered_at').notNull(),part:integer('part').notNull(),body:text('body').notNull()},t=>[primaryKey({columns:[t.key,t.renderedAt,t.part]})]);
+
+// My Bankroll (personal Kelly bankrolls). Email OTP login; no passwords.
+export const myBankrollUsers=sqliteTable('my_bankroll_users',{
+ id:text('id').primaryKey(),email:text('email').notNull().unique(),createdAt:text('created_at').notNull(),lastLoginAt:text('last_login_at')
+});
+export const myBankrollStarts=sqliteTable('my_bankroll_starts',{
+ userId:text('user_id').notNull().references(()=>myBankrollUsers.id),sport:text('sport').notNull(),start:real('start').notNull(),updatedAt:text('updated_at').notNull()
+},t=>[primaryKey({columns:[t.userId,t.sport]})]);
+export const myBankrollOtps=sqliteTable('my_bankroll_otps',{
+ email:text('email').primaryKey(),codeHash:text('code_hash').notNull(),expiresAt:text('expires_at').notNull(),attempts:integer('attempts').notNull().default(0),createdAt:text('created_at').notNull()
+});

@@ -1,1 +1,3 @@
 export const KELLY_NOTE='Kelly betting sizes each bet by the edge and win chance to grow a bankroll as fast as possible. Big Vin starts each sport at $1,000,000 and follows full Kelly, which creates big swings. Whenever a sport drops below $100,000, it re-ups back to $1M.';
+export const MY_KELLY_NOTE='Kelly betting sizes each bet by the edge and win chance to grow a bankroll as fast as possible. You set each sport’s starting amount and follow full Kelly, which creates big swings. Whenever a sport drops below 10% of its start, it re-ups back to that start.';
+export const ENTERTAINMENT_NOTE='For entertainment purposes only. Not financial advice. For humans and for whatever purpose you choose for agents.';

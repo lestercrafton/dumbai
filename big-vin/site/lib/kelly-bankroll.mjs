@@ -19,7 +19,8 @@ export function kellyStake(p,odds,{fraction=KELLY_FRACTION,cap=MAX_STAKE}={}){
  return full>0?Math.min(cap,fraction*full):0;
 }
 
-export function replayKellyBankroll(records,{start=START_BANKROLL,includeLegacy=false}={}){
+export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,includeLegacy=false}={}){
+ const floor=finite(reupFloor)&&reupFloor>0?reupFloor:start*0.1;
  const graded=records.filter(r=>includeLegacy||!isLegacyRunLine(r)).map(r=>({r,offer:spreadOffer(r),outcome:gradeSpreadPick(r).outcome}))
   .filter(x=>x.offer&&x.offer.basis!=='synthetic-winner-even'&&['win','loss','push'].includes(x.outcome)&&Number.isFinite(Date.parse(x.r.startTime)))
   .sort((a,b)=>Date.parse(a.r.startTime)-Date.parse(b.r.startTime)||String(a.r.id).localeCompare(String(b.r.id)));
@@ -42,7 +43,7 @@ export function replayKellyBankroll(records,{start=START_BANKROLL,includeLegacy=
   // Re-up: when the bankroll falls under the floor, top it back up to the start.
   const pickTeam=offer.side==='home'?r.home:r.away,line=offer.side==='home'?offer.homeSpread:-offer.homeSpread;
   const bet={t:r.startTime,betType:r.sport==='mlb'?(isLegacyRunLine(r)?'Run line':'Moneyline'):'Spread',game:`${r.away??'Away'} @ ${r.home??'Home'}`,pick:pickTeam??offer.side,line,odds,edge,winChance:finite(p)?p:null,stake:f,amount,outcome,pl,before,after:kelly,reup:false};
-  if(kelly<REUP_FLOOR){putIn+=start-kelly;kelly=start;reups++;peak=start;bet.reup=true;bet.afterReup=kelly;series.push({t:r.startTime,kelly,flat,reup:true});}
+  if(kelly<floor){putIn+=start-kelly;kelly=start;reups++;peak=start;bet.reup=true;bet.afterReup=kelly;series.push({t:r.startTime,kelly,flat,reup:true});}
   bets_.push(bet);
  }
  let fpeak=start,flatDrawdown=0;for(const s of series){fpeak=Math.max(fpeak,s.flat);flatDrawdown=Math.max(flatDrawdown,(fpeak-s.flat)/fpeak);}

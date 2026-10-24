@@ -67,10 +67,11 @@ export default function Bankroll(){
  useEffect(()=>{fetch('/api/bankroll').then(r=>r.ok?r.json():Promise.reject()).then((v:any)=>setData(v.sports)).catch(()=>setError('Bankroll unavailable.'));},[]);
  const total=data?data.reduce((a,s)=>({bankroll:a.bankroll+s.kelly.bankroll,putIn:a.putIn+s.kelly.putIn,reups:a.reups+s.kelly.reups}),{bankroll:0,putIn:0,reups:0}):null;
  return <main className="bk">
-  <a href="/" className="bk-back">← Big Vin</a>
+  <div className="bk-navrow"><a href="/" className="bk-back">← Big Vin</a><a href="/my-bankroll" className="bk-mylink">My Bankroll →</a></div>
   <h1>Bankroll</h1>
   <p className="bk-sub">$1M per sport · full Kelly · re-up to $1M below $100K</p>
   <p className="bk-explain">{KELLY_NOTE}</p>
+  <p className="bk-foot"><a href="/my-bankroll">My Bankroll</a> — sign in with email, set your own starts, see recommended wagers sized to you.</p>
   {error&&<p className="bk-sub">{error}</p>}
   {!data&&!error&&<p className="bk-sub">Loading…</p>}
   <nav className="bk-tabs" role="tablist">{(['history','today'] as const).map(t=><button key={t} role="tab" aria-selected={tab===t} className={tab===t?'on':''} onClick={()=>pick(t)}>{t==='history'?'History':"Today's plays"}</button>)}</nav>
