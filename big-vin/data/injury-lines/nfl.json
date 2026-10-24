@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-24T01:05:19.827Z",
+ "generatedAt": "2026-10-24T06:26:50.270Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -47,7 +47,7 @@
      "player": "Budda Baker",
      "espnId": "3127287",
      "status": "Questionable",
-     "reported": "2026-10-23T01:06Z",
+     "reported": "2026-10-24T00:52Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -57,7 +57,7 @@
      "player": "Andrew Wingard",
      "espnId": "3918331",
      "status": "Out",
-     "reported": "2026-10-23T01:25Z",
+     "reported": "2026-10-24T00:57Z",
      "weight": 1,
      "points": 0.3
     },
@@ -67,7 +67,7 @@
      "player": "Jon Gaines II",
      "espnId": "4367199",
      "status": "Out",
-     "reported": "2026-10-23T17:43Z",
+     "reported": "2026-10-24T01:43Z",
      "weight": 1,
      "points": 0.3
     }
@@ -202,7 +202,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-24T00:16Z",
+     "reported": "2026-10-24T06:01Z",
      "weight": 1,
      "points": 0.3
     }
@@ -406,7 +406,7 @@
      "player": "Aaron Banks",
      "espnId": "4242390",
      "status": "Questionable",
-     "reported": "2026-10-23T01:56Z",
+     "reported": "2026-10-24T02:10Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -766,7 +766,7 @@
      "player": "Cesar Ruiz",
      "espnId": "4258199",
      "status": "Questionable",
-     "reported": "2026-10-20T00:17Z",
+     "reported": "2026-10-24T01:29Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -818,7 +818,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-24T00:16Z",
+     "reported": "2026-10-24T06:01Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -943,7 +943,7 @@
      "player": "Willie Lampkin",
      "espnId": "4582836",
      "status": "Questionable",
-     "reported": "2026-10-22T22:44Z",
+     "reported": "2026-10-24T02:22Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -953,7 +953,7 @@
      "player": "Tyler Steen",
      "espnId": "4362805",
      "status": "Questionable",
-     "reported": "2026-10-22T22:54Z",
+     "reported": "2026-10-24T02:19Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1006,7 +1006,7 @@
      "player": "Nick Bosa",
      "espnId": "4040605",
      "status": "Out",
-     "reported": "2026-10-23T00:54Z",
+     "reported": "2026-10-24T01:03Z",
      "weight": 1,
      "points": 0.5
     },
@@ -1016,7 +1016,7 @@
      "player": "Marques Sigle",
      "espnId": "4693337",
      "status": "Out",
-     "reported": "2026-10-23T20:44Z",
+     "reported": "2026-10-24T01:11Z",
      "weight": 1,
      "points": 0.3
     }
@@ -1119,7 +1119,7 @@
      "player": "Luke Goedeke",
      "espnId": "4380507",
      "status": "Out",
-     "reported": "2026-10-23T17:15Z",
+     "reported": "2026-10-24T01:40Z",
      "weight": 1,
      "points": 0.4
     }
