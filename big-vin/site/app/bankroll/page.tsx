@@ -48,7 +48,7 @@ function Today({data}:{data:Sport[]}){
    <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>Wager</th><th>To win</th><th>Status</th></tr></thead>
    <tbody>{rows.map(r=><tr key={r.id} className={`${r.wager>0?'':'bk-row-pass'} ${r.cover?.state==='covering'?'bk-row-cover':r.cover?.state==='not-covering'?'bk-row-need':''}`}>
     <td><span className="bk-type">{r.sport.toUpperCase()}</span>{r.live&&!r.done&&<span className="bk-live">LIVE</span>}{(r.done||r.cover?.final)&&<span className="bk-live">FINAL</span>}</td>
-    <td className="bk-game">{r.game}{r.scoreClock&&<div className="bk-score">{r.scoreClock.score}{r.scoreClock.clock&&<span className="bk-clock">{r.scoreClock.clock}</span>}</div>}</td>
+    <td className="bk-game">{r.game}{r.scoreClock&&<div className="bk-score">{r.scoreClock.score}{' '}{r.scoreClock.clock&&<span className="bk-clock">{r.scoreClock.clock}</span>}</div>}</td>
     <td>{r.pick} {line(r.line)} {r.odds!=null&&<span className="bk-dim">{odds(r.odds)}</span>}</td>
     <td>{r.winChance==null?'—':`${(r.winChance*100).toFixed(1)}%`}</td>
     <td>{r.stake>0?`${(r.stake*100).toFixed(1)}%`:'—'}</td>
