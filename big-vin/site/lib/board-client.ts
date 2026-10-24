@@ -54,7 +54,9 @@ export async function withLiveScores(sport:string,date:string,endDate:string,sla
  try{
   const fresh=normalizeScoreboard(await browserBoard(sport,date,endDate),sport,{retrievedAt:new Date().toISOString()}).games as Row[];
   const byId=new Map(fresh.map(g=>[String(g.id),g]));
-  return {...slate,games:games.map(g=>{const f=byId.get(String(g.id));if(!f||g.completed||g.result?.status||f.status!=='live')return g;
+  return {...slate,games:games.map(g=>{const f=byId.get(String(g.id));if(!f||g.completed||g.result?.status||!['live','completed'].includes(f.status))return g;
+   // Just finished but not graded yet: keep showing the cover status against the final score.
+   if(f.status==='completed')return {...g,status:'live',statusDescription:'Final',statusDetail:'Final',statusShortDetail:'Final',period:f.period,clock:null,scoreObservedAt:f.scoreObservedAt,liveHomeScore:f.homeScore,liveAwayScore:f.awayScore,finalPendingGrade:true};
    return {...g,...Object.fromEntries(LIVE_FIELDS.map(k=>[k,f[k]]))};})};
  }catch{return slate;}
 }
