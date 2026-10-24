@@ -25,3 +25,13 @@ test('live cover status matches the card labels and colors',()=>{
  assert.equal(playCover({...game,finalPendingGrade:true},now).label,'Win');
  assert.equal(playCover({...game,finalPendingGrade:true,liveHomeScore:10},now).label,'Loss');
 });
+
+test('ranks by Kelly % across sports, not dollar wager',()=>{
+ const cfb=(id,p)=>({id,sport:'cfb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpread:-3,homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p}});
+ const mlb=(id,p)=>({id,sport:'mlb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p}});
+ // Small CFB bankroll + high Kelly vs huge MLB bankroll + low Kelly → CFB first by %.
+ const out=todayPlays([cfb('hi',0.62),mlb('lo',0.54)],{cfb:1_000,mlb:1_000_000},'2026-10-24');
+ assert.equal(out.rows[0].id,'cfb:hi');
+ assert.ok(out.rows[0].stake>out.rows[1].stake);
+ assert.ok(out.rows[0].wager<out.rows[1].wager);
+});

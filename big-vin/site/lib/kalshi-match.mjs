@@ -14,7 +14,7 @@ export const SERIES_BY_SPORT = Object.freeze({
   mlb: { game: 'KXMLBGAME', spread: 'KXMLBSPREAD', total: 'KXMLBTOTAL' },
 });
 
-const MASCOT = /\b(buccaneers?|bulldogs?|tigers?|wildcats?|eagles?|hawks?|bears?|lions?|panthers?|warriors?|knights?|cardinals?|rebels?|raiders?|aggies?|gators?|huskies|cougars?|spartans?|trojans?|bruins?|buckeyes?|sooners?|longhorns?|volunteers?|commodores?|razorbacks?|hogs|midshipmen|quakers?|keydets?|seawolves|pirates?|rams?|foxes?|hornets?|skyhawks?|sharks?|danes?|camels?|monarchs?|hurricanes?|huskies|mean\s+green|crimson\s+tide|fighting\s+irish|yellow\s+jackets?|demon\s+deacons?|wolfpack|mountaineers?|black\s+knights?|black\s+bears?|big\s+green|red\s+hawks?|redhawks?|golden\s+hurricane|golden\s+eagles?|blue\s+devils?|tar\s+heels?|seminoles?|gators?|nittany\s+lions?)\b/gi;
+const MASCOT = /\b(buccaneers?|bulldogs?|tigers?|wildcats?|eagles?|falcons?|hawks?|bears?|lions?|panthers?|warriors?|knights?|cardinals?|rebels?|raiders?|aggies?|gators?|huskies|cougars?|spartans?|trojans?|bruins?|buckeyes?|sooners?|longhorns?|volunteers?|commodores?|razorbacks?|hogs|midshipmen|quakers?|keydets?|seawolves|pirates?|rams?|foxes?|hornets?|skyhawks?|sharks?|danes?|camels?|monarchs?|hurricanes?|huskies|mean\s+green|crimson\s+tide|fighting\s+irish|yellow\s+jackets?|demon\s+deacons?|wolfpack|mountaineers?|black\s+knights?|black\s+bears?|big\s+green|red\s+hawks?|redhawks?|golden\s+hurricane|golden\s+eagles?|blue\s+devils?|tar\s+heels?|seminoles?|gators?|nittany\s+lions?)\b/gi;
 const FILLER = /\b(university|univ|the|of|college|football|basketball|baseball|hockey|men'?s|women'?s)\b/gi;
 
 export function normalizeTeam(name) {
@@ -67,16 +67,42 @@ export function groupEvents(markets) {
   return [...events.values()];
 }
 
+
+const MONTH = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+
+/** Parse YYMONDD from a Kalshi event ticker (…-26OCT23YALEPENN). */
+export function eventTickerDate(ticker) {
+  const m = String(ticker || '').match(/-(\d{2})([A-Z]{3})(\d{2})/);
+  if (!m) return null;
+  const yy = Number(m[1]), mon = MONTH[m[2]], dd = Number(m[3]);
+  if (!Number.isFinite(yy) || mon == null || !Number.isFinite(dd)) return null;
+  const yyyy = yy >= 70 ? 1900 + yy : 2000 + yy;
+  return `${yyyy}-${String(mon + 1).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
+}
+
+/** America/Chicago calendar day for an ISO / ms timestamp. */
+export function chicagoGameDay(t) {
+  if (t == null || t === '') return null;
+  const d = new Date(t);
+  if (Number.isNaN(d.getTime())) return null;
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+}
+
 /** Best event for a Big Vin home/away pair among Kalshi game-winner events. */
-export function matchGameEvent(home, away, events, { minPair = 140 } = {}) {
+export function matchGameEvent(home, away, events, { minPair = 140, startTime = null } = {}) {
   const homeName = home?.name || home || '';
   const awayName = away?.name || away || '';
   const homeAbbr = home?.abbreviation || '';
   const awayAbbr = away?.abbreviation || '';
+  const wantDay = chicagoGameDay(startTime);
   let best = null;
   for (const ev of events || []) {
     const labels = ev.labels?.length ? ev.labels : (ev.markets || []).map((m) => m.yes_sub_title).filter(Boolean);
     if (labels.length < 2) continue;
+    const evDay = eventTickerDate(ev.eventTicker);
+    // When we know the kickoff day, skip other calendar days (avoids deep-linking an old rematch).
+    if (wantDay && evDay && evDay !== wantDay) continue;
+    let local = null;
     // Try every pair of distinct labels (usually exactly two).
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < labels.length; j++) {
@@ -85,7 +111,7 @@ export function matchGameEvent(home, away, events, { minPair = 140 } = {}) {
         const sa = Math.max(teamScore(awayName, labels[j]), teamScore(awayAbbr, labels[j]));
         const pair = sh + sa;
         if (sh < 50 || sa < 50) continue;
-        if (!best || pair > best.pair) best = { pair, event: ev, homeLabel: labels[i], awayLabel: labels[j] };
+        if (!local || pair > local.pair) local = { pair, event: ev, homeLabel: labels[i], awayLabel: labels[j] };
       }
     }
     // Abbreviation codes glued in the event ticker (…ARMYTLSA).
@@ -96,9 +122,14 @@ export function matchGameEvent(home, away, events, { minPair = 140 } = {}) {
       const aa = awayAbbr.toUpperCase().replace(/[^A-Z0-9]/g, '');
       if (ha.length >= 2 && aa.length >= 2 && up.includes(ha) && up.includes(aa)) {
         const pair = 160;
-        if (!best || pair > best.pair) best = { pair, event: ev, homeLabel: labels[0], awayLabel: labels[1], via: 'abbr' };
+        if (!local || pair > local.pair) local = { pair, event: ev, homeLabel: labels[0], awayLabel: labels[1], via: 'abbr' };
       }
     }
+    if (!local) continue;
+    // Prefer exact date match; otherwise keep strongest pair.
+    const dated = wantDay && evDay === wantDay ? 1 : 0;
+    const bestDated = best && wantDay && eventTickerDate(best.event.eventTicker) === wantDay ? 1 : 0;
+    if (!best || dated > bestDated || (dated === bestDated && local.pair > best.pair)) best = local;
   }
   if (!best || best.pair < minPair) return null;
   return best;
@@ -196,7 +227,7 @@ export function matchPick(pick, catalogs) {
   const sport = pick?.sport;
   const series = SERIES_BY_SPORT[sport];
   if (!series) return { matched: false, reason: 'unsupported-sport' };
-  const gameMatch = matchGameEvent(pick.home, pick.away, catalogs.game || []);
+  const gameMatch = matchGameEvent(pick.home, pick.away, catalogs.game || [], { startTime: pick.startTime || pick.start || null });
   if (!gameMatch) return { matched: false, reason: 'no-game' };
 
   const moneyline = sport === 'mlb' || pick.market === 'ml' || pick.line == null;

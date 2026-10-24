@@ -63,7 +63,11 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
    line:moneyline?null:finite(homeSpread)?(side==='home'?homeSpread:-homeSpread):null,odds:finite(odds)?odds:null,
    winChance:finite(p)?p:null,stake,wager,toWin:ok?wager*payout(odds):0,scoreClock:scoreClock(g,now),cover,totalCover});
  }
- rows.sort((a,b)=>a.sport===b.sport?compareKelly(a.game_,b.game_):(b.wager-a.wager||compareKelly(a.game_,b.game_)));
+ // Rank by Kelly % so public Bankroll and My Bankroll share one order regardless of bankroll size.
+ rows.sort((a,b)=>{
+  const ds=b.stake-a.stake;if(Math.abs(ds)>1e-12)return ds;
+  return compareKelly(a.game_,b.game_);
+ });
  for(const r of rows)delete r.game_;
  const bySport={};for(const r of rows){bySport[r.sport]=(bySport[r.sport]??0)+r.wager;}
  return {rows,bySport,total:rows.reduce((a,r)=>a+r.wager,0)};

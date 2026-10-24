@@ -17,13 +17,15 @@ async function publicGet(path) {
   return json;
 }
 
-/** Paginate open markets for a series ticker. */
-export async function fetchOpenMarkets(seriesTicker, { maxPages = 6 } = {}) {
+/** Paginate markets for a series ticker (status + optional min_close_ts). */
+export async function fetchMarkets(seriesTicker, { status = 'open', maxPages = 6, minCloseTs = null } = {}) {
   if (!seriesTicker) return [];
   const markets = [];
   let cursor = '';
   for (let page = 0; page < maxPages; page++) {
-    const q = `/markets?series_ticker=${encodeURIComponent(seriesTicker)}&status=open&limit=200${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+    let q = `/markets?series_ticker=${encodeURIComponent(seriesTicker)}&status=${encodeURIComponent(status)}&limit=200`;
+    if (minCloseTs != null) q += `&min_close_ts=${encodeURIComponent(String(minCloseTs))}`;
+    if (cursor) q += `&cursor=${encodeURIComponent(cursor)}`;
     const data = await publicGet(q);
     const batch = data.markets || [];
     markets.push(...batch);
@@ -33,18 +35,44 @@ export async function fetchOpenMarkets(seriesTicker, { maxPages = 6 } = {}) {
   return markets;
 }
 
+/** Open markets for a series ticker. */
+export async function fetchOpenMarkets(seriesTicker, opts = {}) {
+  return fetchMarkets(seriesTicker, { status: 'open', maxPages: opts.maxPages ?? 6 });
+}
+
+/** Recently settled markets (defaults to last 3 days) so FINAL boards still deep-link. */
+export async function fetchRecentSettledMarkets(seriesTicker, { lookbackMs = 3 * 86_400_000, maxPages = 4 } = {}) {
+  const minCloseTs = Math.floor((Date.now() - lookbackMs) / 1000);
+  return fetchMarkets(seriesTicker, { status: 'settled', maxPages, minCloseTs });
+}
+
+function mergeMarkets(openList, settledList) {
+  const seen = new Set();
+  const out = [];
+  for (const m of [...(openList || []), ...(settledList || [])]) {
+    const t = m?.ticker;
+    if (!t || seen.has(t)) continue;
+    seen.add(t);
+    out.push(m);
+  }
+  return out;
+}
+
 export async function loadSportCatalog(sport) {
   const series = SERIES_BY_SPORT[sport];
   if (!series) return { game: [], spread: [], total: [] };
-  const [gameM, spreadM, totalM] = await Promise.all([
+  const [gameOpen, gameSettled, spreadOpen, spreadSettled, totalOpen, totalSettled] = await Promise.all([
     fetchOpenMarkets(series.game).catch(() => []),
+    series.game ? fetchRecentSettledMarkets(series.game).catch(() => []) : Promise.resolve([]),
     series.spread ? fetchOpenMarkets(series.spread).catch(() => []) : Promise.resolve([]),
+    series.spread ? fetchRecentSettledMarkets(series.spread).catch(() => []) : Promise.resolve([]),
     series.total ? fetchOpenMarkets(series.total).catch(() => []) : Promise.resolve([]),
+    series.total ? fetchRecentSettledMarkets(series.total).catch(() => []) : Promise.resolve([]),
   ]);
   return {
-    game: groupEvents(gameM),
-    spread: groupEvents(spreadM),
-    total: groupEvents(totalM),
+    game: groupEvents(mergeMarkets(gameOpen, gameSettled)),
+    spread: groupEvents(mergeMarkets(spreadOpen, spreadSettled)),
+    total: groupEvents(mergeMarkets(totalOpen, totalSettled)),
   };
 }
 

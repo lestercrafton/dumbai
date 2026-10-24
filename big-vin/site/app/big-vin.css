@@ -255,6 +255,7 @@ a.vin-nav-bankroll-mine:hover,
 .vin-header nav .vin-nav-bankroll-mine{background:#520975;border-color:#520975}
 
 .bk-kalshi{margin-top:22px;padding-top:18px;border-top:1px solid #e6dcec;display:flex;flex-direction:column;gap:10px}
+.bk-kalshi-compact{margin-top:12px;margin-bottom:16px;padding:14px;border:1px solid #e6dcec;border-radius:12px;border-top:1px solid #e6dcec;background:#faf6fc}
 .bk-kalshi-title{margin:0;font-size:18px;font-weight:750;color:#2a1037}
 .bk-kalshi-go,.bk-kalshi-place{font:inherit;font-size:13px;font-weight:700;padding:10px 14px;border:0;border-radius:8px;background:#6b2f86;color:#fff;cursor:pointer;width:fit-content}
 .bk-kalshi-place{padding:6px 10px;font-size:12px;margin-top:4px;display:inline-block}

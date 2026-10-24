@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  normalizeTeam, teamScore, matchGameEvent, matchPick, groupEvents, marketUrl, SERIES_BY_SPORT,
+  normalizeTeam, teamScore, matchGameEvent, matchPick, groupEvents, marketUrl, SERIES_BY_SPORT, eventTickerDate, chicagoGameDay,
 } from './kalshi-match.mjs';
 
 test('normalizeTeam keeps school names, strips mascots', () => {
@@ -79,4 +79,48 @@ test('matchPick spread favorite maps to wins-by-over', () => {
 test('marketUrl and series map', () => {
   assert.equal(marketUrl('KXNFLGAME', 'KXNFLGAME-26NOV02CHISEA'), 'https://kalshi.com/markets/kxnflgame/kxnflgame-26nov02chisea');
   assert.equal(SERIES_BY_SPORT.cfb.game, 'KXNCAAFGAME');
+});
+
+test('eventTickerDate and chicagoGameDay', () => {
+  assert.equal(eventTickerDate('KXNCAAFGAME-26OCT23YALEPENN'), '2026-10-23');
+  assert.equal(chicagoGameDay('2026-10-24T02:00:00Z'), '2026-10-23'); // 9pm CT Oct 23
+});
+
+test('matchGameEvent skips wrong-day rematch when startTime is set', () => {
+  const events = groupEvents([
+    { event_ticker: 'KXNCAAFGAME-26OCT17CHARTEM', ticker: 'KXNCAAFGAME-26OCT17CHARTEM-TEM', yes_sub_title: 'Temple' },
+    { event_ticker: 'KXNCAAFGAME-26OCT17CHARTEM', ticker: 'KXNCAAFGAME-26OCT17CHARTEM-CHAR', yes_sub_title: 'Charlotte' },
+    { event_ticker: 'KXNCAAFGAME-26OCT23CHARTEM', ticker: 'KXNCAAFGAME-26OCT23CHARTEM-TEM', yes_sub_title: 'Temple' },
+    { event_ticker: 'KXNCAAFGAME-26OCT23CHARTEM', ticker: 'KXNCAAFGAME-26OCT23CHARTEM-CHAR', yes_sub_title: 'Charlotte' },
+  ]);
+  const hit = matchGameEvent(
+    { name: 'Temple Owls', abbreviation: 'TEM' },
+    { name: 'Charlotte 49ers', abbreviation: 'CLT' },
+    events,
+    { startTime: '2026-10-23T23:00:00Z' },
+  );
+  assert.ok(hit);
+  assert.equal(hit.event.eventTicker, 'KXNCAAFGAME-26OCT23CHARTEM');
+});
+
+test('matchPick uses startTime so finished games deep-link the right settled event', () => {
+  const catalogs = {
+    game: groupEvents([
+      { event_ticker: 'KXNCAAFGAME-26OCT23YALEPENN', ticker: 'KXNCAAFGAME-26OCT23YALEPENN-PENN', title: 'Penn wins', yes_sub_title: 'Penn' },
+      { event_ticker: 'KXNCAAFGAME-26OCT23YALEPENN', ticker: 'KXNCAAFGAME-26OCT23YALEPENN-YALE', title: 'Yale wins', yes_sub_title: 'Yale' },
+      { event_ticker: 'KXNCAAFGAME-26OCT31YALECLMB', ticker: 'KXNCAAFGAME-26OCT31YALECLMB-YALE', title: 'Yale wins', yes_sub_title: 'Yale' },
+      { event_ticker: 'KXNCAAFGAME-26OCT31YALECLMB', ticker: 'KXNCAAFGAME-26OCT31YALECLMB-CLMB', title: 'Columbia wins', yes_sub_title: 'Columbia' },
+    ]),
+    spread: [],
+    total: [],
+  };
+  const m = matchPick({
+    id: 'cfb:1', sport: 'cfb', line: 6.5, startTime: '2026-10-23T23:00:00Z',
+    home: { name: 'Pennsylvania Quakers', abbreviation: 'PENN' },
+    away: { name: 'Yale Bulldogs', abbreviation: 'YALE' },
+    pickName: 'Pennsylvania Quakers', pickAbbr: 'PENN',
+  }, catalogs);
+  assert.equal(m.matched, true);
+  assert.equal(m.eventTicker, 'KXNCAAFGAME-26OCT23YALEPENN');
+  assert.match(m.url, /yalepenn/i);
 });

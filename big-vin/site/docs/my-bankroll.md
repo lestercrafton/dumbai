@@ -52,12 +52,13 @@ My Bankroll can deep-link Vin’s picks into matching Kalshi sports markets, and
 ### Deep links (default)
 
 - Today’s plays calls `POST /api/my-bankroll/kalshi/matches` with compact pick descriptors.
-- The Worker searches Kalshi’s public Trade API (`https://api.elections.kalshi.com/trade-api/v2`, same data as `external-api.kalshi.com`) for open sports series (`KXNCAAFGAME`, `KXNFLGAME`, spreads/totals, etc.).
-- Matching prefers game-winner markets; spreads/totals only when Kalshi lists a clear line. No match → muted “No Kalshi market”. Deep links never place trades.
+- The Worker searches Kalshi’s public Trade API (`https://api.elections.kalshi.com/trade-api/v2`, same data as `external-api.kalshi.com`) for **open** sports series plus **recently settled** markets (`min_close_ts`, last ~3 days) so FINAL boards still deep-link.
+- Matching prefers game-winner markets on the pick’s Chicago game day (ticker `YYMONDD`); spreads/totals only when Kalshi lists a clear line. No match → muted “No Kalshi market”. Deep links never place trades.
+- Today’s plays / All picks / public Bankroll rank by **Kelly %**, not dollar wager, so order matches across bankroll sizes.
 
 ### Go full (opt-in)
 
-- On Starting bankrolls, **Go full with Kalshi** lets a signed-in user paste their Kalshi API Key ID + private key PEM.
+- **Go full with Kalshi** on Starting bankrolls **and** Today’s plays lets a signed-in user paste their Kalshi API Key ID + private key PEM.
 - Credentials are AES-GCM encrypted with `MY_BANKROLL_SESSION_SECRET` and stored in D1 `my_bankroll_kalshi` (never logged).
 - Save runs a live `GET /portfolio/balance` test before persisting.
 - When connected, Today’s plays can show **Place on Kalshi** (confirm step) using Create Order V2 (`POST /portfolio/events/orders`) at the recommended $ size for YES-side contracts. Underdog/NO still uses Open on Kalshi.

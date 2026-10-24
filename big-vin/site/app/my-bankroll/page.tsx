@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useState,FormEvent} from 'react';
+import {useEffect,useState,FormEvent,type ReactNode} from 'react';
 import {MY_KELLY_NOTE,ENTERTAINMENT_NOTE,CARRY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
 import {fetchSlate} from '@/lib/board-client';
@@ -29,7 +29,58 @@ function Chart({series,start,id}:{series:Point[];start:number;id:string}){
  </svg>;
 }
 
-function Today({bankrolls,kalshi,kalshiReferral}:{bankrolls:Record<string,number>;kalshi:{connected?:boolean;goFull?:boolean};kalshiReferral?:{configured?:boolean;joinUrl?:string}}){
+
+type KalshiState={connected?:boolean;goFull?:boolean;apiKeyIdSuffix?:string;lastError?:string|null};
+function KalshiPanel({compact,kalshi,kalshiReferral,kalshiKeyId,setKalshiKeyId,kalshiPem,setKalshiPem,kalshiMsg,setKalshiMsg,showKalshiForm,setShowKalshiForm,setKalshi,busy,setBusy,setError}:{
+ compact?:boolean;kalshi:KalshiState;kalshiReferral?:{configured?:boolean;joinUrl?:string};
+ kalshiKeyId:string;setKalshiKeyId:(v:string)=>void;kalshiPem:string;setKalshiPem:(v:string)=>void;
+ kalshiMsg:string;setKalshiMsg:(v:string)=>void;showKalshiForm:boolean;setShowKalshiForm:(v:boolean)=>void;
+ setKalshi:(v:KalshiState)=>void;busy:boolean;setBusy:(v:boolean)=>void;setError:(v:string)=>void;
+}){
+ return <div className={`bk-kalshi${compact?' bk-kalshi-compact':''}`}>
+  <h2 className="bk-kalshi-title">Kalshi</h2>
+  <p className="bk-explain">Deep links open matching Kalshi markets for each pick (game winner first; spreads/totals when Kalshi lists a clear line). No trades are placed unless you Go full.</p>
+  <p className="bk-explain"><a className="bk-kalshi-link" href={kalshiReferral?.joinUrl||"https://kalshi.com"} target="_blank" rel="noopener noreferrer">Open on Kalshi</a>{kalshiReferral?.configured?" (Big Vin referral attached).":"."}</p>
+  <p className="bk-note">{DISCLAIMER}</p>
+  {!kalshi.connected&&!showKalshiForm&&<button type="button" className="bk-kalshi-go" onClick={()=>setShowKalshiForm(true)}>Go full with Kalshi</button>}
+  {!kalshi.connected&&showKalshiForm&&<div className="bk-kalshi-form">
+   <p className="bk-explain">Connect <b>your</b> Kalshi API Key ID and private key PEM. We encrypt them per account and only use them to place the recommended size when you confirm. Keys are never written to logs.</p>
+   <label>API Key ID<input value={kalshiKeyId} onChange={e=>setKalshiKeyId(e.target.value)} autoComplete="off" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/></label>
+   <label>Private key PEM<textarea rows={6} value={kalshiPem} onChange={e=>setKalshiPem(e.target.value)} autoComplete="off" spellCheck={false} placeholder="-----BEGIN PRIVATE KEY-----"/></label>
+   <button type="button" disabled={busy} onClick={async()=>{
+     setBusy(true);setKalshiMsg('');setError('');
+     try{
+       const r=await fetch('/api/my-bankroll/kalshi',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKeyId:kalshiKeyId,privateKeyPem:kalshiPem,goFull:true})});
+       const j=await r.json();
+       if(!r.ok){setError(j.error||'Could not connect.');return;}
+       setKalshi(j.kalshi||{connected:true,goFull:true});setKalshiPem('');setKalshiMsg(j.balance!=null?`Connected. Kalshi balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Connected.');setShowKalshiForm(false);
+     }catch{setError('Could not connect.');}
+     finally{setBusy(false);}
+   }}>{busy?'Testing…':'Save & test connection'}</button>
+   <button type="button" className="bk-linkish" onClick={()=>setShowKalshiForm(false)}>Cancel</button>
+  </div>}
+  {kalshi.connected&&<div className="bk-kalshi-connected">
+   <p className="bk-ok">Connected{kalshi.apiKeyIdSuffix?` · key …${kalshi.apiKeyIdSuffix}`:''}{kalshi.goFull?' · Go full on':''}</p>
+   {kalshi.lastError&&<p className="bk-err">Last Kalshi error: {kalshi.lastError}</p>}
+   {kalshiMsg&&<p className="bk-ok">{kalshiMsg}</p>}
+   <p className="bk-explain">Today&apos;s plays and All picks can show <b>Place on Kalshi</b> (confirm step). All picks uses your typed amount, or the recommended size if blank. YES-side contracts only in this build; otherwise use Open on Kalshi.</p>
+   <div className="bk-kalshi-actions">
+    <button type="button" className="bk-linkish" onClick={async()=>{
+      setBusy(true);setKalshiMsg('');
+      try{const r=await fetch('/api/my-bankroll/kalshi/test',{method:'POST',credentials:'same-origin'});const j=await r.json();setKalshiMsg(r.ok?(j.balance!=null?`Still good. Balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Still good.'):(j.error||'Test failed'));}catch{setKalshiMsg('Test failed');}
+      finally{setBusy(false);}
+    }}>Test connection</button>
+    <button type="button" className="bk-linkish" onClick={async()=>{
+      if(!window.confirm('Disconnect Kalshi and delete your stored key from Big Vin?'))return;
+      setBusy(true);
+      try{await fetch('/api/my-bankroll/kalshi',{method:'DELETE',credentials:'same-origin'});setKalshi({});setKalshiMsg('Disconnected.');}finally{setBusy(false);}
+    }}>Disconnect</button>
+   </div>
+  </div>}
+ </div>;
+}
+
+function Today({bankrolls,kalshi,kalshiReferral,kalshiPanel}:{bankrolls:Record<string,number>;kalshi:{connected?:boolean;goFull?:boolean};kalshiReferral?:{configured?:boolean;joinUrl?:string};kalshiPanel?:ReactNode}){
  const [games,setGames]=useState<any[]|null>(null),[now,setNow]=useState(Date.now());
  const [links,setLinks]=useState<Record<string,any>>({});
  const [placing,setPlacing]=useState<string>('');
@@ -43,7 +94,7 @@ function Today({bankrolls,kalshi,kalshiReferral}:{bankrolls:Record<string,number
    setGames(gs);setNow(Date.now());
    const {rows}=todayPlays(gs,bankrolls,today) as {rows:any[]};
    const picks=rows.map((r:any)=>({
-     id:r.id,sport:r.sport,home:r.home,away:r.away,pickName:r.pick,pickAbbr:r.pickAbbr,line:r.line,market:r.market,
+     id:r.id,sport:r.sport,home:r.home,away:r.away,pickName:r.pick,pickAbbr:r.pickAbbr,line:r.line,market:r.market,startTime:r.startTime,
    }));
    if(picks.length){
      try{
@@ -93,6 +144,7 @@ Entertainment only — confirm to submit with your connected key.`);
    :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence — not on every game. These wagers are sized to <b>your</b> bankroll with full Kelly.</p>}
   <p className="bk-foot">{DISCLAIMER}</p>
   {placeMsg&&<p className="bk-ok">{placeMsg}</p>}
+  {kalshiPanel}
   {!allMode&&<section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>
    <div><span>Plays</span><b>{rows.filter(r=>r.wager>0).length} / {rows.length}</b></div>
@@ -293,51 +345,11 @@ export default function MyBankroll(){
     {saved&&<p className="bk-ok">{saved}</p>}
     <button type="submit" disabled={busy}>{busy?'Saving…':'Save bankrolls'}</button>
 
-    <div className="bk-kalshi">
-     <h2 className="bk-kalshi-title">Kalshi</h2>
-     <p className="bk-explain">Deep links open matching Kalshi markets for each pick (game winner first; spreads/totals when Kalshi lists a clear line). No trades are placed unless you Go full.</p>
-     <p className="bk-explain"><a className="bk-kalshi-link" href={kalshiReferral?.joinUrl||"https://kalshi.com"} target="_blank" rel="noopener noreferrer">Open on Kalshi</a>{kalshiReferral?.configured?" (Big Vin referral attached).":"."}</p>
-     <p className="bk-note">{DISCLAIMER}</p>
-     {!kalshi.connected&&!showKalshiForm&&<button type="button" className="bk-kalshi-go" onClick={()=>setShowKalshiForm(true)}>Go full with Kalshi</button>}
-     {!kalshi.connected&&showKalshiForm&&<div className="bk-kalshi-form">
-      <p className="bk-explain">Connect <b>your</b> Kalshi API Key ID and private key PEM. We encrypt them per account and only use them to place the recommended size when you confirm. Keys are never written to logs.</p>
-      <label>API Key ID<input value={kalshiKeyId} onChange={e=>setKalshiKeyId(e.target.value)} autoComplete="off" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/></label>
-      <label>Private key PEM<textarea rows={6} value={kalshiPem} onChange={e=>setKalshiPem(e.target.value)} autoComplete="off" spellCheck={false} placeholder="-----BEGIN PRIVATE KEY-----"/></label>
-      <button type="button" disabled={busy} onClick={async()=>{
-        setBusy(true);setKalshiMsg('');setError('');
-        try{
-          const r=await fetch('/api/my-bankroll/kalshi',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKeyId:kalshiKeyId,privateKeyPem:kalshiPem,goFull:true})});
-          const j=await r.json();
-          if(!r.ok){setError(j.error||'Could not connect.');return;}
-          setKalshi(j.kalshi||{connected:true,goFull:true});setKalshiPem('');setKalshiMsg(j.balance!=null?`Connected. Kalshi balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Connected.');setShowKalshiForm(false);
-        }catch{setError('Could not connect.');}
-        finally{setBusy(false);}
-      }}>{busy?'Testing…':'Save & test connection'}</button>
-      <button type="button" className="bk-linkish" onClick={()=>setShowKalshiForm(false)}>Cancel</button>
-     </div>}
-     {kalshi.connected&&<div className="bk-kalshi-connected">
-      <p className="bk-ok">Connected{kalshi.apiKeyIdSuffix?` · key …${kalshi.apiKeyIdSuffix}`:''}{kalshi.goFull?' · Go full on':''}</p>
-      {kalshi.lastError&&<p className="bk-err">Last Kalshi error: {kalshi.lastError}</p>}
-      {kalshiMsg&&<p className="bk-ok">{kalshiMsg}</p>}
-      <p className="bk-explain">Today&apos;s plays and All picks can show <b>Place on Kalshi</b> (confirm step). All picks uses your typed amount, or the recommended size if blank. YES-side contracts only in this build; otherwise use Open on Kalshi.</p>
-      <div className="bk-kalshi-actions">
-       <button type="button" className="bk-linkish" onClick={async()=>{
-         setBusy(true);setKalshiMsg('');
-         try{const r=await fetch('/api/my-bankroll/kalshi/test',{method:'POST',credentials:'same-origin'});const j=await r.json();setKalshiMsg(r.ok?(j.balance!=null?`Still good. Balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Still good.'):(j.error||'Test failed'));}catch{setKalshiMsg('Test failed');}
-         finally{setBusy(false);}
-       }}>Test connection</button>
-       <button type="button" className="bk-linkish" onClick={async()=>{
-         if(!window.confirm('Disconnect Kalshi and delete your stored key from Big Vin?'))return;
-         setBusy(true);
-         try{await fetch('/api/my-bankroll/kalshi',{method:'DELETE',credentials:'same-origin'});setKalshi({});setKalshiMsg('Disconnected.');}finally{setBusy(false);}
-       }}>Disconnect</button>
-      </div>
-     </div>}
-    </div>
+    <KalshiPanel kalshi={kalshi} kalshiReferral={kalshiReferral} kalshiKeyId={kalshiKeyId} setKalshiKeyId={setKalshiKeyId} kalshiPem={kalshiPem} setKalshiPem={setKalshiPem} kalshiMsg={kalshiMsg} setKalshiMsg={setKalshiMsg} showKalshiForm={showKalshiForm} setShowKalshiForm={setShowKalshiForm} setKalshi={setKalshi} busy={busy} setBusy={setBusy} setError={setError}/>
 
    </form>}
 
-   {tab==='today'&&(Object.keys(bankrolls).length?<Today bankrolls={bankrolls} kalshi={kalshi} kalshiReferral={kalshiReferral}/>:<p className="bk-sub">Set at least one starting bankroll first.</p>)}
+   {tab==='today'&&(Object.keys(bankrolls).length?<Today bankrolls={bankrolls} kalshi={kalshi} kalshiReferral={kalshiReferral} kalshiPanel={<KalshiPanel compact kalshi={kalshi} kalshiReferral={kalshiReferral} kalshiKeyId={kalshiKeyId} setKalshiKeyId={setKalshiKeyId} kalshiPem={kalshiPem} setKalshiPem={setKalshiPem} kalshiMsg={kalshiMsg} setKalshiMsg={setKalshiMsg} showKalshiForm={showKalshiForm} setShowKalshiForm={setShowKalshiForm} setKalshi={setKalshi} busy={busy} setBusy={setBusy} setError={setError}/>}/>:<p className="bk-sub">Set at least one starting bankroll first.</p>)}
 
    {tab==='history'&&<>
     <p className="bk-note">{CARRY_NOTE}</p>
