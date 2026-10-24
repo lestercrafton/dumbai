@@ -4,7 +4,7 @@
  * Cover status uses the same livePickStatus function as the game cards. */
 import {kellyStake} from './kelly-bankroll.mjs';
 import {compareKelly,pickPrice} from './kelly-rank.mjs';
-import {livePickStatus,provisionalFinalLabel} from './live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from './live-pick-status.mjs';
 import {liveGameProgress,clockBadge} from './live-game-progress.mjs';
 import {visibleOutcome} from './presentation.mjs';
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
@@ -46,10 +46,17 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
   const ok=finite(odds)&&Math.abs(odds)>=100&&finite(p)&&finite(bankroll);
   const stake=ok?kellyStake(p,odds):0,wager=ok?bankroll*stake:0;
   const moneyline=g.sport==='mlb';const cover=playCover(g,now);
+  let totalCover=null;
+  if(g.overUnder?.side){
+   if(g.overUnder.result&&['win','loss','push'].includes(g.overUnder.result))
+    totalCover={state:g.overUnder.result==='win'?'covering':g.overUnder.result==='loss'?'not-covering':'push',label:({win:'Win',loss:'Loss',push:'Push'})[g.overUnder.result],final:true};
+   else if(g.finalPendingGrade){const t=liveTotalStatus(g,{now});if(t.provisional)totalCover={state:t.state,label:provisionalFinalLabel(t.state,{short:true}),final:true};}
+   else {const t=liveTotalStatus(g,{now});if(t.provisional)totalCover={state:t.state,label:t.label,final:false};}
+  }
   rows.push({game_:g,id:`${g.sport}:${g.id}`,sport:g.sport,startTime:g.startTime,live,done:!!done||!!g.finalPendingGrade,
    game:`${g.away?.name??'Away'} @ ${g.home?.name??'Home'}`,pick:side==='home'?g.home?.name:g.away?.name,
    line:moneyline?null:finite(homeSpread)?(side==='home'?homeSpread:-homeSpread):null,odds:finite(odds)?odds:null,
-   winChance:finite(p)?p:null,stake,wager,toWin:ok?wager*payout(odds):0,scoreClock:scoreClock(g,now),cover});
+   winChance:finite(p)?p:null,stake,wager,toWin:ok?wager*payout(odds):0,scoreClock:scoreClock(g,now),cover,totalCover});
  }
  rows.sort((a,b)=>a.sport===b.sport?compareKelly(a.game_,b.game_):(b.wager-a.wager||compareKelly(a.game_,b.game_)));
  for(const r of rows)delete r.game_;

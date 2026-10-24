@@ -202,3 +202,4 @@
 
 .vin-clock-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;background:#fff;color:#151714;font-size:15px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1.2;box-shadow:0 0 0 1px #ffffff55}.vin-scoreboard-covering .vin-clock-badge{background:#e7f7b8}.vin-scoreboard-not-covering .vin-clock-badge,.vin-game-not-covering .vin-clock-badge{background:#f5e7a8}.vin-scoreboard-top{align-items:center}.vin-scoreboard-top .vin-clock-badge{margin-left:auto}
 .bk-clock{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:5px;background:#2a1037;color:#fff;font-size:12px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;vertical-align:middle}
+.vin-live-box-push{background:#ffffff08;border-color:#756746}.vin-live-box-push>strong{color:#deceb3}.vin-final-split .vin-live-box>strong{font-size:20px;font-weight:750}

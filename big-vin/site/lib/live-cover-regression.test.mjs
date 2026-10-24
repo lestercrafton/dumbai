@@ -86,6 +86,15 @@ test('live score URLs never ask ESPN for a same-day range (it returns 400)',()=>
  assert.equal(liveScoreUrls('cfb','2026-10-23','2026-10-25').length,6);
 });
 
+test('FINAL with spread and total shows two side-by-side result boxes',()=>{
+ const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
+ assert.ok(tsx.includes('FINAL · TOTAL POINTS'),'total final box missing');
+ assert.ok(tsx.includes('vin-final-split')||tsx.includes("totalOutcome?undefined:{gridTemplateColumns:'1fr'}"),'side-by-side final split missing');
+ assert.ok(tsx.includes('totalOutcome'),'graded or provisional total outcome missing');
+ const today=readFileSync(new URL('./today-plays.mjs',import.meta.url),'utf8');
+ assert.ok(today.includes('totalCover'),"Today's plays must carry a total status");
+});
+
 test('card markup and styles keep the green/yellow cover boxes',()=>{
  const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
  const css=readFileSync(new URL('../app/big-vin.css',import.meta.url),'utf8');
