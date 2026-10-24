@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-23T22:37:26.662Z",
+ "generatedAt": "2026-10-24T01:05:19.827Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -37,7 +37,7 @@
      "player": "Walter Nolen III",
      "espnId": "4685503",
      "status": "Out",
-     "reported": "2026-10-23T17:43Z",
+     "reported": "2026-10-23T23:19Z",
      "weight": 1,
      "points": 0.3
     },
@@ -99,7 +99,7 @@
      "player": "Kendal Daniels",
      "espnId": "4595343",
      "status": "Questionable",
-     "reported": "2026-10-22T21:40Z",
+     "reported": "2026-10-23T23:18Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -109,7 +109,7 @@
      "player": "Divine Deablo",
      "espnId": "4037626",
      "status": "Out",
-     "reported": "2026-10-23T17:21Z",
+     "reported": "2026-10-23T23:08Z",
      "weight": 1,
      "points": 0.25
     },
@@ -129,7 +129,7 @@
      "player": "C.J. Henderson",
      "espnId": "4240596",
      "status": "Questionable",
-     "reported": "2026-10-22T01:01Z",
+     "reported": "2026-10-23T23:11Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -170,7 +170,7 @@
      "player": "Jaylinn Hawkins",
      "espnId": "3858276",
      "status": "Out",
-     "reported": "2026-10-23T00:07Z",
+     "reported": "2026-10-23T22:51Z",
      "weight": 1,
      "points": 0.3
     }
@@ -202,7 +202,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-23T22:21Z",
+     "reported": "2026-10-24T00:16Z",
      "weight": 1,
      "points": 0.3
     }
@@ -279,7 +279,7 @@
      "player": "Quincy Williams",
      "espnId": "3110565",
      "status": "Questionable",
-     "reported": "2026-10-22T23:49Z",
+     "reported": "2026-10-23T23:30Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -289,7 +289,7 @@
      "player": "Denzel Ward",
      "espnId": "3915535",
      "status": "Questionable",
-     "reported": "2026-10-23T17:48Z",
+     "reported": "2026-10-23T23:24Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -299,7 +299,7 @@
      "player": "Grant Delpit",
      "espnId": "4242208",
      "status": "Questionable",
-     "reported": "2026-10-22T23:42Z",
+     "reported": "2026-10-23T23:37Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -343,7 +343,7 @@
      "player": "Jonah Elliss",
      "espnId": "4687592",
      "status": "Out",
-     "reported": "2026-10-23T21:14Z",
+     "reported": "2026-10-24T00:42Z",
      "weight": 1,
      "points": 0.25
     },
@@ -363,7 +363,7 @@
      "player": "Talanoa Hufanga",
      "espnId": "4360853",
      "status": "Out",
-     "reported": "2026-10-23T21:15Z",
+     "reported": "2026-10-24T00:44Z",
      "weight": 1,
      "points": 0.3
     }
@@ -428,7 +428,7 @@
      "player": "Reed Blankenship",
      "espnId": "4243956",
      "status": "Out",
-     "reported": "2026-10-23T20:30Z",
+     "reported": "2026-10-24T00:19Z",
      "weight": 1,
      "points": 0.3
     }
@@ -649,7 +649,7 @@
      "player": "Nate Landman",
      "espnId": "4243181",
      "status": "Out",
-     "reported": "2026-10-23T18:29Z",
+     "reported": "2026-10-23T23:34Z",
      "weight": 1,
      "points": 0.25
     },
@@ -659,7 +659,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Questionable",
-     "reported": "2026-10-22T00:31Z",
+     "reported": "2026-10-23T23:40Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -690,24 +690,13 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 0.15,
+   "loss": 0,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Christian Darrisaw",
-     "espnId": "4361985",
-     "status": "Questionable",
-     "reported": "2026-10-23T01:56Z",
-     "weight": 0.25,
-     "points": 0.15
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "NE": {
@@ -809,7 +798,7 @@
      "player": "Jevon Holland",
      "espnId": "4373809",
      "status": "Questionable",
-     "reported": "2026-10-23T00:24Z",
+     "reported": "2026-10-24T00:22Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -819,7 +808,7 @@
      "player": "Greg Newsome II",
      "espnId": "4361266",
      "status": "Out",
-     "reported": "2026-10-23T20:50Z",
+     "reported": "2026-10-24T00:25Z",
      "weight": 1,
      "points": 0.5
     },
@@ -829,7 +818,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-23T22:21Z",
+     "reported": "2026-10-24T00:16Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1059,7 +1048,7 @@
      "player": "Drake Thomas",
      "espnId": "4428659",
      "status": "Out",
-     "reported": "2026-10-23T21:18Z",
+     "reported": "2026-10-24T00:47Z",
      "weight": 1,
      "points": 0.25
     },
@@ -1120,7 +1109,7 @@
      "player": "Antoine Winfield Jr.",
      "espnId": "4034790",
      "status": "Out",
-     "reported": "2026-10-23T17:15Z",
+     "reported": "2026-10-23T22:34Z",
      "weight": 1,
      "points": 0.3
     },
@@ -1154,7 +1143,7 @@
      "player": "Kevin Winston Jr.",
      "espnId": "4685617",
      "status": "Questionable",
-     "reported": "2026-10-21T23:22Z",
+     "reported": "2026-10-23T23:53Z",
      "weight": 0.25,
      "points": 0.08
     }
