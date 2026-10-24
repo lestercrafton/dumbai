@@ -208,17 +208,21 @@ body,
 .vin-discovery input::placeholder { color: #7a6b82; }
 .vin-discovery-actions > button { color: var(--fiji-purple); border-color: #bda2cb; }
 .vin-time-presets button,
+.vin-college-presets button,
 .vin-discovery .vin-quick-dates button {
   background: #fff;
   border-color: #c5b1d1;
   color: var(--fiji-purple);
 }
 .vin-time-presets button[aria-pressed=true],
+.vin-college-presets button[aria-pressed=true],
 .vin-discovery .vin-quick-dates button[aria-pressed=true] {
   background: var(--fiji-purple);
   border-color: var(--fiji-purple);
   color: #fff;
 }
+.vin-college-presets .vin-filter-kicker { color: var(--fiji-muted); }
+.vin-college-presets button:hover { border-color: var(--fiji-secondary); }
 .vin-discovery .vin-quick-dates .vin-weekend-shortcut {
   border-color: var(--fiji-secondary);
   color: var(--fiji-purple);
