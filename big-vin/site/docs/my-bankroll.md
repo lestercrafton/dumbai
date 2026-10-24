@@ -35,3 +35,31 @@ OTP email copy lives in `lib/my-bankroll-email.mjs` and includes the Cash App ka
 ## Disclaimer
 
 Pages remind visitors: entertainment purposes only; not financial advice; for humans and agents.
+
+## Kalshi
+
+My Bankroll can deep-link Vin’s picks into matching Kalshi sports markets, and (opt-in) place recommended sizes with each visitor’s own Kalshi API key.
+
+### Deep links (default)
+
+- Today’s plays calls `POST /api/my-bankroll/kalshi/matches` with compact pick descriptors.
+- The Worker searches Kalshi’s public Trade API (`https://api.elections.kalshi.com/trade-api/v2`, same data as `external-api.kalshi.com`) for open sports series (`KXNCAAFGAME`, `KXNFLGAME`, spreads/totals, etc.).
+- Matching prefers game-winner markets; spreads/totals only when Kalshi lists a clear line. No match → muted “No Kalshi market”. Deep links never place trades.
+
+### Go full (opt-in)
+
+- On Starting bankrolls, **Go full with Kalshi** lets a signed-in user paste their Kalshi API Key ID + private key PEM.
+- Credentials are AES-GCM encrypted with `MY_BANKROLL_SESSION_SECRET` and stored in D1 `my_bankroll_kalshi` (never logged).
+- Save runs a live `GET /portfolio/balance` test before persisting.
+- When connected, Today’s plays can show **Place on Kalshi** (confirm step) using Create Order V2 (`POST /portfolio/events/orders`) at the recommended $ size for YES-side contracts. Underdog/NO still uses Open on Kalshi.
+- Entertainment disclaimer stays on the page.
+
+### Migration
+
+`0010_my_bankroll_kalshi` adds the credentials table. Apply with:
+
+```bash
+XDG_CONFIG_HOME=/home/box/.wrangler-lcrafton \
+  env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_API_KEY -u CLOUDFLARE_ACCOUNT_ID \
+  npx wrangler d1 migrations apply big-vin --remote --config wrangler.cloudflare.jsonc
+```

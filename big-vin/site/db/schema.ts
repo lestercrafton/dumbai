@@ -43,3 +43,6 @@ export const myBankrollStarts=sqliteTable('my_bankroll_starts',{
 export const myBankrollOtps=sqliteTable('my_bankroll_otps',{
  email:text('email').primaryKey(),codeHash:text('code_hash').notNull(),expiresAt:text('expires_at').notNull(),attempts:integer('attempts').notNull().default(0),createdAt:text('created_at').notNull()
 });
+export const myBankrollKalshi=sqliteTable('my_bankroll_kalshi',{
+ userId:text('user_id').primaryKey().references(()=>myBankrollUsers.id),apiKeyId:text('api_key_id').notNull(),privateKeyEnc:text('private_key_enc').notNull(),privateKeyIv:text('private_key_iv').notNull(),goFull:integer('go_full').notNull().default(0),connectedAt:text('connected_at').notNull(),lastOkAt:text('last_ok_at'),lastError:text('last_error')
+});

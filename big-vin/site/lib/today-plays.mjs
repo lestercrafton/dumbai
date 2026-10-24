@@ -56,6 +56,10 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
   }
   rows.push({game_:g,id:`${g.sport}:${g.id}`,sport:g.sport,startTime:g.startTime,live,done:!!done||!!g.finalPendingGrade,
    game:`${g.away?.name??'Away'} @ ${g.home?.name??'Home'}`,pick:side==='home'?g.home?.name:g.away?.name,
+   home:{name:g.home?.name??'',abbreviation:g.home?.abbreviation??''},
+   away:{name:g.away?.name??'',abbreviation:g.away?.abbreviation??''},
+   pickAbbr:side==='home'?g.home?.abbreviation:g.away?.abbreviation,
+   market:moneyline?'ml':'spread',
    line:moneyline?null:finite(homeSpread)?(side==='home'?homeSpread:-homeSpread):null,odds:finite(odds)?odds:null,
    winChance:finite(p)?p:null,stake,wager,toWin:ok?wager*payout(odds):0,scoreClock:scoreClock(g,now),cover,totalCover});
  }
