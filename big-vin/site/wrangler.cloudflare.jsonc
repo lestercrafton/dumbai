@@ -19,7 +19,11 @@
   // The home page HTML is cached per deployment, so a new deploy never serves old asset links.
   "version_metadata": { "binding": "CF_VERSION" },
   // The runner requests a GitHub OIDC token with this audience when it writes here.
-  "vars": { "COLLECTOR_AUDIENCE": "https://big-vin.lestercrafton.workers.dev" },
+  "vars": {
+    "COLLECTOR_AUDIENCE": "https://big-vin.lestercrafton.workers.dev",
+    // Personal Kalshi refer-a-friend code or invite URL (trading credits, not cash affiliate). Leave empty until set.
+    "KALSHI_REFERRAL_CODE": ""
+  },
   // The site reads env.DB through cloudflare:workers (lib/db.ts), so the binding name stays DB.
   // Created October 19, 2026 in Lester's Cloudflare account; separate from the other projects there.
   "d1_databases": [

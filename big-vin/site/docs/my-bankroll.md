@@ -63,3 +63,26 @@ XDG_CONFIG_HOME=/home/box/.wrangler-lcrafton \
   env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_API_KEY -u CLOUDFLARE_ACCOUNT_ID \
   npx wrangler d1 migrations apply big-vin --remote --config wrangler.cloudflare.jsonc
 ```
+
+### Today's plays vs All picks
+
+- **Today's plays** keeps recommended full-Kelly sizes (including “No pick” rows for Kelly-zero games).
+- **All picks** lists the same board ranked by Kelly / confidence, including passes, with an open **Amount** field. Place on Kalshi uses the typed amount, or the recommended size when the field is blank (and Place stays hidden when that resolves to $0).
+
+### Referral / affiliate
+
+Kalshi’s public program is **refer-a-friend trading credits**, not a cash affiliate or CPA payout for publishers:
+
+- In the Kalshi app: Explore → menu → Your rewards → referral offer → share link or code.
+- Rewards are typically **credits** (often with trade-before-withdraw rules), amounts vary by offer, U.S.-eligible users only.
+- There is **no public cash affiliate** that pays Big Vin for referred traders. Third-party “revenue share” pages are not Kalshi’s program. Private partnership deals may exist via Kalshi business development, but are not self-serve.
+
+When Lester has a personal invite code or link, set Worker env **`KALSHI_REFERRAL_CODE`** (bare code or full invite URL). Bare codes are appended as `?r=` on Open on Kalshi market deep links; a join URL is exposed to the UI for “Open on Kalshi” / new-user copy. Full invite URLs are used as the join landing and leave market deep links unchanged.
+
+```bash
+# Optional — only after you have a Kalshi invite code/link from Your rewards:
+XDG_CONFIG_HOME=/home/box/.wrangler-lcrafton \
+  env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_API_KEY -u CLOUDFLARE_ACCOUNT_ID \
+  npx wrangler secret put KALSHI_REFERRAL_CODE --config wrangler.cloudflare.jsonc
+# Or set the non-secret vars.KALSHI_REFERRAL_CODE in wrangler.cloudflare.jsonc and redeploy.
+```

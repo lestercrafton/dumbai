@@ -29,11 +29,13 @@ function Chart({series,start,id}:{series:Point[];start:number;id:string}){
  </svg>;
 }
 
-function Today({bankrolls,kalshi}:{bankrolls:Record<string,number>;kalshi:{connected?:boolean;goFull?:boolean}}){
+function Today({bankrolls,kalshi,kalshiReferral}:{bankrolls:Record<string,number>;kalshi:{connected?:boolean;goFull?:boolean};kalshiReferral?:{configured?:boolean;joinUrl?:string}}){
  const [games,setGames]=useState<any[]|null>(null),[now,setNow]=useState(Date.now());
  const [links,setLinks]=useState<Record<string,any>>({});
  const [placing,setPlacing]=useState<string>('');
  const [placeMsg,setPlaceMsg]=useState('');
+ const [playMode,setPlayMode]=useState<'recommended'|'all'>('recommended');
+ const [amounts,setAmounts]=useState<Record<string,string>>({});
  const today=ctDate(now);
  useEffect(()=>{let alive=true;const load=async()=>{const sports=Object.keys(bankrolls);const all=await Promise.allSettled(sports.map((s:string)=>fetchSlate(s,today,1)));
    if(!alive)return;
@@ -56,52 +58,78 @@ function Today({bankrolls,kalshi}:{bankrolls:Record<string,number>;kalshi:{conne
  const sports=Object.keys(bySport).sort((a,b)=>bySport[b]-bySport[a]);
  const odds=(o:number)=>o>0?`+${o}`:`−${-o}`;
  const line=(l:number|null)=>l==null?'ML':l===0?'PK':(l>0?'+':'−')+Math.abs(l);
+ const resolveAmount=(r:any)=>{
+  if(playMode!=='all')return r.wager;
+  const raw=amounts[r.id]?.trim();
+  if(!raw)return r.wager>0?r.wager:0;
+  const n=Number(raw.replace(/[$,]/g,''));
+  return Number.isFinite(n)&&n>0?n:0;
+ };
  const place=async(r:any,m:any)=>{
-  if(!m?.placeable||!m.marketTicker||r.wager<=0)return;
-  const ok=window.confirm(`Place about ${usd(r.wager)} on Kalshi for:
+  const wager=resolveAmount(r);
+  if(!m?.placeable||!m.marketTicker||wager<=0)return;
+  const ok=window.confirm(`Place about ${usd(wager)} on Kalshi for:
 ${m.title||r.pick}
 
 Entertainment only — confirm to submit with your connected key.`);
   if(!ok)return;
   setPlacing(r.id);setPlaceMsg('');
   try{
-   const res=await fetch('/api/my-bankroll/kalshi/place',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true,ticker:m.marketTicker,side:m.side||'yes',wagerDollars:r.wager,yesAskDollars:m.yesAsk})});
+   const res=await fetch('/api/my-bankroll/kalshi/place',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true,ticker:m.marketTicker,side:m.side||'yes',wagerDollars:wager,yesAskDollars:m.yesAsk})});
    const j=await res.json();
    if(!res.ok)setPlaceMsg(j.error||'Order failed.');
    else setPlaceMsg(`Order submitted for ${r.pick}.`);
   }catch{setPlaceMsg('Order failed.');}
   finally{setPlacing('');}
  };
+ const allMode=playMode==='all';
  return <>
-  <p className="bk-explain">Big Vin handicaps every game, but bets by confidence — not on every game. These wagers are sized to <b>your</b> bankroll with full Kelly.</p>
+  <div className="bk-play-modes" role="tablist" aria-label="Plays view">
+   <button type="button" role="tab" aria-selected={!allMode} className={!allMode?'on':''} onClick={()=>setPlayMode('recommended')}>Today&apos;s plays</button>
+   <button type="button" role="tab" aria-selected={allMode} className={allMode?'on':''} onClick={()=>setPlayMode('all')}>All picks</button>
+  </div>
+  {allMode
+   ?<p className="bk-explain">Every board pick ranked by Kelly / confidence — including Kelly-zero games Big Vin would pass. Type any amount (or leave blank to use the recommended size when there is one). Deep links and Place still work.</p>
+   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence — not on every game. These wagers are sized to <b>your</b> bankroll with full Kelly.</p>}
   <p className="bk-foot">{DISCLAIMER}</p>
   {placeMsg&&<p className="bk-ok">{placeMsg}</p>}
-  <section className="bk-total">
+  {!allMode&&<section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>
    <div><span>Plays</span><b>{rows.filter(r=>r.wager>0).length} / {rows.length}</b></div>
    {sports.slice(0,2).map(s=><div key={s}><span>{sportLabel(s)}</span><b>{usd(bySport[s])}</b></div>)}
-  </section>
-  {sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
+  </section>}
+  {allMode&&<section className="bk-total">
+   <div><span>Board picks</span><strong>{rows.length}</strong></div>
+   <div><span>Recommended</span><b>{rows.filter(r=>r.wager>0).length}</b></div>
+   <div><span>Pass / no pick</span><b>{rows.filter(r=>!(r.wager>0)).length}</b></div>
+  </section>}
+  {!allMode&&sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
   {!rows.length?<p className="bk-sub">No games left today for sports you’ve set.</p>:<div className="bk-table-wrap"><table className="bk-table">
-   <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>Wager</th><th>To win</th><th>Spread</th><th>Total</th><th>Kalshi</th></tr></thead>
+   <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>{allMode?'Amount':'Wager'}</th><th>To win</th><th>Spread</th><th>Total</th><th>Kalshi</th></tr></thead>
    <tbody>{rows.map(r=>{
     const m=links[r.id];
+    const amt=resolveAmount(r);
+    const canPlace=!!(kalshi?.goFull&&m?.placeable&&amt>0);
     return <tr key={r.id} className={`${r.wager>0?'':'bk-row-pass'} ${r.cover?.state==='covering'?'bk-row-cover':r.cover?.state==='not-covering'?'bk-row-need':''}`}>
     <td><span className="bk-type">{r.sport.toUpperCase()}</span>{r.live&&!r.done&&<span className="bk-live">LIVE</span>}{(r.done||r.cover?.final)&&<span className="bk-live">FINAL</span>}</td>
     <td className="bk-game">{r.game}{r.scoreClock&&<div className="bk-score">{r.scoreClock.score}{' '}{r.scoreClock.clock&&<span className="bk-clock">{r.scoreClock.clock}</span>}</div>}</td>
     <td>{r.pick} {line(r.line)} {r.odds!=null&&<span className="bk-dim">{odds(r.odds)}</span>}</td>
     <td>{r.winChance==null?'—':`${(r.winChance*100).toFixed(1)}%`}</td>
     <td>{r.stake>0?`${(r.stake*100).toFixed(1)}%`:'—'}</td>
-    <td><b>{r.wager>0?usd(r.wager):'No pick'}</b></td>
+    <td>{allMode
+      ?<label className="bk-amt"><span className="bk-amt-prefix">$</span><input type="text" inputMode="decimal" className="bk-amt-input" placeholder={r.wager>0?String(Math.round(r.wager)):'0'} value={amounts[r.id]??''} onChange={e=>setAmounts(a=>({...a,[r.id]:e.target.value}))} aria-label={`Amount for ${r.pick}`}/></label>
+      :<b>{r.wager>0?usd(r.wager):'No pick'}</b>}</td>
     <td className={r.wager>0?'bk-up':''}>{r.wager>0?usd(r.toWin):'—'}</td>
     <td className={r.cover?.state==='covering'?'bk-status bk-status-cover':r.cover?.state==='not-covering'?'bk-status bk-status-need':'bk-status'}>{r.cover?.label||'—'}</td>
     <td className={r.totalCover?.state==='covering'?'bk-status bk-status-cover':r.totalCover?.state==='not-covering'?'bk-status bk-status-need':'bk-status'}>{r.totalCover?.label||'—'}</td>
     <td className="bk-kalshi-cell">{m?.url?<a className="bk-kalshi-link" href={m.url} target="_blank" rel="noopener noreferrer">Open on Kalshi</a>:<span className="bk-kalshi-miss">No Kalshi market</span>}
-     {kalshi?.goFull&&m?.placeable&&r.wager>0&&<button type="button" className="bk-kalshi-place" disabled={placing===r.id} onClick={()=>place(r,m)}>{placing===r.id?'Placing…':'Place on Kalshi'}</button>}
+     {canPlace&&<button type="button" className="bk-kalshi-place" disabled={placing===r.id} onClick={()=>place(r,m)}>{placing===r.id?'Placing…':'Place on Kalshi'}</button>}
     </td>
    </tr>;})}</tbody></table></div>}
+  {kalshiReferral?.configured&&kalshiReferral.joinUrl&&<p className="bk-note">New to Kalshi? <a className="bk-kalshi-link" href={kalshiReferral.joinUrl} target="_blank" rel="noopener noreferrer">Open Kalshi with Big Vin&apos;s referral</a>.</p>}
  </>
 }
+
 
 export default function MyBankroll(){
  const [phase,setPhase]=useState<'loading'|'login'|'code'|'app'>('loading');
@@ -122,6 +150,7 @@ export default function MyBankroll(){
  const [kalshiPem,setKalshiPem]=useState('');
  const [kalshiMsg,setKalshiMsg]=useState('');
  const [showKalshiForm,setShowKalshiForm]=useState(false);
+ const [kalshiReferral,setKalshiReferral]=useState<{configured?:boolean;joinUrl?:string}>({});
 
  const blankDraft=(s:Starts)=>{
   const d:Record<string,string>={};
@@ -138,6 +167,7 @@ export default function MyBankroll(){
   setEmail(v.user.email);
   setStarts(v.user.starts);
   setKalshi(v.kalshi||{});
+  setKalshiReferral(v.kalshiReferral||{});
   const has=SUPPORTED_SPORTS.some((s:string)=>v.user.starts[s]!=null);
   // First screen: Starting bankrolls prefilled with carried Kelly balances (what you'd have if you took Vin's plays).
   setTab('setup');
@@ -266,6 +296,7 @@ export default function MyBankroll(){
     <div className="bk-kalshi">
      <h2 className="bk-kalshi-title">Kalshi</h2>
      <p className="bk-explain">Deep links open matching Kalshi markets for each pick (game winner first; spreads/totals when Kalshi lists a clear line). No trades are placed unless you Go full.</p>
+     <p className="bk-explain"><a className="bk-kalshi-link" href={kalshiReferral?.joinUrl||"https://kalshi.com"} target="_blank" rel="noopener noreferrer">Open on Kalshi</a>{kalshiReferral?.configured?" (Big Vin referral attached).":"."}</p>
      <p className="bk-note">{DISCLAIMER}</p>
      {!kalshi.connected&&!showKalshiForm&&<button type="button" className="bk-kalshi-go" onClick={()=>setShowKalshiForm(true)}>Go full with Kalshi</button>}
      {!kalshi.connected&&showKalshiForm&&<div className="bk-kalshi-form">
@@ -288,7 +319,7 @@ export default function MyBankroll(){
       <p className="bk-ok">Connected{kalshi.apiKeyIdSuffix?` · key …${kalshi.apiKeyIdSuffix}`:''}{kalshi.goFull?' · Go full on':''}</p>
       {kalshi.lastError&&<p className="bk-err">Last Kalshi error: {kalshi.lastError}</p>}
       {kalshiMsg&&<p className="bk-ok">{kalshiMsg}</p>}
-      <p className="bk-explain">Today&apos;s plays can show <b>Place on Kalshi</b> at your recommended size (with a confirm step). YES-side contracts only in this build; otherwise use Open on Kalshi.</p>
+      <p className="bk-explain">Today&apos;s plays and All picks can show <b>Place on Kalshi</b> (confirm step). All picks uses your typed amount, or the recommended size if blank. YES-side contracts only in this build; otherwise use Open on Kalshi.</p>
       <div className="bk-kalshi-actions">
        <button type="button" className="bk-linkish" onClick={async()=>{
          setBusy(true);setKalshiMsg('');
@@ -306,7 +337,7 @@ export default function MyBankroll(){
 
    </form>}
 
-   {tab==='today'&&(Object.keys(bankrolls).length?<Today bankrolls={bankrolls} kalshi={kalshi}/>:<p className="bk-sub">Set at least one starting bankroll first.</p>)}
+   {tab==='today'&&(Object.keys(bankrolls).length?<Today bankrolls={bankrolls} kalshi={kalshi} kalshiReferral={kalshiReferral}/>:<p className="bk-sub">Set at least one starting bankroll first.</p>)}
 
    {tab==='history'&&<>
     <p className="bk-note">{CARRY_NOTE}</p>
