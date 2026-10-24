@@ -46,7 +46,7 @@ function TeamTag({game, side}: {game: Row; side: 'home'|'away'}) {
 export function SiteHeader({onBoard, onResults}: {onBoard: () => void; onResults: () => void}) {
   return <header className="vin-header">
     <a className="vin-wordmark" href="#top" aria-label="Big Vin home"><span className="vin-mark" aria-hidden="true">b<span>v</span><i/></span><span>BIG VIN<span className="vin-wordmark-sub">AN INDEPENDENT EDGE.</span></span></a>
-    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a><a href="/bankroll">Bankroll</a><a href="/my-bankroll">My Bankroll</a></nav>
+    <nav aria-label="Main navigation"><a href="#board" onClick={onBoard}>The board</a><a href="#board" onClick={onResults}>Results</a><a href="#method">The model</a><a href="#story">Our story</a><a href="/notes/october-19-2026">Playbook v1</a><span className="vin-nav-bankrolls"><a className="vin-nav-bankroll" href="/bankroll">Bankroll</a><a className="vin-nav-bankroll vin-nav-bankroll-mine" href="/my-bankroll">My Bankroll</a></span></nav>
     <DonateButton className="vin-header-donate"/>
   </header>;
 }
