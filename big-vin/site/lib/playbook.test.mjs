@@ -67,13 +67,25 @@ test('the challenger board keeps running records and a post-freeze live row',()=
 });
 test('the learning-loop migrations only add tables and indexes',()=>{
  const files=readdirSync(new URL('../drizzle/',import.meta.url)).filter(f=>f.endsWith('.sql')).sort();
- const loop=files.filter(f=>f>='0005');
+ const loop=files.filter(f=>f>='0005'&&f<'0008');
  assert.deepEqual(loop,['0005_playbook_learning_loop.sql','0006_odds_snapshots.sql','0007_read_cache.sql']);
  const read=f=>readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8').split('--> statement-breakpoint').map(s=>s.trim()).filter(Boolean);
  const db=new DatabaseSync(':memory:');
  for(const f of files.filter(f=>f<'0005'))for(const s of read(f))db.exec(s);
  const before=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
  for(const f of loop)for(const statement of read(f)){assert.match(statement,/^CREATE (TABLE `(challenger_|playbook_manifests|promotions|scoreboards|odds_snapshots|read_cache)|INDEX `[a-z_]+` ON `)/);db.exec(statement);}
+ const after=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
+ for(const t of before)assert.deepEqual(after.find(x=>x.name===t.name),t,'existing schema unchanged: '+t.name);
+});
+test('the My Bankroll migrations only touch my_bankroll tables',()=>{
+ const files=readdirSync(new URL('../drizzle/',import.meta.url)).filter(f=>f.endsWith('.sql')).sort();
+ const read=f=>readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8').split('--> statement-breakpoint').map(s=>s.trim()).filter(Boolean);
+ const mine=files.filter(f=>f>='0008');
+ assert.ok(mine.every(f=>/_my_bankroll/.test(f)),'unexpected migration: '+mine.join(', '));
+ const db=new DatabaseSync(':memory:');
+ for(const f of files.filter(f=>f<'0008'))for(const s of read(f))db.exec(s);
+ const before=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
+ for(const f of mine)for(const statement of read(f)){assert.match(statement,/^(CREATE (TABLE `my_bankroll_|(UNIQUE )?INDEX `[a-z_]+` ON `my_bankroll_)|ALTER TABLE `my_bankroll_[a-z_]+` ADD COLUMN )/);db.exec(statement);}
  const after=db.prepare("SELECT name,sql FROM sqlite_master ORDER BY name").all();
  for(const t of before)assert.deepEqual(after.find(x=>x.name===t.name),t,'existing schema unchanged: '+t.name);
 });
