@@ -206,7 +206,7 @@
 .bk-foot{font-size:11px;opacity:.5;margin:4px 0 0}
 .bk-score{font-size:11px;font-weight:650;opacity:.8;margin-top:2px;white-space:normal}.bk-status{font-weight:700}.bk-status-cover,.bk-row-cover .bk-status{color:#1f7a32}.bk-status-need,.bk-row-need .bk-status{color:#9a7b12}.bk-row-cover td:first-child{box-shadow:inset 3px 0 #22a447}.bk-row-need td:first-child{box-shadow:inset 3px 0 #d4b84a}
 
-.vin-clock-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;background:#fff;color:#151714;font-size:15px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1.2;box-shadow:0 0 0 1px #ffffff55}.vin-scoreboard-covering .vin-clock-badge{background:#e7f7b8}.vin-scoreboard-not-covering .vin-clock-badge,.vin-game-not-covering .vin-clock-badge{background:#f5e7a8}.vin-scoreboard-top{align-items:center}.vin-scoreboard-top .vin-clock-badge{margin-left:auto}
+.vin-clock-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;background:#fff;color:#151714;font-size:15px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1.2;box-shadow:0 0 0 1px #ffffff55}.vin-scoreboard-covering .vin-clock-badge{background:#e7f7b8}.vin-scoreboard-final.vin-scoreboard-covering,.vin-game-win .vin-scoreboard{background:#c9ef750d;border-color:#879e59}.vin-scoreboard-final.vin-scoreboard-not-covering,.vin-game-learn .vin-scoreboard{background:#f5e7a822;border-color:#c4a84a}.vin-scoreboard-not-covering .vin-clock-badge,.vin-game-not-covering .vin-clock-badge{background:#f5e7a8}.vin-scoreboard-top{align-items:center}.vin-scoreboard-top .vin-clock-badge{margin-left:auto}
 .bk-clock{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:5px;background:#2a1037;color:#fff;font-size:12px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;vertical-align:middle}
 .vin-live-box-push{background:#ffffff08;border-color:#756746}.vin-live-box-push>strong{color:#deceb3}.vin-final-split .vin-live-box>strong{font-size:20px;font-weight:750}
 
@@ -253,3 +253,16 @@ a.vin-nav-bankroll-mine:hover,
   background:#581c72;border-color:#581c72;color:#fff!important;filter:none;transform:translateY(-1px);
 }
 .vin-header nav .vin-nav-bankroll-mine{background:#520975;border-color:#520975}
+
+.bk-kalshi{margin-top:22px;padding-top:18px;border-top:1px solid #e6dcec;display:flex;flex-direction:column;gap:10px}
+.bk-kalshi-title{margin:0;font-size:18px;font-weight:750;color:#2a1037}
+.bk-kalshi-go,.bk-kalshi-place{font:inherit;font-size:13px;font-weight:700;padding:10px 14px;border:0;border-radius:8px;background:#6b2f86;color:#fff;cursor:pointer;width:fit-content}
+.bk-kalshi-place{padding:6px 10px;font-size:12px;margin-top:4px;display:inline-block}
+.bk-kalshi-go:disabled,.bk-kalshi-place:disabled{opacity:.55;cursor:default}
+.bk-kalshi-form{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid #e6dcec;border-radius:12px;background:#faf6fc}
+.bk-kalshi-form textarea{font:inherit;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:10px 12px;border:1px solid #dccfe4;border-radius:8px;resize:vertical}
+.bk-kalshi-form button[type=button]:not(.bk-linkish){font:inherit;font-size:14px;font-weight:700;padding:11px 16px;border:0;border-radius:8px;background:#6b2f86;color:#fff;cursor:pointer;width:fit-content}
+.bk-kalshi-actions{display:flex;gap:16px;flex-wrap:wrap}
+.bk-kalshi-cell{min-width:120px}
+.bk-kalshi-link{color:#6b2f86;font-weight:700;text-decoration:underline;font-size:12px}
+.bk-kalshi-miss{opacity:.45;font-size:11px}

@@ -119,6 +119,16 @@ test('totalPickOutcome: graded OU, and score-derived when spread graded but OU s
  assert.ok(today.includes('totalPickOutcome'),"Today's plays must derive total when OU ungraded");
 });
 
+
+test('FINAL scoreboard keeps covering/not-covering tone with primary result',()=>{
+ const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
+ assert.ok(tsx.includes('scoreboardTone'),'scoreboardTone missing');
+ assert.ok(tsx.includes("settled && displayDecision.outcome === 'win' ? 'vin-scoreboard-covering'"),'FINAL win must green the scoreboard');
+ assert.ok(tsx.includes("settled && displayDecision.outcome === 'loss' ? 'vin-scoreboard-not-covering'"),'FINAL loss must yellow the scoreboard');
+ const fiji=readFileSync(new URL('../app/fiji-theme.css',import.meta.url),'utf8');
+ assert.ok(fiji.includes('.vin-game-win .vin-scoreboard')||fiji.includes('vin-scoreboard-final.vin-scoreboard-covering'),'FINAL covering must beat gray final scoreboard');
+});
+
 test('card markup and styles keep the green/yellow cover boxes',()=>{
  const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
  const css=readFileSync(new URL('../app/big-vin.css',import.meta.url),'utf8');

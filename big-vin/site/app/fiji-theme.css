@@ -363,6 +363,27 @@ body,
 .vin-live { color: var(--fiji-green); }
 .vin-game-card.vin-game-covering,
 .vin-game-card.vin-game-covering:hover,
+/* final scoreboard keeps cover tone */
+
+.vin-scoreboard-final.vin-scoreboard-covering,
+.vin-game-win .vin-scoreboard {
+  background: var(--fiji-green-tint);
+  border-color: var(--fiji-green-line);
+}
+.vin-scoreboard-final.vin-scoreboard-not-covering,
+.vin-game-learn .vin-scoreboard {
+  background: var(--fiji-yellow-tint);
+  border-color: var(--fiji-yellow-line);
+}
+.vin-game-win .vin-scoreboard .vin-scoreboard-top,
+.vin-scoreboard-final.vin-scoreboard-covering .vin-scoreboard-top { color: var(--fiji-green); }
+.vin-game-learn .vin-scoreboard .vin-scoreboard-top,
+.vin-scoreboard-final.vin-scoreboard-not-covering .vin-scoreboard-top { color: var(--fiji-ochre); }
+.vin-game-win .vin-clock-badge,
+.vin-scoreboard-final.vin-scoreboard-covering .vin-clock-badge { background: #e7f7b8; }
+.vin-game-learn .vin-clock-badge,
+.vin-scoreboard-final.vin-scoreboard-not-covering .vin-clock-badge { background: #f5e7a8; }
+
 .vin-game-card.vin-game-win,
 .vin-game-card.vin-game-win:hover {
   border-color: var(--fiji-green-line);
