@@ -55,7 +55,7 @@ export function recordKeys(boards,today=easternDay(),now=Date.now()){
   if(board?.sport!==sport)continue;
   const season=activeProviderSeason(board.seasonContext,now);
   const week=days===7;
-  const params=new URLSearchParams({sport,cohort:'live',history:'1',rankPeriod:week?'week':'day',historyDate:today});
+  const params=new URLSearchParams({sport,cohort:'live',history:'1',summary:'1',rankPeriod:week?'week':'day',historyDate:today});
   if(season!==null)params.set('season',String(season));
   if(week)params.set('rankAnchor',footballWeekStart(today,sport));
   keys.push(keyOf('/api/results?'+params));

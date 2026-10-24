@@ -2,7 +2,7 @@
 import {scoreboardUrl,scoreboardUrls,isThreeDayScoreboardWindow,scoreboardPayloadLimited,normalizeScoreboard} from '@/lib/feeds/adapter.mjs';
 type Row=Record<string,any>;
 import {hasActiveGames,mergeLiveScores} from './live-overlay.mjs';
-export async function api(url:string,options?:RequestInit){const r=await fetch(url,options);const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
+export async function api(url:string,options?:RequestInit){const r=await fetch(url,{...options,signal:options?.signal??AbortSignal.timeout(25000)});const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
 const browserCache=new Map<string,{time:number,payload:any}>();
 export async function browserBoard(sport:string,startDate:string,endDate?:string){
  const urls=scoreboardUrls(sport,{startDate,endDate,weekendDaily:isThreeDayScoreboardWindow({startDate,endDate})});

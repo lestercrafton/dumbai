@@ -50,10 +50,11 @@ export function RecordSummary({sport,sportLabel,date,refreshKey,card='all',rankP
  const params=new URLSearchParams({sport,cohort:'live',history:'1',rankPeriod,historyDate:date});
  if(season!==null)params.set('season',String(season));
  if(rankPeriod==='week'&&rankAnchor)params.set('rankAnchor',rankAnchor);
- const atsUrl='/api/results?'+params;
+ // summary=1 keeps the multi-MB pick list off the phone; pick-history links omit it.
+ const atsUrl='/api/results?'+new URLSearchParams({...Object.fromEntries(params),summary:'1'});
  const totalsUrl='/api/totals?sport='+encodeURIComponent(sport);
- const readAts=useCallback(async()=>{const response=await fetch(atsUrl);if(!response.ok)throw new Error('Saved results unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='tracked-history')throw new Error('Saved history unavailable');return result as History;},[atsUrl,sport]);
- const readTotals=useCallback(async()=>{const response=await fetch(totalsUrl);if(!response.ok)throw new Error('Totals record unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='totals-record')throw new Error('Totals history unavailable');return result as TotalsView;},[totalsUrl,sport]);
+ const readAts=useCallback(async()=>{const response=await fetch(atsUrl,{signal:AbortSignal.timeout(20000)});if(!response.ok)throw new Error('Saved results unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='tracked-history')throw new Error('Saved history unavailable');return result as History;},[atsUrl,sport]);
+ const readTotals=useCallback(async()=>{const response=await fetch(totalsUrl,{signal:AbortSignal.timeout(15000)});if(!response.ok)throw new Error('Totals record unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='totals-record')throw new Error('Totals history unavailable');return result as TotalsView;},[totalsUrl,sport]);
  const ats=useRefreshingResource<History>(atsUrl,readAts);
  const totals=useRefreshingResource<TotalsView>(canTotals?totalsUrl:'__no-totals__',canTotals?readTotals:async()=>({sport,view:'totals-record',hasPicks:false,days:[],overall:empty,generatedAt:null,version:null} as TotalsView));
  useEffect(()=>{const check=()=>{if(document.visibilityState==='visible'){void ats.load();if(canTotals)void totals.load();}};const timer=setInterval(check,60000);window.addEventListener('focus',check);document.addEventListener('visibilitychange',check);return()=>{clearInterval(timer);window.removeEventListener('focus',check);document.removeEventListener('visibilitychange',check);};},[ats.load,totals.load,canTotals]);
