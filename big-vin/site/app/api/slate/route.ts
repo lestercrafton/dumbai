@@ -1,9 +1,10 @@
+import {slimSlateForClient} from '@/lib/slate-client-payload.mjs';
 import {sportsDay} from '@/lib/time';
 import {getSlate,persistFinals} from '@/lib/feeds/service';
 export async function GET(request:Request){
  const p=new URL(request.url).searchParams;const sport=p.get('sport')||'nfl';const date=p.get('date')||sportsDay();
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date+'T00:00:00Z'))||new Date(date+'T00:00:00Z').toISOString().slice(0,10)!==date)return Response.json({error:'Choose a valid date.'},{status:400});
- try{return Response.json(await getSlate(sport,date,undefined,p.get('days')==='1'?1:p.get('days')==='3'?3:7));}catch(e){return Response.json({error:e instanceof Error?e.message:'Unable to load the slate. Try again.'},{status:503});}
+ try{return Response.json(slimSlateForClient(await getSlate(sport,date,undefined,p.get('days')==='1'?1:p.get('days')==='3'?3:7)));}catch(e){return Response.json({error:e instanceof Error?e.message:'Unable to load the slate. Try again.'},{status:503});}
 }
 
 import {normalizeScoreboard,scoreboardUrl,scoreboardUrls,SPORT_PATHS} from '@/lib/feeds/adapter.mjs';
@@ -33,6 +34,6 @@ export async function POST(request:Request){
  const historical=extra.filter((p:any)=>Array.isArray(p.events)&&p.events.length<=1000).map((p:any)=>normalizeScoreboard(p,v.sport));
  // Public browser payloads may power a preview, but cannot change the research history.
  if(await authorizedCollector(request))await persistFinals(v.sport,[board,...historical]);
- return Response.json(await getSlate(v.sport,v.date,board,days));
+ return Response.json(slimSlateForClient(await getSlate(v.sport,v.date,board,days)));
  }catch(e){return Response.json({error:e instanceof Error?e.message:'Could not evaluate the slate.'},{status:503});}
 }

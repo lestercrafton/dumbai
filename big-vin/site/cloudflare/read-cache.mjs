@@ -24,7 +24,7 @@ export function apiCacheKey(url){
  const u=typeof url==='string'?new URL(url):url;
  const path=u.pathname;
  if(path==='/api/playbook'){if(!PLAYBOOK_VIEWS.has(u.searchParams.get('view')||''))return null;}
- else if(!['/api/slate','/api/results','/api/learning','/api/college-experiment'].includes(path))return null;
+ else if(!['/api/slate','/api/results','/api/learning','/api/college-experiment','/api/bankroll'].includes(path))return null;
  return 'api:'+path+canonicalQuery(u.searchParams);
 }
 export function routerRequest(request){return ROUTER_HEADERS.some(h=>request.headers.has(h));}

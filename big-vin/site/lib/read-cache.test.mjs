@@ -18,6 +18,8 @@ test('one cache key per request, whatever order a page builds its query in',()=>
  assert.equal(a,b);assert.equal(a,'api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankPeriod=week&sport=cfb');
  assert.equal(apiCacheKey('https://x/api/slate?sport=nfl&date=2026-10-19&days=1'),'api:/api/slate?date=2026-10-19&days=1&sport=nfl');
  assert.equal(apiCacheKey('https://x/api/learning'),'api:/api/learning');
+ assert.equal(apiCacheKey('https://x/api/bankroll'),'api:/api/bankroll');
+ assert.equal(apiCacheKey('https://x/api/bankroll?sport=cfb'),'api:/api/bankroll?sport=cfb');
  for(const live of ['/api/ledger','/api/collector','/api/render?op=keys','/api/playbook?view=odds&sport=nfl&gameId=1','/api/playbook','/api/baseball-data','/api/site-export'])assert.equal(apiCacheKey('https://x'+live),null,live);
  assert.equal(apiCacheKey('https://x/api/playbook?view=challengers'),'api:/api/playbook?view=challengers');
  assert.equal(canonicalQuery(new URLSearchParams('b=2&a=1&a=0')),'?a=0&a=1&b=2');
