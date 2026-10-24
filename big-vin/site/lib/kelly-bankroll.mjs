@@ -34,6 +34,10 @@ export function kellyStake(p,odds,{fraction=KELLY_FRACTION,cap=MAX_STAKE}={}){
  return full>0?Math.min(cap,fraction*full):0;
 }
 
+/**
+ * @param {any[]} records
+ * @param {{start?: number, reupFloor?: number, includeLegacy?: boolean, applyFrom?: string|null}} [opts]
+ */
 export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,includeLegacy=false,applyFrom=null}={}){
  const floor=finite(reupFloor)&&reupFloor>0?reupFloor:start*0.1;
  const graded=records.filter(r=>includeLegacy||!isLegacyRunLine(r)).map(r=>({r,offer:spreadOffer(r),outcome:gradeSpreadPick(r).outcome}))

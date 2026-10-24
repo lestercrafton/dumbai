@@ -24,7 +24,7 @@ export function buildOtpEmail({ code, karmaUrl = KARMA_URL }) {
 }
 
 /** Send My Bankroll OTP via Resend when RESEND_API_KEY is set. */
-export async function sendOtpEmail({ to, code, from, apiKey, karmaUrl }) {
+export async function sendOtpEmail({ to, code, from, apiKey, karmaUrl = KARMA_URL }) {
   if (!apiKey) return { sent: false, reason: 'missing-key' };
   const sender = from || 'Big Vin <onboarding@resend.dev>';
   const { subject, text } = buildOtpEmail({ code, karmaUrl });

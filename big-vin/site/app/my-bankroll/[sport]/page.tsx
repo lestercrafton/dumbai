@@ -12,7 +12,7 @@ export default function MySportBankroll(){
  useEffect(()=>{fetch(`/api/my-bankroll?sport=${encodeURIComponent(sport)}`,{credentials:'same-origin'}).then(async r=>{
   if(r.status===401){location.href='/my-bankroll';return;}
   if(!r.ok)throw new Error();
-  const v=await r.json();
+  const v=await r.json() as any;
   if(!v.sports?.[0])setError('No bankroll for this sport.');else setS(v.sports[0]);
  }).catch(()=>setError('My Bankroll unavailable.'));},[sport]);
  return <main className="bk">

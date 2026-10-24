@@ -6,7 +6,7 @@ import {fetchSlate} from '@/lib/board-client';
 import {todayPlays,ctDate} from '@/lib/today-plays.mjs';
 
 type Point={t:string|null;kelly:number;reup:boolean};
-type Sport={sport:string;picks:number;bets:number;maxStake:number;maxStakeDollars:number;start:number;kelly:{bankroll:number;maxDrawdown:number;putIn:number;net:number;reups:number};series:Point[]};
+type Sport={sport:string;picks:number;bets:number;betCount?:number;maxStake:number;maxStakeDollars:number;start:number;kelly:{bankroll:number;maxDrawdown:number;putIn:number;net:number;reups:number};series:Point[]};
 type Starts=Record<string,number|null>;
 
 const DISCLAIMER=ENTERTAINMENT_NOTE;
@@ -51,7 +51,7 @@ function KalshiPanel({compact,kalshi,kalshiReferral,kalshiKeyId,setKalshiKeyId,k
      setBusy(true);setKalshiMsg('');setError('');
      try{
        const r=await fetch('/api/my-bankroll/kalshi',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKeyId:kalshiKeyId,privateKeyPem:kalshiPem,goFull:true})});
-       const j=await r.json();
+       const j=await r.json() as any;
        if(!r.ok){setError(j.error||'Could not connect.');return;}
        setKalshi(j.kalshi||{connected:true,goFull:true});setKalshiPem('');setKalshiMsg(j.balance!=null?`Connected. Kalshi balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Connected.');setShowKalshiForm(false);
      }catch{setError('Could not connect.');}
@@ -67,7 +67,7 @@ function KalshiPanel({compact,kalshi,kalshiReferral,kalshiKeyId,setKalshiKeyId,k
    <div className="bk-kalshi-actions">
     <button type="button" className="bk-linkish" onClick={async()=>{
       setBusy(true);setKalshiMsg('');
-      try{const r=await fetch('/api/my-bankroll/kalshi/test',{method:'POST',credentials:'same-origin'});const j=await r.json();setKalshiMsg(r.ok?(j.balance!=null?`Still good. Balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Still good.'):(j.error||'Test failed'));}catch{setKalshiMsg('Test failed');}
+      try{const r=await fetch('/api/my-bankroll/kalshi/test',{method:'POST',credentials:'same-origin'});const j=await r.json() as any;setKalshiMsg(r.ok?(j.balance!=null?`Still good. Balance about $${Number(j.balance).toLocaleString('en-US')}.`:'Still good.'):(j.error||'Test failed'));}catch{setKalshiMsg('Test failed');}
       finally{setBusy(false);}
     }}>Test connection</button>
     <button type="button" className="bk-linkish" onClick={async()=>{
@@ -99,7 +99,7 @@ function Today({bankrolls,kalshi,kalshiReferral,kalshiPanel}:{bankrolls:Record<s
    if(picks.length){
      try{
        const mr=await fetch('/api/my-bankroll/kalshi/matches',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({picks})});
-       if(alive&&mr.ok){const j=await mr.json();setLinks(j.matches||{});}
+       if(alive&&mr.ok){const j=await mr.json() as any;setLinks(j.matches||{});}
      }catch{/* ignore */}
    }
  };
@@ -127,7 +127,7 @@ Entertainment only — confirm to submit with your connected key.`);
   setPlacing(r.id);setPlaceMsg('');
   try{
    const res=await fetch('/api/my-bankroll/kalshi/place',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true,ticker:m.marketTicker,side:m.side||'yes',wagerDollars:wager,yesAskDollars:m.yesAsk})});
-   const j=await res.json();
+   const j=await res.json() as any;
    if(!res.ok)setPlaceMsg(j.error||'Order failed.');
    else setPlaceMsg(`Order submitted for ${r.pick}.`);
   }catch{setPlaceMsg('Order failed.');}
@@ -212,7 +212,7 @@ export default function MyBankroll(){
 
  const refreshMe=async()=>{
   const r=await fetch('/api/my-bankroll/me',{credentials:'same-origin'});
-  const v=await r.json();
+  const v=await r.json() as any;
   if(!v.configured){setError('Sign-in secret is not configured on this Worker yet.');setPhase('login');return;}
   setEmailDelivery(!!v.emailDelivery);
   if(!v.user){setPhase('login');return;}
@@ -227,7 +227,7 @@ export default function MyBankroll(){
   if(has){
    const b=await fetch('/api/my-bankroll',{credentials:'same-origin'});
    if(b.ok){
-    const j=await b.json();
+    const j=await b.json() as any;
     setData(j.sports);
     const carried:Record<string,string>={};
     for(const sport of SUPPORTED_SPORTS){
@@ -246,7 +246,7 @@ export default function MyBankroll(){
   e.preventDefault();setBusy(true);setError('');
   try{
    const r=await fetch('/api/my-bankroll/auth/request',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-   const v=await r.json();
+   const v=await r.json() as any;
    if(!r.ok){setError(v.error||'Could not send code.');return;}
    setDemo(!!v.demo);setDemoCode(v.demoCode||'');setPhase('code');
   }catch{setError('Could not send code.');}
@@ -257,7 +257,7 @@ export default function MyBankroll(){
   e.preventDefault();setBusy(true);setError('');
   try{
    const r=await fetch('/api/my-bankroll/auth/verify',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code})});
-   const v=await r.json();
+   const v=await r.json() as any;
    if(!r.ok){setError(v.error||'Wrong code.');return;}
    await refreshMe();
   }catch{setError('Could not verify.');}
@@ -281,12 +281,12 @@ export default function MyBankroll(){
     startsBody[sport]=n;
    }
    const r=await fetch('/api/my-bankroll/starts',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({starts:startsBody})});
-   const v=await r.json();
+   const v=await r.json() as any;
    if(!r.ok){setError(v.error||'Could not save.');return;}
    setStarts(v.starts);
    const b=await fetch('/api/my-bankroll',{credentials:'same-origin'});
    if(b.ok){
-    const j=await b.json();setData(j.sports);
+    const j=await b.json() as any;setData(j.sports);
     const carried:Record<string,string>={};
     for(const sport of SUPPORTED_SPORTS){
      const row=j.sports?.find((x:Sport)=>x.sport===sport);

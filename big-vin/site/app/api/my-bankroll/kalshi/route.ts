@@ -17,10 +17,14 @@ export async function PUT(request: Request) {
   try {
     const user = await currentUser(request);
     if (!user) return Response.json({error: 'Sign in first.'}, {status: 401});
-    const body = await request.json().catch(() => null);
+    const body = await request.json().catch(() => null) as {
+      apiKeyId?: unknown;
+      privateKeyPem?: unknown;
+      goFull?: unknown;
+    } | null;
     const result = await saveKalshiCredentials(user.id, {
-      apiKeyId: body?.apiKeyId,
-      privateKeyPem: body?.privateKeyPem,
+      apiKeyId: typeof body?.apiKeyId === 'string' ? body.apiKeyId : '',
+      privateKeyPem: typeof body?.privateKeyPem === 'string' ? body.privateKeyPem : '',
       goFull: body?.goFull !== false,
     });
     if (!result.ok) return Response.json({error: result.error}, {status: result.status || 400});

@@ -26,8 +26,8 @@ export async function GET(request:Request){
     originalStart:start,
     arrivedFrom,
     effectiveFrom:effectiveFrom[sport],
-    applyFrom,
     ...rest,
+    applyFrom,
     ...(only?{bets}:{}),
     series:rest.series.filter((pt:any,i:number)=>pt.reup||i%step===0||i===rest.series.length-1),
    };
