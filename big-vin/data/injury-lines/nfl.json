@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-24T21:10:16.709Z",
+ "generatedAt": "2026-10-24T23:41:52.269Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -192,7 +192,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-24T20:57Z",
+     "reported": "2026-10-24T23:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -301,7 +301,7 @@
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Out",
-     "reported": "2026-10-24T20:36Z",
+     "reported": "2026-10-24T23:11Z",
      "weight": 1,
      "points": 0.25
     }
@@ -756,13 +756,23 @@
   },
   "NYG": {
    "team": "NYG",
-   "loss": 0.98,
+   "loss": 1.11,
    "starter": {
     "name": "J.J. McCarthy",
     "espnId": "4433970",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Paulson Adebo",
+     "espnId": "4242547",
+     "status": "Questionable",
+     "reported": "2026-10-24T23:30Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
     {
      "group": "s",
      "position": "SS",
@@ -799,7 +809,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-10-24T20:57Z",
+     "reported": "2026-10-24T23:00Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -894,7 +904,7 @@
      "player": "Nolan Smith Jr.",
      "espnId": "4426331",
      "status": "Out",
-     "reported": "2026-10-24T20:20Z",
+     "reported": "2026-10-24T22:31Z",
      "weight": 1,
      "points": 0.25
     },
@@ -913,13 +923,24 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0,
+   "loss": 0.08,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "DeShon Elliott",
+     "espnId": "3929846",
+     "status": "Questionable",
+     "reported": "2026-10-24T17:03Z",
+     "weight": 0.25,
+     "points": 0.08
+    }
+   ],
    "notes": []
   },
   "SF": {
