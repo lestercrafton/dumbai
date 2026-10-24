@@ -52,7 +52,7 @@ export async function withLiveScores(sport:string,date:string,endDate:string,sla
  const active=games.some(g=>!g.completed&&!g.result?.status&&(g.status==='live'||(Date.parse(g.startTime)<=now&&now-Date.parse(g.startTime)<8*3600000)));
  if(!active)return slate;
  try{
-  const fresh=normalizeScoreboard(await browserBoard(sport,date,endDate),sport,{retrievedAt:new Date().toISOString()}).games as Row[];
+  const fresh=(await api(`/api/live-scores?sport=${sport}&date=${date}&endDate=${endDate}`)).games as Row[];
   const byId=new Map(fresh.map(g=>[String(g.id),g]));
   return {...slate,games:games.map(g=>{const f=byId.get(String(g.id));if(!f||g.completed||g.result?.status||!['live','completed'].includes(f.status))return g;
    // Just finished but not graded yet: keep showing the cover status against the final score.
