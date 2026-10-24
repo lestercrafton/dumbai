@@ -45,15 +45,16 @@ function Today({data}:{data:Sport[]}){
   </section>
   {sports.length>2&&<div className="bk-chips">{sports.map(s=><span key={s} className="bk-chip">{sportLabel(s)} <b>{usd(bySport[s])}</b></span>)}</div>}
   {!rows.length?<p className="bk-sub">No games left today.</p>:<div className="bk-table-wrap"><table className="bk-table">
-   <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>Wager</th><th>To win</th></tr></thead>
-   <tbody>{rows.map(r=><tr key={r.id} className={r.wager>0?'':'bk-row-pass'}>
-    <td><span className="bk-type">{r.sport.toUpperCase()}</span>{r.live&&<span className="bk-live">LIVE</span>}</td>
-    <td className="bk-game">{r.game}</td>
+   <thead><tr><th>Sport</th><th>Game</th><th>Pick</th><th>Win chance</th><th>Kelly</th><th>Wager</th><th>To win</th><th>Status</th></tr></thead>
+   <tbody>{rows.map(r=><tr key={r.id} className={`${r.wager>0?'':'bk-row-pass'} ${r.cover?.state==='covering'?'bk-row-cover':r.cover?.state==='not-covering'?'bk-row-need':''}`}>
+    <td><span className="bk-type">{r.sport.toUpperCase()}</span>{r.live&&!r.done&&<span className="bk-live">LIVE</span>}{(r.done||r.cover?.final)&&<span className="bk-live">FINAL</span>}</td>
+    <td className="bk-game">{r.game}{r.scoreClock&&<div className="bk-score">{r.scoreClock.score}{r.scoreClock.clock&&<span className="bk-clock">{r.scoreClock.clock}</span>}</div>}</td>
     <td>{r.pick} {line(r.line)} {r.odds!=null&&<span className="bk-dim">{odds(r.odds)}</span>}</td>
     <td>{r.winChance==null?'—':`${(r.winChance*100).toFixed(1)}%`}</td>
     <td>{r.stake>0?`${(r.stake*100).toFixed(1)}%`:'—'}</td>
     <td><b>{r.wager>0?usd(r.wager):'No pick'}</b></td>
     <td className={r.wager>0?'bk-up':''}>{r.wager>0?usd(r.toWin):'—'}</td>
+    <td className={r.cover?.state==='covering'?'bk-status bk-status-cover':r.cover?.state==='not-covering'?'bk-status bk-status-need':'bk-status'}>{r.cover?.label||'—'}</td>
    </tr>)}</tbody></table></div>}
  </>;
 }

@@ -44,3 +44,11 @@ export function liveGameProgress(game = {}, options = {}) {
   const isLastReported = score.freshness !== 'live';
   return {label: `${isLastReported ? 'Last reported: ' : ''}${parts.filter(Boolean).join(' · ')}`, isLastReported};
 }
+
+/** Short prominent clock for cards and Today's plays, e.g. "Q4 · 7:14". */
+export function clockBadge(game = {}, options = {}) {
+  if (game?.finalPendingGrade || game?.statusDescription === 'Final') return 'FINAL';
+  const progress = liveGameProgress(game, options);
+  if (!progress) return null;
+  return progress.label.replace(/^Last reported:\s*/, '').replace(/\s*remaining$/, '').replace(/ · Game clock unavailable$/, '').replace(/Game clock unavailable/, '—');
+}

@@ -15,7 +15,7 @@ import {centralDay, centralTime, featuredGame, featuredLeaders, SUPPORTED_SPORTS
 import {shortScoreUnit, scoreUnit} from '@/lib/sport-copy';
 import {displayLines} from '@/lib/board-presentation.mjs';
 import {liveScorePresentation} from '@/lib/board-discovery.mjs';
-import {liveGameProgress} from '@/lib/live-game-progress.mjs';
+import {liveGameProgress,clockBadge} from '@/lib/live-game-progress.mjs';
 import {livePickStatus,liveTotalStatus} from '@/lib/live-pick-status.mjs';
 import {espnGamecastUrl} from '@/lib/gamecast.mjs';
 import {SITE_CONFIG} from '@/lib/site-config';
@@ -112,6 +112,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
     const lines = displayLines(game);
     const score:Row = liveScorePresentation(game,{offline,refreshFailed,now});
     const progress = liveGameProgress(game,{offline,refreshFailed,now});
+    const clock = clockBadge(game,{offline,refreshFailed,now});
     const livePick = livePickStatus(game,{offline,refreshFailed,now});
     const liveTotal = liveTotalStatus(game,{offline,refreshFailed,now});
     const moneyline = moneylineComparison(game, sport);
@@ -135,7 +136,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       <div className="vin-game-top"><span className="vin-game-rank">{game.rank ? <><span>#</span>{String(game.rank).padStart(2, '0')}{game.rankLabel&&<small className="vin-rank-basis" title={game.rankLabel.title}> · {game.rankLabel.short}</small>}</> : 'UNRANKED'}</span><span>{score.kind==='live' && <b className={livePick.isWinning?'vin-live':'vin-score-neutral'}>{score.label.toUpperCase()} · </b>}{centralTime(game.startTime)} <VersionBadge record={game} sport={sport}/></span></div>
       <div className="vin-game-matchup"><h3><TeamTag game={game} side="away"/> <span>at</span> <TeamTag game={game} side="home"/></h3><span className="vin-game-league">{sport.toUpperCase()}{game.neutralSite ? ' · Neutral' : ''}</span></div>
       {(score.kind==='live'||score.kind==='final')&&<ScorePanel href={gamecast??undefined} target={gamecast?'_blank':undefined} rel={gamecast?'noopener noreferrer':undefined} className={`vin-scoreboard ${gamecast?'vin-scoreboard-link':''} vin-scoreboard-${score.freshness} ${score.kind==='live'&&livePick.provisional?livePick.state==='covering'?'vin-scoreboard-covering':livePick.state==='not-covering'?'vin-scoreboard-not-covering':'':''}`} aria-label={`${score.label}: ${teamName(game.away)} ${score.awayScore??'unavailable'}, ${teamName(game.home)} ${score.homeScore??'unavailable'}${progress?'. '+progress.label:''}${gamecast?'. Open ESPN Gamecast in a new tab':''}`}>
-       <div className="vin-scoreboard-top"><strong>{score.label}</strong>{progress&&<span className="vin-game-progress">{progress.label}</span>}</div>
+       <div className="vin-scoreboard-top"><strong>{score.label}</strong>{clock&&<span className="vin-clock-badge" aria-label={progress?.label}>{clock}</span>}</div>
        <div className="vin-scoreboard-teams"><div><span>{teamCode(game.away)}</span><strong>{score.awayScore??'—'}</strong></div><span aria-hidden="true">–</span><div><strong>{score.homeScore??'—'}</strong><span>{teamCode(game.home)}</span></div></div>
        {score.kind==='live'&&<>{!livePick.provisional&&<div className={`vin-live-pick-status ${livePick.isWinning?'vin-live-pick-winning':''}`}><strong>{livePick.label}</strong><span>{livePick.provisional?'Against the displayed line · provisional':livePick.reason==='stale-score'?'Live pick status unavailable · refresh needed':livePick.reason==='stale-line'?'Price is stale':livePick.reason==='no-ats-pick'?'No displayed ATS pick':'Complete score needed'}</span></div>}<p>{score.updatedAt?'Feed checked '+centralTime(score.updatedAt):'Feed check time unavailable.'} · Reported clock, not a countdown.{score.freshness!=='live'?' Refresh for the latest score.':''}{!score.completeScore?' Score unavailable for one or both teams.':''}</p></>}
        {gamecast&&<span className="vin-gamecast-label">ESPN Gamecast <ArrowUpRight size={13} aria-hidden="true"/></span>}

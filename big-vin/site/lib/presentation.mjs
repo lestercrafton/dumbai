@@ -50,7 +50,7 @@ export function dailySportAvailability(slates, failedSports = []) {
 /** Outcome wording only: never infer settlement from a live scoreboard. */
 export function visibleOutcome(decision, synthetic = false) {
   if (synthetic) return 'No ATS result · paper winner contract';
-  return ({win:'Big Vin Wins.', loss:'Loss · Learn', push:'Push', void:'Void', pending:'Pending', 'no-line':'Ungraded · no spread', 'no-pick':'Ungraded · no pick'})[decision.outcome] || 'Ungraded';
+  return ({win:'Big Vin Wins.', loss:'Learn', push:'Push', void:'Void', pending:'Pending', 'no-line':'Ungraded · no spread', 'no-pick':'Ungraded · no pick'})[decision.outcome] || 'Ungraded';
 }
 export function validBoardDate(value) {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;

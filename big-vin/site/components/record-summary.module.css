@@ -22,3 +22,5 @@
 @media(max-width:600px){.card h3{min-height:28px}.caption{min-height:28px}.status{font-size:11px}.scoreLabel{min-height:22px}.rate{margin:7px 0}.coverage strong{display:block;margin-bottom:2px}}
 .meter{font-size:12px;color:inherit;opacity:.8;margin:0 0 8px}.meter b{color:inherit;font-weight:600;font-variant-numeric:tabular-nums}
 .what{display:block;margin-top:2px}.what summary{display:inline;cursor:pointer;text-decoration:underline;font-size:11px;list-style:none}.what summary::-webkit-details-marker{display:none}.what p{margin-top:6px;padding:10px 12px;border-radius:8px;background:#1b1d1a;color:#e8ece4;border:1px solid #555b53;font-size:12px;line-height:1.45;opacity:1;box-shadow:0 6px 20px #0006}
+
+.flatNote{font-size:12px;opacity:.75;margin:0 0 10px}.flatNote a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:2px}

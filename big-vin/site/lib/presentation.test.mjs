@@ -56,7 +56,7 @@ test('availability retains completed, unranked and limited-data games and distin
 });
 test('result labels expose wins, losses and pushes without changing settlement', () => {
   assert.equal(visibleOutcome({outcome:'win'}),'Big Vin Wins.');
-  assert.equal(visibleOutcome({outcome:'loss'}),'Loss · Learn');
+  assert.equal(visibleOutcome({outcome:'loss'}),'Learn');
   assert.equal(visibleOutcome({outcome:'push'}),'Push');
   assert.equal(visibleOutcome({outcome:'pending'}),'Pending');
   assert.equal(visibleOutcome({outcome:'no-line'}),'Ungraded · no spread');

@@ -63,6 +63,7 @@ export function RecordSummary({sport,sportLabel,date,refreshKey,card='all',rankP
  const checked=current?.liveCheck?.checkedAt||current?.lastCollectionAt;
  return <section className={styles.summary} aria-label={`${sportLabel} saved pick record`} aria-busy={loading}>
   <div className={styles.heading}><div><h2>{sportLabel} record</h2><p>{sport==='mlb'?'Moneyline':sport==='nhl'?'Puck line':'Against the spread'} · {card==='all'?label:'Saved '+label} · Kickoff-locked picks{hindsight}</p></div><a href={href}>Pick history ↗</a></div>
+  <p className={styles.flatNote}>Flat $1 on every pick · not Kelly. See <a href="/bankroll">Bankroll</a> for Kelly sizing.</p>
   <div className={styles.grid}>
    <RecordCard title="Day" caption={dateLabel(date)+' · ET'} summary={daily} loading={loading} error={error}/>
    <RecordCard title="Week" caption={week?`${dateLabel(week.start)}–${dateLabel(week.end)}`:'Mon–Sun ET'} summary={weekly} loading={loading} error={error}/>
