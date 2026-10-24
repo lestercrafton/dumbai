@@ -1,5 +1,6 @@
 'use client';
 import {useEffect,useState} from 'react';
+import {KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel} from '@/lib/presentation.mjs';
 type Point={t:string|null;kelly:number;reup:boolean};
 type Sport={sport:string;picks:number;bets:number;maxStake:number;maxStakeDollars:number;start:number;kelly:{bankroll:number;maxDrawdown:number;putIn:number;net:number;reups:number};series:Point[]};
@@ -28,6 +29,7 @@ export default function Bankroll(){
   <a href="/" className="bk-back">← Big Vin</a>
   <h1>Bankroll</h1>
   <p className="bk-sub">$1M per sport · full Kelly · re-up to $1M below $100K</p>
+  <p className="bk-explain">{KELLY_NOTE}</p>
   {error&&<p className="bk-sub">{error}</p>}
   {!data&&!error&&<p className="bk-sub">Loading…</p>}
   {total&&<section className="bk-total">
@@ -36,7 +38,7 @@ export default function Bankroll(){
    <div><span>Net</span><b className={total.bankroll-total.putIn>=0?'bk-up':'bk-down'}>{signed(total.bankroll-total.putIn)}</b></div>
    <div><span>Re-ups</span><b>{total.reups}</b></div>
   </section>}
-  <div className="bk-grid">{data?.map(s=><section key={s.sport} className="bk-card">
+  <div className="bk-grid">{data?.map(s=><a key={s.sport} href={`/bankroll/${s.sport}`} className="bk-card">
    <div className="bk-head"><h2>{sportLabel(s.sport)}</h2><span className={s.kelly.net>=0?'bk-pill bk-pill-up':'bk-pill bk-pill-down'}>{signed(s.kelly.net)}</span></div>
    <strong className="bk-big">{usd(s.kelly.bankroll)}</strong>
    <Chart series={s.series} start={s.start} id={s.sport}/>
@@ -47,6 +49,6 @@ export default function Bankroll(){
     <div><dt>Biggest bet</dt><dd>{s.bets?`${(s.maxStake*100).toFixed(1)}%`:'—'}</dd></div>
     <div><dt>Bets</dt><dd>{s.bets} / {s.picks}</dd></div>
    </dl>
-  </section>)}</div>
+  </a>)}</div>
  </main>;
 }
