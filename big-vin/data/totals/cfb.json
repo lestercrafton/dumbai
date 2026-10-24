@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cfb-totals-v1",
  "sport": "cfb",
- "generatedAt": "2026-10-24T18:22:55.448Z",
+ "generatedAt": "2026-10-24T21:10:23.072Z",
  "method": "college football: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 180-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 3,
-  "losses": 3,
+  "wins": 4,
+  "losses": 6,
   "pushes": 0,
-  "pending": 29,
-  "bankroll": 497.8,
+  "pending": 25,
+  "bankroll": 476.81,
   "bankrollStart": 500
  },
  "backtest": {
@@ -77,9 +77,12 @@
    "awayPoints": 24,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 55,
+   "stake": {
+    "stake": 9.96,
+    "net": -9.96
+   }
   },
   "401856729": {
    "side": "over",
@@ -305,9 +308,12 @@
    "awayPoints": 25,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 44,
+   "stake": {
+    "stake": 9.96,
+    "net": -9.96
+   }
   },
   "401858270": {
    "side": "under",
@@ -323,9 +329,12 @@
    "awayPoints": 15.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 79,
+   "stake": {
+    "stake": 9.96,
+    "net": -9.96
+   }
   },
   "401858271": {
    "side": "over",
@@ -404,9 +413,12 @@
     "unshrunkTotal": 55.79,
     "note": "Gap of 7.29 points vs the market total; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 75,
+   "stake": {
+    "stake": 9.96,
+    "net": 8.89
+   }
   },
   "401858275": {
    "side": "over",
