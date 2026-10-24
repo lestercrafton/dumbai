@@ -6,7 +6,6 @@ import {Table,TableHeader,TableBody,TableRow,TableHead,TableCell} from '@/compon
 import {Select,SelectTrigger,SelectValue,SelectContent,SelectItem} from '@/components/ui/select';
 import {Button} from '@/components/ui/button';
 import {RecordSummary} from '@/components/record-summary';
-import {LazyDetails} from '@/components/lazy-details';
 import {useRefreshingResource} from '@/components/use-refreshing-resource';
 import {api,browserBoard,fetchSlate,JsonCall} from '@/lib/board-client';
 import {filterGamesByTeam} from '@/lib/team-search.mjs';
@@ -19,7 +18,7 @@ import {weekendWindow} from '@/lib/weekend-window.mjs';
 import {sortBoard,boardConferences,filterByConference} from '@/lib/board-sort.mjs';
 import {scoreUnit} from '@/lib/sport-copy';
 import {americanToDecimal,summarizeLedger} from '@/lib/legacy.mjs';
-import {RefreshCw,Download,ArrowRight,ArrowUpRight,ArrowDown,ClipboardList,Radio,CalendarDays,Activity,ChevronDown} from 'lucide-react';
+import {RefreshCw,Download,ArrowRight,ArrowUpRight,ArrowDown,ClipboardList,Radio,CalendarDays,Activity} from 'lucide-react';
 import {Dialog,DialogContent,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {SiteHeader,TodayHero,GameCards,ModelSection,StorySection,SupportSection,SiteFooter} from '@/components/big-vin-experience';
 import {centralTime,SUPPORTED_SPORTS,sportLabel,dailySportAvailability,validBoardDate} from '@/lib/presentation.mjs';
@@ -148,7 +147,7 @@ export default function Home(){
      <div className="vin-card-heading"><h3>{sports[league]}<span>{windowDays==='1'?date:`${date} · ${windowDays==='3'?`3 days through ${shiftDate(date,2)}`:isFootballSport(league)&&sport!=='all'&&date===footballWeekStart(date,league)?'Full week':'7-day window'}`} · {filter==='all'?'Full card':filter==='3'?'Top 3':filter==='10'?'Top 10':'Easy 8'} · {scoreUnit(league)} of edge</span></h3><a className="vin-text-link" href={resultLink}>Results <ArrowUpRight size={14}/></a></div>
      {leagueSlate?.offlineSnapshot&&<p className="vin-board-warning" role="status">{sports[league]} is using saved observations. Last checked {time(leagueSlate.retrievedAt)}.</p>}
      {leagueSlate?.partialLiveCoverage&&!leagueSlate?.offlineSnapshot&&<details className="vin-feed-status"><summary>Some live updates unavailable</summary><p>Some date or league checks did not finish. Saved observations remain visible; refresh to try again.</p></details>}
-     {tab==='slate'&&<LazyDetails className="vin-record-disclosure" summary={<><span>{sports[league]} record<span>Day · Week · Season</span></span><span>Open <ChevronDown size={14}/></span></>}><RecordSummary sport={league} sportLabel={sports[league]} seasonContext={seasonContexts[league]??dailyBoard?.slates?.find((item:Row)=>item.sport===league)?.seasonContext??null} date={isFootballSport(league)&&windowDays==='7'&&date===footballWeekStart(sportsDay(),league)?sportsDay():date} refreshKey={recordRefresh} card={windowDays==='3'?'all':filter} rankPeriod={windowDays==='1'?'day':'week'} rankAnchor={date}/></LazyDetails>}
+     {tab==='slate'&&<div className="vin-record-disclosure"><RecordSummary sport={league} sportLabel={sports[league]} seasonContext={seasonContexts[league]??dailyBoard?.slates?.find((item:Row)=>item.sport===league)?.seasonContext??null} date={isFootballSport(league)&&windowDays==='7'&&date===footballWeekStart(sportsDay(),league)?sportsDay():date} refreshKey={recordRefresh} card={windowDays==='3'?'all':filter} rankPeriod={windowDays==='1'?'day':'week'} rankAnchor={date}/></div>}
      {rows.length?<GameCards games={rows} sport={league} onInspect={inspect} offline={!!leagueSlate?.offlineSnapshot} refreshFailed={!!boardError} now={now}/>:<div className="vin-empty"><h3>No comparable lines in this view.</h3><p>Try another start time, team spelling or the full card. Missing prices and unplayed games stay ungraded.</p></div>}
      
      <div className="vin-board-provenance"><p>Start times in Central (CT); date filters and record days use Eastern (ET). Checked {time(leagueSlate?.retrievedAt)}.</p><p>{leagueSlate?.sourceUrl&&<a href={leagueSlate.sourceUrl} target="_blank" rel="noreferrer">ESPN feed <ArrowUpRight size={12}/></a>} · {all.filter(game=>game.sport===league&&game.completed).length} final · {all.filter(game=>game.sport===league&&game.status==='live').length} live · {all.filter(game=>game.sport===league&&game.status==='scheduled').length} upcoming. Coverage can lag.</p></div>
