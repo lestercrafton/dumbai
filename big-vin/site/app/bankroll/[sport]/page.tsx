@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import {useParams} from 'next/navigation';
 import {KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel} from '@/lib/presentation.mjs';
-type Bet={t:string;game:string;pick:string;line:number;odds:number;edge:number|null;winChance:number|null;stake:number;amount:number;outcome:string;pl:number;after:number;reup:boolean;afterReup?:number};
+type Bet={t:string;betType?:string;game:string;pick:string;line:number;odds:number;edge:number|null;winChance:number|null;stake:number;amount:number;outcome:string;pl:number;after:number;reup:boolean;afterReup?:number};
 const usd=(v:number)=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString('en-US');
 const signed=(v:number)=>Math.round(v)===0?'$0':(v>0?'+':'')+usd(v);
 const odds=(o:number)=>o>0?`+${o}`:`${o}`.replace('-','−');
@@ -30,7 +30,7 @@ export default function SportBankroll(){
    <thead><tr><th>Date</th><th>Game</th><th>Pick</th><th>Edge</th><th>Win chance</th><th>Kelly</th><th>Bet</th><th>Result</th><th>P/L</th><th>Bankroll</th></tr></thead>
    <tbody>{bets.map((b,i)=><tr key={i} className={b.reup?'bk-row-reup':b.stake>0?'':'bk-row-pass'}>
     <td>{day(b.t)}</td><td className="bk-game">{b.game}</td>
-    <td>{b.pick} {line(b.line)} <span className="bk-dim">{odds(b.odds)}</span></td>
+    <td>{b.betType&&b.betType!=='Spread'&&<span className="bk-type">{b.betType}</span>}{b.pick} {b.betType==='Moneyline'?'ML':line(b.line)} <span className="bk-dim">{odds(b.odds)}</span></td>
     <td>{b.edge==null?'—':b.edge.toFixed(1)}</td>
     <td>{b.winChance==null?'—':`${(b.winChance*100).toFixed(1)}%`}</td>
     <td>{b.stake>0?`${(b.stake*100).toFixed(1)}%`:'—'}</td>

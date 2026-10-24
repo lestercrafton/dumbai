@@ -9,7 +9,7 @@ export async function GET(request:Request){
  try{
   const sports=await Promise.all(SUPPORTED_SPORTS.filter((s:string)=>!only||s===only).map(async(sport:string)=>{
    const {records}=selectTrackedHistory(await readForecastRecords(sport),{sport,models:historicalModelSpecs(sport)});
-   const replay=replayKellyBankroll(records);
+   const replay=replayKellyBankroll(records,{includeLegacy:sport==='mlb'});
    // Thin the chart to at most 120 points.
    const step=Math.max(1,Math.ceil(replay.series.length/120));
    const {rows,bets,...rest}=replay;
