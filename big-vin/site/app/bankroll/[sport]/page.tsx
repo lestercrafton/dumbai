@@ -1,8 +1,9 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {useParams} from 'next/navigation';
 import {KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel} from '@/lib/presentation.mjs';
+import {HISTORY_SORT_COLUMNS,nextHistorySort,sortHistoryBets} from '@/lib/bankroll-history-sort.mjs';
 type Bet={t:string;betType?:string;game:string;pick:string;line:number;odds:number;edge:number|null;winChance:number|null;stake:number;amount:number;outcome:string;pl:number;after:number;reup:boolean;afterReup?:number};
 const usd=(v:number)=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString('en-US');
 const signed=(v:number)=>Math.round(v)===0?'$0':(v>0?'+':'')+usd(v);
@@ -12,8 +13,11 @@ const day=(t:string)=>new Date(t).toLocaleDateString('en-US',{month:'short',day:
 export default function SportBankroll(){
  const {sport}=useParams<{sport:string}>();
  const [s,setS]=useState<any>(null),[error,setError]=useState('');
+ type SortState={key:string;dir:'asc'|'desc'};
+ const [sort,setSort]=useState<SortState>({key:'t',dir:'asc'});
  useEffect(()=>{fetch(`/api/bankroll?sport=${encodeURIComponent(sport)}`).then(r=>r.ok?r.json():Promise.reject()).then((v:any)=>v.sports?.[0]?setS(v.sports[0]):setError('No bankroll for this sport.')).catch(()=>setError('Bankroll unavailable.'));},[sport]);
  const bets:Bet[]=s?.bets??[];
+ const rows=useMemo(()=>sortHistoryBets(bets,sort.key,sort.dir),[bets,sort]);
  return <main className="bk">
   <a href="/bankroll" className="bk-back">← Bankroll</a>
   <h1>{sportLabel(sport)}</h1>
@@ -27,8 +31,16 @@ export default function SportBankroll(){
    <div><span>Re-ups</span><b>{s.kelly.reups}</b></div>
   </section>}
   {s&&<div className="bk-table-wrap"><table className="bk-table">
-   <thead><tr><th>Date</th><th>Game</th><th>Pick</th><th>Edge</th><th>Win chance</th><th>Kelly</th><th>Bet</th><th>Result</th><th>P/L</th><th>Bankroll</th></tr></thead>
-   <tbody>{bets.map((b,i)=><tr key={i} className={b.reup?'bk-row-reup':b.stake>0?'':'bk-row-pass'}>
+   <thead><tr>{HISTORY_SORT_COLUMNS.map(col=>{
+    const active=sort.key===col.key;
+    return <th key={col.key} aria-sort={active?(sort.dir==='asc'?'ascending':'descending'):'none'} scope="col">
+     <button type="button" className={`bk-sort${active?' on':''}`} onClick={()=>setSort(cur=>nextHistorySort(cur,col.key) as SortState)} aria-label={`Sort by ${col.label}${active?`, ${sort.dir==='asc'?'ascending':'descending'}`:''}`}>
+      <span>{col.label}</span>
+      <span className="bk-sort-ind" aria-hidden="true">{active?(sort.dir==='asc'?'▲':'▼'):'⇅'}</span>
+     </button>
+    </th>;
+   })}</tr></thead>
+   <tbody>{rows.map((b,i)=><tr key={i} className={b.reup?'bk-row-reup':b.stake>0?'':'bk-row-pass'}>
     <td>{day(b.t)}</td><td className="bk-game">{b.game}</td>
     <td>{b.betType&&b.betType!=='Spread'&&<span className="bk-type">{b.betType}</span>}{b.pick} {b.betType==='Moneyline'?'ML':line(b.line)} <span className="bk-dim">{odds(b.odds)}</span></td>
     <td>{b.edge==null?'—':b.edge.toFixed(1)}</td>

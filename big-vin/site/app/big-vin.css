@@ -192,7 +192,10 @@
 @media(max-width:620px){.bk-total{grid-template-columns:1fr 1fr}.bk-total>div:first-child{grid-column:1/-1}.bk-stats{grid-template-columns:repeat(3,auto)}}
 .vin-team-meta{font-size:.62em;font-weight:500;opacity:.6;letter-spacing:0;font-variant-numeric:tabular-nums}
 .bk-explain{max-width:680px;font-size:14px;line-height:1.5;opacity:.8;margin:10px 0 0}a.bk-card{color:inherit;text-decoration:none;display:block;transition:transform .15s,box-shadow .15s}a.bk-card:hover{transform:translateY(-2px);box-shadow:0 2px 4px #2a10371a,0 12px 32px #2a103714}
-.bk-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #e6dcec;border-radius:12px;background:#fff}.bk-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}.bk-table th{position:sticky;top:0;background:#faf6fc;text-align:left;font-size:10px;letter-spacing:.06em;text-transform:uppercase;opacity:.75;padding:9px 10px}.bk-table td{padding:8px 10px;border-top:1px solid #f1eaf4}.bk-game{max-width:240px;overflow:hidden;text-overflow:ellipsis}.bk-dim{opacity:.55}.bk-row-pass td{opacity:.5}.bk-row-reup td{background:#f6eefa}.bk-reup-tag{margin-left:6px;font-size:11px;font-weight:700;color:#6b2f86}
+.bk-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #e6dcec;border-radius:12px;background:#fff}.bk-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}.bk-table th{position:sticky;top:0;z-index:1;background:#faf6fc;text-align:left;font-size:10px;letter-spacing:.06em;text-transform:uppercase;opacity:1;padding:0}
+.bk-table th{padding:0}.bk-sort{display:inline-flex;align-items:center;gap:4px;width:100%;min-height:36px;padding:9px 10px;margin:0;border:0;background:transparent;font:inherit;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:inherit;opacity:.75;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}.bk-sort:hover,.bk-sort:focus-visible{opacity:1;outline:none;background:#f0e6f6}.bk-sort.on{opacity:1;color:#6b2f86;font-weight:700}.bk-sort-ind{font-size:9px;opacity:.45;line-height:1}.bk-sort.on .bk-sort-ind{opacity:1}
+@media(max-width:620px){.bk-sort{min-height:40px;padding:8px 8px;font-size:9px}}
+.bk-table td{padding:8px 10px;border-top:1px solid #f1eaf4}.bk-game{max-width:240px;overflow:hidden;text-overflow:ellipsis}.bk-dim{opacity:.55}.bk-row-pass td{opacity:.5}.bk-row-reup td{background:#f6eefa}.bk-reup-tag{margin-left:6px;font-size:11px;font-weight:700;color:#6b2f86}
 @media(max-width:620px){.bk-table{font-size:12px}.bk-table td,.bk-table th{padding:7px 8px}.bk-game{max-width:150px}}
 .bk-type{display:inline-block;margin-right:6px;padding:1px 6px;border-radius:5px;background:#f1eaf4;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#6b2f86}
 .bk-tabs{display:inline-flex;gap:4px;margin:18px 0 0;padding:4px;border-radius:10px;background:#f1eaf4}.bk-tabs button{border:0;background:none;padding:7px 14px;border-radius:7px;font:inherit;font-size:13px;font-weight:650;color:#6b5a74;cursor:pointer}.bk-tabs button.on{background:#fff;color:#2a1037;box-shadow:0 1px 3px #2a10371f}
@@ -203,3 +206,25 @@
 .vin-clock-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;background:#fff;color:#151714;font-size:15px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1.2;box-shadow:0 0 0 1px #ffffff55}.vin-scoreboard-covering .vin-clock-badge{background:#e7f7b8}.vin-scoreboard-not-covering .vin-clock-badge,.vin-game-not-covering .vin-clock-badge{background:#f5e7a8}.vin-scoreboard-top{align-items:center}.vin-scoreboard-top .vin-clock-badge{margin-left:auto}
 .bk-clock{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:5px;background:#2a1037;color:#fff;font-size:12px;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums;vertical-align:middle}
 .vin-live-box-push{background:#ffffff08;border-color:#756746}.vin-live-box-push>strong{color:#deceb3}.vin-final-split .vin-live-box>strong{font-size:20px;font-weight:750}
+
+.bk-navrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.bk-mylink{font-size:13px;font-weight:700;color:#6b2f86;text-decoration:none}
+.bk-mylink:hover{text-decoration:underline}
+.bk-disclaimer{font-size:12px;line-height:1.45;opacity:.65;margin:8px 0 0;max-width:720px}
+.bk-disclaimer-bottom{margin-top:28px;padding-top:16px;border-top:1px solid #e6dcec}
+.bk-auth,.bk-setup{max-width:420px;margin:18px 0;padding:18px;border:1px solid #e6dcec;border-radius:14px;background:#fff;display:flex;flex-direction:column;gap:12px}
+.bk-auth label,.bk-setup label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;opacity:.8}
+.bk-auth input,.bk-setup input{font:inherit;font-size:16px;font-weight:500;text-transform:none;letter-spacing:0;padding:10px 12px;border:1px solid #dccfe4;border-radius:8px;opacity:1}
+.bk-auth button[type=submit],.bk-setup button[type=submit]{font:inherit;font-size:14px;font-weight:700;padding:11px 16px;border:0;border-radius:8px;background:#6b2f86;color:#fff;cursor:pointer}
+.bk-auth button[type=submit]:disabled,.bk-setup button[type=submit]:disabled{opacity:.55;cursor:default}
+.bk-linkish{border:0;background:none;font:inherit;font-size:13px;color:#6b2f86;cursor:pointer;text-align:left;padding:0;text-decoration:underline}
+.bk-userbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0 0;font-size:13px}
+.bk-setup{max-width:720px}
+.bk-setup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.bk-err{color:#b23b22;font-size:13px;margin:0}
+.bk-ok{color:#1f7a32;font-size:13px;margin:0}
+.bk-demo{padding:10px 12px;border-radius:8px;background:#f6eefa;font-size:14px}
+.bk-note{font-size:13px;padding:10px 12px;border-radius:8px;background:#fff8e8;margin:0}
+
+.bk-th{border:0;background:none;font:inherit;font-size:10px;letter-spacing:.06em;text-transform:uppercase;opacity:.85;padding:0;cursor:pointer;color:inherit;text-align:left;white-space:nowrap}
+.bk-th:hover{opacity:1;color:#6b2f86}
