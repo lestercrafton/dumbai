@@ -16,7 +16,7 @@ import {shortScoreUnit, scoreUnit} from '@/lib/sport-copy';
 import {displayLines} from '@/lib/board-presentation.mjs';
 import {liveScorePresentation} from '@/lib/board-discovery.mjs';
 import {liveGameProgress,clockBadge} from '@/lib/live-game-progress.mjs';
-import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from '@/lib/live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel,totalPickOutcome} from '@/lib/live-pick-status.mjs';
 import {espnGamecastUrl} from '@/lib/gamecast.mjs';
 import {SITE_CONFIG} from '@/lib/site-config';
 import {currentBoardPick} from '@/lib/pick-revisions.mjs';
@@ -126,6 +126,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
     const synthetic = game.paperWager?.kind === 'synthetic-winner-even';
     const provisionalOutcome = game.finalPendingGrade && livePick.provisional ? coverToOutcome(livePick.state) : null;
     const provisionalTotal = game.finalPendingGrade && liveTotal.provisional ? coverToOutcome(liveTotal.state) : null;
+    const derivedTotal = totalPickOutcome(game) ?? provisionalTotal;
     const settled = !synthetic && (['win','loss','push','void'].includes(decision.outcome) || !!provisionalOutcome);
     const liveResult = !settled && livePick.provisional;
     const displayDecision = provisionalOutcome ? {...decision, outcome: provisionalOutcome} : decision;
@@ -149,11 +150,11 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
       <div className="vin-pick-stack">
       <div className="vin-game-pick"><div><span className="vin-label">BIG VIN’S PICK · {mlSport?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'SPREAD'}</span><strong>{lines.pick || (mlSport?'No pick':comparisonEdge===0?'No edge · Pass':'No spread pick')}</strong>{playable&&(mlSport||lines.pick)&&<small className="vin-ml-price">{playable}</small>}</div><span className="vin-pick-kind">{synthetic ? 'Paper contract' : pregame ? 'Current pick' : awaitingQuote ? 'Last saved' : 'Locked pick'}</span></div>
       {!game.overUnder && ['nfl','cfb','nba','wnba','cbb'].includes(sport) && <div className="vin-game-pick vin-total-pick vin-total-open"><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>No pick saved</strong><small>{Number.isFinite((game.moneylineMarket??game.market)?.total)?`Vegas total ${(game.moneylineMarket??game.market).total} · `:''}{Date.parse(game.startTime)<=now?'No total points pick was saved before kickoff.':'Waiting for the next hourly total points run.'}</small></div><span className="vin-pick-kind">Total points</span></div>}
-      {game.overUnder && <div className={`vin-game-pick vin-total-pick vin-total-${game.overUnder.result??provisionalTotal??'open'}`}><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>{game.overUnder.side?`${game.overUnder.side==='over'?'Over':'Under'} ${game.overUnder.marketTotal}`:'No pick'}</strong>{game.overUnder.side&&!game.overUnder.result&&!liveTotal.provisional&&playableTotal(gameSport,game.overUnder.side,game.overUnder.total)!==null&&<small className="vin-ml-price">playable to {playableTotal(gameSport,game.overUnder.side,game.overUnder.total)}</small>}<small>Vegas total {game.overUnder.marketTotal} · Big Vin total {pointValue(game.overUnder.total)}{game.overUnder.result?` · Final ${game.overUnder.actualTotal}, ${game.overUnder.result==='win'?'win':game.overUnder.result==='loss'?'learn':'push'}`:''}</small></div><span className="vin-pick-kind">Total points record {game.overUnder.record.wins}–{game.overUnder.record.losses}{game.overUnder.record.pushes?`–${game.overUnder.record.pushes}`:''}</span></div>}
+      {game.overUnder && <div className={`vin-game-pick vin-total-pick vin-total-${game.overUnder.result??derivedTotal??'open'}`}><div><span className="vin-label">BIG VIN’S PICK · TOTAL POINTS</span><strong>{game.overUnder.side?`${game.overUnder.side==='over'?'Over':'Under'} ${game.overUnder.marketTotal}`:'No pick'}</strong>{game.overUnder.side&&!game.overUnder.result&&!liveTotal.provisional&&playableTotal(gameSport,game.overUnder.side,game.overUnder.total)!==null&&<small className="vin-ml-price">playable to {playableTotal(gameSport,game.overUnder.side,game.overUnder.total)}</small>}<small>Vegas total {game.overUnder.marketTotal} · Big Vin total {pointValue(game.overUnder.total)}{game.overUnder.result?` · Final ${game.overUnder.actualTotal}, ${game.overUnder.result==='win'?'win':game.overUnder.result==='loss'?'learn':'push'}`:''}</small></div><span className="vin-pick-kind">Total points record {game.overUnder.record.wins}–{game.overUnder.record.losses}{game.overUnder.record.pushes?`–${game.overUnder.record.pushes}`:''}</span></div>}
       </div>
       {(()=>{const marketLabel=mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'AGAINST THE SPREAD';
         const tone=(o:string)=>o==='win'||o==='covering'?'covering':o==='loss'||o==='not-covering'?'not-covering':'push';
-        const totalOutcome=game.overUnder?.result&&['win','loss','push'].includes(game.overUnder.result)?game.overUnder.result:provisionalTotal;
+        const totalOutcome=derivedTotal;
         const spreadFinal=settled&&!synthetic&&['win','loss','push'].includes(displayDecision.outcome);
         if(liveResult)return <div className="vin-live-split" style={liveTotal.provisional?undefined:{gridTemplateColumns:'1fr'}}>
           <div className={`vin-live-box vin-live-box-${livePick.state}`}><span className="vin-result-heading">LIVE · {mlSport&&lines.marketLine===0?'MONEYLINE':gameSport==='nhl'?'PUCK LINE':'SPREAD'}</span><strong>{livePick.label}</strong><span>{lines.pick}</span></div>

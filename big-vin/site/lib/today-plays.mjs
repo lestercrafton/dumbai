@@ -4,7 +4,7 @@
  * Cover status uses the same livePickStatus function as the game cards. */
 import {kellyStake} from './kelly-bankroll.mjs';
 import {compareKelly,pickPrice} from './kelly-rank.mjs';
-import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from './live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel,totalPickOutcome} from './live-pick-status.mjs';
 import {liveGameProgress,clockBadge} from './live-game-progress.mjs';
 import {visibleOutcome} from './presentation.mjs';
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
@@ -48,8 +48,9 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
   const moneyline=g.sport==='mlb';const cover=playCover(g,now);
   let totalCover=null;
   if(g.overUnder?.side){
-   if(g.overUnder.result&&['win','loss','push'].includes(g.overUnder.result))
-    totalCover={state:g.overUnder.result==='win'?'covering':g.overUnder.result==='loss'?'not-covering':'push',label:({win:'Win',loss:'Loss',push:'Push'})[g.overUnder.result],final:true};
+   const graded=totalPickOutcome(g);
+   if(graded)
+    totalCover={state:graded==='win'?'covering':graded==='loss'?'not-covering':'push',label:({win:'Win',loss:'Loss',push:'Push'})[graded],final:true};
    else if(g.finalPendingGrade){const t=liveTotalStatus(g,{now});if(t.provisional)totalCover={state:t.state,label:provisionalFinalLabel(t.state,{short:true}),final:true};}
    else {const t=liveTotalStatus(g,{now});if(t.provisional)totalCover={state:t.state,label:t.label,final:false};}
   }

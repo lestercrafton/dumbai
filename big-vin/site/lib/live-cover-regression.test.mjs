@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mergeLiveScores,hasActiveGames} from './live-overlay.mjs';
 import {liveScoreUrls} from './live-scores.mjs';
-import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel} from './live-pick-status.mjs';
+import {livePickStatus,liveTotalStatus,coverToOutcome,provisionalFinalLabel,totalPickOutcome} from './live-pick-status.mjs';
 
 const now=Date.parse('2026-10-24T02:00:00Z');
 const stale='2026-10-24T00:30:00Z',fresh='2026-10-24T01:59:30Z';
@@ -89,10 +89,34 @@ test('live score URLs never ask ESPN for a same-day range (it returns 400)',()=>
 test('FINAL with spread and total shows two side-by-side result boxes',()=>{
  const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
  assert.ok(tsx.includes('FINAL · TOTAL POINTS'),'total final box missing');
+ assert.ok(tsx.includes('FINAL · {marketLabel}')||tsx.includes('FINAL · AGAINST THE SPREAD'),'spread final heading missing');
  assert.ok(tsx.includes('vin-final-split')||tsx.includes("totalOutcome?undefined:{gridTemplateColumns:'1fr'}"),'side-by-side final split missing');
+ assert.ok(tsx.includes('derivedTotal')||tsx.includes('totalPickOutcome'),'must derive total when OU ungraded');
  assert.ok(tsx.includes('totalOutcome'),'graded or provisional total outcome missing');
  const today=readFileSync(new URL('./today-plays.mjs',import.meta.url),'utf8');
  assert.ok(today.includes('totalCover'),"Today's plays must carry a total status");
+ const bank=readFileSync(new URL('../app/bankroll/page.tsx',import.meta.url),'utf8');
+ assert.ok(bank.includes('>Spread</')||bank.includes('>Spread</th>'),"Today's plays table needs Spread column");
+ assert.ok(bank.includes('>Total</')||bank.includes('>Total</th>'),"Today's plays table needs Total column");
+});
+
+
+test('totalPickOutcome: graded OU, and score-derived when spread graded but OU still open',()=>{
+ assert.equal(totalPickOutcome({overUnder:{side:'over',marketTotal:50.5,result:'win'}}),'win');
+ assert.equal(totalPickOutcome({overUnder:{side:'under',marketTotal:50.5,result:'loss'}}),'loss');
+ // MASS @ UConn style: spread already graded, total pick still open, final scores available
+ const mass={completed:true,status:'completed',result:{status:'completed',homeScore:35,awayScore:16,outcome:'win'},
+  overUnder:{side:'over',marketTotal:50.5,result:null}};
+ assert.equal(totalPickOutcome(mass),'win'); // 51 > 50.5
+ assert.equal(totalPickOutcome({...mass,overUnder:{side:'under',marketTotal:50.5,result:null}}),'loss');
+ assert.equal(totalPickOutcome({...mass,result:{...mass.result,homeScore:25,awayScore:26},overUnder:{side:'over',marketTotal:51,result:null}}),'push');
+ assert.equal(totalPickOutcome({status:'scheduled',overUnder:{side:'over',marketTotal:50.5},liveHomeScore:20,liveAwayScore:30}),null);
+ const pending={finalPendingGrade:true,status:'live',liveHomeScore:28,liveAwayScore:24,overUnder:{side:'over',marketTotal:50.5}};
+ assert.equal(totalPickOutcome(pending),'win');
+ const tsx=readFileSync(new URL('../components/big-vin-experience.tsx',import.meta.url),'utf8');
+ assert.ok(tsx.includes('derivedTotal')||tsx.includes('totalPickOutcome'),'card must use derived total outcome');
+ const today=readFileSync(new URL('./today-plays.mjs',import.meta.url),'utf8');
+ assert.ok(today.includes('totalPickOutcome'),"Today's plays must derive total when OU ungraded");
 });
 
 test('card markup and styles keep the green/yellow cover boxes',()=>{

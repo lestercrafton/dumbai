@@ -76,3 +76,27 @@ export function provisionalFinalLabel(state,{short=false}={}){
  if(short)return ({win:'Win',loss:'Loss',push:'Push'})[outcome];
  return ({win:'Big Vin Wins.',loss:'Learn',push:'Push'})[outcome];
 }
+
+/** Graded or score-derived O/U outcome for a final/completed game.
+ * Prefers the saved grade; otherwise compares final scores to the market total
+ * once the game is done (including live-overlay finals pending board grade). */
+export function totalPickOutcome(game = {}) {
+  const row = game && typeof game === 'object' ? game : {};
+  const pick = row.overUnder;
+  if (!pick?.side || !finite(pick.marketTotal)) return null;
+  if (pick.result && ['win','loss','push'].includes(pick.result)) return pick.result;
+  const done = row.result?.status === 'completed' || row.completed || row.status === 'completed'
+    || row.status === 'final' || !!row.finalPendingGrade;
+  if (!done) return null;
+  const home = finite(row.result?.homeScore) ? row.result.homeScore
+    : finite(row.liveHomeScore) ? row.liveHomeScore
+    : finite(row.homeScore) ? row.homeScore : null;
+  const away = finite(row.result?.awayScore) ? row.result.awayScore
+    : finite(row.liveAwayScore) ? row.liveAwayScore
+    : finite(row.awayScore) ? row.awayScore : null;
+  if (!finite(home) || !finite(away)) return null;
+  const total = home + away;
+  if (Math.abs(total - pick.marketTotal) < 1e-9) return 'push';
+  if (pick.side === 'over') return total > pick.marketTotal ? 'win' : 'loss';
+  return total < pick.marketTotal ? 'win' : 'loss';
+}
