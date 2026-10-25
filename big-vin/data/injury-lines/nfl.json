@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-25T16:27:12.865Z",
+ "generatedAt": "2026-10-25T17:51:39.823Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -162,7 +162,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-25T16:09Z",
+     "reported": "2026-10-25T17:34Z",
      "weight": 1,
      "points": 0.3
     }
@@ -853,7 +853,7 @@
   },
   "SF": {
    "team": "SF",
-   "loss": 2,
+   "loss": 2.1,
    "starter": {
     "name": "Brock Purdy",
     "espnId": "4361741",
@@ -879,6 +879,16 @@
      "reported": "2026-10-25T15:45Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "rb1",
+     "position": "RB",
+     "player": "Christian McCaffrey",
+     "espnId": "3117251",
+     "status": "Questionable",
+     "reported": "2026-10-25T17:43Z",
+     "weight": 0.25,
+     "points": 0.1
     },
     {
      "group": "edge",
