@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-25T21:14:09.474Z",
+ "generatedAt": "2026-10-25T23:33:15.402Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-25T21:01Z",
+     "reported": "2026-10-25T23:21Z",
      "weight": 1,
      "points": 0.3
     }
@@ -272,13 +272,23 @@
   },
   "DEN": {
    "team": "DEN",
-   "loss": 0.8,
+   "loss": 1,
    "starter": {
     "name": "Bo Nix",
     "espnId": "4426338",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Jaylen Waddle",
+     "espnId": "4372016",
+     "status": "Questionable",
+     "reported": "2026-10-25T23:19Z",
+     "weight": 0.25,
+     "points": 0.2
+    },
     {
      "group": "cb",
      "position": "LCB",
@@ -304,13 +314,24 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0,
+   "loss": 0.13,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Ennis Rakestraw Jr.",
+     "espnId": "4566092",
+     "status": "Questionable",
+     "reported": "2026-10-25T23:07Z",
+     "weight": 0.25,
+     "points": 0.13
+    }
+   ],
    "notes": []
   },
   "GB": {
@@ -338,7 +359,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Questionable",
-     "reported": "2026-10-25T20:45Z",
+     "reported": "2026-10-25T22:11Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -456,7 +477,7 @@
      "player": "Rashee Rice",
      "espnId": "4428331",
      "status": "Out",
-     "reported": "2026-10-23T17:04Z",
+     "reported": "2026-10-25T23:04Z",
      "weight": 1,
      "points": 0.4
     },
@@ -732,7 +753,7 @@
      "player": "Cam Skattebo",
      "espnId": "4696981",
      "status": "Questionable",
-     "reported": "2026-10-25T11:18Z",
+     "reported": "2026-10-25T21:16Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -939,7 +960,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.37,
+   "loss": 0.25,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -948,33 +969,13 @@
    "items": [
     {
      "group": "lb",
-     "position": "WLB",
-     "player": "DeMarcus Lawrence",
-     "espnId": "16802",
-     "status": "Questionable",
-     "reported": "2026-10-22T23:22Z",
-     "weight": 0.25,
-     "points": 0.06
-    },
-    {
-     "group": "lb",
      "position": "LILB",
      "player": "Drake Thomas",
      "espnId": "4428659",
      "status": "Out",
-     "reported": "2026-10-24T00:47Z",
+     "reported": "2026-10-25T22:52Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Uchenna Nwosu",
-     "espnId": "3120358",
-     "status": "Questionable",
-     "reported": "2026-10-25T14:20Z",
-     "weight": 0.25,
-     "points": 0.06
     }
    ],
    "notes": []
