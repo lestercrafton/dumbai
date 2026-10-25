@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nfl-totals-v1",
  "sport": "nfl",
- "generatedAt": "2026-10-25T17:51:43.167Z",
+ "generatedAt": "2026-10-25T21:14:13.610Z",
  "method": "Offense and defense points ratings fit to nflverse finals (ridge shrinkage, 150-day half-life, home edge, indoor edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. Injuries: 60% of each team’s offensive injury value comes off its own points; 60% of its defensive injury value is added to the opponent’s points. A total 4+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 0,
-  "losses": 2,
+  "wins": 4,
+  "losses": 3,
   "pushes": 0,
-  "pending": 9,
-  "bankroll": 480.2,
+  "pending": 4,
+  "bankroll": 505.28,
   "bankrollStart": 500
  },
  "backtest": {
@@ -155,9 +155,12 @@
     "unshrunkTotal": 40.91,
     "note": "Gap of 4.41 points vs the market total, of which injuries and weather explain 0.16; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 51,
+   "stake": {
+    "stake": 9.8,
+    "net": 8.31
+   }
   },
   "401873014": {
    "side": "over",
@@ -179,9 +182,12 @@
     "unshrunkTotal": 46.29,
     "note": "Gap of 4.79 points vs the market total, of which injuries and weather explain 0.1; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 26,
+   "stake": {
+    "stake": 9.8,
+    "net": -9.8
+   }
   },
   "401873015": {
    "side": "over",
@@ -197,9 +203,12 @@
    "awayPoints": 20.8,
    "injuryEffect": -0.01,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 53,
+   "stake": {
+    "stake": 9.8,
+    "net": 9.07
+   }
   },
   "401873016": {
    "side": "over",
@@ -215,9 +224,12 @@
    "awayPoints": 20.9,
    "injuryEffect": 0.73,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 48,
+   "stake": {
+    "stake": 9.8,
+    "net": 8.75
+   }
   },
   "401873017": {
    "side": "under",
@@ -233,9 +245,12 @@
    "awayPoints": 23.9,
    "injuryEffect": 0.03,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 49,
+   "stake": {
+    "stake": 9.8,
+    "net": 8.75
+   }
   },
   "401873018": {
    "side": null,
