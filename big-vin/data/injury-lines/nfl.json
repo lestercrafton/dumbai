@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-26T08:07:17.378Z",
+ "generatedAt": "2026-10-26T15:28:59.813Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-26T08:00Z",
+     "reported": "2026-10-26T15:15Z",
      "weight": 1,
      "points": 0.3
     }
@@ -346,7 +346,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 0.35,
+   "loss": 0.65,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -359,7 +359,7 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Out",
-     "reported": "2026-10-25T18:58Z",
+     "reported": "2026-10-26T14:20Z",
      "weight": 1,
      "points": 0.25
     },
@@ -368,10 +368,10 @@
      "position": "C",
      "player": "Sean Rhyan",
      "espnId": "4426411",
-     "status": "Questionable",
-     "reported": "2026-10-25T22:11Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-10-26T13:51Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -667,7 +667,7 @@
      "player": "Aaron Jones",
      "espnId": "3042519",
      "status": "Questionable",
-     "reported": "2026-10-25T20:33Z",
+     "reported": "2026-10-26T15:15Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -763,7 +763,7 @@
      "player": "Cam Skattebo",
      "espnId": "4696981",
      "status": "Questionable",
-     "reported": "2026-10-25T21:16Z",
+     "reported": "2026-10-26T14:09Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -826,7 +826,7 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 5.33,
+   "loss": 5.63,
    "starter": {
     "name": "Jalen Hurts",
     "espnId": "4040715",
@@ -878,7 +878,7 @@
      "player": "Saquon Barkley",
      "espnId": "3929630",
      "status": "Questionable",
-     "reported": "2026-10-24T19:58Z",
+     "reported": "2026-10-26T13:22Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -901,6 +901,16 @@
      "reported": "2026-10-24T18:21Z",
      "weight": 0.25,
      "points": 0.06
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Landon Dickerson",
+     "espnId": "4035624",
+     "status": "Injured Reserve",
+     "reported": "2026-10-25T00:21Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
