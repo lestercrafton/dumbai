@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-26T01:40:45.580Z",
+ "generatedAt": "2026-10-26T08:07:17.378Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-26T01:00Z",
+     "reported": "2026-10-26T08:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -970,13 +970,23 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.25,
+   "loss": 0.5,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr2",
+     "position": "WR",
+     "player": "Rashid Shaheed",
+     "espnId": "4032473",
+     "status": "Questionable",
+     "reported": "2026-10-26T02:50Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
     {
      "group": "lb",
      "position": "LILB",
@@ -986,6 +996,16 @@
      "reported": "2026-10-25T22:52Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Charles Cross",
+     "espnId": "4426376",
+     "status": "Questionable",
+     "reported": "2026-10-26T03:18Z",
+     "weight": 0.25,
+     "points": 0.15
     }
    ],
    "notes": []
