@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-26T18:48:41.998Z",
+ "generatedAt": "2026-10-26T20:45:54.112Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -102,7 +102,7 @@
      "espnId": "3916387",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Out",
-     "reported": "2026-10-26T17:29Z",
+     "reported": "2026-10-26T19:13Z",
      "weight": 1,
      "replacement": "Tyler Huntley",
      "starterEpaPerPlay": 0.116,
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-26T18:37Z",
+     "reported": "2026-10-26T20:35Z",
      "weight": 1,
      "points": 0.3
     }
@@ -324,13 +324,23 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.13,
+   "loss": 0.33,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Amon-Ra St. Brown",
+     "espnId": "4374302",
+     "status": "Questionable",
+     "reported": "2026-10-26T19:32Z",
+     "weight": 0.25,
+     "points": 0.2
+    },
     {
      "group": "cb",
      "position": "RCB",
@@ -612,7 +622,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Out",
-     "reported": "2026-10-26T18:37Z",
+     "reported": "2026-10-25T19:30Z",
      "weight": 1,
      "points": 0.5
     }
@@ -634,7 +644,7 @@
      "player": "Willie Gay Jr.",
      "espnId": "4259804",
      "status": "Out",
-     "reported": "2026-10-25T15:52Z",
+     "reported": "2026-10-26T18:38Z",
      "weight": 1,
      "points": 0.25
     }
@@ -678,7 +688,7 @@
      "player": "Carlton Davis III",
      "espnId": "3916923",
      "status": "Out",
-     "reported": "2026-10-21T23:27Z",
+     "reported": "2026-10-26T18:40Z",
      "weight": 1,
      "points": 0.5
     },
@@ -688,7 +698,7 @@
      "player": "Ben Brown",
      "espnId": "4362890",
      "status": "Out",
-     "reported": "2026-10-22T01:33Z",
+     "reported": "2026-10-26T18:40Z",
      "weight": 1,
      "points": 0.3
     }
@@ -710,7 +720,7 @@
      "player": "Nathan Shepherd",
      "espnId": "4076951",
      "status": "Out",
-     "reported": "2026-10-25T12:31Z",
+     "reported": "2026-10-26T18:41Z",
      "weight": 1,
      "points": 0.3
     },
@@ -730,7 +740,7 @@
      "player": "Cesar Ruiz",
      "espnId": "4258199",
      "status": "Out",
-     "reported": "2026-10-25T12:23Z",
+     "reported": "2026-10-26T18:41Z",
      "weight": 1,
      "points": 0.3
     }
@@ -762,7 +772,7 @@
      "player": "Jevon Holland",
      "espnId": "4373809",
      "status": "Out",
-     "reported": "2026-10-24T17:31Z",
+     "reported": "2026-10-26T18:42Z",
      "weight": 1,
      "points": 0.3
     },
@@ -772,7 +782,7 @@
      "player": "Greg Newsome II",
      "espnId": "4361266",
      "status": "Out",
-     "reported": "2026-10-25T15:34Z",
+     "reported": "2026-10-26T18:42Z",
      "weight": 1,
      "points": 0.5
     }
@@ -806,7 +816,7 @@
      "player": "Dylan Parham",
      "espnId": "4243375",
      "status": "Out",
-     "reported": "2026-10-25T16:03Z",
+     "reported": "2026-10-26T18:43Z",
      "weight": 1,
      "points": 0.3
     }
@@ -815,7 +825,7 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 5.63,
+   "loss": 5.33,
    "starter": {
     "name": "Jalen Hurts",
     "espnId": "4040715",
@@ -890,16 +900,6 @@
      "reported": "2026-10-24T18:21Z",
      "weight": 0.25,
      "points": 0.06
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Landon Dickerson",
-     "espnId": "4035624",
-     "status": "Injured Reserve",
-     "reported": "2026-10-25T00:21Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
@@ -930,7 +930,7 @@
      "player": "Mike Evans",
      "espnId": "16737",
      "status": "Out",
-     "reported": "2026-10-25T15:45Z",
+     "reported": "2026-10-26T19:10Z",
      "weight": 1,
      "points": 0.8
     },
@@ -940,7 +940,7 @@
      "player": "Deebo Samuel Sr.",
      "espnId": "3126486",
      "status": "Out",
-     "reported": "2026-10-25T15:45Z",
+     "reported": "2026-10-26T19:10Z",
      "weight": 1,
      "points": 0.4
     },
@@ -950,7 +950,7 @@
      "player": "Nick Bosa",
      "espnId": "4040605",
      "status": "Out",
-     "reported": "2026-10-25T15:45Z",
+     "reported": "2026-10-26T19:10Z",
      "weight": 1,
      "points": 0.5
     },
@@ -960,7 +960,7 @@
      "player": "Marques Sigle",
      "espnId": "4693337",
      "status": "Out",
-     "reported": "2026-10-25T15:45Z",
+     "reported": "2026-10-26T19:10Z",
      "weight": 1,
      "points": 0.3
     }
@@ -992,7 +992,7 @@
      "player": "Drake Thomas",
      "espnId": "4428659",
      "status": "Out",
-     "reported": "2026-10-25T22:52Z",
+     "reported": "2026-10-26T19:11Z",
      "weight": 1,
      "points": 0.25
     },
@@ -1024,7 +1024,7 @@
      "player": "Emeka Egbuka",
      "espnId": "4567750",
      "status": "Out",
-     "reported": "2026-10-25T15:34Z",
+     "reported": "2026-10-26T19:14Z",
      "weight": 1,
      "points": 0.8
     },
@@ -1034,7 +1034,7 @@
      "player": "Antoine Winfield Jr.",
      "espnId": "4034790",
      "status": "Out",
-     "reported": "2026-10-25T15:34Z",
+     "reported": "2026-10-26T19:14Z",
      "weight": 1,
      "points": 0.3
     },
@@ -1044,7 +1044,7 @@
      "player": "Luke Goedeke",
      "espnId": "4380507",
      "status": "Out",
-     "reported": "2026-10-25T15:34Z",
+     "reported": "2026-10-26T19:14Z",
      "weight": 1,
      "points": 0.4
     }
