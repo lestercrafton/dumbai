@@ -58,5 +58,6 @@ test('the renderer also prepares the week boards and the record views the home p
  const now=Date.parse('2026-10-19T12:00:00Z');
  const season={year:2026,startDate:'2026-08-01T00:00Z',endDate:'2027-02-01T00:00Z'};
  const keys=recordKeys([{sport:'nfl',days:1,body:JSON.stringify({sport:'nfl',seasonContext:season})},{sport:'mlb',days:1,body:JSON.stringify({sport:'mlb',seasonContext:{year:2026,startDate:'2026-03-01T00:00Z',endDate:'2026-10-01T00:00Z'}})},{sport:'cfb',days:7,body:JSON.stringify({sport:'cfb',seasonContext:season})},{sport:'nba',days:1,body:'not json'}],'2026-10-19',now);
- assert.deepEqual(keys,['api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankPeriod=day&season=2026&sport=nfl&summary=1','api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankPeriod=day&sport=mlb&summary=1','api:/api/results?cohort=live&history=1&historyDate=2026-10-19&rankAnchor=2026-10-19&rankPeriod=week&season=2026&sport=cfb&summary=1']);
+ // Summary record views bypass the read cache so the board strip grades live; nothing to prerender.
+ assert.deepEqual(keys,[]);
 });

@@ -58,7 +58,8 @@ export function recordKeys(boards,today=easternDay(),now=Date.now()){
   const params=new URLSearchParams({sport,cohort:'live',history:'1',summary:'1',rankPeriod:week?'week':'day',historyDate:today});
   if(season!==null)params.set('season',String(season));
   if(week)params.set('rankAnchor',footballWeekStart(today,sport));
-  keys.push(keyOf('/api/results?'+params));
+  // Keys the read cache no longer stores (summary strips stay live) are left to the visitor.
+  const key=keyOf('/api/results?'+params);if(key)keys.push(key);
  }
  return keys;
 }
