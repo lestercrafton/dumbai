@@ -35,7 +35,8 @@ jobs:
   research:
     needs: clock
     if: needs.clock.outputs.run == 'true'
-    runs-on: ubuntu-latest
+    # Playwright's chromium has no build for ubuntu-latest (26.04) yet.
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
       OMP_NUM_THREADS: '2'
