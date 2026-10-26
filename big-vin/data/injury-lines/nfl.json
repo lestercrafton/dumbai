@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-25T23:33:15.402Z",
+ "generatedAt": "2026-10-26T01:40:45.580Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-25T23:21Z",
+     "reported": "2026-10-26T01:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -272,7 +272,7 @@
   },
   "DEN": {
    "team": "DEN",
-   "loss": 1,
+   "loss": 1.13,
    "starter": {
     "name": "Bo Nix",
     "espnId": "4426338",
@@ -285,9 +285,19 @@
      "player": "Jaylen Waddle",
      "espnId": "4372016",
      "status": "Questionable",
-     "reported": "2026-10-25T23:19Z",
+     "reported": "2026-10-25T23:46Z",
      "weight": 0.25,
      "points": 0.2
+    },
+    {
+     "group": "edge",
+     "position": "LDE",
+     "player": "Zach Allen",
+     "espnId": "3915282",
+     "status": "Questionable",
+     "reported": "2026-10-25T23:45Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "cb",
