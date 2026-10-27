@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-27T19:28:06.867Z",
+ "generatedAt": "2026-10-27T23:09:08.085Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -102,7 +102,7 @@
      "espnId": "3916387",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-10-26T19:13Z",
+     "reported": "2026-10-27T20:32Z",
      "weight": 0.25,
      "replacement": "Tyler Huntley",
      "starterEpaPerPlay": 0.116,
@@ -164,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-27T19:18Z",
+     "reported": "2026-10-27T23:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -173,23 +173,13 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.37,
+   "loss": 0.27,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Jalen Coker",
-     "espnId": "4695883",
-     "status": "Questionable",
-     "reported": "2026-10-26T21:34Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
     {
      "group": "lb",
      "position": "SLB",
@@ -399,7 +389,7 @@
      "player": "Matthew Golden",
      "espnId": "4701936",
      "status": "Questionable",
-     "reported": "2026-10-26T21:46Z",
+     "reported": "2026-10-27T20:21Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -439,7 +429,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-10-26T21:50Z",
+     "reported": "2026-10-27T21:34Z",
      "weight": 1,
      "points": 0.4
     },
