@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-27T00:48:15.629Z",
+ "generatedAt": "2026-10-27T06:49:28.055Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 1.3,
+   "loss": 1,
    "starter": {
     "name": "Jacoby Brissett",
     "espnId": "2578570",
@@ -46,16 +46,6 @@
      "position": "FS",
      "player": "Andrew Wingard",
      "espnId": "3918331",
-     "status": "Out",
-     "reported": "2026-10-26T17:23Z",
-     "weight": 1,
-     "points": 0.3
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Jon Gaines II",
-     "espnId": "4367199",
      "status": "Out",
      "reported": "2026-10-26T17:23Z",
      "weight": 1,
@@ -164,7 +154,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-27T00:35Z",
+     "reported": "2026-10-27T06:01Z",
      "weight": 1,
      "points": 0.3
     }
@@ -386,7 +376,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 1.14,
+   "loss": 0.74,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -432,16 +422,6 @@
      "reported": "2026-10-26T21:54Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Sean Rhyan",
-     "espnId": "4426411",
-     "status": "Doubtful",
-     "reported": "2026-10-26T21:50Z",
-     "weight": 1,
-     "points": 0.4
     },
     {
      "group": "rg",
@@ -554,7 +534,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.8,
+   "loss": 0.4,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -566,16 +546,6 @@
      "position": "WR",
      "player": "Rashee Rice",
      "espnId": "4428331",
-     "status": "Out",
-     "reported": "2026-10-26T18:35Z",
-     "weight": 1,
-     "points": 0.4
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Jaylon Moore",
-     "espnId": "4043041",
      "status": "Out",
      "reported": "2026-10-26T18:35Z",
      "weight": 1,
@@ -659,23 +629,13 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.15,
+   "loss": 0.75,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Davante Adams",
-     "espnId": "16800",
-     "status": "Injured Reserve",
-     "reported": "2026-10-20T21:36Z",
-     "weight": 1,
-     "points": 0.4
-    },
     {
      "group": "lb",
      "position": "LILB",
@@ -777,7 +737,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.68,
+   "loss": 0.38,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -803,16 +763,6 @@
      "reported": "2026-10-25T15:28Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Cesar Ruiz",
-     "espnId": "4258199",
-     "status": "Out",
-     "reported": "2026-10-26T18:41Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
@@ -863,7 +813,7 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.38,
+   "loss": 0.08,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -879,23 +829,13 @@
      "reported": "2026-10-25T18:49Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Dylan Parham",
-     "espnId": "4243375",
-     "status": "Out",
-     "reported": "2026-10-26T18:43Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
   },
   "PHI": {
    "team": "PHI",
-   "loss": 1.85,
+   "loss": 1.15,
    "starter": {
     "name": "Tanner McKee",
     "espnId": "4685201",
@@ -913,14 +853,14 @@
      "points": 0.8
     },
     {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Dontayvion Wicks",
-     "espnId": "4428850",
-     "status": "Out",
-     "reported": "2026-10-26T22:50Z",
-     "weight": 1,
-     "points": 0.4
+     "group": "rb1",
+     "position": "RB",
+     "player": "Saquon Barkley",
+     "espnId": "3929630",
+     "status": "Questionable",
+     "reported": "2026-10-27T04:09Z",
+     "weight": 0.25,
+     "points": 0.1
     },
     {
      "group": "lb",
@@ -931,16 +871,6 @@
      "reported": "2026-10-26T22:50Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Jake Majors",
-     "espnId": "4430814",
-     "status": "Out",
-     "reported": "2026-10-26T22:50Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": [
@@ -1064,7 +994,7 @@
   },
   "TB": {
    "team": "TB",
-   "loss": 1.5,
+   "loss": 1.1,
    "starter": {
     "name": "Baker Mayfield",
     "espnId": "3052587",
@@ -1090,16 +1020,6 @@
      "reported": "2026-10-26T19:14Z",
      "weight": 1,
      "points": 0.3
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Luke Goedeke",
-     "espnId": "4380507",
-     "status": "Out",
-     "reported": "2026-10-26T19:14Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
