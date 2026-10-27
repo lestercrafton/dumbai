@@ -61,3 +61,24 @@ test('rolling seven-day cards retain weekday boundaries across calendar weeks an
  assert.equal(cards.spreadOverall.recorded,4);assert.equal(cards.spreadRecord.recorded,1);
  assert.equal(cards.spreadDays.find(day=>day.date==='2026-10-05').recorded,1);
 });
+
+test('empty originalPick does not wipe a later market; real picks still get card ranks',()=>{
+ const empty={side:null,marketHomeSpread:null,odds:null,marketObservedAt:null,capturedAt:'2026-10-21T04:48:37.803Z',recordedAt:'2026-10-21T04:48:37.803Z',provider:null};
+ const records=[
+  game('early-quote','week','2026-10-27',5),
+  {...game('saved-before-line','week','2026-10-27',4),originalPick:empty},
+  {...game('also-before-line','week','2026-10-27',3,0),originalPick:empty},
+ ];
+ const ranked=rankCardHistory(records,{rankPeriod:'day'});
+ assert.deepEqual(ranked.map(row=>[row.id,row.cardRank,row.side,row.marketHomeSpread]),[
+  ['early-quote',1,'home',-3],
+  ['saved-before-line',2,'home',-3],
+  ['also-before-line',3,'home',-3],
+ ]);
+ // A real original market still freezes Top-N membership even when the live
+ // row later revised side/line; the returned row keeps current fields.
+ const withRealOriginal=rankCardHistory([{...game('locked','week','2026-10-27',2),side:'away',marketHomeSpread:-6.5,originalPick:{side:'home',marketHomeSpread:-5.5,odds:-110}}],{rankPeriod:'day'});
+ assert.equal(withRealOriginal[0].cardRank,1);
+ assert.equal(withRealOriginal[0].side,'away');
+ assert.equal(withRealOriginal[0].marketHomeSpread,-6.5);
+});

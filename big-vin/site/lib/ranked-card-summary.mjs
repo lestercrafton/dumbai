@@ -32,9 +32,18 @@ export function rankCardHistory(records,{rankPeriod='week',rankAnchor=null}={}){
  };
  // Top-N history retains its original card membership even when a prospective
  // revision changes the eventual locked pick. Live boards rank current inputs.
+ // Freeze Top-N to the original market pick when one existed. An empty
+ // originalPick (forecast saved before any quote) must not wipe a later line —
+ // that left real picks with null cardRank / "unranked" on the board.
+ const rankingInputs=row=>{
+  const original=row.originalPick;
+  if(!original)return row;
+  const hadMarket=original.side==='home'||original.side==='away'||Number.isFinite(original.marketHomeSpread);
+  return hadMarket?{...row,...original}:row;
+ };
  return [...groups(records,keyOf).values()].flatMap(rows=>{
   const originals=new Map(rows.map(row=>[row.id,row]));
-  return rankForecasts(rows.map(row=>row.originalPick?{...row,...row.originalPick}:row)).map(row=>({...originals.get(row.id),edge:forecastEdge(originals.get(row.id)),originalCardEdge:row.edge,cardRank:row.cardRank,lowEvidence:row.lowEvidence,rankReason:row.rankReason}));
+  return rankForecasts(rows.map(rankingInputs)).map(row=>({...originals.get(row.id),edge:forecastEdge(originals.get(row.id)),originalCardEdge:row.edge,cardRank:row.cardRank,lowEvidence:row.lowEvidence,rankReason:row.rankReason}));
  });
 }
 
