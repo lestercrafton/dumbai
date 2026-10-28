@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-28T02:35:55.140Z",
+ "generatedAt": "2026-10-28T16:18:37.444Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -88,7 +88,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 0.78,
+   "loss": 1.08,
    "starter": {
     "name": "Lamar Jackson",
     "espnId": "3916387",
@@ -123,6 +123,16 @@
      "reported": "2026-10-27T13:11Z",
      "weight": 0.25,
      "points": 0.08
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Olaivavega Ioane",
+     "espnId": "4832793",
+     "status": "Doubtful",
+     "reported": "2026-10-28T00:20Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": [
@@ -154,7 +164,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-28T02:00Z",
+     "reported": "2026-10-28T16:04Z",
      "weight": 1,
      "points": 0.3
     }
@@ -238,13 +248,23 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.1,
+   "loss": 0.23,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "edge",
+     "position": "RDE",
+     "player": "Jared Verse",
+     "espnId": "4578085",
+     "status": "Questionable",
+     "reported": "2026-10-28T16:16Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
     {
      "group": "rt",
      "position": "RT",
@@ -295,7 +315,7 @@
      "player": "Jaylen Waddle",
      "espnId": "4372016",
      "status": "Questionable",
-     "reported": "2026-10-25T23:46Z",
+     "reported": "2026-10-28T14:08Z",
      "weight": 0.25,
      "points": 0.2
     },
