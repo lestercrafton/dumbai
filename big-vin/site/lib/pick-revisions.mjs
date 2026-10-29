@@ -8,8 +8,9 @@ const earlier=(...dates)=>new Date(Math.min(...dates.map(at).filter(finite))).to
 
 /** All sports use a home-margin model. A positive home edge selects home;
  * a negative edge selects away. Zero is an explicit no-pick revision. */
-/** MLB moneyline: the side whose quoted price beats the model's win
- * chance by at least MIN_ML_VALUE per unit staked; otherwise pass. Same bar both sides. */
+/** MLB moneyline: always take the better-priced side when both quotes exist.
+ * MIN_ML_VALUE remains the bankroll / playable-price bar elsewhere; the board
+ * never leaves a priced first-pitch market as "No ATS pick". */
 export const MIN_ML_VALUE=0.03;
 const ML_SPORTS=new Set(['mlb']);
 export const quotePrices=(sport,q)=>({sport,homePrice:q?.homeSpreadPrice??q?.marketHomePrice??null,awayPrice:q?.awaySpreadPrice??q?.marketAwayPrice??null});
@@ -19,11 +20,22 @@ export function spreadSelection(margin,homeSpread,{sport,homePrice,awayPrice}={}
   const p=winProbability(margin,sport);
   const home=moneylineExpectedValue(p,homePrice),away=moneylineExpectedValue(1-p,awayPrice);
   if(home===null||away===null)return {side:null,edge:null};
-  const best=home>=away?{side:'home',value:home/100}:{side:'away',value:away/100};
-  return best.value>=MIN_ML_VALUE?{side:best.side,edge:Math.round(best.value*1000)/1000}:{side:null,edge:0};
+  const best=home>away||(home===away&&margin>=0)?{side:'home',value:home/100}:{side:'away',value:away/100};
+  return {side:best.side,edge:Math.round(Math.max(best.value,0)*1000)/1000};
  }
  const homeEdge=margin+homeSpread;
  return {side:Math.abs(homeEdge)<1e-9?null:homeEdge>0?'home':'away',edge:Math.abs(homeEdge)<1e-9?0:Math.abs(homeEdge)};
+}
+/** Tipoff / first-pitch market wins: rebuild a null-side revision when the
+ * locked quote still has a book line (legacy MLB moneyline passes). */
+const odds=value=>finite(value)&&Number.isInteger(value)&&Math.abs(value)>=100?value:null;
+export function hydrateTipoffPick(revision,sport=revision?.sport){
+ if(!revision||revision.side==='home'||revision.side==='away')return revision??null;
+ if(!finite(revision.marketHomeSpread)||!finite(revision.predictedMargin))return revision;
+ const selected=spreadSelection(revision.predictedMargin,revision.marketHomeSpread,quotePrices(sport,revision));
+ if(!(selected.side==='home'||selected.side==='away'))return revision;
+ return {...revision,side:selected.side,edge:selected.edge,
+  odds:odds(selected.side==='home'?revision.marketHomePrice:revision.marketAwayPrice)};
 }
 /** The model margin before injuries and the market check; older records have no separate base. */
 export const baseMargin=f=>finite(f?.baseMargin)?f.baseMargin:f?.predictedMargin;
@@ -42,7 +54,6 @@ export function validPregameQuote(f,g,now=Date.now(),lockAt=f.startTime){
   &&(!finite(q.awaySpread)||Math.abs(q.homeSpread+q.awaySpread)<1e-9)
   &&finite(observed)&&observed>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)&&observed<=now&&now-observed<=QUOTE_MAX_AGE;
 }
-const odds=value=>finite(value)&&Number.isInteger(value)&&Math.abs(value)>=100?value:null;
 const sameOffer=(a,b)=>['side','marketHomeSpread','odds','marketHomePrice','marketAwayPrice','runLineHomeSpread','runLineHomePrice','runLineAwayPrice','provider','predictedMargin'].every(key=>a?.[key]===b?.[key]);
 
 /** Pure prospective state transition. Original forecasts are never rewritten.
@@ -81,14 +92,21 @@ export function advancePickState(f,previous,g,recordedAt=new Date().toISOString(
 export function withPickState(f,state){
  if(!state||state.protocol!==PICK_PROTOCOL||state.forecastId!==f.id||!revisableForecast(f))return f;
  const cutoff=Math.min(at(f.startTime),at(state.lockAt));
- const revisions=state.revisions.filter(r=>r.forecastId===f.id&&r.gameId===f.gameId&&r.homeId===f.homeId&&r.awayId===f.awayId
-  &&(r.baseMargin??r.predictedMargin)===baseMargin(f)&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
-  &&at(r.recordedAt)<cutoff&&at(r.observedAt)<=at(r.recordedAt)&&at(r.observedAt)>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)
-  &&r.side===spreadSelection(r.predictedMargin,r.marketHomeSpread,quotePrices(f.sport,r)).side);
- const selected=[...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1);
+ const revisions=state.revisions.filter(r=>{
+  if(!(r.forecastId===f.id&&r.gameId===f.gameId&&r.homeId===f.homeId&&r.awayId===f.awayId
+   &&(r.baseMargin??r.predictedMargin)===baseMargin(f)&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
+   &&at(r.recordedAt)<cutoff&&at(r.observedAt)<=at(r.recordedAt)&&at(r.observedAt)>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)))return false;
+  const expected=spreadSelection(r.predictedMargin,r.marketHomeSpread,quotePrices(f.sport,r)).side;
+  // Keep tipoff quotes even when a legacy revision recorded an MLB pass.
+  return r.side===expected||(r.side==null&&(expected==='home'||expected==='away'));
+ });
+ const selected=hydrateTipoffPick([...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1),f.sport);
  const originalPick={side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,marketObservedAt:f.marketObservedAt,capturedAt:f.capturedAt,recordedAt:f.firstMarket?.recordedAt??f.capturedAt,provider:f.provider};
  const validOriginal=at(f.capturedAt)<cutoff&&(!finite(f.marketHomeSpread)||at(f.marketObservedAt)<cutoff);
- return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,...(finite(selected.runLineHomeSpread)?{runLineHomeSpread:selected.runLineHomeSpread,runLineHomePrice:selected.runLineHomePrice,runLineAwayPrice:selected.runLineAwayPrice}:{}),edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:{}),
+ // Tipoff revision wins. A priced original with a legacy null side is hydrated
+ // so the board never shows "No ATS pick" when a book line existed at lock.
+ const pricedOriginal=validOriginal?hydrateTipoffPick({side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,predictedMargin:baseMargin(f),marketHomePrice:f.marketHomePrice,marketAwayPrice:f.marketAwayPrice},f.sport):null;
+ return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,...(finite(selected.runLineHomeSpread)?{runLineHomeSpread:selected.runLineHomeSpread,runLineHomePrice:selected.runLineHomePrice,runLineAwayPrice:selected.runLineAwayPrice}:{}),edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:pricedOriginal&&(pricedOriginal.side==='home'||pricedOriginal.side==='away')?{side:pricedOriginal.side,odds:pricedOriginal.odds??f.odds,edge:pricedOriginal.edge??f.edge}:{}),
   originalPick,pickRevision:selected??null,pickRevisions:state.revisions,pickLock:{lockAt:state.lockAt,closedAt:state.closedAt,verifiedAt:state.verifiedAt,protocol:PICK_PROTOCOL}};
 }
 

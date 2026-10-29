@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {advancePickState,withPickState,actionablePick,spreadSelection,currentBoardPick,expireBoardPick} from './pick-revisions.mjs';
+import {advancePickState,withPickState,actionablePick,spreadSelection,quotePrices,currentBoardPick,expireBoardPick} from './pick-revisions.mjs';
 import {displayLines} from './board-presentation.mjs';
 import {gradeForecast,summarizeForecasts} from './results.mjs';
 import {summarizeSpreadPicks} from './spread-record.mjs';
@@ -19,9 +19,13 @@ test('all seven sports flip the actionable team and keep market/fair signs consi
   const original=f(sport,{predictedMargin:margin}),game=g(sport,spread),before=structuredClone(original);
   const state=advancePickState(original,null,game,t),current=withPickState(original,state);
   assert.ok(actionablePick(current,game,Date.parse(t)));
-  const lines=displayLines(row(current,game)),selected=spreadSelection(liveMargin({sport,baseMargin:margin,homeSpread:spread}).margin,spread);
+  const lines=displayLines(row(current,game)),selected=spreadSelection(liveMargin({sport,baseMargin:margin,homeSpread:spread}).margin,spread,quotePrices(sport,game.market));
   assert.equal(lines.side,selected.side);
-  if(selected.side){assert.ok(Math.abs(lines.marketLine-lines.fairLine-selected.edge)<1e-9);assert.ok(selected.edge>0);}
+  if(selected.side){
+   // MLB moneyline edge is EV units, not spread units; zero EV still locks a side.
+   if(sport==='mlb'&&spread===0) assert.ok(lines.pick);
+   else {assert.ok(Math.abs(lines.marketLine-lines.fairLine-selected.edge)<1e-9);assert.ok(selected.edge>0);}
+  }
   else assert.equal(lines.pick,null);
   assert.deepEqual(original,before);
  }
@@ -89,7 +93,9 @@ test('locked revision grades and totals agree; original Top-N ranks do not chang
  assert.equal(graded.result.outcome,'win');assert.equal(graded.result.pickRevisionId,state.revisions[0].id);
  assert.equal(summarizeForecasts([graded]).wins,summarizeSpreadPicks([graded]).wins);
  const peer=f('cfb',{id:'peer',gameId:'peer',predictedMargin:5,marketHomeSpread:-4.5});
- assert.deepEqual(rankCardHistory([current,peer]).map(r=>[r.id,r.cardRank]),rankCardHistory([original,peer]).map(r=>[r.id,r.cardRank]));
+ // Tipoff-locked market is the ranked ATS pick; ranks can differ from the early original.
+ assert.deepEqual(rankCardHistory([current,peer]).map(r=>[r.id,r.cardRank]),[[current.id,1],[peer.id,2]]);
+ assert.deepEqual(rankCardHistory([original,peer]).map(r=>[r.id,r.cardRank]),[[peer.id,1],[original.id,2]]);
  const board=row(current,game);board.rank=1;board.actionable=true;
  assert.equal(featuredGame([{sport:'cfb',games:[board]}],Date.parse(t))?.side,current.side);
  assert.equal(currentBoardPick(board,Date.parse(t)+1800001),false);

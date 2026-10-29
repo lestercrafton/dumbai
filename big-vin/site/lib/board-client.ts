@@ -2,13 +2,13 @@
 import {scoreboardUrl,scoreboardUrls,isThreeDayScoreboardWindow,scoreboardPayloadLimited,normalizeScoreboard} from '@/lib/feeds/adapter.mjs';
 type Row=Record<string,any>;
 import {hasActiveGames,mergeLiveScores} from './live-overlay.mjs';
-export async function api(url:string,options?:RequestInit){const r=await fetch(url,{...options,signal:options?.signal??AbortSignal.timeout(25000)});const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
+export async function api(url:string,options?:RequestInit){const r=await fetch(url,{...options,signal:options?.signal??AbortSignal.timeout(12000)});const v:any=await r.json();if(!r.ok)throw new Error(v.error||'The request could not be completed.');return v;}
 const browserCache=new Map<string,{time:number,payload:any}>();
 export async function browserBoard(sport:string,startDate:string,endDate?:string){
  const urls=scoreboardUrls(sport,{startDate,endDate,weekendDaily:isThreeDayScoreboardWindow({startDate,endDate})});
  // A cache hit retains the actual network observation time for every score;
  // posting cached events again must not make an old live score look fresh.
- const read=async(url:string)=>{const found=browserCache.get(url);if(found&&Date.now()-found.time<60000)return found.payload;const r=await fetch(url,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error('Browser feed unavailable');const raw=await r.json() as Row;const time=Date.now();const query=new URL(url).searchParams;const sourceDate=query.get('dates');const payload={...raw,partialLiveCoverage:scoreboardPayloadLimited(sport,raw,Number(query.get('limit'))),...(Array.isArray(raw.events)?{events:raw.events.map((event:Row)=>({...event,scoreObservedAt:new Date(time).toISOString(),...(sourceDate&&/^\d{8}$/.test(sourceDate)?{scoreboardSourceDate:sourceDate,scoreboardSourceGroup:query.get('groups')}:{} )}))}:{})};browserCache.set(url,{time,payload});return payload;};
+ const read=async(url:string)=>{const found=browserCache.get(url);if(found&&Date.now()-found.time<60000)return found.payload;const r=await fetch(url,{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error('Browser feed unavailable');const raw=await r.json() as Row;const time=Date.now();const query=new URL(url).searchParams;const sourceDate=query.get('dates');const payload={...raw,partialLiveCoverage:scoreboardPayloadLimited(sport,raw,Number(query.get('limit'))),...(Array.isArray(raw.events)?{events:raw.events.map((event:Row)=>({...event,scoreObservedAt:new Date(time).toISOString(),...(sourceDate&&/^\d{8}$/.test(sourceDate)?{scoreboardSourceDate:sourceDate,scoreboardSourceGroup:query.get('groups')}:{} )}))}:{})};browserCache.set(url,{time,payload});return payload;};
  let payloads:any[],partialLiveCoverage=false;
  let successfulSourceUrls:string[]|undefined;
  if(isThreeDayScoreboardWindow({startDate,endDate})){
@@ -50,6 +50,6 @@ export async function withLiveScores(sport:string,date:string,endDate:string,sla
  const games:Row[]=Array.isArray(slate?.games)?slate.games:[];
  if(!hasActiveGames(games))return slate;
  let fresh:Row[]=[];
- try{fresh=(await api(`/api/live-scores?sport=${sport}&date=${date}&endDate=${endDate}`)).games??[];}catch{}
+ try{fresh=(await api(`/api/live-scores?sport=${sport}&date=${date}&endDate=${endDate}`,{signal:AbortSignal.timeout(8000)})).games??[];}catch{}
  return fresh.length?{...slate,games:mergeLiveScores(games,fresh)}:slate;
 }

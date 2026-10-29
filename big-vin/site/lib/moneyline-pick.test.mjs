@@ -12,11 +12,11 @@ test('MLB markets become priced moneyline offers', () => {
   assert.equal(spreadSelection(0.5, 1.5, {sport: 'nhl', homePrice: -200, awayPrice: 170}).side, 'home');
 });
 
-test('moneyline picks need value at the price, the same bar on both sides', () => {
+test('moneyline picks take the better price when both quotes exist', () => {
   // Small home lean but home is priced as a heavy favorite: the dog has value.
   assert.equal(spreadSelection(0.2, 0, {sport: 'mlb', homePrice: -200, awayPrice: 170}).side, 'away');
-  // Fair prices: pass.
-  assert.equal(spreadSelection(0, 0, {sport: 'mlb', homePrice: -110, awayPrice: -110}).side, null);
+  // Fair prices still pick a side so a first-pitch market is never blank.
+  assert.equal(spreadSelection(0, 0, {sport: 'mlb', homePrice: -110, awayPrice: -110}).side, 'home');
   // Clear home edge at an even price.
   assert.equal(spreadSelection(1, 0, {sport: 'mlb', homePrice: 100, awayPrice: -120}).side, 'home');
   // Mirror image picks the mirror side.

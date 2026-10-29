@@ -57,7 +57,7 @@ export function TodayHero({readSlate, onOpenGame, refreshKey = 0}: {readSlate: (
   // A seven-day API window preserves Eastern-day query semantics and includes
   // late-night CT kickoffs that belong to the following Eastern sports date.
   const read = useCallback(async () => {
-    const results = await Promise.allSettled(SUPPORTED_SPORTS.map(sport => readSlate(sport, today, 7)));
+    const results = await Promise.allSettled(SUPPORTED_SPORTS.map(sport => readSlate(sport, today, 1)));
     const slates = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
     if (!slates.length) throw new Error('Today’s sports lines could not be checked.');
     return {slates, partial: results.some(result => result.status === 'rejected') || slates.some(slate => slate.partialLiveCoverage || slate.offlineSnapshot)};

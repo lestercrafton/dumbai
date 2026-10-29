@@ -30,16 +30,17 @@ export function rankCardHistory(records,{rankPeriod='week',rankAnchor=null}={}){
   if(Number.isFinite(anchor))return new Date(anchor+Math.floor((Date.parse(date+'T00:00:00Z')-anchor)/(7*DAY))*7*DAY).toISOString().slice(0,10);
   return record.weekKey;
  };
- // Top-N history retains its original card membership even when a prospective
- // revision changes the eventual locked pick. Live boards rank current inputs.
- // Freeze Top-N to the original market pick when one existed. An empty
- // originalPick (forecast saved before any quote) must not wipe a later line —
- // that left real picks with null cardRank / "unranked" on the board.
+ // Top-N history freezes to the tipoff / puck-drop / first-pitch market when a
+ // real side was locked. An empty or null-side originalPick (forecast saved
+ // before any quote, or an MLB moneyline pass) must never wipe a later line —
+ // that left real picks with null cardRank / "unranked" / "No ATS pick".
+ const realPick=pick=>pick&&(pick.side==='home'||pick.side==='away')&&Number.isFinite(pick.marketHomeSpread);
  const rankingInputs=row=>{
+  const tipoff=row.pickRevision;
+  if(realPick(tipoff))return {...row,side:tipoff.side,marketHomeSpread:tipoff.marketHomeSpread,odds:tipoff.odds??row.odds,predictedMargin:tipoff.predictedMargin??row.predictedMargin};
   const original=row.originalPick;
-  if(!original)return row;
-  const hadMarket=original.side==='home'||original.side==='away'||Number.isFinite(original.marketHomeSpread);
-  return hadMarket?{...row,...original}:row;
+  if(realPick(original))return {...row,...original};
+  return row;
  };
  return [...groups(records,keyOf).values()].flatMap(rows=>{
   const originals=new Map(rows.map(row=>[row.id,row]));

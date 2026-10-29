@@ -187,7 +187,12 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
   const stale=upcoming?!actionable:!archived&&!!market&&Date.now()-Date.parse(market.observedAt)>30*60*1000;
   const homeEdge=projection?.homeEdgePoints;
   const edge=Number.isFinite(homeEdge)?Math.abs(homeEdge):null;
-  const side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:spreadSelection(projection.predictedHomeMargin,market?.homeSpread,quotePrices(sport,market)).side);
+  // Tipoff / first-pitch market: never leave a priced archived game without a side
+  // (legacy MLB moneyline passes and empty early originalPick snapshots).
+  let side=tracked&&archived?f.side:paper?.side??(homeEdge==null||homeEdge===0?null:spreadSelection(projection.predictedHomeMargin,market?.homeSpread,quotePrices(sport,market)).side);
+  if(!(side==='home'||side==='away')&&market&&Number.isFinite(market.homeSpread)&&Number.isFinite(projection?.predictedHomeMargin)){
+   side=spreadSelection(projection.predictedHomeMargin,market.homeSpread,quotePrices(sport,{...market,marketHomePrice:market.homeSpreadPrice,marketAwayPrice:market.awaySpreadPrice})).side;
+  }
   const lowEvidence=false;
   const rankSignal=edge!==null&&edge>0&&side&&market?scoreGame(signal,{sport,side,homeSpread:market.homeSpread,edge,odds:side==='home'?market.homeSpreadPrice:market.awaySpreadPrice}):null;
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.

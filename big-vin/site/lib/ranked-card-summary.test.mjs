@@ -82,3 +82,21 @@ test('empty originalPick does not wipe a later market; real picks still get card
  assert.equal(withRealOriginal[0].side,'away');
  assert.equal(withRealOriginal[0].marketHomeSpread,-6.5);
 });
+
+test('null-side originalPick with a priced line does not wipe tipoff; tipoff revision ranks the card',()=>{
+ const passOriginal={side:null,marketHomeSpread:0,odds:null,marketObservedAt:'2026-10-28T16:18:29.900Z',capturedAt:'2026-10-22T05:32:27.718Z',recordedAt:'2026-10-28T16:18:35.518Z',provider:'DraftKings'};
+ const tipoff={side:'away',marketHomeSpread:0,odds:-138,predictedMargin:-0.65,observedAt:'2026-10-28T23:57:27.914Z'};
+ const records=[
+  {...game('mlb-pass','week','2026-10-28',0.65),sport:'mlb',side:'away',marketHomeSpread:0,originalPick:passOriginal,pickRevision:tipoff},
+  game('peer','week','2026-10-28',0.4),
+ ];
+ const ranked=rankCardHistory(records,{rankPeriod:'day'});
+ assert.equal(ranked.find(row=>row.id==='mlb-pass').cardRank,1);
+ assert.equal(ranked.find(row=>row.id==='mlb-pass').side,'away');
+ assert.equal(ranked.find(row=>row.id==='mlb-pass').marketHomeSpread,0);
+ // Empty / null-side original alone must not blank a later saved market.
+ const wiped=rankCardHistory([{...game('saved','week','2026-10-28',3),originalPick:passOriginal}],{rankPeriod:'day'});
+ assert.equal(wiped[0].cardRank,1);
+ assert.equal(wiped[0].side,'home');
+ assert.equal(wiped[0].marketHomeSpread,-3);
+});
