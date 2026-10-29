@@ -2,7 +2,7 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nba-totals-v1",
  "sport": "nba",
- "generatedAt": "2026-10-29T01:14:02.209Z",
+ "generatedAt": "2026-10-29T07:41:02.357Z",
  "method": "NBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 2,
@@ -14,15 +14,15 @@
  },
  "backtest": {
   "seasons": "2025-10-21 to 2026-06-22",
-  "computedAt": "2026-10-22T01:14:07.295Z",
+  "computedAt": "2026-10-29T07:41:02.357Z",
   "games": 1322,
   "modelMae": 15.16,
   "marketMae": 14.51,
   "all": {
-   "picks": 1322,
-   "wins": 663,
-   "losses": 659,
-   "hitRate": 0.502
+   "picks": 1018,
+   "wins": 507,
+   "losses": 511,
+   "hitRate": 0.498
   },
   "edge2plus": {
    "picks": 926,

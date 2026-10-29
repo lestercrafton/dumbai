@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-29T01:13:57.916Z",
+ "generatedAt": "2026-10-29T07:40:52.943Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -57,7 +57,7 @@
      "player": "Mack Wilson Sr.",
      "espnId": "4040983",
      "status": "Questionable",
-     "reported": "2026-10-29T00:09Z",
+     "reported": "2026-10-29T01:12Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -77,7 +77,7 @@
      "player": "Andrew Wingard",
      "espnId": "3918331",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T01:16Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -284,7 +284,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-29T01:00Z",
+     "reported": "2026-10-29T07:00Z",
      "weight": 1,
      "points": 0.3
     },
@@ -326,7 +326,7 @@
      "player": "Damien Lewis",
      "espnId": "4362647",
      "status": "Out",
-     "reported": "2026-10-28T18:01Z",
+     "reported": "2026-10-29T01:30Z",
      "weight": 1,
      "points": 0.3
     }
@@ -389,7 +389,7 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.45,
+   "loss": 0.55,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
@@ -445,6 +445,16 @@
      "reported": "2026-10-28T21:56Z",
      "weight": 0.25,
      "points": 0.1
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Tytus Howard",
+     "espnId": "3131498",
+     "status": "Questionable",
+     "reported": "2026-10-29T01:18Z",
+     "weight": 0.25,
+     "points": 0.1
     }
    ],
    "notes": []
@@ -474,7 +484,7 @@
      "player": "Quinnen Williams",
      "espnId": "4040982",
      "status": "Questionable",
-     "reported": "2026-10-28T22:19Z",
+     "reported": "2026-10-29T01:18Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -484,7 +494,7 @@
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T01:11Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -494,7 +504,7 @@
      "player": "Caleb Downs",
      "espnId": "4870706",
      "status": "Questionable",
-     "reported": "2026-10-28T02:54Z",
+     "reported": "2026-10-29T01:16Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -650,7 +660,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-10-27T21:34Z",
+     "reported": "2026-10-29T01:39Z",
      "weight": 1,
      "points": 0.4
     },
@@ -660,7 +670,7 @@
      "player": "Travis Glover",
      "espnId": "4361904",
      "status": "Out",
-     "reported": "2026-10-28T19:04Z",
+     "reported": "2026-10-29T01:43Z",
      "weight": 1,
      "points": 0.3
     }
@@ -798,7 +808,7 @@
      "player": "Jaylon Moore",
      "espnId": "4043041",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T01:55Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1016,7 +1026,7 @@
      "player": "Kadyn Proctor",
      "espnId": "4870976",
      "status": "Questionable",
-     "reported": "2026-10-28T20:31Z",
+     "reported": "2026-10-29T01:25Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1280,7 +1290,7 @@
      "player": "Nolan Smith Jr.",
      "espnId": "4426331",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T01:22Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1290,7 +1300,7 @@
      "player": "Jihaad Campbell",
      "espnId": "4685287",
      "status": "Questionable",
-     "reported": "2026-10-28T23:02Z",
+     "reported": "2026-10-29T01:08Z",
      "weight": 0.25,
      "points": 0.06
     },
