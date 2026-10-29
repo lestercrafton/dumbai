@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-29T00:24:12.823Z",
+ "generatedAt": "2026-10-29T01:13:57.916Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -180,7 +180,7 @@
      "player": "Roquan Smith",
      "espnId": "3915189",
      "status": "Questionable",
-     "reported": "2026-10-28T01:09Z",
+     "reported": "2026-10-29T01:03Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -264,7 +264,7 @@
      "player": "Ed Oliver",
      "espnId": "4039303",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-29T00:27Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -284,7 +284,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-29T00:10Z",
+     "reported": "2026-10-29T01:00Z",
      "weight": 1,
      "points": 0.3
     },
@@ -412,7 +412,7 @@
      "player": "Jared Verse",
      "espnId": "4578085",
      "status": "Questionable",
-     "reported": "2026-10-28T16:16Z",
+     "reported": "2026-10-29T00:27Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -934,7 +934,7 @@
      "player": "Nate Landman",
      "espnId": "4243181",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T00:49Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -944,7 +944,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-29T00:44Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1006,7 +1006,7 @@
      "player": "JuJu Brents",
      "espnId": "4360488",
      "status": "Questionable",
-     "reported": "2026-10-28T17:00Z",
+     "reported": "2026-10-29T00:24Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1460,7 +1460,7 @@
      "player": "Josiah Trotter",
      "espnId": "4870998",
      "status": "Questionable",
-     "reported": "2026-10-28T01:47Z",
+     "reported": "2026-10-29T00:19Z",
      "weight": 0.25,
      "points": 0.06
     },
