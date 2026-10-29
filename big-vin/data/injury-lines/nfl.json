@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-29T15:32:52.679Z",
+ "generatedAt": "2026-10-29T18:35:39.983Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -148,7 +148,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 1.37,
+   "loss": 1.07,
    "starter": {
     "name": "Lamar Jackson",
     "espnId": "3916387",
@@ -213,16 +213,6 @@
      "reported": "2026-10-28T21:26Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Olaivavega Ioane",
-     "espnId": "4832793",
-     "status": "Doubtful",
-     "reported": "2026-10-28T00:20Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": [
@@ -284,7 +274,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-29T15:01Z",
+     "reported": "2026-10-29T18:00Z",
      "weight": 1,
      "points": 0.3
     },
@@ -303,7 +293,7 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.55,
+   "loss": 0.25,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
@@ -319,16 +309,6 @@
      "reported": "2026-10-28T23:41Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Damien Lewis",
-     "espnId": "4362647",
-     "status": "Out",
-     "reported": "2026-10-29T01:30Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
@@ -370,7 +350,7 @@
      "player": "Ja'Marr Chase",
      "espnId": "4362628",
      "status": "Questionable",
-     "reported": "2026-10-29T14:14Z",
+     "reported": "2026-10-29T17:50Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -578,7 +558,7 @@
      "player": "Amon-Ra St. Brown",
      "espnId": "4374302",
      "status": "Questionable",
-     "reported": "2026-10-28T20:44Z",
+     "reported": "2026-10-29T17:44Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -588,7 +568,7 @@
      "player": "Jahmyr Gibbs",
      "espnId": "4429795",
      "status": "Questionable",
-     "reported": "2026-10-28T20:43Z",
+     "reported": "2026-10-29T17:41Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -617,7 +597,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 1.28,
+   "loss": 1.41,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -653,6 +633,16 @@
      "reported": "2026-10-28T23:55Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Keisean Nixon",
+     "espnId": "4259493",
+     "status": "Questionable",
+     "reported": "2026-10-29T18:12Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "c",
@@ -1260,7 +1250,7 @@
      "player": "DeVonta Smith",
      "espnId": "4241478",
      "status": "Questionable",
-     "reported": "2026-10-28T23:10Z",
+     "reported": "2026-10-29T18:22Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -1270,7 +1260,7 @@
      "player": "Saquon Barkley",
      "espnId": "3929630",
      "status": "Questionable",
-     "reported": "2026-10-28T23:05Z",
+     "reported": "2026-10-29T18:19Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -1405,7 +1395,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.76,
+   "loss": 0.16,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -1431,16 +1421,6 @@
      "reported": "2026-10-27T13:11Z",
      "weight": 0.25,
      "points": 0.06
-    },
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Charles Cross",
-     "espnId": "4426376",
-     "status": "Doubtful",
-     "reported": "2026-10-26T21:41Z",
-     "weight": 1,
-     "points": 0.6
     }
    ],
    "notes": []
@@ -1460,7 +1440,7 @@
      "player": "Emeka Egbuka",
      "espnId": "4567750",
      "status": "Questionable",
-     "reported": "2026-10-28T20:26Z",
+     "reported": "2026-10-29T15:56Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -1512,7 +1492,7 @@
      "player": "Carnell Tate",
      "espnId": "4871023",
      "status": "Questionable",
-     "reported": "2026-10-28T17:11Z",
+     "reported": "2026-10-29T17:01Z",
      "weight": 0.25,
      "points": 0.2
     },
