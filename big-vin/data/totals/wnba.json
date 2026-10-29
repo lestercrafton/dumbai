@@ -2,7 +2,7 @@
  "schema": "big-vin-totals/1",
  "version": "bv-wnba-totals-v1",
  "sport": "wnba",
- "generatedAt": "2026-10-28T21:21:26.537Z",
+ "generatedAt": "2026-10-29T00:24:18.460Z",
  "method": "WNBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 0,
@@ -98,13 +98,13 @@
   },
   "401918310": {
    "side": "over",
-   "total": 155.09,
-   "modelTotal": 162.69,
+   "total": 155.11,
+   "modelTotal": 162.71,
    "marketTotal": 147.5,
-   "edge": 7.59,
+   "edge": 7.61,
    "price": -105,
    "provider": "DraftKings",
-   "capturedAt": "2026-10-28T16:18:50.107Z",
+   "capturedAt": "2026-10-29T00:24:18.460Z",
    "startTime": "2026-10-29T16:30:00.000Z",
    "homePoints": 83.1,
    "awayPoints": 79.6,
@@ -112,9 +112,9 @@
    "check": {
     "flagged": true,
     "review": true,
-    "gap": 15.19,
-    "unshrunkTotal": 162.69,
-    "note": "Gap of 15.19 points vs the market total; the unexplained part is halved toward the market and marked for review."
+    "gap": 15.21,
+    "unshrunkTotal": 162.71,
+    "note": "Gap of 15.21 points vs the market total; the unexplained part is halved toward the market and marked for review."
    },
    "result": null,
    "actualTotal": null,

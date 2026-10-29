@@ -1,12 +1,12 @@
 {
  "method": "Final margin = a + b × market line + c × (our line − market line), ordinary least squares on saved graded live picks.",
  "all": {
-  "games": 291,
+  "games": 297,
   "ready": true,
-  "marketWeight": 1.0819163409059143,
-  "ourExtraWeight": 0.36572590344002087,
-  "standardError": 0.17483157199473867,
-  "t": 2.091875622161808,
+  "marketWeight": 1.0800810683030886,
+  "ourExtraWeight": 0.3552296056155395,
+  "standardError": 0.17355629681351734,
+  "t": 2.0467687553694836,
   "addsInformation": true,
   "hurts": false
  },
@@ -16,22 +16,22 @@
    "ready": false
   },
   "cfb": {
-   "games": 220,
+   "games": 222,
    "ready": true,
-   "marketWeight": 1.0382594059989403,
-   "ourExtraWeight": 0.32690351438042753,
-   "standardError": 0.18777868372644885,
-   "t": 1.7408978905009909,
+   "marketWeight": 1.0391411177678125,
+   "ourExtraWeight": 0.3250886714262198,
+   "standardError": 0.18799352507442924,
+   "t": 1.7292546181976889,
    "addsInformation": false,
    "hurts": false
   },
   "nba": {
-   "games": 52,
+   "games": 56,
    "ready": true,
-   "marketWeight": 1.3716995978315754,
-   "ourExtraWeight": 0.11340182397505294,
-   "standardError": 0.5677901129006782,
-   "t": 0.1997249008013107,
+   "marketWeight": 1.3265319200593653,
+   "ourExtraWeight": 0.015991460141380864,
+   "standardError": 0.5392085086619519,
+   "t": 0.029657284491047327,
    "addsInformation": false,
    "hurts": false
   },
@@ -44,5 +44,5 @@
    "ready": false
   }
  },
- "updatedAt": "2026-10-27T19:31:19.693Z"
+ "updatedAt": "2026-10-29T00:27:22.873Z"
 }
