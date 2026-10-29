@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-29T07:40:52.943Z",
+ "generatedAt": "2026-10-29T15:32:52.679Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -162,7 +162,7 @@
      "espnId": "3916387",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-10-28T21:40Z",
+     "reported": "2026-10-29T14:01Z",
      "weight": 0.25,
      "replacement": "Tyler Huntley",
      "starterEpaPerPlay": 0.116,
@@ -284,7 +284,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-29T07:00Z",
+     "reported": "2026-10-29T15:01Z",
      "weight": 1,
      "points": 0.3
     },
@@ -370,7 +370,7 @@
      "player": "Ja'Marr Chase",
      "espnId": "4362628",
      "status": "Questionable",
-     "reported": "2026-10-28T20:22Z",
+     "reported": "2026-10-29T14:14Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -630,7 +630,7 @@
      "player": "Matthew Golden",
      "espnId": "4701936",
      "status": "Questionable",
-     "reported": "2026-10-28T19:12Z",
+     "reported": "2026-10-29T14:10Z",
      "weight": 0.25,
      "points": 0.2
     },
