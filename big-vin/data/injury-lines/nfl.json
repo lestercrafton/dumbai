@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-30T18:06:59.691Z",
+ "generatedAt": "2026-10-30T18:50:45.053Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -138,7 +138,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 0.22,
+   "loss": 0.3,
    "starter": {
     "name": "Lamar Jackson",
     "espnId": "3916387",
@@ -172,6 +172,16 @@
      "espnId": "4035479",
      "status": "Questionable",
      "reported": "2026-10-28T21:26Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Olaivavega Ioane",
+     "espnId": "4832793",
+     "status": "Questionable",
+     "reported": "2026-10-30T01:31Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -215,7 +225,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-30T18:01Z",
+     "reported": "2026-10-30T18:33Z",
      "weight": 1,
      "points": 0.3
     },
@@ -656,23 +666,13 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.43,
+   "loss": 0.33,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Rashee Rice",
-     "espnId": "4428331",
-     "status": "Questionable",
-     "reported": "2026-10-29T21:06Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
     {
      "group": "te1",
      "position": "TE",
@@ -906,24 +906,13 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 0.1,
+   "loss": 0,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "rb1",
-     "position": "RB",
-     "player": "Aaron Jones",
-     "espnId": "3042519",
-     "status": "Questionable",
-     "reported": "2026-10-29T21:28Z",
-     "weight": 0.25,
-     "points": 0.1
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "NE": {
@@ -1172,24 +1161,13 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0.06,
+   "loss": 0,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Alex Highsmith",
-     "espnId": "4037333",
-     "status": "Questionable",
-     "reported": "2026-10-28T21:32Z",
-     "weight": 0.25,
-     "points": 0.06
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "SF": {
