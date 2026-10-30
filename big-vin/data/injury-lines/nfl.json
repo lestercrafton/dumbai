@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-30T00:18:59.587Z",
+ "generatedAt": "2026-10-30T06:25:23.749Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -57,7 +57,7 @@
      "player": "Mack Wilson Sr.",
      "espnId": "4040983",
      "status": "Questionable",
-     "reported": "2026-10-29T01:12Z",
+     "reported": "2026-10-30T01:23Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -220,7 +220,7 @@
      "player": "Roquan Smith",
      "espnId": "3915189",
      "status": "Questionable",
-     "reported": "2026-10-29T01:03Z",
+     "reported": "2026-10-30T00:36Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -284,7 +284,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-30T00:00Z",
+     "reported": "2026-10-30T06:00Z",
      "weight": 1,
      "points": 0.3
     },
@@ -303,7 +303,7 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.25,
+   "loss": 0.68,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
@@ -319,6 +319,26 @@
      "reported": "2026-10-28T23:41Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Will Lee III",
+     "espnId": "5151083",
+     "status": "Questionable",
+     "reported": "2026-10-30T01:34Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Damien Lewis",
+     "espnId": "4362647",
+     "status": "Out",
+     "reported": "2026-10-29T01:30Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
@@ -464,7 +484,7 @@
      "player": "Quinnen Williams",
      "espnId": "4040982",
      "status": "Questionable",
-     "reported": "2026-10-29T01:18Z",
+     "reported": "2026-10-30T01:10Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -474,7 +494,7 @@
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Questionable",
-     "reported": "2026-10-29T01:11Z",
+     "reported": "2026-10-30T00:54Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -484,7 +504,7 @@
      "player": "Caleb Downs",
      "espnId": "4870706",
      "status": "Questionable",
-     "reported": "2026-10-29T01:16Z",
+     "reported": "2026-10-30T00:58Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -516,7 +536,7 @@
      "player": "Zach Allen",
      "espnId": "3915282",
      "status": "Questionable",
-     "reported": "2026-10-25T23:45Z",
+     "reported": "2026-10-30T00:41Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -526,7 +546,7 @@
      "player": "Talanoa Hufanga",
      "espnId": "4360853",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-30T00:45Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -577,13 +597,23 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 0.95,
+   "loss": 1.05,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr2",
+     "position": "WR",
+     "player": "Christian Watson",
+     "espnId": "4248528",
+     "status": "Questionable",
+     "reported": "2026-10-30T04:06Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
     {
      "group": "lb",
      "position": "LILB",
@@ -822,7 +852,7 @@
      "player": "Donte Jackson",
      "espnId": "3843769",
      "status": "Questionable",
-     "reported": "2026-10-20T16:10Z",
+     "reported": "2026-10-30T01:00Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -936,7 +966,7 @@
      "player": "JuJu Brents",
      "espnId": "4360488",
      "status": "Questionable",
-     "reported": "2026-10-29T00:24Z",
+     "reported": "2026-10-30T00:09Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1328,7 +1358,7 @@
      "player": "Leonard Williams",
      "espnId": "2971622",
      "status": "Questionable",
-     "reported": "2026-10-29T22:55Z",
+     "reported": "2026-10-30T00:51Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1338,7 +1368,7 @@
      "player": "Drake Thomas",
      "espnId": "4428659",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-30T01:00Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1380,7 +1410,7 @@
      "player": "Luke Goedeke",
      "espnId": "4380507",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-30T01:16Z",
      "weight": 0.25,
      "points": 0.1
     }
