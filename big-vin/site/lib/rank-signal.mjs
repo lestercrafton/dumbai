@@ -19,10 +19,14 @@ export function bucketOf({side,homeSpread,edge,sport}){
  return role+':'+size;
 }
 const shrink=(sum,n,prior,k=PRIOR_PICKS)=>(sum+k*prior)/(n+k);
-export function learnRankSignal(records,{before=Date.now()}={}){
+/** frozen=true: only picks whose final was recorded before `before` count, so a
+ * started game's win chance cannot move when later games are graded. */
+const LEGACY_GRADE_LAG=36*60*60*1000;
+export function learnRankSignal(records,{before=Date.now(),frozen=false}={}){
  const seen=new Set(),rows=[];
  for(const f of records){
   if(f.cohort!=='live'||Date.parse(f.startTime)>=before)continue;
+  if(frozen){const g=Date.parse(f.result?.observedAt??'');if(Number.isFinite(g)?g>=before:Date.parse(f.startTime)+LEGACY_GRADE_LAG>=before)continue;}
   const offer=spreadOffer(f);if(!offer||offer.basis==='synthetic-winner-even'||!finite(f.predictedMargin))continue;
   const key=f.gameId+':'+(f.modelVersion||'');if(seen.has(key))continue;
   const outcome=gradeSpreadPick(f).outcome;if(outcome!=='win'&&outcome!=='loss')continue;seen.add(key);

@@ -57,3 +57,25 @@ test('time presets never switch the board out of rank order',async()=>{
  const {readFileSync}=await import('node:fs');const src=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
  assert.ok(!/setSortMode\(\s*'time'\s*\)/.test(src)&&!/\?'time':'rank'/.test(src));
 });
+test('card shows the exact offer behind Kelly %, from one snapshot',async()=>{
+ const {kellyOffer}=await import('./kelly-rank.mjs');const {kellyOfferText}=await import('./board-presentation.mjs');
+ const g={sport:'cfb',side:'home',home:{abbreviation:'ARK'},away:{abbreviation:'MIZ'},market:{homeSpread:10.5,homeSpreadPrice:-117,awaySpreadPrice:-103},
+  pickRevision:{side:'home',marketHomeSpread:10,odds:-105}};
+ assert.deepEqual(kellyOffer(g),{side:'home',line:10,odds:-105});
+ assert.equal(kellyOfferText({...g,kellyOffer:kellyOffer(g)}),'ARK +10 −105');
+ const away={sport:'cfb',side:'away',home:{abbreviation:'SEMO'},away:{abbreviation:'GWEB'},market:{homeSpread:-6.5,homeSpreadPrice:-114,awaySpreadPrice:-109}};
+ assert.equal(kellyOfferText({...away,kellyOffer:kellyOffer(away)}),'GWEB +6.5 −109');
+ assert.equal(kellyOffer({side:'home',market:{homeSpread:3}}),null);
+});
+test('a started game keeps its kickoff win chance when later games are graded',async()=>{
+ const {learnRankSignal}=await import('./rank-signal.mjs');
+ const rec=(id,st,obs,margin)=>({cohort:'live',sport:'cfb',gameId:id,modelVersion:'v',startTime:st,predictedMargin:margin,side:'home',marketHomeSpread:3,odds:-110,result:{status:'completed',homeScore:30,awayScore:20,observedAt:obs}});
+ const kickoff=Date.parse('2026-10-31T18:00:00Z');
+ const early=Array.from({length:20},(_,i)=>rec('e'+i,'2026-10-20T18:00:00Z','2026-10-20T22:00:00Z',5));
+ const before=learnRankSignal(early,{before:kickoff,frozen:true});
+ // Same-day game that started before kickoff but finished after it.
+ const after=learnRankSignal([...early,rec('late','2026-10-31T16:00:00Z','2026-10-31T19:30:00Z',5)],{before:kickoff,frozen:true});
+ assert.deepEqual(after.buckets,before.buckets);assert.equal(after.graded,before.graded);
+ const live=learnRankSignal([...early,rec('late','2026-10-31T16:00:00Z','2026-10-31T19:30:00Z',5)],{before:kickoff});
+ assert.equal(live.graded,before.graded+1);
+});

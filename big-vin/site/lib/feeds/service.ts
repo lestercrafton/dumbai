@@ -1,4 +1,4 @@
-import {compareKelly,kellyConfidence} from '@/lib/kelly-rank.mjs';
+import {compareKelly,kellyConfidence,kellyOffer} from '@/lib/kelly-rank.mjs';
 import {refreshLiveResults} from '../live-results';
 import {replayBankroll} from '../bankroll.mjs';
 import {sportsDay} from '../time';
@@ -105,6 +105,9 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  const injuryFor=(g:any)=>{const c=canonical({...g,sport});return gameInjury(injuries,sport,c.homeId,c.awayId);};
  let forecasts=rawForecasts;
  const signal=learnRankSignal(rawForecasts);
+ // Started and final games keep the win chance known at their kickoff.
+ const kickoffSignals=new Map<string,any>();
+ const signalAtKickoff=(startTime:string)=>{if(!kickoffSignals.has(startTime))kickoffSignals.set(startTime,learnRankSignal(rawForecasts,{before:Date.parse(startTime),frozen:true}));return kickoffSignals.get(startTime);};
  const now=sportsDay();const asOf=date<now?date:now;
  const registry=historicalModelSpecs(sport);
  const currentSpec=modelSpec(sport,requestedVersion);
@@ -194,12 +197,12 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
    side=spreadSelection(projection.predictedHomeMargin,market.homeSpread,quotePrices(sport,{...market,marketHomePrice:market.homeSpreadPrice,marketAwayPrice:market.awaySpreadPrice})).side;
   }
   const lowEvidence=false;
-  const rankSignal=edge!==null&&edge>0&&side&&market?scoreGame(signal,{sport,side,homeSpread:market.homeSpread,edge,odds:side==='home'?market.homeSpreadPrice:market.awaySpreadPrice}):null;
+  const rankSignal=edge!==null&&edge>0&&side&&market?scoreGame(upcoming||!Number.isFinite(Date.parse(g.startTime))?signal:signalAtKickoff(g.startTime),{sport,side,homeSpread:market.homeSpread,edge,odds:side==='home'?market.homeSpreadPrice:market.awaySpreadPrice}):null;
   // Keep the feed's ML quote and timestamp separate from the frozen ATS market.
   return {...g,bankroll:f?tracked?savedBankroll(f):bankroll.plays[f.id]??null:null,paperWager:paper,modelVersion:gameVersion,modelLabel:modelLabel(sport,gameVersion),market,moneylineMarket:g.market??null,projection,edge,rankSignal,rankLabel:rankLabel(rankSignal),side,stale,lowEvidence,rank:null,originalRank:f?.rank??null,historyCardRank:tracked?f?.cardRank??null:null,historyRankBasis:tracked&&f?'Original saved-input card rank before exclusions':null,forecastCohort:f?.cohort??null,forecastOrigin:f?.origin??null,forecastCapturedAt:f?.capturedAt??null,reconstructedAt:f?.reconstructedAt??null,modelCapturedAt:f?.modelCapturedAt??null,firstMarket:f?.firstMarket??null,modelAsOf:f?.trainingCutoff??asOf,archived,actionable,overUnder:totals?.games?.[g.id]?{...totals.games[g.id],record:totals.record}:null,injury:f?.injury??projection?.injury??null,injuryAdjustment:f?.injuryAdjustment??projection?.injuryAdjustment??null,baseMargin:f?.baseMargin??projection?.baseHomeMargin??null,marketCheck:f?.marketCheck??null,pickRevision:f?.pickRevision??null,pickRevisions:f?.pickRevisions??[],pickLock:f?.pickLock??null,originalPick:f?.originalPick??null,result:f?tracked?f.result??null:gradeForecast(f,g)||f.result||null:null,rankReason:g.status==='not-on-schedule'?'If-necessary playoff game no longer on the league schedule. No pick.':edge!==null&&!stale?side?null:'No spread edge':paper?.kind==='synthetic-winner-even'?'Paper winner pick · no book line':stale?'Current pregame quote unavailable':!projection?(g.modelExcludedReason||'No saved pregame forecast'):'No saved market line'};
  });
  matches.sort(compareKelly);
  // Every game gets a board rank from the shared Kelly ranking (lib/kelly-rank.mjs).
- let rank=0;for(const g of matches){(g as any).kellyPct=kellyConfidence(g)*100;if(g.marketCheck?.review&&g.status==='scheduled')g.rankReason='Marked for review: far from the market with no injury explanation.';g.rank=++rank;}
+ let rank=0;for(const g of matches){(g as any).kellyPct=kellyConfidence(g)*100;(g as any).kellyOffer=kellyOffer(g);if(g.marketCheck?.review&&g.status==='scheduled')g.rankReason='Marked for review: far from the market with no injury explanation.';g.rank=++rank;}
  return {sport,date,endDate,asOf,seasonContext:board.seasonContext??null,modelVersion:spec.id,modelLabel:spec.label,tuning:spec.parameters?spec:null,retrievedAt:board.retrievedAt,offlineSnapshot:board.offlineSnapshot===true,partialLiveCoverage:board.partialLiveCoverage===true,sourceUrl:board.sourceUrl,warnings:[...board.warnings,...hist.warnings],historySource:hist.sourceUrl,historyRetrievedAt:hist.retrievedAt,historyRefreshedAt:hist.refreshedAt??hist.retrievedAt,model,games:matches};
 }

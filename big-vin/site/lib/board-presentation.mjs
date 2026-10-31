@@ -106,3 +106,11 @@ export function displayLines(game = {}) {
     ? `${teamShort} ${game.sport === 'mlb' && marketLine === 0 ? 'ML' : handicap(marketLine)}` : null;
   return {side, teamName, teamShort, marketLine, fairLine, edge, pick};
 }
+/** "ARK +10 −105": the exact line and price behind a card's Kelly %. */
+export function kellyOfferText(game = {}) {
+  const o = game.kellyOffer;
+  if (!o || !finite(o.line) || !finite(o.odds)) return '';
+  const sport = game.sport;
+  const line = o.line === 0 ? (sport === 'mlb' ? 'ML' : 'PK') : `${o.line > 0 ? '+' : '−'}${Math.abs(o.line)}`;
+  return `${shortName(game[o.side])} ${line} ${o.odds > 0 ? '+' : '−'}${Math.abs(o.odds)}`;
+}

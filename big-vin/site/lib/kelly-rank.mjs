@@ -9,6 +9,14 @@ export function pickPrice(g){
  if(finite(pick.odds))return pick.odds;
  const m=g?.market??{};return side==='home'?m.homeSpreadPrice:side==='away'?m.awaySpreadPrice:null;
 }
+/** The exact offer behind a card's Kelly %: side, line taken and price, all from
+ * one snapshot (the pick revision when present, otherwise the card's market). */
+export function kellyOffer(g){
+ const pick=g?.pickRevision,side=pick?.side??g?.side,m=g?.market??{};
+ const home=finite(pick?.marketHomeSpread)?pick.marketHomeSpread:m.homeSpread,odds=pickPrice(g);
+ if(!(side==='home'||side==='away')||!finite(home)||!finite(odds))return null;
+ return {side,line:side==='home'?home:-home,odds};
+}
 export function kellyConfidence(g){
  const p=g?.rankSignal?.winChance,o=pickPrice(g);
  return finite(p)&&finite(o)&&Math.abs(o)>=100?kellyStake(p,o):0;
