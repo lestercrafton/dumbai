@@ -57,6 +57,12 @@ export function splitBody(body,size=PART_CHARS){
  const parts=[];for(let i=0;i<body.length;i+=size)parts.push(body.slice(i,i+size));
  return parts.length?parts:[''];
 }
+export const BUILD_HEADER='x-big-vin-build';
+/** An API body made by different code than this deploy must not be served. */
+export function sameBuild(hit,buildId){
+ if(!buildId||buildId==='dev')return true;
+ return (hit?.headers||[]).some(([k,v])=>k===BUILD_HEADER&&v===buildId);
+}
 const KEPT_HEADERS=new Set(['content-type','cache-control','vary','content-language']);
 export function storableHeaders(headers){
  const out=[];for(const [k,v] of headers)if(KEPT_HEADERS.has(k.toLowerCase()))out.push([k.toLowerCase(),v]);

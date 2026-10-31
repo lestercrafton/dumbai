@@ -7,7 +7,7 @@ import {SqliteD1} from './render/sqlite-d1.mjs';
 
 // edge.mjs imports ./index.js (the built app); give it a stand-in.
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bv-edge-'));
-for(const f of ['edge.mjs','read-cache.mjs'])fs.copyFileSync(new URL('../cloudflare/'+f,import.meta.url),path.join(dir,f));
+for(const f of ['edge.mjs','read-cache.mjs','build-stamp.mjs'])fs.copyFileSync(new URL('../cloudflare/'+f,import.meta.url),path.join(dir,f));
 fs.writeFileSync(path.join(dir,'index.js'),"export const calls=[];export default {async fetch(request){calls.push(new URL(request.url).pathname+new URL(request.url).search);const p=new URL(request.url).pathname;if(p==='/api/slate')return Response.json({n:calls.length});if(p==='/')return new Response('<html>'+calls.length+'</html>',{headers:{'content-type':'text/html; charset=utf-8'}});if(p.endsWith('.rsc'))return new Response('0:rsc'+calls.length,{headers:{'content-type':'text/x-component'}});if(p==='/api/results')return Response.json({error:'x'},{status:503});if(p==='/favicon.ico'||p==='/api/nope')return new Response('<html>not found</html>',{status:404,headers:{'content-type':'text/html; charset=utf-8'}});return new Response('app');}};");
 const edge=(await import(path.join(dir,'edge.mjs'))).default;
 const {calls}=await import(path.join(dir,'index.js'));
@@ -84,4 +84,13 @@ test('cacheable responses carry an edge-only cache directive; everything else is
  assert.equal(edgeDirective('page',nearMidnight),'public, max-age=60, stale-while-revalidate=60');
  assert.equal(edgeDirective('page',Date.parse('2026-10-20T03:59:58Z')),'no-store');
  assert.equal(edgeDirective('page',Date.parse('2026-10-19T16:00:00Z')),'public, max-age=300, stale-while-revalidate=300');
+});
+test('cached API bodies from other code are not served after a deploy',async()=>{
+ const {sameBuild,BUILD_HEADER}=await import('../cloudflare/read-cache.mjs');
+ const {computeBuildId}=await import('./build-id.mjs');
+ const id=computeBuildId(new URL('..',import.meta.url).pathname);
+ assert.match(id,/^[0-9a-f]{16}$/);assert.equal(computeBuildId(new URL('..',import.meta.url).pathname),id);
+ assert.equal(sameBuild({headers:[[BUILD_HEADER,id]]},id),true);
+ assert.equal(sameBuild({headers:[[BUILD_HEADER,'old']]},id),false);
+ assert.equal(sameBuild({headers:[]},id),false);
 });

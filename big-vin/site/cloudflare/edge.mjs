@@ -3,13 +3,14 @@
 // the built app (dist/server) by scripts/cloudflare-build.mjs.
 import {Buffer} from 'node:buffer';
 import app from './index.js';
-import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS,edgeDirective,withEdge,EDGE_NO_STORE,EDGE_NOT_FOUND} from './read-cache.mjs';
+import {apiCacheKey,pageCacheKey,rscCacheKey,routerRequest,readCached,storeStatements,storableHeaders,cachedResponse,fresh,MAX_BODY_CHARS,edgeDirective,withEdge,EDGE_NO_STORE,EDGE_NOT_FOUND,sameBuild,BUILD_HEADER} from './read-cache.mjs';
+import {BUILD_ID} from './build-stamp.mjs';
 
 async function fill(env,key,response,source){
  try{
   const body=await response.text();
   if(body.length>MAX_BODY_CHARS)return;
-  await env.DB.batch(storeStatements(env.DB,{key,status:response.status,headers:storableHeaders(response.headers),renderedAt:new Date().toISOString(),source,body}));
+  await env.DB.batch(storeStatements(env.DB,{key,status:response.status,headers:source==='miss'?[...storableHeaders(response.headers),[BUILD_HEADER,BUILD_ID]].sort((a,b)=>a[0]<b[0]?-1:1):storableHeaders(response.headers),renderedAt:new Date().toISOString(),source,body}));
  }catch(error){console.error('Read cache fill failed',key,error);}
 }
 const decodeBase64=text=>{const b=Buffer.from(text,'base64');return new Uint8Array(b.buffer,b.byteOffset,b.length);};
@@ -27,6 +28,8 @@ async function cachedOrLive(request,env,ctx,key,{maxAge,source}){
  const meter=env.BV_D1_METER?meta=>console.log(JSON.stringify({d1read:meta?.rows_read??0,d1write:meta?.rows_written??0})):undefined;
  try{hit=await readCached(env.DB,key,meter);}catch(error){console.error('Read cache lookup failed',key,error);}
  const kind=source==='miss'?'api':'page';
+ // A body from older code is treated as absent: no hit, no stale fallback.
+ if(hit&&kind==='api'&&!sameBuild(hit,BUILD_ID))hit=null;
  if(hit&&(maxAge===null||fresh({rendered_at:hit.renderedAt},Date.now(),maxAge)))return withEdge(cachedResponse(hit,'hit',{acceptsGzip:/\bgzip\b/i.test(request.headers.get('accept-encoding')||''),decodeBase64}),hit.status===200?edgeDirective(kind):EDGE_NO_STORE);
  // Register the key first, so the renderer picks it up even if this request fails.
  if(!hit&&source==='miss')ctx.waitUntil(register(env,key));

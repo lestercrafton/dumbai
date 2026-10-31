@@ -18,6 +18,8 @@ import {SqliteD1} from './render/sqlite-d1.mjs';
 import {RENDER_TABLES} from '../lib/render-source.mjs';
 import zlib from 'node:zlib';
 import {apiCacheKey,storableHeaders,VINEXT_VARY,MAX_BODY_CHARS,GZIP_PREFIX} from '../cloudflare/read-cache.mjs';
+import {computeBuildId} from './build-id.mjs';
+import {BUILD_HEADER} from '../cloudflare/read-cache.mjs';
 import {activeProviderSeason} from '../lib/provider-season.mjs';
 import {footballWeekStart} from '../lib/board-window.mjs';
 
@@ -28,6 +30,7 @@ const FULL_EVERY_MS=12*3600_000;
 const OVERLAP_MS=30*60_000;
 const REGISTERED_DAYS=3;
 const REFRESH_UNCHANGED_MS=20*60_000;
+const BUILD_ID=computeBuildId(site);
 const log=(...a)=>console.log(new Date().toISOString(),...a);
 
 export function easternDay(ms=Date.now()){
@@ -172,7 +175,7 @@ export async function render(handlers,key,origin){
  const renderedAt=new Date().toISOString();
  const response=await handlers[HANDLERS[url.pathname]](new Request(url));
  const body=await response.text();
- const headers=storableHeaders(response.headers);if(!headers.some(h=>h[0]==='vary'))headers.push(['vary',VINEXT_VARY]);headers.sort((a,b)=>a[0]<b[0]?-1:1);
+ const headers=storableHeaders(response.headers);if(!headers.some(h=>h[0]==='vary'))headers.push(['vary',VINEXT_VARY]);headers.push([BUILD_HEADER,BUILD_ID]);headers.sort((a,b)=>a[0]<b[0]?-1:1);
  return {key,status:response.status,headers,body,renderedAt};
 }
 

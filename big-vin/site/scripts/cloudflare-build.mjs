@@ -8,6 +8,7 @@ import {spawn} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {computeBuildId} from './build-id.mjs';
 
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dist=path.join(site,'dist');
@@ -15,6 +16,7 @@ export const STATIC_PAGES=['/baseball-research','/challengers','/college-experim
 
 function copyEdge(){
  for(const f of ['edge.mjs','read-cache.mjs'])fs.copyFileSync(path.join(site,'cloudflare',f),path.join(dist,'server',f));
+ fs.writeFileSync(path.join(dist,'server','build-stamp.mjs'),`export const BUILD_ID=${JSON.stringify(computeBuildId(site))};\n`);
 }
 async function waitFor(url,ms){
  const end=Date.now()+ms;
