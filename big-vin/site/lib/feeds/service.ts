@@ -1,4 +1,4 @@
-import {compareKelly} from '@/lib/kelly-rank.mjs';
+import {compareKelly,kellyConfidence} from '@/lib/kelly-rank.mjs';
 import {refreshLiveResults} from '../live-results';
 import {replayBankroll} from '../bankroll.mjs';
 import {sportsDay} from '../time';
@@ -200,6 +200,6 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  });
  matches.sort(compareKelly);
  // Every game gets a board rank from the shared Kelly ranking (lib/kelly-rank.mjs).
- let rank=0;for(const g of matches){if(g.marketCheck?.review&&g.status==='scheduled')g.rankReason='Marked for review: far from the market with no injury explanation.';g.rank=++rank;}
+ let rank=0;for(const g of matches){(g as any).kellyPct=kellyConfidence(g)*100;if(g.marketCheck?.review&&g.status==='scheduled')g.rankReason='Marked for review: far from the market with no injury explanation.';g.rank=++rank;}
  return {sport,date,endDate,asOf,seasonContext:board.seasonContext??null,modelVersion:spec.id,modelLabel:spec.label,tuning:spec.parameters?spec:null,retrievedAt:board.retrievedAt,offlineSnapshot:board.offlineSnapshot===true,partialLiveCoverage:board.partialLiveCoverage===true,sourceUrl:board.sourceUrl,warnings:[...board.warnings,...hist.warnings],historySource:hist.sourceUrl,historyRetrievedAt:hist.retrievedAt,historyRefreshedAt:hist.refreshedAt??hist.retrievedAt,model,games:matches};
 }

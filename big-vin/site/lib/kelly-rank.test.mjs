@@ -17,3 +17,8 @@ test('board rank order equals Today\'s plays order',()=>{
 test('a higher win chance at a worse price can rank lower',()=>{
  assert.ok(compareKelly(g('x',0.56,-102),g('y',0.57,-150))<0);
 });
+
+test('Kelly ties go to the bigger points edge',()=>{
+ const t=(id,edge)=>({id,edge,startTime:'2026-11-01T00:00:00Z',side:'home',market:{homeSpreadPrice:-110},rankSignal:{winChance:0.58,value:0.58,breakEven:0.52}});
+ assert.deepEqual([t('a',3),t('b',9),t('c',6)].sort(compareKelly).map(x=>x.id),['b','c','a']);
+});

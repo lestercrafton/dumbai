@@ -220,7 +220,7 @@ test('service includes only the three ET sports dates across DST and preserves s
   const before = structuredClone({board, forecasts});
   const weekend = await getSlate('cfb', start, board, 3);
   assert.equal(weekend.endDate, '2026-11-01');
-  assert.deepEqual(weekend.games.map(game => [game.id, game.rank, game.originalRank]), [['fri', 1, 12], ['saved', 2, 15], ['sun', 3, 13]]);
+  assert.deepEqual(weekend.games.map(game => [game.id, game.rank, game.originalRank]), [['fri', 1, 12], ['sun', 2, 13], ['saved', 3, 15]]);
   const saved = weekend.games.find(game => game.id === 'saved');
   assert.equal(saved.status, 'completed');
   assert.equal(saved.homeScore, 24);
@@ -229,7 +229,7 @@ test('service includes only the three ET sports dates across DST and preserves s
   assert.deepEqual(saved.result, finals);
   assert.equal(saved.forecastOrigin, 'collector');
   assert.equal(saved.historyCardRank, 4);
-  assert.equal(saved.rank, 2);
+  assert.equal(saved.rank, 3);
   assert.equal(saved.home.name, 'Home');
   assert.equal(saved.home.abbreviation, undefined);
   assert.equal(weekend.offlineSnapshot, true);
@@ -240,7 +240,7 @@ test('service includes only the three ET sports dates across DST and preserves s
   assert.deepEqual(daily.games.map(game => game.id), ['fri']);
   const weekly = await getSlate('cfb', start, board);
   assert.equal(weekly.endDate, '2026-11-05');
-  assert.deepEqual(weekly.games.map(game => game.id), ['fri', 'saved', 'sun', 'after']);
+  assert.deepEqual(weekly.games.map(game => game.id), ['after', 'fri', 'sun', 'saved']);
   assert.ok(services.cutoffs.every(cutoff => cutoff === weekend.asOf));
   assert.deepEqual({board, forecasts}, before);
   services.forecasts = [];
