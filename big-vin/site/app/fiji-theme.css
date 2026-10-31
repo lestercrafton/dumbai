@@ -949,3 +949,11 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
   border-color: #6b218a !important;
   color: #fff !important;
 }
+
+/* Green swap: an in-progress cover gets one green box (the live status box);
+   a final Big Vin win gets the full green card. */
+.vin-game-card.vin-game-covering,
+.vin-game-card.vin-game-covering:hover { background: #fff; border-color: #d0bfd9; outline-color: transparent; }
+.vin-game-covering .vin-scoreboard.vin-scoreboard-covering:not(.vin-scoreboard-final) { background: #faf8fc; border-color: #d2c4dc; }
+.vin-game-card.vin-game-win,
+.vin-game-card.vin-game-win:hover { background: var(--fiji-green-tint); border-color: var(--fiji-green-line); outline: 1px solid var(--fiji-green-line); }
