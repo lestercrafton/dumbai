@@ -22,3 +22,10 @@ test('Kelly ties go to the bigger points edge',()=>{
  const t=(id,edge)=>({id,edge,startTime:'2026-11-01T00:00:00Z',side:'home',market:{homeSpreadPrice:-110},rankSignal:{winChance:0.58,value:0.58,breakEven:0.52}});
  assert.deepEqual([t('a',3),t('b',9),t('c',6)].sort(compareKelly).map(x=>x.id),['b','c','a']);
 });
+test('raw edge sort: biggest edge first, ties to Kelly then kickoff',async()=>{
+ const {compareEdge,rankByEdge}=await import('./kelly-rank.mjs');
+ const t=(id,edge,p,st='2026-11-01T00:00:00Z')=>({id,edge,rank:1,startTime:st,side:'home',market:{homeSpreadPrice:-110},rankSignal:{winChance:p,value:p,breakEven:0.52}});
+ const rows=[t('a',3,0.6),t('b',9,0.55),t('c',3,0.58),t('d',3,0.58,'2026-10-31T00:00:00Z'),t('e',-12,0.5)];
+ assert.deepEqual([...rows].sort(compareEdge).map(x=>x.id),['e','b','a','d','c']);
+ assert.deepEqual(rankByEdge(rows).map(x=>[x.id,x.rank]),[['a',3],['b',2],['c',5],['d',4],['e',1]]);
+});

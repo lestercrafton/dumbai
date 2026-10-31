@@ -19,3 +19,16 @@ export function compareKelly(a,b){
  const e=(finite(b?.edge)?b.edge:-1)-(finite(a?.edge)?a.edge:-1);
  return Math.abs(e)>1e-9?e:compareSignal(a,b);
 }
+/** Raw points edge, biggest first; ties go to higher Kelly %, then kickoff. */
+export function compareEdge(a,b){
+ const e=(finite(b?.edge)?Math.abs(b.edge):-1)-(finite(a?.edge)?Math.abs(a.edge):-1);
+ if(Math.abs(e)>1e-9)return e;
+ const d=kellyConfidence(b)-kellyConfidence(a);
+ if(Math.abs(d)>1e-12)return d;
+ return String(a?.startTime??'').localeCompare(String(b?.startTime??''));
+}
+/** Renumber board ranks by raw edge (display only). Unranked games stay unranked. */
+export function rankByEdge(games){
+ const ranked=games.filter(g=>g?.rank).sort(compareEdge);const map=new Map(ranked.map((g,i)=>[g,i+1]));
+ return games.map(g=>map.has(g)?{...g,kellyRank:g.rank,rank:map.get(g)}:g);
+}
