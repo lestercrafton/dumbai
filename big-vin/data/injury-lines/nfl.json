@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-30T23:12:55.176Z",
+ "generatedAt": "2026-10-31T02:44:02.958Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -37,7 +37,7 @@
      "player": "Andrew Wingard",
      "espnId": "3918331",
      "status": "Questionable",
-     "reported": "2026-10-29T01:16Z",
+     "reported": "2026-10-31T01:09Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -57,7 +57,7 @@
      "player": "Jon Gaines II",
      "espnId": "4367199",
      "status": "Out",
-     "reported": "2026-10-30T18:01Z",
+     "reported": "2026-10-31T01:30Z",
      "weight": 1,
      "points": 0.3
     }
@@ -121,7 +121,7 @@
      "player": "Olaivavega Ioane",
      "espnId": "4832793",
      "status": "Out",
-     "reported": "2026-10-30T01:31Z",
+     "reported": "2026-10-31T01:55Z",
      "weight": 1,
      "points": 0.3
     }
@@ -155,7 +155,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-30T23:00Z",
+     "reported": "2026-10-31T02:01Z",
      "weight": 1,
      "points": 0.3
     },
@@ -165,7 +165,7 @@
      "player": "Spencer Brown",
      "espnId": "4030899",
      "status": "Questionable",
-     "reported": "2026-10-28T21:20Z",
+     "reported": "2026-10-31T01:53Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -281,7 +281,7 @@
   },
   "DAL": {
    "team": "DAL",
-   "loss": 0.35,
+   "loss": 0.48,
    "starter": {
     "name": "Dak Prescott",
     "espnId": "2577417",
@@ -299,12 +299,22 @@
      "points": 0.1
     },
     {
+     "group": "edge",
+     "position": "RDE",
+     "player": "Kenny Clark",
+     "espnId": "3122752",
+     "status": "Questionable",
+     "reported": "2026-10-31T01:19Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
      "group": "lb",
      "position": "RILB",
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Out",
-     "reported": "2026-10-30T00:54Z",
+     "reported": "2026-10-31T01:03Z",
      "weight": 1,
      "points": 0.25
     }
@@ -336,7 +346,7 @@
      "player": "Zach Allen",
      "espnId": "3915282",
      "status": "Questionable",
-     "reported": "2026-10-30T00:41Z",
+     "reported": "2026-10-31T00:53Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -346,7 +356,7 @@
      "player": "Talanoa Hufanga",
      "espnId": "4360853",
      "status": "Out",
-     "reported": "2026-10-30T20:49Z",
+     "reported": "2026-10-31T00:53Z",
      "weight": 1,
      "points": 0.3
     },
@@ -356,7 +366,7 @@
      "player": "Brandon Jones",
      "espnId": "4039059",
      "status": "Questionable",
-     "reported": "2026-10-29T21:25Z",
+     "reported": "2026-10-31T00:48Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -473,7 +483,7 @@
      "player": "Bryce Boettcher",
      "espnId": "5088571",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-10-30T23:45Z",
      "weight": 0.25,
      "points": 0.06
     }
@@ -505,7 +515,7 @@
      "player": "Antonio Johnson",
      "espnId": "4429168",
      "status": "Out",
-     "reported": "2026-10-29T23:34Z",
+     "reported": "2026-10-30T23:27Z",
      "weight": 1,
      "points": 0.3
     }
@@ -527,7 +537,7 @@
      "player": "Mansoor Delane",
      "espnId": "4880124",
      "status": "Questionable",
-     "reported": "2026-10-29T22:12Z",
+     "reported": "2026-10-30T23:46Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -560,7 +570,7 @@
      "player": "Derwin James Jr.",
      "espnId": "3691739",
      "status": "Out",
-     "reported": "2026-10-30T20:19Z",
+     "reported": "2026-10-31T00:39Z",
      "weight": 1,
      "points": 0.3
     },
@@ -570,7 +580,7 @@
      "player": "Donte Jackson",
      "espnId": "3843769",
      "status": "Questionable",
-     "reported": "2026-10-30T01:00Z",
+     "reported": "2026-10-31T00:39Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -580,7 +590,7 @@
      "player": "Kayode Awosika",
      "espnId": "4040842",
      "status": "Out",
-     "reported": "2026-10-30T20:19Z",
+     "reported": "2026-10-31T02:28Z",
      "weight": 1,
      "points": 0.3
     }
@@ -644,7 +654,7 @@
      "player": "JuJu Brents",
      "espnId": "4360488",
      "status": "Questionable",
-     "reported": "2026-10-30T00:09Z",
+     "reported": "2026-10-31T00:28Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -654,7 +664,7 @@
      "player": "Kadyn Proctor",
      "espnId": "4870976",
      "status": "Out",
-     "reported": "2026-10-30T20:10Z",
+     "reported": "2026-10-31T02:20Z",
      "weight": 1,
      "points": 0.3
     }
@@ -687,7 +697,7 @@
      "player": "Christian Elliss",
      "espnId": "4245273",
      "status": "Questionable",
-     "reported": "2026-10-30T20:07Z",
+     "reported": "2026-10-31T00:22Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -697,7 +707,7 @@
      "player": "Carlton Davis III",
      "espnId": "3916923",
      "status": "Questionable",
-     "reported": "2026-10-30T20:06Z",
+     "reported": "2026-10-31T00:23Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -857,7 +867,7 @@
      "player": "Jihaad Campbell",
      "espnId": "4685287",
      "status": "Out",
-     "reported": "2026-10-30T19:54Z",
+     "reported": "2026-10-31T00:16Z",
      "weight": 1,
      "points": 0.25
     }
@@ -941,7 +951,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.35,
+   "loss": 0.24,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -954,29 +964,19 @@
      "player": "Rashid Shaheed",
      "espnId": "4032473",
      "status": "Questionable",
-     "reported": "2026-10-29T23:11Z",
+     "reported": "2026-10-30T23:29Z",
      "weight": 0.25,
      "points": 0.1
     },
     {
-     "group": "edge",
-     "position": "LDE",
-     "player": "Leonard Williams",
-     "espnId": "2971622",
+     "group": "dt",
+     "position": "NT",
+     "player": "Byron Murphy II",
+     "espnId": "4570040",
      "status": "Questionable",
-     "reported": "2026-10-30T00:51Z",
+     "reported": "2026-10-31T01:25Z",
      "weight": 0.25,
-     "points": 0.13
-    },
-    {
-     "group": "lb",
-     "position": "LILB",
-     "player": "Drake Thomas",
-     "espnId": "4428659",
-     "status": "Questionable",
-     "reported": "2026-10-30T01:00Z",
-     "weight": 0.25,
-     "points": 0.06
+     "points": 0.08
     },
     {
      "group": "lb",
@@ -1016,7 +1016,7 @@
      "player": "Luke Goedeke",
      "espnId": "4380507",
      "status": "Questionable",
-     "reported": "2026-10-30T01:16Z",
+     "reported": "2026-10-31T01:45Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1048,7 +1048,7 @@
      "player": "John Franklin-Myers",
      "espnId": "3120464",
      "status": "Questionable",
-     "reported": "2026-10-28T20:03Z",
+     "reported": "2026-10-31T00:01Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -1057,7 +1057,7 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 1.2,
+   "loss": 1.03,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
@@ -1075,14 +1075,14 @@
      "points": 0.4
     },
     {
-     "group": "dt",
-     "position": "NT",
-     "player": "Daron Payne",
-     "espnId": "3925354",
-     "status": "Out",
-     "reported": "2026-10-30T22:59Z",
-     "weight": 1,
-     "points": 0.3
+     "group": "edge",
+     "position": "LDE",
+     "player": "Charles Omenihu",
+     "espnId": "3929865",
+     "status": "Questionable",
+     "reported": "2026-10-20T16:10Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "edge",
