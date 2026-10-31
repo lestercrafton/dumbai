@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-31T17:22:50.740Z",
+ "generatedAt": "2026-10-31T20:18:11.205Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -66,7 +66,7 @@
   },
   "ATL": {
    "team": "ATL",
-   "loss": 0.12,
+   "loss": 0.31,
    "starter": {
     "name": "Michael Penix Jr.",
     "espnId": "4360423",
@@ -78,10 +78,10 @@
      "position": "RILB",
      "player": "Divine Deablo",
      "espnId": "4037626",
-     "status": "Questionable",
+     "status": "Out",
      "reported": "2026-10-30T21:15Z",
-     "weight": 0.25,
-     "points": 0.06
+     "weight": 1,
+     "points": 0.25
     },
     {
      "group": "lb",
@@ -155,7 +155,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-31T17:08Z",
+     "reported": "2026-10-31T20:06Z",
      "weight": 1,
      "points": 0.3
     },
@@ -216,23 +216,13 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0.16,
+   "loss": 0.06,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "te1",
-     "position": "TE",
-     "player": "Colston Loveland",
-     "espnId": "4723086",
-     "status": "Questionable",
-     "reported": "2026-10-30T19:31Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
     {
      "group": "lb",
      "position": "SLB",
@@ -259,24 +249,13 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.1,
+   "loss": 0,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Tytus Howard",
-     "espnId": "3131498",
-     "status": "Questionable",
-     "reported": "2026-10-29T01:18Z",
-     "weight": 0.25,
-     "points": 0.1
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "DAL": {
@@ -524,7 +503,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.13,
+   "loss": 0.5,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -536,10 +515,10 @@
      "position": "RCB",
      "player": "Mansoor Delane",
      "espnId": "4880124",
-     "status": "Questionable",
+     "status": "Out",
      "reported": "2026-10-30T23:46Z",
-     "weight": 0.25,
-     "points": 0.13
+     "weight": 1,
+     "points": 0.5
     }
    ],
    "notes": []
@@ -557,23 +536,13 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.73,
+   "loss": 0.43,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "s",
-     "position": "SS",
-     "player": "Derwin James Jr.",
-     "espnId": "3691739",
-     "status": "Out",
-     "reported": "2026-10-31T00:39Z",
-     "weight": 1,
-     "points": 0.3
-    },
     {
      "group": "cb",
      "position": "RCB",
@@ -824,7 +793,7 @@
      "position": "LDT",
      "player": "T'Vondre Sweat",
      "espnId": "4428617",
-     "status": "Out",
+     "status": "Injured Reserve",
      "reported": "2026-10-30T22:12Z",
      "weight": 1,
      "points": 0.3
