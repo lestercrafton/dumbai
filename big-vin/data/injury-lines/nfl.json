@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-31T20:18:11.205Z",
+ "generatedAt": "2026-10-31T23:42:05.986Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -155,7 +155,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-31T20:06Z",
+     "reported": "2026-10-31T23:13Z",
      "weight": 1,
      "points": 0.3
     },
@@ -229,7 +229,7 @@
      "player": "D'Marco Jackson",
      "espnId": "4241007",
      "status": "Questionable",
-     "reported": "2026-10-29T20:13Z",
+     "reported": "2026-10-31T23:08Z",
      "weight": 0.25,
      "points": 0.06
     }
@@ -516,7 +516,7 @@
      "player": "Mansoor Delane",
      "espnId": "4880124",
      "status": "Out",
-     "reported": "2026-10-30T23:46Z",
+     "reported": "2026-10-31T23:10Z",
      "weight": 1,
      "points": 0.5
     }
@@ -771,7 +771,7 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.88,
+   "loss": 0.58,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -787,16 +787,6 @@
      "reported": "2026-10-30T22:15Z",
      "weight": 1,
      "points": 0.5
-    },
-    {
-     "group": "dt",
-     "position": "LDT",
-     "player": "T'Vondre Sweat",
-     "espnId": "4428617",
-     "status": "Injured Reserve",
-     "reported": "2026-10-30T22:12Z",
-     "weight": 1,
-     "points": 0.3
     },
     {
      "group": "lg",
@@ -920,7 +910,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.84,
+   "loss": 1.25,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -932,38 +922,28 @@
      "position": "WR",
      "player": "Rashid Shaheed",
      "espnId": "4032473",
-     "status": "Questionable",
-     "reported": "2026-10-30T23:29Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "dt",
-     "position": "NT",
-     "player": "Byron Murphy II",
-     "espnId": "4570040",
-     "status": "Questionable",
-     "reported": "2026-10-31T01:25Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-10-31T20:53Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "lb",
      "position": "SLB",
      "player": "Uchenna Nwosu",
      "espnId": "3120358",
-     "status": "Questionable",
-     "reported": "2026-10-29T22:54Z",
-     "weight": 0.25,
-     "points": 0.06
+     "status": "Doubtful",
+     "reported": "2026-10-31T20:57Z",
+     "weight": 1,
+     "points": 0.25
     },
     {
      "group": "lt",
      "position": "LT",
      "player": "Charles Cross",
      "espnId": "4426376",
-     "status": "Doubtful",
-     "reported": "2026-10-26T21:41Z",
+     "status": "Out",
+     "reported": "2026-10-31T20:56Z",
      "weight": 1,
      "points": 0.6
     }
