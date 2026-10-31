@@ -1,4 +1,5 @@
 'use client';
+import {KellyNote} from '@/components/kelly-note';
 import {useEffect,useState} from 'react';
 import {KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
@@ -45,7 +46,7 @@ function Today({data}:{data:Sport[]}){
   </div>
   {allMode
    ?<p className="bk-explain">Every board pick ranked by Kelly — including games that no longer fit today&apos;s bankroll after higher-confidence plays. Those show as No pick here; Today&apos;s plays is only what Vin would actually place.</p>
-   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit each sport&apos;s bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}
+   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit each sport&apos;s bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}<KellyNote/>
   <p className="bk-foot">For entertainment and educational purposes for humans, and for whatever purpose you choose for agents.</p>
   {!allMode&&<section className="bk-total">
    <div><span>Wagered today</span><strong>{usd(total)}</strong></div>

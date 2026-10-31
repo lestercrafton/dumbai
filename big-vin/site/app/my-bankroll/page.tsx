@@ -1,4 +1,5 @@
 'use client';
+import {KellyNote} from '@/components/kelly-note';
 import {useEffect,useState,FormEvent,type ReactNode} from 'react';
 import {MY_KELLY_NOTE,ENTERTAINMENT_NOTE,CARRY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
@@ -141,7 +142,7 @@ Entertainment only — confirm to submit with your connected key.`);
   </div>
   {allMode
    ?<p className="bk-explain">Every board pick ranked by Kelly — including games that no longer fit after higher-confidence plays. Type any amount (or leave blank to use the recommended size when there is one). Deep links and Place still work.</p>
-   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit <b>your</b> bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}
+   :<p className="bk-explain">Big Vin handicaps every game, but bets by confidence. These are the full-Kelly wagers that still fit <b>your</b> bankroll today — taken in Kelly order until the next one wouldn&apos;t fit.</p>}<KellyNote/>
   <p className="bk-foot">{DISCLAIMER}</p>
   {placeMsg&&<p className="bk-ok">{placeMsg}</p>}
   {kalshiPanel}

@@ -277,3 +277,5 @@ a.vin-nav-bankroll-mine:hover,
 .bk-amt{display:inline-flex;align-items:center;gap:2px;background:#fff;border:1px solid #dccfe4;border-radius:8px;padding:2px 8px;min-width:88px}
 .bk-amt-prefix{opacity:.55;font-size:12px;font-weight:700}
 .bk-amt-input{font:inherit;font-size:13px;font-weight:700;border:0;outline:0;width:64px;padding:6px 2px;background:transparent;color:#2a1037}
+
+.vin-kelly-note{font-size:12px;margin:2px 0 6px;opacity:.85;max-width:640px}.vin-kelly-note summary{cursor:pointer;text-decoration:underline dotted;width:max-content}.vin-kelly-note ol{margin:6px 0 4px;padding-left:18px;line-height:1.4}.vin-kelly-note li{margin:2px 0}.vin-kelly-note p{margin:4px 0 0;opacity:.8}
