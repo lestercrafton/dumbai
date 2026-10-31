@@ -42,3 +42,18 @@ test('record summary readers are stable (no refetch loop for sports without tota
  const call=src.slice(src.indexOf('useRefreshingResource<TotalsView>('));const args=call.slice(0,call.indexOf(';'));
  assert.ok(!/async\s*\(/.test(args),'inline async reader would change every render and re-run the load effect');
 });
+test('board lists cards in ascending rank in both sort modes, whatever the kickoff order',async()=>{
+ const {rankByEdge}=await import('./kelly-rank.mjs');const {sortBoard}=await import('./board-sort.mjs');
+ const mk=(id,edge,p,st,status='scheduled')=>({id,sport:'cfb',status,edge,startTime:st,side:'home',market:{homeSpreadPrice:-110},rankSignal:{winChance:p,value:p,breakEven:0.52}});
+ const games=[mk('a',0.7,0.56,'2026-10-31T19:15:00Z'),mk('b',1.7,0.56,'2026-10-31T19:30:00Z'),mk('c',0.4,0.57,'2026-10-31T19:30:00Z'),mk('d',4.1,0.5,'2026-10-31T16:00:00Z','live'),mk('e',3.5,0.5,'2026-10-31T23:00:00Z')];
+ const kelly=[...games].sort(compareKelly).map((g,i)=>({...g,rank:i+1}));
+ const byTime=[...kelly].sort((x,y)=>x.startTime.localeCompare(y.startTime));
+ const shownK=sortBoard(byTime,'rank');assert.deepEqual(shownK.map(g=>g.rank),[1,2,3,4,5]);
+ assert.deepEqual(shownK.map(g=>g.id),['c','b','a','d','e']);
+ const shownE=sortBoard(rankByEdge(byTime),'rank');assert.deepEqual(shownE.map(g=>g.rank),[1,2,3,4,5]);
+ assert.deepEqual(shownE.map(g=>g.id),['d','e','b','a','c']);
+});
+test('time presets never switch the board out of rank order',async()=>{
+ const {readFileSync}=await import('node:fs');const src=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
+ assert.ok(!/setSortMode\(\s*'time'\s*\)/.test(src)&&!/\?'time':'rank'/.test(src));
+});
