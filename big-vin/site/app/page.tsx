@@ -56,7 +56,9 @@ export default function Home(){
  const [tab,setTab]=useState('slate'),[sport,setSport]=useState('all'),[date,setDate]=useState(()=>sportsDay()),[filter,setFilter]=useState('all'),[windowDays,setWindowDays]=useState('1');
  const [rankBy,setRankByState]=useState<'kelly'|'edge'>('kelly');
  useEffect(()=>{try{const q=new URLSearchParams(location.search).get('sort');const v=q==='edge'||q==='kelly'?q:localStorage.getItem('bv-rank-by');if(v==='edge'||v==='kelly')setRankByState(v);}catch{}},[]);
- const toggleRankBy=()=>setRankByState(v=>{const n=v==='edge'?'kelly':'edge';try{localStorage.setItem('bv-rank-by',n);const u=new URL(location.href);if(n==='edge')u.searchParams.set('sort','edge');else u.searchParams.delete('sort');history.replaceState(null,'',u);}catch{}return n;});
+ const rankByLoaded=useRef(false);
+ useEffect(()=>{if(!rankByLoaded.current){rankByLoaded.current=true;return;}try{localStorage.setItem('bv-rank-by',rankBy);const u=new URL(window.location.href);if(rankBy==='edge')u.searchParams.set('sort','edge');else u.searchParams.delete('sort');if(u.href!==window.location.href)window.history.replaceState(window.history.state,'',u.href);}catch{}},[rankBy]);
+ const toggleRankBy=()=>setRankByState(v=>v==='edge'?'kelly':'edge');
  const [sortMode,setSortMode]=useState('rank'),[college,setCollege]=useState('all'),[conference,setConference]=useState('all');
  const [teamQuery,setTeamQuery]=useState(''),[timePreset,setTimePreset]=useState('all'),[timeFrom,setTimeFrom]=useState(''),[timeTo,setTimeTo]=useState('');
  const [now,setNow]=useState(()=>Date.now());

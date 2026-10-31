@@ -55,8 +55,10 @@ export function RecordSummary({sport,sportLabel,date,refreshKey,card='all',rankP
  const totalsUrl='/api/totals?sport='+encodeURIComponent(sport);
  const readAts=useCallback(async()=>{const response=await fetch(atsUrl,{signal:AbortSignal.timeout(20000)});if(!response.ok)throw new Error('Saved results unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='tracked-history')throw new Error('Saved history unavailable');return result as History;},[atsUrl,sport]);
  const readTotals=useCallback(async()=>{const response=await fetch(totalsUrl,{signal:AbortSignal.timeout(15000)});if(!response.ok)throw new Error('Totals record unavailable');const result:any=await response.json();if(result.sport!==sport||result.view!=='totals-record')throw new Error('Totals history unavailable');return result as TotalsView;},[totalsUrl,sport]);
+ // Stable reader: an inline fallback changed every render, re-running the load effect and refetching forever for sports without totals.
+ const readNoTotals=useCallback(async()=>({sport,view:'totals-record',hasPicks:false,days:[],overall:empty,generatedAt:null,version:null} as TotalsView),[sport]);
  const ats=useRefreshingResource<History>(atsUrl,readAts);
- const totals=useRefreshingResource<TotalsView>(canTotals?totalsUrl:'__no-totals__',canTotals?readTotals:async()=>({sport,view:'totals-record',hasPicks:false,days:[],overall:empty,generatedAt:null,version:null} as TotalsView));
+ const totals=useRefreshingResource<TotalsView>(canTotals?totalsUrl:'__no-totals__',canTotals?readTotals:readNoTotals);
  useEffect(()=>{const check=()=>{if(document.visibilityState==='visible'){void ats.load();if(canTotals)void totals.load();}};const timer=setInterval(check,60000);window.addEventListener('focus',check);document.addEventListener('visibilitychange',check);return()=>{clearInterval(timer);window.removeEventListener('focus',check);document.removeEventListener('visibilitychange',check);};},[ats.load,totals.load,canTotals]);
  useEffect(()=>{void ats.load();if(canTotals)void totals.load();},[refreshKey,ats.load,totals.load,canTotals]);
  const showTotals=kind==='totals'&&canTotals;

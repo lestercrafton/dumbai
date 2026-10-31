@@ -27,8 +27,9 @@ export function compareEdge(a,b){
  if(Math.abs(d)>1e-12)return d;
  return String(a?.startTime??'').localeCompare(String(b?.startTime??''));
 }
-/** Renumber board ranks by raw edge (display only). Unranked games stay unranked. */
+/** Renumber board ranks by raw edge within each sport (display only). Unranked games stay unranked. O(n log n). */
 export function rankByEdge(games){
- const ranked=games.filter(g=>g?.rank).sort(compareEdge);const map=new Map(ranked.map((g,i)=>[g,i+1]));
+ const by=new Map();for(const g of games)if(g?.rank){const k=g.sport??'';if(!by.has(k))by.set(k,[]);by.get(k).push(g);}
+ const map=new Map();for(const list of by.values())list.sort(compareEdge).forEach((g,i)=>map.set(g,i+1));
  return games.map(g=>map.has(g)?{...g,kellyRank:g.rank,rank:map.get(g)}:g);
 }
