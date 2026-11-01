@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-10-31T23:42:05.986Z",
+ "generatedAt": "2026-11-01T06:48:20.345Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -79,7 +79,7 @@
      "player": "Divine Deablo",
      "espnId": "4037626",
      "status": "Out",
-     "reported": "2026-10-30T21:15Z",
+     "reported": "2026-11-01T00:36Z",
      "weight": 1,
      "points": 0.25
     },
@@ -155,7 +155,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-10-31T23:13Z",
+     "reported": "2026-11-01T06:00Z",
      "weight": 1,
      "points": 0.3
     },
@@ -610,7 +610,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 0.43,
+   "loss": 0.13,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -626,16 +626,6 @@
      "reported": "2026-10-31T00:28Z",
      "weight": 0.25,
      "points": 0.13
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Kadyn Proctor",
-     "espnId": "4870976",
-     "status": "Out",
-     "reported": "2026-10-31T02:20Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
@@ -943,7 +933,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Out",
-     "reported": "2026-10-31T20:56Z",
+     "reported": "2026-11-01T03:18Z",
      "weight": 1,
      "points": 0.6
     }
