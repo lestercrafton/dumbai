@@ -1,6 +1,6 @@
 import {liveScoreUrls} from '@/lib/live-scores.mjs';
 import {normalizeScoreboard,SPORT_PATHS} from '@/lib/feeds/adapter.mjs';
-const FIELDS=['id','status','statusDescription','statusName','statusDetail','statusShortDetail','period','clock','scoreObservedAt','outs','isTopInning','liveHomeScore','liveAwayScore','homeScore','awayScore'];
+const FIELDS=['id','status','statusDescription','statusName','statusDetail','statusShortDetail','period','clock','scoreObservedAt','outs','isTopInning','possession','downDistance','liveHomeScore','liveAwayScore','homeScore','awayScore'];
 // Live scores read server-side for the card overlay; browsers can be refused by the scoreboard host.
 export async function GET(request:Request){
  const p=new URL(request.url).searchParams,sport=p.get('sport')||'',date=p.get('date')||'',endDate=p.get('endDate')||date;

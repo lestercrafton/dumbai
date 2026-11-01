@@ -62,6 +62,15 @@ const apRank = (c) => { const r = Number(c?.curatedRank?.current); return Number
 /** Overall record and AP-style rank from an ESPN competitor (99 = unranked). */
 export const competitorRecord = c => { const r = (Array.isArray(c?.records) ? c.records : []).find(x => x?.type === 'total' || x?.name === 'overall') ?? c?.records?.[0]; const v = typeof r?.summary === 'string' ? r.summary.trim() : ''; return /^\d+(-\d+){1,2}$/.test(v) ? v : null; };
 export const competitorRank = c => { const n = Number(c?.curatedRank?.current); return Number.isInteger(n) && n >= 1 && n <= 25 ? n : null; };
+// Live football possession and down/distance, only when ESPN supplies them.
+function footballSituation(sport, gameStatus, situation, home, away) {
+  if (!['nfl','cfb'].includes(sport) || gameStatus !== 'live') return {possession: null, downDistance: null};
+  const id = situation?.possession != null ? String(situation.possession) : null;
+  const possession = id && id === String(home?.team?.id) ? 'home' : id && id === String(away?.team?.id) ? 'away' : null;
+  const clean = v => typeof v === 'string' && v.trim() ? v.trim() : null;
+  const dd = clean(situation?.shortDownDistanceText), spot = clean(situation?.possessionText);
+  return {possession, downDistance: possession && dd ? [dd, spot].filter(Boolean).join(' · ') : null};
+}
 const team = (x, sport) => ({ id: String(x?.id ?? ''), key: canonicalTeamKey(sport, x?.abbreviation, x?.id), abbreviation: x?.abbreviation ?? null, name: x?.displayName ?? x?.shortDisplayName ?? x?.name ?? null });
 /** ESPN conferenceId -> short label. IDs/names verified against ESPN's own
  * 2026 standings endpoints (FBS/FCS football, Division I men's hoops). */
@@ -197,6 +206,7 @@ export function normalizeScoreboard(payload, sport, { retrievedAt = new Date().t
       scoreObservedAt,
       outs: outs !== null && Number.isInteger(outs) && outs >= 0 && outs <= 3 ? outs : null,
       isTopInning: sport === 'mlb' && typeof situation.isTopInning === 'boolean' ? situation.isTopInning : null,
+      ...footballSituation(sport, gameStatus, situation, home, away),
       completed, home: team(home.team, sport), away: team(away.team, sport),
       homeRecord: competitorRecord(home), awayRecord: competitorRecord(away),
       homeRank: ['cfb','cbb'].includes(sport) ? competitorRank(home) : null, awayRank: ['cfb','cbb'].includes(sport) ? competitorRank(away) : null,
