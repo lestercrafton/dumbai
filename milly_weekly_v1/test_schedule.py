@@ -51,6 +51,11 @@ class UnpostedPool(unittest.TestCase):
   with mock.patch.object(core,'NOW',core.pd.Timestamp(NOW)),mock.patch.object(core,'get',return_value={'draftables':[],'errorStatus':{}}):
    with self.assertRaises(contest.PoolNotPosted) as caught:core.slate(LOBBY)
   self.assertEqual(caught.exception.contest['draft_group'],155198);self.assertIn('has not posted its player pool',str(caught.exception))
+ def test_unlisted_contest_waits_instead_of_failing(self):
+  core=self.core
+  with mock.patch.object(core,'NOW',core.pd.Timestamp(NOW)):
+   with self.assertRaises(contest.PoolNotPosted) as caught:core.slate({'Contests':[]})
+  self.assertEqual(caught.exception.contest,{});self.assertIn('has not listed',str(caught.exception))
  def test_blocked_pool_is_not_mislabelled_as_waiting(self):
   core=self.core
   with mock.patch.object(core,'NOW',core.pd.Timestamp(NOW)),mock.patch.object(core,'get',return_value=None):

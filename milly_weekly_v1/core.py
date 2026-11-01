@@ -58,6 +58,7 @@ def schedules(s):
 
 def slate(lobby):
  options=contest_lib.millionaire_options(lobby,NOW.to_pydatetime());unposted=[];seen=set()
+ if not options:raise contest_lib.PoolNotPosted({},"DraftKings has not listed next Sunday's NFL Classic Millionaire yet. No new lineups were generated.")
  for c in options:
   if c.get('dg') in seen:continue
   seen.add(c.get('dg'))
