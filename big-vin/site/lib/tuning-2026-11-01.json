@@ -5,8 +5,46 @@
   "activatedAt": "2026-11-02T00:45:00.000Z",
   "startDate": "2026-11-02",
   "startWeekKey": "2026-11-02",
-  "parameters": {"lookbackDays": 730, "halfLifeDays": 45, "ratingPenalty": 2, "homePenalty": 30, "restPenalty": 100, "homePrior": 2.5, "useRest": false, "useFatigue": true},
+  "parameters": {
+   "lookbackDays": 730,
+   "halfLifeDays": 45,
+   "ratingPenalty": 2,
+   "homePenalty": 30,
+   "restPenalty": 100,
+   "homePrior": 2.5,
+   "useRest": false,
+   "useFatigue": true
+  },
   "objective": "Lowest error on the 2024-25 selection season; promoted only after beating Ridge v1 on 2025-26 holdout error and opening-to-closing line value",
-  "sampleLabel": "Walk-forward daily refits, 2024-12-01 to 2026-06, ESPN finals and ESPN BET opening/closing spreads"
+  "sampleLabel": "1,322 NBA games · 2025-26 walk-forward holdout, daily refits, vs ESPN BET openers at -110",
+  "candidates": 25,
+  "baseline": {
+   "games": 1322,
+   "wins": 643,
+   "losses": 679,
+   "pushes": 0,
+   "netUnits": -94.45,
+   "roi": -0.0714,
+   "mae": 11.569,
+   "clv": 0.12,
+   "marketMae": 11.212,
+   "closeMae": 11.032
+  },
+  "selected": {
+   "games": 1322,
+   "wins": 655,
+   "losses": 667,
+   "pushes": 0,
+   "netUnits": -71.55,
+   "roi": -0.0541,
+   "mae": 11.48,
+   "clv": 0.18,
+   "marketMae": 11.212,
+   "closeMae": 11.032
+  },
+  "sigma": 14.64,
+  "scopeNote": "Settings chosen on 2024-25 only; numbers shown are the untouched 2025-26 holdout. Still trails the market (holdout error 11.48 vs opener 11.21), so NBA picks stay leans until a bucket clears the publish bar. Applies only to games captured after activation.",
+  "validationNote": "Promoted over Ridge v1: holdout CLV +0.18 vs +0.12 pts, error 11.48 vs 11.57. Injury values priced at 0.31 pts per missing-player point; injuries showed no edge vs closing lines and no effect on totals.",
+  "reportUrl": "/research/nba-2026-11-01/backtest.json"
  }
 }

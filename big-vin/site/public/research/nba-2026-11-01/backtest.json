@@ -1,0 +1,254 @@
+{
+ "ridge-v1 \u00b7 select 2024-25": {
+  "games": 1032,
+  "modelMae": 11.517,
+  "openMae": 11.101,
+  "closeMae": 10.823,
+  "sigma": 14.72,
+  "vsOpen": {
+   "all": {
+    "picks": 1032,
+    "wins": 506,
+    "losses": 526,
+    "hitRate": 0.49,
+    "clv": 0.076
+   },
+   "edge2": {
+    "picks": 569,
+    "wins": 271,
+    "losses": 298,
+    "hitRate": 0.476,
+    "clv": 0.128
+   },
+   "edge3": {
+    "picks": 394,
+    "wins": 187,
+    "losses": 207,
+    "hitRate": 0.475,
+    "clv": 0.122
+   },
+   "edge5": {
+    "picks": 147,
+    "wins": 72,
+    "losses": 75,
+    "hitRate": 0.49,
+    "clv": 0.442
+   }
+  },
+  "vsClose": {
+   "wins": 499,
+   "losses": 533,
+   "hitRate": 0.484
+  }
+ },
+ "ridge-v1 \u00b7 holdout 2025-26": {
+  "games": 1322,
+  "modelMae": 11.569,
+  "openMae": 11.212,
+  "closeMae": 11.032,
+  "sigma": 14.75,
+  "vsOpen": {
+   "all": {
+    "picks": 1322,
+    "wins": 643,
+    "losses": 679,
+    "hitRate": 0.486,
+    "clv": 0.12
+   },
+   "edge2": {
+    "picks": 752,
+    "wins": 383,
+    "losses": 369,
+    "hitRate": 0.509,
+    "clv": 0.152
+   },
+   "edge3": {
+    "picks": 522,
+    "wins": 264,
+    "losses": 258,
+    "hitRate": 0.506,
+    "clv": 0.214
+   },
+   "edge5": {
+    "picks": 222,
+    "wins": 110,
+    "losses": 112,
+    "hitRate": 0.495,
+    "clv": 0.236
+   }
+  },
+  "vsClose": {
+   "wins": 650,
+   "losses": 672,
+   "hitRate": 0.492
+  }
+ },
+ "ridge-v1 \u00b7 live 2026-27": {
+  "games": 89,
+  "modelMae": 12.28,
+  "openMae": 11.399,
+  "closeMae": 11.264,
+  "sigma": 15.65,
+  "vsOpen": {
+   "all": {
+    "picks": 89,
+    "wins": 37,
+    "losses": 52,
+    "hitRate": 0.416,
+    "clv": 0.966
+   },
+   "edge2": {
+    "picks": 48,
+    "wins": 23,
+    "losses": 25,
+    "hitRate": 0.479,
+    "clv": 1.479
+   },
+   "edge3": {
+    "picks": 39,
+    "wins": 20,
+    "losses": 19,
+    "hitRate": 0.513,
+    "clv": 1.821
+   },
+   "edge5": {
+    "picks": 26,
+    "wins": 13,
+    "losses": 13,
+    "hitRate": 0.5,
+    "clv": 2.5
+   }
+  },
+  "vsClose": {
+   "wins": 37,
+   "losses": 52,
+   "hitRate": 0.416
+  }
+ },
+ "nba-v2 \u00b7 select 2024-25": {
+  "games": 1032,
+  "modelMae": 11.344,
+  "openMae": 11.101,
+  "closeMae": 10.823,
+  "sigma": 14.55,
+  "vsOpen": {
+   "all": {
+    "picks": 1032,
+    "wins": 526,
+    "losses": 506,
+    "hitRate": 0.51,
+    "clv": 0.145
+   },
+   "edge2": {
+    "picks": 627,
+    "wins": 330,
+    "losses": 297,
+    "hitRate": 0.526,
+    "clv": 0.365
+   },
+   "edge3": {
+    "picks": 447,
+    "wins": 237,
+    "losses": 210,
+    "hitRate": 0.53,
+    "clv": 0.555
+   },
+   "edge5": {
+    "picks": 204,
+    "wins": 109,
+    "losses": 95,
+    "hitRate": 0.534,
+    "clv": 0.73
+   }
+  },
+  "vsClose": {
+   "wins": 523,
+   "losses": 509,
+   "hitRate": 0.507
+  }
+ },
+ "nba-v2 \u00b7 holdout 2025-26": {
+  "games": 1322,
+  "modelMae": 11.48,
+  "openMae": 11.212,
+  "closeMae": 11.032,
+  "sigma": 14.64,
+  "vsOpen": {
+   "all": {
+    "picks": 1322,
+    "wins": 655,
+    "losses": 667,
+    "hitRate": 0.495,
+    "clv": 0.18
+   },
+   "edge2": {
+    "picks": 743,
+    "wins": 369,
+    "losses": 374,
+    "hitRate": 0.497,
+    "clv": 0.275
+   },
+   "edge3": {
+    "picks": 524,
+    "wins": 258,
+    "losses": 266,
+    "hitRate": 0.492,
+    "clv": 0.373
+   },
+   "edge5": {
+    "picks": 196,
+    "wins": 110,
+    "losses": 86,
+    "hitRate": 0.561,
+    "clv": 0.411
+   }
+  },
+  "vsClose": {
+   "wins": 647,
+   "losses": 675,
+   "hitRate": 0.489
+  }
+ },
+ "nba-v2 \u00b7 live 2026-27": {
+  "games": 89,
+  "modelMae": 12.548,
+  "openMae": 11.399,
+  "closeMae": 11.264,
+  "sigma": 15.86,
+  "vsOpen": {
+   "all": {
+    "picks": 89,
+    "wins": 45,
+    "losses": 44,
+    "hitRate": 0.506,
+    "clv": 0.697
+   },
+   "edge2": {
+    "picks": 59,
+    "wins": 33,
+    "losses": 26,
+    "hitRate": 0.559,
+    "clv": 1.068
+   },
+   "edge3": {
+    "picks": 46,
+    "wins": 27,
+    "losses": 19,
+    "hitRate": 0.587,
+    "clv": 1.239
+   },
+   "edge5": {
+    "picks": 25,
+    "wins": 11,
+    "losses": 14,
+    "hitRate": 0.44,
+    "clv": 1.04
+   }
+  },
+  "vsClose": {
+   "wins": 40,
+   "losses": 49,
+   "hitRate": 0.449
+  }
+ }
+}
