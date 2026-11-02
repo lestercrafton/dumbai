@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-02T15:48:47.686Z",
+ "generatedAt": "2026-11-02T21:57:46.939Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -50,14 +50,14 @@
    ]
   },
   "2": {
-   "loss": 0.11,
+   "loss": 2.23,
    "items": [
     {
-     "player": "Mitchell Robinson",
-     "position": "C",
+     "player": "Paul George",
+     "position": "F",
      "status": "Out",
-     "points": 0.11,
-     "minutes": 20
+     "points": 2.23,
+     "minutes": 31
     },
     {
      "player": "Devin Carter",
@@ -69,14 +69,14 @@
    ]
   },
   "3": {
-   "loss": 0.22,
+   "loss": 0.89,
    "items": [
     {
-     "player": "Trey Murphy III",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.04,
-     "minutes": 31.8
+     "player": "Dejounte Murray",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.71,
+     "minutes": 32.3
     },
     {
      "player": "Jordan Poole",
@@ -126,8 +126,15 @@
    ]
   },
   "6": {
-   "loss": 1.06,
+   "loss": 1.98,
    "items": [
+    {
+     "player": "Kyrie Irving",
+     "position": "G",
+     "status": "Doubtful",
+     "points": 1.98,
+     "minutes": 28.8
+    },
     {
      "player": "Tarik Biberovic",
      "position": "F",
@@ -141,13 +148,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Kyrie Irving",
-     "position": "G",
-     "status": "Questionable",
-     "points": 1.06,
-     "minutes": 28.8
     },
     {
      "player": "Santi Aldama",
@@ -211,28 +211,28 @@
    ]
   },
   "9": {
-   "loss": 4.67,
+   "loss": 0.4,
    "items": [
+    {
+     "player": "Brandon Williams",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.4,
+     "minutes": 17.4
+    },
+    {
+     "player": "Al Horford",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 18.7
+    },
     {
      "player": "Gui Santos",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 20.2
-    },
-    {
-     "player": "Draymond Green",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 28.6
-    },
-    {
-     "player": "Stephen Curry",
-     "position": "G",
-     "status": "Out",
-     "points": 4.67,
-     "minutes": 28.2
     },
     {
      "player": "Kristaps Porzingis",
@@ -261,6 +261,13 @@
    "loss": 0.21,
    "items": [
     {
+     "player": "Clint Capela",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 14.2
+    },
+    {
      "player": "Reed Sheppard",
      "position": "G",
      "status": "Questionable",
@@ -277,15 +284,8 @@
    ]
   },
   "11": {
-   "loss": 5.92,
+   "loss": 7.95,
    "items": [
-    {
-     "player": "Obi Toppin",
-     "position": "F",
-     "status": "Out",
-     "points": 1.79,
-     "minutes": 23
-    },
     {
      "player": "T.J. McConnell",
      "position": "G",
@@ -299,6 +299,34 @@
      "status": "Out",
      "points": 0.53,
      "minutes": 21.7
+    },
+    {
+     "player": "Obi Toppin",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.72,
+     "minutes": 23
+    },
+    {
+     "player": "Aaron Nesmith",
+     "position": "G",
+     "status": "Out",
+     "points": 0.1,
+     "minutes": 23
+    },
+    {
+     "player": "Andrew Nembhard",
+     "position": "G",
+     "status": "Out",
+     "points": 1.44,
+     "minutes": 32.7
+    },
+    {
+     "player": "Pascal Siakam",
+     "position": "F",
+     "status": "Out",
+     "points": 1.56,
+     "minutes": 32.3
     },
     {
      "player": "Johnny Furphy",
@@ -327,18 +355,18 @@
    "loss": 0.51,
    "items": [
     {
+     "player": "Rui Hachimura",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 30
+    },
+    {
      "player": "Derrick Jones Jr.",
      "position": "F",
      "status": "Out",
      "points": 0.51,
      "minutes": 28.8
-    },
-    {
-     "player": "Max Strus",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Yanic Konan Niederhauser",
@@ -371,15 +399,8 @@
    ]
   },
   "13": {
-   "loss": 0.65,
+   "loss": 0,
    "items": [
-    {
-     "player": "Ziaire Williams",
-     "position": "F",
-     "status": "Out",
-     "points": 0.65,
-     "minutes": 28.5
-    },
     {
      "player": "Adou Thiero",
      "position": "F",
@@ -398,8 +419,22 @@
    "items": []
   },
   "16": {
-   "loss": 3.63,
+   "loss": 4.12,
    "items": [
+    {
+     "player": "Terrence Shannon Jr.",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.25,
+     "minutes": 22
+    },
+    {
+     "player": "LaMelo Ball",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.24,
+     "minutes": 25.3
+    },
     {
      "player": "Anthony Edwards",
      "position": "G",
@@ -419,13 +454,6 @@
   "17": {
    "loss": 0,
    "items": [
-    {
-     "player": "Mikel Brown Jr.",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 22.8
-    },
     {
      "player": "Egor Demin",
      "position": "G",
@@ -455,8 +483,15 @@
    ]
   },
   "19": {
-   "loss": 0,
+   "loss": 1.77,
    "items": [
+    {
+     "player": "Anthony Black",
+     "position": "G",
+     "status": "Out",
+     "points": 1.77,
+     "minutes": 28
+    },
     {
      "player": "Jonathan Isaac",
      "position": "F",
@@ -611,7 +646,7 @@
    ]
   },
   "25": {
-   "loss": 3.15,
+   "loss": 3.18,
    "items": [
     {
      "player": "Thomas Sorber",
@@ -624,7 +659,7 @@
      "player": "Cason Wallace",
      "position": "G",
      "status": "Out",
-     "points": 0,
+     "points": 0.03,
      "minutes": 16.3
     },
     {
@@ -684,21 +719,35 @@
    ]
   },
   "27": {
-   "loss": 1.21,
+   "loss": 1.46,
    "items": [
+    {
+     "player": "Reece Beekman",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 1
+    },
+    {
+     "player": "Anthony Gill",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 1
+    },
+    {
+     "player": "Alex Sarr",
+     "position": "C",
+     "status": "Out",
+     "points": 0.41,
+     "minutes": 25.5
+    },
     {
      "player": "Tristan Vukcevic",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Alex Sarr",
-     "position": "C",
-     "status": "Questionable",
-     "points": 0.16,
-     "minutes": 25.5
     },
     {
      "player": "Justin Champagnie",
@@ -717,21 +766,14 @@
    ]
   },
   "28": {
-   "loss": 0,
+   "loss": 0.94,
    "items": [
     {
-     "player": "Jakob Poeltl",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 20.2
-    },
-    {
-     "player": "Kawhi Leonard",
+     "player": "Scottie Barnes",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26
+     "status": "Questionable",
+     "points": 0.94,
+     "minutes": 32.8
     },
     {
      "player": "Nate Bittle",
@@ -739,6 +781,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26
     }
    ]
   },

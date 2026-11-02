@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-02T15:48:42.882Z",
+ "generatedAt": "2026-11-02T21:57:42.508Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,10 +14,10 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 1.15,
+   "loss": 1.45,
    "starter": {
-    "name": "Jacoby Brissett",
-    "espnId": "2578570",
+    "name": "Gardner Minshew",
+    "espnId": "4038524",
     "basis": "depth chart QB1"
    },
    "items": [
@@ -36,10 +36,10 @@
      "position": "WR",
      "player": "Kendrick Bourne",
      "espnId": "3045523",
-     "status": "Questionable",
-     "reported": "2026-11-01T19:52Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-11-02T21:44Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "rb1",
@@ -47,7 +47,7 @@
      "player": "Jeremiyah Love",
      "espnId": "4870808",
      "status": "Questionable",
-     "reported": "2026-11-01T21:11Z",
+     "reported": "2026-11-02T21:48Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -57,7 +57,7 @@
      "player": "Walter Nolen III",
      "espnId": "4685503",
      "status": "Out",
-     "reported": "2026-11-01T16:39Z",
+     "reported": "2026-11-02T18:31Z",
      "weight": 1,
      "points": 0.3
     },
@@ -77,12 +77,14 @@
      "player": "Jon Gaines II",
      "espnId": "4367199",
      "status": "Out",
-     "reported": "2026-11-01T16:39Z",
+     "reported": "2026-11-02T18:31Z",
      "weight": 1,
      "points": 0.3
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Jacoby Brissett is not the resolved starter."
+   ]
   },
   "ATL": {
    "team": "ATL",
@@ -99,7 +101,7 @@
      "player": "Divine Deablo",
      "espnId": "4037626",
      "status": "Out",
-     "reported": "2026-11-01T00:36Z",
+     "reported": "2026-11-02T18:33Z",
      "weight": 1,
      "points": 0.25
     }
@@ -150,7 +152,7 @@
      "player": "Jaylinn Hawkins",
      "espnId": "3858276",
      "status": "Out",
-     "reported": "2026-11-01T16:34Z",
+     "reported": "2026-11-02T18:42Z",
      "weight": 1,
      "points": 0.3
     },
@@ -160,7 +162,7 @@
      "player": "Olaivavega Ioane",
      "espnId": "4832793",
      "status": "Out",
-     "reported": "2026-11-01T16:34Z",
+     "reported": "2026-11-02T18:42Z",
      "weight": 1,
      "points": 0.3
     }
@@ -182,7 +184,7 @@
      "player": "C.J. Gardner-Johnson",
      "espnId": "4034953",
      "status": "Suspension",
-     "reported": "2026-11-02T15:34Z",
+     "reported": "2026-11-02T21:44Z",
      "weight": 1,
      "points": 0.3
     },
@@ -192,7 +194,7 @@
      "player": "Spencer Brown",
      "espnId": "4030899",
      "status": "Out",
-     "reported": "2026-11-01T17:20Z",
+     "reported": "2026-11-02T18:47Z",
      "weight": 1,
      "points": 0.4
     }
@@ -321,7 +323,7 @@
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Out",
-     "reported": "2026-11-01T16:36Z",
+     "reported": "2026-11-02T18:50Z",
      "weight": 1,
      "points": 0.25
     }
@@ -343,7 +345,7 @@
      "player": "Talanoa Hufanga",
      "espnId": "4360853",
      "status": "Out",
-     "reported": "2026-11-01T20:01Z",
+     "reported": "2026-11-02T18:50Z",
      "weight": 1,
      "points": 0.3
     },
@@ -375,7 +377,7 @@
      "player": "Jack Campbell",
      "espnId": "4569465",
      "status": "Doubtful",
-     "reported": "2026-11-02T00:19Z",
+     "reported": "2026-11-02T20:33Z",
      "weight": 1,
      "points": 0.25
     },
@@ -427,7 +429,7 @@
      "player": "Christian Watson",
      "espnId": "4248528",
      "status": "Questionable",
-     "reported": "2026-10-30T04:06Z",
+     "reported": "2026-11-02T20:13Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -501,7 +503,7 @@
      "player": "Bryce Boettcher",
      "espnId": "5088571",
      "status": "Out",
-     "reported": "2026-11-01T16:38Z",
+     "reported": "2026-11-02T18:52Z",
      "weight": 1,
      "points": 0.25
     }
@@ -510,7 +512,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.59,
+   "loss": 0.81,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -532,10 +534,10 @@
      "position": "SS",
      "player": "Eric Murray",
      "espnId": "2970716",
-     "status": "Questionable",
-     "reported": "2026-11-01T18:47Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-02T21:54Z",
+     "weight": 1,
+     "points": 0.3
     },
     {
      "group": "s",
@@ -543,7 +545,7 @@
      "player": "Antonio Johnson",
      "espnId": "4429168",
      "status": "Out",
-     "reported": "2026-11-01T16:35Z",
+     "reported": "2026-11-02T18:53Z",
      "weight": 1,
      "points": 0.3
     },
@@ -575,7 +577,7 @@
      "player": "Mansoor Delane",
      "espnId": "4880124",
      "status": "Out",
-     "reported": "2026-10-31T23:10Z",
+     "reported": "2026-11-02T19:04Z",
      "weight": 1,
      "points": 0.5
     }
@@ -629,7 +631,7 @@
      "player": "Kayode Awosika",
      "espnId": "4040842",
      "status": "Out",
-     "reported": "2026-11-01T19:40Z",
+     "reported": "2026-11-02T19:07Z",
      "weight": 1,
      "points": 0.3
     }
@@ -638,7 +640,7 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 0.91,
+   "loss": 0.66,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -654,16 +656,6 @@
      "reported": "2026-10-28T20:59Z",
      "weight": 1,
      "points": 0.4
-    },
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Desjuan Johnson",
-     "espnId": "4362294",
-     "status": "Out",
-     "reported": "2026-11-01T19:41Z",
-     "weight": 1,
-     "points": 0.25
     },
     {
      "group": "cb",
@@ -703,7 +695,7 @@
      "player": "Kadyn Proctor",
      "espnId": "4870976",
      "status": "Out",
-     "reported": "2026-11-01T19:59Z",
+     "reported": "2026-11-02T19:10Z",
      "weight": 1,
      "points": 0.3
     }
@@ -712,7 +704,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 0.46,
+   "loss": 0.61,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -726,7 +718,7 @@
      "espnId": "3917315",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-01T22:10Z",
+     "reported": "2026-11-02T19:57Z",
      "weight": 0.25,
      "replacement": "Carson Wentz",
      "starterEpaPerPlay": 0.009,
@@ -737,6 +729,16 @@
      "fullPoints": 2,
      "alreadyInRatings": 0.08,
      "points": 0.46
+    },
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Christian Darrisaw",
+     "espnId": "4361985",
+     "status": "Questionable",
+     "reported": "2026-11-02T20:04Z",
+     "weight": 0.25,
+     "points": 0.15
     }
    ],
    "notes": []
@@ -820,7 +822,7 @@
      "player": "Cam Skattebo",
      "espnId": "4696981",
      "status": "Questionable",
-     "reported": "2026-10-26T14:09Z",
+     "reported": "2026-11-02T21:11Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -864,7 +866,7 @@
      "player": "David Bailey",
      "espnId": "4685248",
      "status": "Out",
-     "reported": "2026-11-01T16:51Z",
+     "reported": "2026-11-02T19:16Z",
      "weight": 1,
      "points": 0.5
     }
@@ -886,7 +888,7 @@
      "player": "DeVonta Smith",
      "espnId": "4241478",
      "status": "Out",
-     "reported": "2026-11-01T23:55Z",
+     "reported": "2026-11-02T19:19Z",
      "weight": 1,
      "points": 0.4
     },
@@ -896,7 +898,7 @@
      "player": "Jihaad Campbell",
      "espnId": "4685287",
      "status": "Out",
-     "reported": "2026-11-01T23:55Z",
+     "reported": "2026-11-02T19:19Z",
      "weight": 1,
      "points": 0.25
     }
@@ -1022,7 +1024,7 @@
   },
   "TB": {
    "team": "TB",
-   "loss": 0.86,
+   "loss": 1.05,
    "starter": {
     "name": "Baker Mayfield",
     "espnId": "3052587",
@@ -1035,7 +1037,7 @@
      "player": "Emeka Egbuka",
      "espnId": "4567750",
      "status": "Out",
-     "reported": "2026-11-01T16:37Z",
+     "reported": "2026-11-02T19:22Z",
      "weight": 1,
      "points": 0.8
     },
@@ -1044,10 +1046,10 @@
      "position": "SLB",
      "player": "Yaya Diaby",
      "espnId": "4686334",
-     "status": "Questionable",
-     "reported": "2026-11-01T19:33Z",
-     "weight": 0.25,
-     "points": 0.06
+     "status": "Out",
+     "reported": "2026-11-02T20:53Z",
+     "weight": 1,
+     "points": 0.25
     }
    ],
    "notes": []
@@ -1067,7 +1069,7 @@
      "player": "Carnell Tate",
      "espnId": "4871023",
      "status": "Out",
-     "reported": "2026-11-01T16:35Z",
+     "reported": "2026-11-02T19:24Z",
      "weight": 1,
      "points": 0.8
     },
@@ -1109,7 +1111,7 @@
      "player": "Javon Kinlaw",
      "espnId": "4259491",
      "status": "Out",
-     "reported": "2026-11-01T23:53Z",
+     "reported": "2026-11-02T19:26Z",
      "weight": 1,
      "points": 0.5
     }
