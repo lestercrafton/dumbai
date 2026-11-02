@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-02T00:35:46.915Z",
+ "generatedAt": "2026-11-02T15:48:47.686Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,8 +10,15 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.87,
+   "loss": 0.95,
    "items": [
+    {
+     "player": "Kingston Flemings",
+     "position": "G",
+     "status": "Out",
+     "points": 0.08,
+     "minutes": 20.3
+    },
     {
      "player": "Jalen Johnson",
      "position": "F",
@@ -103,13 +110,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Dailyn Swain",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 12
     }
    ]
   },
@@ -214,6 +214,13 @@
    "loss": 4.67,
    "items": [
     {
+     "player": "Gui Santos",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 20.2
+    },
+    {
      "player": "Draymond Green",
      "position": "F",
      "status": "Out",
@@ -317,8 +324,22 @@
    ]
   },
   "12": {
-   "loss": 0,
+   "loss": 0.51,
    "items": [
+    {
+     "player": "Derrick Jones Jr.",
+     "position": "F",
+     "status": "Out",
+     "points": 0.51,
+     "minutes": 28.8
+    },
+    {
+     "player": "Max Strus",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
     {
      "player": "Yanic Konan Niederhauser",
      "position": "C",
@@ -329,13 +350,6 @@
     {
      "player": "Brandon Ingram",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Max Strus",
-     "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -600,6 +614,13 @@
    "loss": 3.15,
    "items": [
     {
+     "player": "Thomas Sorber",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Cason Wallace",
      "position": "G",
      "status": "Out",
@@ -626,13 +647,6 @@
      "status": "Out",
      "points": 1.85,
      "minutes": 19
-    },
-    {
-     "player": "Thomas Sorber",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Nikola Topic",
@@ -705,6 +719,13 @@
   "28": {
    "loss": 0,
    "items": [
+    {
+     "player": "Jakob Poeltl",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 20.2
+    },
     {
      "player": "Kawhi Leonard",
      "position": "F",
