@@ -46,7 +46,7 @@ export function scoreGame(signal,{side,homeSpread,edge,odds,sport}){
  if(!signal||!side||!finite(homeSpread))return null;
  const b=signal.buckets[bucketOf({side,homeSpread,edge,sport})];
  const winChance=b?.winChance??signal.sportRate,expectedClv=b?.expectedClv??signal.clvMean;
- return {basis:signal.basis,value:signal.basis==='clv'?expectedClv:winChance,winChance,expectedClv,breakEven:breakEven(finite(odds)&&Math.abs(odds)>=100?odds:ASSUMED_ODDS)};
+ return {basis:signal.basis,value:signal.basis==='clv'?expectedClv:winChance,winChance,expectedClv,bucketGraded:b?.n??0,bucket:bucketOf({side,homeSpread,edge,sport}),breakEven:breakEven(finite(odds)&&Math.abs(odds)>=100?odds:ASSUMED_ODDS)};
 }
 /** Higher signal first; ties go to the cheaper price, then the earlier kickoff. */
 export function compareSignal(a,b){
@@ -60,4 +60,21 @@ export function rankLabel(signal){
  if(!signal)return null;
  const clv=signal.basis==='clv',value=clv?`${signal.value>=0?'+':''}${signal.value.toFixed(1)} pts`:`${Math.round(signal.value*100)}%`;
  return {short:value,title:clv?`Ranked by expected line movement: ${value}`:`Ranked by chance to win: ${value}`};
+}
+
+/** Publish bar for sports without a validated model. A pick is published only
+ * when its own bucket of graded picks has PUBLISH_MIN_GRADED results and its
+ * shrunk win chance clears break-even by PUBLISH_MARGIN. Everything else is a
+ * lean: still shown, still graded in the open, never staked. */
+export const GATED_SPORTS=new Set(['nba','cbb']);
+export const PUBLISH_MIN_GRADED=40;
+export const PUBLISH_MARGIN=0.02;
+export function publishDecision(score,sport){
+ if(!GATED_SPORTS.has(sport))return {published:true,reason:null};
+ if(!score)return {published:false,reason:'Lean · no priced pick'};
+ const n=score.bucketGraded??0;
+ if(n<PUBLISH_MIN_GRADED)return {published:false,reason:`Lean · only ${n} graded picks like this (needs ${PUBLISH_MIN_GRADED})`};
+ const need=score.breakEven+PUBLISH_MARGIN;
+ if(!(score.winChance>=need))return {published:false,reason:`Lean · picks like this win ${Math.round(score.winChance*100)}% graded (needs ${Math.round(need*100)}%)`};
+ return {published:true,reason:null};
 }
