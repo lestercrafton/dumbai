@@ -3,7 +3,8 @@
  * from free ESPN and nflverse data and read here from the public repo.
  */
 export const INJURY_TABLE_URL='https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/injury-lines/nfl.json';
-export const INJURY_SPORTS=new Set(['nfl']);
+export const INJURY_SPORTS=new Set(['nfl','nba']);
+export const injuryTableUrl=sport=>`https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/injury-lines/${sport}.json`;
 export const INJURY_MAX_AGE=36*3600000;
 /** Spread gap vs the market that needs an explanation before it is published as-is. */
 export const GAP_THRESHOLD={nfl:4,cfb:7};

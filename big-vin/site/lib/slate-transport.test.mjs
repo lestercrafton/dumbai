@@ -211,7 +211,7 @@ test('service includes only the three ET sports dates across DST and preserves s
     '../bankroll.mjs': 'export const replayBankroll=()=>({plays:{}});',
     '../db': 'export const cached=(_key,_seconds,loader)=>loader(); export const db=()=>({prepare:()=>({bind:()=>({all:async()=>({results:[]})})})});',
     '../ratings.mjs': 'export const fitRatings=(_games,options)=>{services.cutoffs.push(options.asOf);return {asOf:options.asOf};}; export const projectGame=()=>{throw new Error("Saved forecast must not be recomputed");}; export const projectCollegeGame=projectGame;',
-    '../result-store': 'export const readForecastRecords=async()=>services.forecasts; export const saveForecasts=async()=>{throw new Error("Browser data must not save forecasts");};',
+    '../result-store': 'export const closingTable=async()=>({}); export const withClosingLines=r=>r; export const readForecastRecords=async()=>services.forecasts; export const saveForecasts=async()=>{throw new Error("Browser data must not save forecasts");};',
     '../pick-revision-store': 'export const pickStates=async()=>new Map(); export const capturePickRevisions=async()=>{throw new Error("Browser data must not write revisions");};',
     '../model-versions': 'export const modelSpec=()=>({id:"ridge-v1",label:"Original",parameters:null}); export const modelLabel=()=>"Original"; export const eligibleForModel=()=>true; export const historicalModelSpecs=()=>[];',
     './histories.json': 'export default services.histories;',

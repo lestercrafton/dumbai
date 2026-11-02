@@ -23,6 +23,7 @@ export const MODEL_CONFIGS = Object.freeze({
   wnba:Object.freeze({...COMMON,lookbackDays:730,halfLifeDays:120,homePrior:2,validated:false}),
 });
 const DAY=86400000;
+const FATIGUE_PENALTY=5;
 const finite=(x)=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
 const num=(x,fallback=0)=>finite(x)?Number(x):fallback;
 const clipRest=(x)=>Math.max(-7,Math.min(7,num(x)));
@@ -64,7 +65,7 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
   if(parameters){
     const bounds={lookbackDays:[1,3650],halfLifeDays:[1,1460],ratingPenalty:[0.01,1000],homePenalty:[0.01,1000],restPenalty:[0.01,1000],homePrior:[-10,10],fixedHomeAdvantage:[-10,10]};
     for(const [key,value] of Object.entries(parameters)){
-      if(key==='useRest'){if(typeof value!=='boolean')throw new Error('useRest must be boolean');continue;}
+      if(key==='useRest'||key==='useFatigue'){if(typeof value!=='boolean')throw new Error('useRest must be boolean');continue;}
       if(key==='fixedHomeAdvantage'&&value===null)continue;
       const range=bounds[key];if(!range||typeof value!=='number'||!Number.isFinite(value)||value<range[0]||value>range[1])throw new Error('Invalid model parameter: '+key);
     }
@@ -82,10 +83,10 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
   // All NFL franchise priors are known. Other sports require actual pre-cutoff games.
   const teamIds=sport==='nfl'?[...NFL_TEAM_IDS]:[...new Set(training.flatMap(g=>[g.homeId,g.awayId]))].sort();
   const indices=new Map(teamIds.map((t,i)=>[t,i]));
-  const nTeams=teamIds.length,n=nTeams+2,hi=nTeams,ri=nTeams+1;
+  const nTeams=teamIds.length,fat=config.useFatigue===true,n=nTeams+2+(fat?2:0),hi=nTeams,ri=nTeams+1,bi=nTeams+2,zi=nTeams+3;
   const A=new Float64Array(n*n),b=new Float64Array(n),teamGames={},effectiveTeamGames={};
   for(let i=0;i<nTeams;i++)A[i*n+i]=config.ratingPenalty;
-  A[hi*n+hi]=config.homePenalty;A[ri*n+ri]=config.restPenalty;b[hi]=config.homePenalty*config.homePrior;
+  A[hi*n+hi]=config.homePenalty;A[ri*n+ri]=config.restPenalty;if(fat){A[bi*n+bi]=FATIGUE_PENALTY;A[zi*n+zi]=FATIGUE_PENALTY;}b[hi]=config.homePenalty*config.homePrior;
   let effectiveGames=0,lastDay=null;
   for(const g of training) {
     const h=indices.get(g.homeId),a=indices.get(g.awayId),w=2**(-(cutoff-g.day)/config.halfLifeDays),y=Number(g.homeScore)-Number(g.awayScore)-(fixedHome!==null&&!g.neutral?fixedHome:0);
@@ -93,6 +94,7 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
     if(!g.neutral&&fixedHome===null)entries.push([hi,1]);
     const rest=config.useRest?clipRest(g.restDiff):0;
     if(rest!==0)entries.push([ri,rest]);
+    if(fat){const b2=num(g.b2bDiff),tz=num(g.tzDiff);if(b2!==0)entries.push([bi,b2]);if(tz!==0)entries.push([zi,tz]);}
     for(const [i,xi]of entries){b[i]+=w*xi*y;for(const[j,xj]of entries)A[i*n+j]+=w*xi*xj;}
     effectiveGames+=w;lastDay=lastDay===null?g.day:Math.max(lastDay,g.day);
     teamGames[g.homeId]=(teamGames[g.homeId]??0)+1;teamGames[g.awayId]=(teamGames[g.awayId]??0)+1;
@@ -106,7 +108,7 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
     baselineMae:10.36768158952548,marketMae:9.785964912280702,
     note:'Parameters selected using 2021–22 only. Historical results use weekly cutoffs. Market benchmark was more accurate. Probabilities and profitability are not validated.'
   }:parameters?{status:'Selected using known outcomes; future performance unproven',note:'These settings maximize the stated retrospective objective within a bounded search. Future frozen forecasts are the test.'}:{status:'Experimental defaults; not backtested',note:'These sport parameters were specified in advance without tuning or held-out evaluation. No predictive advantage is established.'};
-  return {sport,asOf:new Date(cutoff*DAY).toISOString().slice(0,10),config:{...config,...(fixedHome!==null?{fixedHomeAdvantage:fixedHome}:{})},ratings,homeAdvantage:fixedHome??c[hi],restCoefficient:config.useRest?c[ri]:0,trainingGames:training.length,effectiveGames,lastTrainingDate:lastDay===null?null:new Date(lastDay*DAY).toISOString().slice(0,10),teamGames,effectiveTeamGames,validation};
+  return {sport,asOf:new Date(cutoff*DAY).toISOString().slice(0,10),config:{...config,...(fixedHome!==null?{fixedHomeAdvantage:fixedHome}:{})},ratings,homeAdvantage:fixedHome??c[hi],restCoefficient:config.useRest?c[ri]:0,fatigueCoefficients:fat?{b2b:c[bi],tz:c[zi]}:null,trainingGames:training.length,effectiveGames,lastTrainingDate:lastDay===null?null:new Date(lastDay*DAY).toISOString().slice(0,10),teamGames,effectiveTeamGames,validation};
 }
 
 export function projectGame(game,model) {
@@ -118,8 +120,9 @@ export function projectGame(game,model) {
   const sample={homeEffectiveGames,awayEffectiveGames,sparseTeams,sparseSample:sparseTeams.length>0};
   if(missingTeams.length||homeId===awayId)return{homeId,awayId,...sample,predictedHomeMargin:null,fairHomeSpread:null,homeEdgePoints:null,marketHomeSpread,homeRating:null,awayRating:null,homeAdvantage:null,restAdjustment:null,missingTeams,error:homeId===awayId?'A team cannot play itself.':'No completed pre-cutoff results for one or both teams.'};
   const homeRating=model.ratings[homeId],awayRating=model.ratings[awayId],homeAdvantage=game.neutral?0:model.homeAdvantage,restAdjustment=model.config.useRest?model.restCoefficient*clipRest(game.restDiff):0;
-  const predictedHomeMargin=homeRating-awayRating+homeAdvantage+restAdjustment;
-  return{homeId,awayId,...sample,homeRating,awayRating,homeAdvantage,restAdjustment,predictedHomeMargin,fairHomeSpread:-predictedHomeMargin,marketHomeSpread,homeEdgePoints:marketHomeSpread===null?null:predictedHomeMargin+marketHomeSpread,missingTeams:[]};
+  const fatigueAdjustment=model.fatigueCoefficients?model.fatigueCoefficients.b2b*num(game.b2bDiff)+model.fatigueCoefficients.tz*num(game.tzDiff):0;
+  const predictedHomeMargin=homeRating-awayRating+homeAdvantage+restAdjustment+fatigueAdjustment;
+  return{homeId,awayId,...sample,homeRating,awayRating,homeAdvantage,restAdjustment,fatigueAdjustment,predictedHomeMargin,fairHomeSpread:-predictedHomeMargin,marketHomeSpread,homeEdgePoints:marketHomeSpread===null?null:predictedHomeMargin+marketHomeSpread,missingTeams:[]};
 }
 
 /** A prospective CFB prior for teams absent from the pre-kickoff training set.

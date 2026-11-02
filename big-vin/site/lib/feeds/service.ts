@@ -16,7 +16,9 @@ import {mergeSavedBoard,rangeDates} from '../collector-sources.mjs';
 import {hasLimitedData} from '../ranking.mjs';
 import {learnRankSignal,scoreGame,compareSignal,rankLabel} from '../rank-signal.mjs';
 import {publishDecision} from '../rank-signal.mjs';
-import {INJURY_TABLE_URL,INJURY_SPORTS,gameInjury,liveMargin} from '../injury-lines.mjs';
+import {fatigueMap,withFatigue} from '../basketball-fatigue.mjs';
+import {closingTable,withClosingLines} from '../result-store';
+import {injuryTableUrl,INJURY_SPORTS,gameInjury,liveMargin} from '../injury-lines.mjs';
 const DAY=86400000;
 const NFL_URL='https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
 const num=(v:unknown)=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v))?Number(v):null;
@@ -71,7 +73,7 @@ export async function totalsTable(sport:string){
 /** Injury table built on GitHub Actions; a missing table means no adjustment, never an error. */
 export async function injuryTable(sport:string){
  if(!INJURY_SPORTS.has(sport))return null;
- try{return await cached('injury-lines:'+sport,600,async()=>{const r=await fetch(INJURY_TABLE_URL,{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Injury table returned ${r.status}`);return r.json();});}
+ try{return await cached('injury-lines:'+sport,600,async()=>{const r=await fetch(injuryTableUrl(sport),{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Injury table returned ${r.status}`);return r.json();});}
  catch(e){console.error('Injury table unavailable',e);return null;}
 }
 async function nflHistory(){return cached('nfl:history',21600,async()=>{const retrievedAt=new Date().toISOString();const rows=parseCsv(await textAt(NFL_URL));return {retrievedAt,sourceUrl:NFL_URL,source:'nflverse game data',warnings:[],games:rows.filter((r:any)=>Number(r.season)>=2015).map((r:any)=>({id:r.game_id,date:r.gameday,homeId:nflId(r.home_team),awayId:nflId(r.away_team),homeScore:num(r.home_score),awayScore:num(r.away_score),neutral:r.location==='Neutral',restDiff:Math.max(-7,Math.min(7,(num(r.home_rest)??7)-(num(r.away_rest)??7))),season:Number(r.season),week:Number(r.week)}))};});}
@@ -102,8 +104,9 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  if(!Object.hasOwn(SPORT_PATHS,sport))throw new Error('Unsupported sport');
  try{await refreshLiveResults(sport);}catch(e){console.error('Slate finals check unavailable',e);}
  const endDate=day(Date.parse(date+'T00:00:00Z')+((days===1?1:days===3?3:7)-1)*DAY);
- const [board,hist,rawForecasts,injuries,totals]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false),injuryTable(sport),totalsTable(sport)]);
+ let [board,hist,rawForecasts,injuries,totals,closing]=await Promise.all([suppliedBoard?Promise.resolve(suppliedBoard):scoreboard(sport,date,endDate),history(sport),readForecastRecords(sport,false),injuryTable(sport),totalsTable(sport),closingTable(sport)]);
  const injuryFor=(g:any)=>{const c=canonical({...g,sport});return gameInjury(injuries,sport,c.homeId,c.awayId);};
+ rawForecasts=withClosingLines(rawForecasts,closing);
  let forecasts=rawForecasts;
  const signal=learnRankSignal(rawForecasts);
  // Started and final games keep the win chance known at their kickoff.
@@ -114,6 +117,8 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  const currentSpec=modelSpec(sport,requestedVersion);
  const historicalSpec=!requestedVersion?[...registry].reverse().find(candidate=>candidate.startDate<=date):null;
  const spec=requestedVersion?currentSpec:historicalSpec?{...historicalSpec,label:modelLabel(sport,historicalSpec.id)}:modelSpec(sport,MODEL_VERSION);
+ const fatigue=sport==='nba'?fatigueMap([...hist.games,...board.games.map((g:any)=>canonical(g))]):null;
+ if(fatigue)hist={...hist,games:hist.games.map((g:any)=>withFatigue(g,fatigue))};
  const model=fitRatings(hist.games,{sport,asOf,parameters:spec.parameters||undefined});
  const baseline=spec.id===MODEL_VERSION?model:fitRatings(hist.games,{sport,asOf});
  const modelsByVersion=new Map<string,any>([[spec.id,model],[MODEL_VERSION,baseline]]);
@@ -130,7 +135,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
     if(!canProjectUncapturedGame(g,Date.now()+60000))return [];
     const gameSpec=historyModelForGame({...g,sport},registry),id=`${gameSpec.id}:${sport}:${g.id}`;
     if(ids.has(id))return [];
-    const base=canonical(g),fitted=modelForGame(gameSpec);
+    const base=withFatigue(canonical(g),fatigue),fitted=modelForGame(gameSpec);
     if(sport==='nfl'){const match=hist.games.find((h:any)=>h.homeId===base.homeId&&h.awayId===base.awayId&&Math.abs(Date.parse(h.date)-Date.parse(base.date))<=DAY);base.restDiff=match?.restDiff??0;}
     const projection:any=(sport==='cfb'?projectCollegeGame:projectGame)(base,fitted);
     if(!Number.isFinite(projection?.predictedHomeMargin))return [];
@@ -175,7 +180,7 @@ export async function getSlate(sport:string,date:string,suppliedBoard?:any,days=
  for(const f of coverageRecords){const id=f.gameId;if(!gameMap.has(id))gameMap.set(id,{id,sport,startTime:f.startTime,season:f.season,seasonType:f.seasonType,week:f.week,home:{id:f.homeId,name:f.home},away:{id:f.awayId,name:f.away},status:f.result?.status==='completed'?'completed':f.result?.status==='void'?'cancelled':Date.parse(f.startTime)>Date.now()?(offSchedule(f)?'not-on-schedule':'scheduled'):'awaiting-update',completed:f.result?.status==='completed',homeScore:f.result?.homeScore,awayScore:f.result?.awayScore,sourceUrl:f.result?.sourceUrl||f.sourceUrl,retrievedAt:f.result?.observedAt||f.capturedAt,market:null});}
  const withInjury=(p:any,g:any)=>{const injury=injuryFor(g);if(!injury||!Number.isFinite(p?.predictedHomeMargin))return p;const m=p.predictedHomeMargin+injury.homeDelta;return {...p,baseHomeMargin:p.predictedHomeMargin,injuryAdjustment:injury.homeDelta,injury,predictedHomeMargin:m,fairHomeSpread:-m,homeEdgePoints:p.marketHomeSpread===null?null:m+p.marketHomeSpread};};
  const matches=[...gameMap.values()].map((g:any)=>{
-  const f=saved.get(g.id);const base=canonical(g);const eligible=eligibleForModel(g,spec);
+  const f=saved.get(g.id);const base=withFatigue(canonical(g),fatigue);const eligible=eligibleForModel(g,spec);
   const gameSpec=tracked?historyModelForGame({...g,sport},registry):eligible?spec:modelSpec(sport,MODEL_VERSION);
   const gameVersion=f?.modelVersion||gameSpec.id;
   if(sport==='nfl'){const match=hist.games.find((h:any)=>h.homeId===base.homeId&&h.awayId===base.awayId&&Math.abs(Date.parse(h.date)-Date.parse(base.date))<=DAY);base.restDiff=match?.restDiff??0;}

@@ -1,4 +1,4 @@
-import {db} from './db';
+import {db,cached} from './db';
 import seed from './weekly-seed.json';
 import {summarizeForecasts} from './results.mjs';
 import {modelLabel,activeModels,historicalModelSpecs} from './model-versions';
@@ -57,7 +57,7 @@ export async function saveForecasts(records:any[],prospective=false){
  return inserted;
 }
 export async function readResults(sport:string,requestedCohort:string|null,week:string|null,requestedVersion:string|null=null,rankPeriod='week',rankAnchor:string|null=null,requestedSeason:number|null=null,historyOnly=false,historyDate:string|null=null){
- const all=await readForecastRecords(sport);
+ const all=withClosingLines(await readForecastRecords(sport),await closingTable(sport));
  const trackedHistory=summarizeTrackedHistory(all,{sport,models:historicalModelSpecs(sport),week,season:requestedSeason,rankPeriod,rankAnchor,historyDate});
  if(historyOnly)return trackedHistory;
  const cohort=requestedCohort|| (all.some(f=>f.cohort==='live'&&f.result?.status==='completed')?'live':all.some(f=>f.cohort==='recovered')?'recovered':'live');
@@ -96,4 +96,15 @@ export async function readResults(sport:string,requestedCohort:string|null,week:
  };
  const top3=selected.filter(f=>f.cardRank&&f.cardRank<=3),easy8=selected.filter(f=>f.cardRank&&f.cardRank<=8);
  return {sport,cohort,version,versions,modelLabel:modelLabel(sport,version),tuning:active?.id===version?active:null,selectedWeek,weeks,days,spreadWeeks,spreadDays,bankroll,rankedCards,seasonRecord,trackedHistory,records:selected.map(f=>({...f,spreadGrade:gradeSpreadPick(f)})),missing,ranked:selected.filter(f=>f.cardRank).length,cards:{top3:cfbPaperCard?cardSummary(top3):summarizeForecasts(top3),easy8:cfbPaperCard?cardSummary(easy8):summarizeForecasts(easy8),full:cfbPaperCard?cardSummary(selected):summarizeForecasts(selected)},knownScheduledGames:cohort==='retrospective'?selected.length:expected.size,summary:summarizeForecasts(selected),overall:summarizeForecasts(records),spreadRecord:summarizeSpreadPicks(selected),spreadOverall:summarizeSpreadPicks(records),winnerRecord:summarizeWinners(selected),winnerOverall:summarizeWinners(records),lastCollectionAt:latest?.completed_at??null,collection:latest?JSON.parse(latest.payload):null};
+}
+
+/** Free ESPN opening/closing spreads for basketball finals (big-vin/scripts/spread-history.mjs). */
+export async function closingTable(sport:string){
+ if(!['nba','cbb'].includes(sport))return null;
+ try{return await cached<any>('closing:'+sport,1800,async()=>{const r=await fetch(`https://raw.githubusercontent.com/lestercrafton/dumbai/main/big-vin/data/spreads/history-${sport}.json`,{signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`Closing table returned ${r.status}`);return r.json();});}
+ catch(e){console.error('Closing table unavailable',e);return null;}
+}
+export function withClosingLines<T=any>(records:T[],table:any):T[]{
+ const lines=table?.lines;if(!lines)return records;
+ return (records as any[]).map((f:any)=>{const l=lines[f.gameId];if(!f.result||f.result.status!=='completed'||Number.isFinite(f.result.closingHomeSpread)||!Number.isFinite(l?.close))return f;return {...f,result:{...f.result,closingHomeSpread:l.close,closingProvider:l.provider??'ESPN'}};});
 }

@@ -8,7 +8,7 @@ import {displayLines} from './board-presentation.mjs';
  * model. Sigmas are the frozen model's residual RMSE on saved 2026 season
  * forecasts (Oct 16 backtest) where available; NBA/CBB use league-typical
  * margin SDs until those sports have graded saved forecasts. */
-export const MARGIN_SIGMA = Object.freeze({nfl: 12.3, cfb: 19.3, nba: 12, wnba: 13.3, cbb: 10.5, nhl: 2.6, mlb: 3.8});
+export const MARGIN_SIGMA = Object.freeze({nfl: 12.3, cfb: 19.3, nba: 14.6, wnba: 13.3, cbb: 10.5, nhl: 2.6, mlb: 3.8});
 const erf = (x) => {
   const t = 1 / (1 + 0.3275911 * Math.abs(x));
   const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
