@@ -1,3 +1,4 @@
+import {cbbPriors,cbbPace,cbbSeasonOf} from './cbb-priors.mjs';
 /** Big Vin: opponent-adjusted ridge line model. Pure JavaScript, no dependencies.
  *
  * Canonical game:
@@ -57,7 +58,11 @@ function choleskySolve(A,b,n) {
 }
 
 /** @param {Array<any>} games @param {{sport?:string,asOf?:string,variant?:string,parameters?:any}} options */
-export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent',parameters=undefined}={}) {
+/** Possessions assumed for a college game with no tempo estimate. */
+export const PACE_DEFAULT=68;
+
+/** @param {any[]} games @param {{sport?:string,asOf?:string,variant?:string,parameters?:any,priors?:Record<string,number>}} [options] @returns {any} */
+export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent',parameters=undefined,priors=undefined}={}) {
   sport=sportKey(sport);
   const base=MODEL_CONFIGS[sport];
   if(!base)throw new Error('Unsupported sport: '+sport);
@@ -65,7 +70,8 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
   if(parameters){
     const bounds={lookbackDays:[1,3650],halfLifeDays:[1,1460],ratingPenalty:[0.01,1000],homePenalty:[0.01,1000],restPenalty:[0.01,1000],homePrior:[-10,10],fixedHomeAdvantage:[-10,10]};
     for(const [key,value] of Object.entries(parameters)){
-      if(key==='useRest'||key==='useFatigue'){if(typeof value!=='boolean')throw new Error('useRest must be boolean');continue;}
+      if(key==='priorKind'){if(value!=='roster'&&value!=='margin')throw new Error('Invalid model parameter: priorKind');continue;}
+      if(key==='useRest'||key==='useFatigue'||key==='usePace'||key==='usePriors'){if(typeof value!=='boolean')throw new Error('useRest must be boolean');continue;}
       if(key==='fixedHomeAdvantage'&&value===null)continue;
       const range=bounds[key];if(!range||typeof value!=='number'||!Number.isFinite(value)||value<range[0]||value>range[1])throw new Error('Invalid model parameter: '+key);
     }
@@ -81,15 +87,18 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
   const allowedNFL=new Set(NFL_TEAM_IDS);
   const training=canonicalGames.filter(g=>validIds(g)&&g.day!==null&&0<cutoff-g.day&&cutoff-g.day<=config.lookbackDays&&finite(g.homeScore)&&finite(g.awayScore)&&Number(g.homeScore)>=0&&Number(g.awayScore)>=0&&(sport!=='nfl'||allowedNFL.has(g.homeId)&&allowedNFL.has(g.awayId)));
   // All NFL franchise priors are known. Other sports require actual pre-cutoff games.
-  const teamIds=sport==='nfl'?[...NFL_TEAM_IDS]:[...new Set(training.flatMap(g=>[g.homeId,g.awayId]))].sort();
+  if(config.usePriors===true&&!priors&&sport==='ncaab')priors=cbbPriors(cbbSeasonOf(new Date(cutoff*DAY).toISOString()),config.priorKind||'roster');
+  const priorOf=config.usePriors===true&&priors?(t)=>{const v=Number(priors[t]);return Number.isFinite(v)?v:null;}:()=>null;
+  const pace=config.usePace===true,paceOf=(g)=>{const p=Number(g.pace??(sport==='ncaab'?cbbPace(g):null));return Number.isFinite(p)&&p>40&&p<100?p:null;};
+  const teamIds=sport==='nfl'?[...NFL_TEAM_IDS]:[...new Set([...training.flatMap(g=>[g.homeId,g.awayId]),...(config.usePriors===true&&priors?Object.keys(priors).filter(t=>priorOf(t)!==null):[])])].sort();
   const indices=new Map(teamIds.map((t,i)=>[t,i]));
   const nTeams=teamIds.length,fat=config.useFatigue===true,n=nTeams+2+(fat?2:0),hi=nTeams,ri=nTeams+1,bi=nTeams+2,zi=nTeams+3;
   const A=new Float64Array(n*n),b=new Float64Array(n),teamGames={},effectiveTeamGames={};
-  for(let i=0;i<nTeams;i++)A[i*n+i]=config.ratingPenalty;
+  for(let i=0;i<nTeams;i++){A[i*n+i]=config.ratingPenalty;const p=priorOf(teamIds[i]);if(p!==null)b[i]+=config.ratingPenalty*p;}
   A[hi*n+hi]=config.homePenalty;A[ri*n+ri]=config.restPenalty;if(fat){A[bi*n+bi]=FATIGUE_PENALTY;A[zi*n+zi]=FATIGUE_PENALTY;}b[hi]=config.homePenalty*config.homePrior;
   let effectiveGames=0,lastDay=null;
   for(const g of training) {
-    const h=indices.get(g.homeId),a=indices.get(g.awayId),w=2**(-(cutoff-g.day)/config.halfLifeDays),y=Number(g.homeScore)-Number(g.awayScore)-(fixedHome!==null&&!g.neutral?fixedHome:0);
+    const h=indices.get(g.homeId),a=indices.get(g.awayId),w=2**(-(cutoff-g.day)/config.halfLifeDays),scale=pace&&paceOf(g)?100/paceOf(g):1,y=scale*(Number(g.homeScore)-Number(g.awayScore)-(fixedHome!==null&&!g.neutral?fixedHome:0));
     const entries=[[h,1],[a,-1]];
     if(!g.neutral&&fixedHome===null)entries.push([hi,1]);
     const rest=config.useRest?clipRest(g.restDiff):0;
@@ -108,12 +117,12 @@ export function fitRatings(games,{sport='nfl',asOf=undefined,variant='incumbent'
     baselineMae:10.36768158952548,marketMae:9.785964912280702,
     note:'Parameters selected using 2021–22 only. Historical results use weekly cutoffs. Market benchmark was more accurate. Probabilities and profitability are not validated.'
   }:parameters?{status:'Selected using known outcomes; future performance unproven',note:'These settings maximize the stated retrospective objective within a bounded search. Future frozen forecasts are the test.'}:{status:'Experimental defaults; not backtested',note:'These sport parameters were specified in advance without tuning or held-out evaluation. No predictive advantage is established.'};
-  return {sport,asOf:new Date(cutoff*DAY).toISOString().slice(0,10),config:{...config,...(fixedHome!==null?{fixedHomeAdvantage:fixedHome}:{})},ratings,homeAdvantage:fixedHome??c[hi],restCoefficient:config.useRest?c[ri]:0,fatigueCoefficients:fat?{b2b:c[bi],tz:c[zi]}:null,trainingGames:training.length,effectiveGames,lastTrainingDate:lastDay===null?null:new Date(lastDay*DAY).toISOString().slice(0,10),teamGames,effectiveTeamGames,validation};
+  return {sport,asOf:new Date(cutoff*DAY).toISOString().slice(0,10),config:{...config,...(fixedHome!==null?{fixedHomeAdvantage:fixedHome}:{})},ratings,homeAdvantage:fixedHome??c[hi],restCoefficient:config.useRest?c[ri]:0,priorTeams:config.usePriors===true&&priors?teamIds.filter(t=>priorOf(t)!==null):[],fatigueCoefficients:fat?{b2b:c[bi],tz:c[zi]}:null,trainingGames:training.length,effectiveGames,lastTrainingDate:lastDay===null?null:new Date(lastDay*DAY).toISOString().slice(0,10),teamGames,effectiveTeamGames,validation};
 }
 
 export function projectGame(game,model) {
   const homeId=canonical(game.homeId,model.sport),awayId=canonical(game.awayId,model.sport);
-  const missingTeams=[homeId,awayId].filter(t=>!Object.hasOwn(model.ratings,t)||!model.teamGames[t]);
+  const missingTeams=[homeId,awayId].filter(t=>!Object.hasOwn(model.ratings,t)||!model.teamGames[t]&&!model.priorTeams?.includes(t));
   const marketHomeSpread=finite(game.marketHomeSpread)?Number(game.marketHomeSpread):null;
   const homeEffectiveGames=model.effectiveTeamGames?.[homeId]??0,awayEffectiveGames=model.effectiveTeamGames?.[awayId]??0;
   const sparseTeams=[homeId,awayId].filter(t=>(model.effectiveTeamGames?.[t]??0)<5);
@@ -121,7 +130,8 @@ export function projectGame(game,model) {
   if(missingTeams.length||homeId===awayId)return{homeId,awayId,...sample,predictedHomeMargin:null,fairHomeSpread:null,homeEdgePoints:null,marketHomeSpread,homeRating:null,awayRating:null,homeAdvantage:null,restAdjustment:null,missingTeams,error:homeId===awayId?'A team cannot play itself.':'No completed pre-cutoff results for one or both teams.'};
   const homeRating=model.ratings[homeId],awayRating=model.ratings[awayId],homeAdvantage=game.neutral?0:model.homeAdvantage,restAdjustment=model.config.useRest?model.restCoefficient*clipRest(game.restDiff):0;
   const fatigueAdjustment=model.fatigueCoefficients?model.fatigueCoefficients.b2b*num(game.b2bDiff)+model.fatigueCoefficients.tz*num(game.tzDiff):0;
-  const predictedHomeMargin=homeRating-awayRating+homeAdvantage+restAdjustment+fatigueAdjustment;
+  const gamePace=Number(game.pace??(model.config.usePace===true&&model.sport==='ncaab'?cbbPace({...game,homeId,awayId}):null)),paceScale=model.config.usePace===true?(Number.isFinite(gamePace)&&gamePace>40&&gamePace<100?gamePace:PACE_DEFAULT)/100:1;
+  const predictedHomeMargin=(homeRating-awayRating+homeAdvantage)*paceScale+restAdjustment+fatigueAdjustment;
   return{homeId,awayId,...sample,homeRating,awayRating,homeAdvantage,restAdjustment,fatigueAdjustment,predictedHomeMargin,fairHomeSpread:-predictedHomeMargin,marketHomeSpread,homeEdgePoints:marketHomeSpread===null?null:predictedHomeMargin+marketHomeSpread,missingTeams:[]};
 }
 

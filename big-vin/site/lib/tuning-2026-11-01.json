@@ -46,5 +46,55 @@
   "scopeNote": "Settings chosen on 2024-25 only; numbers shown are the untouched 2025-26 holdout. Still trails the market (holdout error 11.48 vs opener 11.21), so NBA picks stay leans until a bucket clears the publish bar. Applies only to games captured after activation.",
   "validationNote": "Promoted over Ridge v1: holdout CLV +0.18 vs +0.12 pts, error 11.48 vs 11.57. Injury values priced at 0.31 pts per missing-player point; injuries showed no edge vs closing lines and no effect on totals.",
   "reportUrl": "/research/nba-2026-11-01/backtest.json"
+ },
+ "cbb": {
+  "id": "cbb-v2-2026-11-01",
+  "label": "CBB v2 · roster priors + pace",
+  "activatedAt": "2026-11-02T02:00:00.000Z",
+  "startDate": "2026-11-02",
+  "startWeekKey": "2026-11-02",
+  "parameters": {
+   "lookbackDays": 730,
+   "halfLifeDays": 180,
+   "ratingPenalty": 0.25,
+   "homePenalty": 30,
+   "restPenalty": 100,
+   "homePrior": 4,
+   "useRest": false,
+   "usePace": true,
+   "usePriors": true,
+   "priorKind": "roster"
+  },
+  "objective": "Lowest error on the 2024-25 selection season; promoted only after beating Ridge v1 on 2025-26 holdout error and opening-to-closing line value",
+  "sampleLabel": "5,748 college games · 2025-26 walk-forward holdout, daily refits, vs ESPN BET openers at -110",
+  "candidates": 114,
+  "baseline": {
+   "games": 5748,
+   "wins": 2897,
+   "losses": 2851,
+   "pushes": 0,
+   "netUnits": -217.36,
+   "roi": -0.0378,
+   "mae": 10.487,
+   "clv": 0.111,
+   "marketMae": 9.097,
+   "closeMae": 9
+  },
+  "selected": {
+   "games": 5748,
+   "wins": 2950,
+   "losses": 2798,
+   "pushes": 0,
+   "netUnits": -116.18,
+   "roi": -0.0202,
+   "mae": 9.334,
+   "clv": 0.369,
+   "marketMae": 9.097,
+   "closeMae": 9
+  },
+  "sigma": 11.85,
+  "scopeNote": "Settings chosen on 2024-25 only; numbers shown are the untouched 2025-26 holdout. Still trails the market (holdout error 9.33 vs opener 9.10), so college picks stay leans until a bucket clears the publish bar, and a game also needs a priced line and at least 5 recent games for both teams. Applies only to games captured after activation.",
+  "validationNote": "Promoted over Ridge v1: holdout CLV +0.37 vs +0.11 pts, error 9.33 vs 10.49. Preseason priors from Torvik prior-season efficiency, returning minutes and transfers explain 69% of 2025-26 final Torvik margins (prior margin alone: 67%). Neutral-site games carry no home edge.",
+  "reportUrl": "/research/cbb-2026-11-01/backtest.json"
  }
 }

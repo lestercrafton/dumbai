@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import {fitRatings,projectGame} from '../site/lib/ratings.mjs';
 import {fatigueMap,withFatigue} from '../site/lib/basketball-fatigue.mjs';
+import {cbbPriors,cbbSeasonOf,withCbbPace} from '../site/lib/cbb-priors.mjs';
 const sport=process.argv[2]||'nba',key=sport==='cbb'?'ncaab':sport;
 const games=JSON.parse(fs.readFileSync(`data/totals/history-${sport}.json`)).games.sort((a,b)=>a.startTime.localeCompare(b.startTime));
 const lines=JSON.parse(fs.readFileSync(`data/spreads/history-${sport}.json`)).lines;
@@ -13,14 +14,15 @@ const versions=JSON.parse(process.env.VERSIONS||'null')||{
  'ridge-v1':null,
  'nba-v2':{lookbackDays:730,halfLifeDays:45,ratingPenalty:2,homePenalty:30,restPenalty:100,homePrior:2.5,useRest:false,useFatigue:true},
 };
-const fat=sport==='nba'?fatigueMap(games):null;const all=fat?games.map(g=>withFatigue(g,fat)):games;
+const fat=sport==='nba'?fatigueMap(games):null;const all=fat?games.map(g=>withFatigue(g,fat)):sport==='cbb'?games.map(g=>withCbbPace(g)):games;
+const START=process.env.START||'2024-12-01';
 const windows=JSON.parse(process.env.WINDOWS||'null')||{'select 2024-25':['2024-12-01','2025-10-01'],'holdout 2025-26':['2025-10-21','2026-10-01'],'live 2026-27':['2026-10-20','2027-01-01']};
 const out={};
 for(const [name,params] of Object.entries(versions)){
  const preds=[];let cache=new Map();
  for(const g of all){
-  if(g.date<'2024-12-01')continue;const l=lines[g.id];if(!l||!Number.isFinite(l.open)||!Number.isFinite(l.close))continue;
-  if(!cache.has(g.date))cache=new Map([[g.date,fitRatings(all,{sport:key,asOf:g.date,parameters:params||undefined})]]);
+  if(g.date<START)continue;const l=lines[g.id];if(!l||!Number.isFinite(l.open)||!Number.isFinite(l.close))continue;
+  if(!cache.has(g.date))cache=new Map([[g.date,fitRatings(all,{sport:key,asOf:g.date,parameters:params?(({priorKind,...p})=>p)(params):undefined,priors:params?.priorKind?cbbPriors(cbbSeasonOf(g.date),params.priorKind):undefined})]]);
   const p=projectGame(g,cache.get(g.date)).predictedHomeMargin;if(!Number.isFinite(p))continue;
   preds.push({g,p,open:l.open,close:l.close,y:g.homeScore-g.awayScore});
  }

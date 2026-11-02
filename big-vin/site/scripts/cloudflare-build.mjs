@@ -12,7 +12,7 @@ import {computeBuildId} from './build-id.mjs';
 
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dist=path.join(site,'dist');
-export const STATIC_PAGES=['/baseball-research','/challengers','/college-experiment','/learning-log','/notes/october-19-2026','/paper-ledger','/scoreboard','/tracked-results','/weekly-results'];
+export const STATIC_PAGES=['/baseball-research','/basketball-method','/challengers','/college-experiment','/learning-log','/notes/october-19-2026','/paper-ledger','/scoreboard','/tracked-results','/weekly-results'];
 
 function copyEdge(){
  for(const f of ['edge.mjs','read-cache.mjs'])fs.copyFileSync(path.join(site,'cloudflare',f),path.join(dist,'server',f));

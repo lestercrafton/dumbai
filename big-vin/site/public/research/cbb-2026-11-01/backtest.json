@@ -1,0 +1,482 @@
+{
+ "backtest": {
+  "ridge-v1 \u00b7 select 2024-25": {
+   "games": 5617,
+   "modelMae": 11.456,
+   "openMae": 8.856,
+   "closeMae": 8.754,
+   "sigma": 14.43,
+   "vsOpen": {
+    "all": {
+     "picks": 5617,
+     "wins": 2805,
+     "losses": 2812,
+     "hitRate": 0.499,
+     "clv": 0.142
+    },
+    "edge2": {
+     "picks": 4828,
+     "wins": 2421,
+     "losses": 2407,
+     "hitRate": 0.501,
+     "clv": 0.192
+    },
+    "edge3": {
+     "picks": 4363,
+     "wins": 2183,
+     "losses": 2180,
+     "hitRate": 0.5,
+     "clv": 0.231
+    },
+    "edge5": {
+     "picks": 3341,
+     "wins": 1698,
+     "losses": 1643,
+     "hitRate": 0.508,
+     "clv": 0.307
+    }
+   },
+   "vsClose": {
+    "wins": 2787,
+    "losses": 2830,
+    "hitRate": 0.496
+   }
+  },
+  "ridge-v1 \u00b7 select Nov-Dec": {
+   "games": 2009,
+   "modelMae": 13.265,
+   "openMae": 9.206,
+   "closeMae": 9.047,
+   "sigma": 16.57,
+   "vsOpen": {
+    "all": {
+     "picks": 2009,
+     "wins": 1018,
+     "losses": 991,
+     "hitRate": 0.507,
+     "clv": 0.322
+    },
+    "edge2": {
+     "picks": 1751,
+     "wins": 893,
+     "losses": 858,
+     "hitRate": 0.51,
+     "clv": 0.387
+    },
+    "edge3": {
+     "picks": 1636,
+     "wins": 837,
+     "losses": 799,
+     "hitRate": 0.512,
+     "clv": 0.428
+    },
+    "edge5": {
+     "picks": 1408,
+     "wins": 732,
+     "losses": 676,
+     "hitRate": 0.52,
+     "clv": 0.484
+    }
+   },
+   "vsClose": {
+    "wins": 996,
+    "losses": 1013,
+    "hitRate": 0.496
+   }
+  },
+  "ridge-v1 \u00b7 holdout 2025-26": {
+   "games": 5748,
+   "modelMae": 10.487,
+   "openMae": 9.097,
+   "closeMae": 9,
+   "sigma": 13.34,
+   "vsOpen": {
+    "all": {
+     "picks": 5748,
+     "wins": 2897,
+     "losses": 2851,
+     "hitRate": 0.504,
+     "clv": 0.111
+    },
+    "edge2": {
+     "picks": 4744,
+     "wins": 2387,
+     "losses": 2357,
+     "hitRate": 0.503,
+     "clv": 0.134
+    },
+    "edge3": {
+     "picks": 4192,
+     "wins": 2116,
+     "losses": 2076,
+     "hitRate": 0.505,
+     "clv": 0.162
+    },
+    "edge5": {
+     "picks": 2906,
+     "wins": 1477,
+     "losses": 1429,
+     "hitRate": 0.508,
+     "clv": 0.248
+    }
+   },
+   "vsClose": {
+    "wins": 2898,
+    "losses": 2850,
+    "hitRate": 0.504
+   }
+  },
+  "ridge-v1 \u00b7 holdout Nov-Dec": {
+   "games": 2203,
+   "modelMae": 11.354,
+   "openMae": 9.578,
+   "closeMae": 9.382,
+   "sigma": 14.52,
+   "vsOpen": {
+    "all": {
+     "picks": 2203,
+     "wins": 1144,
+     "losses": 1059,
+     "hitRate": 0.519,
+     "clv": 0.24
+    },
+    "edge2": {
+     "picks": 1838,
+     "wins": 949,
+     "losses": 889,
+     "hitRate": 0.516,
+     "clv": 0.229
+    },
+    "edge3": {
+     "picks": 1662,
+     "wins": 856,
+     "losses": 806,
+     "hitRate": 0.515,
+     "clv": 0.246
+    },
+    "edge5": {
+     "picks": 1295,
+     "wins": 673,
+     "losses": 622,
+     "hitRate": 0.52,
+     "clv": 0.277
+    }
+   },
+   "vsClose": {
+    "wins": 1130,
+    "losses": 1073,
+    "hitRate": 0.513
+   }
+  },
+  "ridge-v1 \u00b7 holdout Jan-Apr": {
+   "games": 3545,
+   "modelMae": 9.949,
+   "openMae": 8.798,
+   "closeMae": 8.763,
+   "sigma": 12.55,
+   "vsOpen": {
+    "all": {
+     "picks": 3545,
+     "wins": 1753,
+     "losses": 1792,
+     "hitRate": 0.494,
+     "clv": 0.031
+    },
+    "edge2": {
+     "picks": 2906,
+     "wins": 1438,
+     "losses": 1468,
+     "hitRate": 0.495,
+     "clv": 0.073
+    },
+    "edge3": {
+     "picks": 2530,
+     "wins": 1260,
+     "losses": 1270,
+     "hitRate": 0.498,
+     "clv": 0.107
+    },
+    "edge5": {
+     "picks": 1611,
+     "wins": 804,
+     "losses": 807,
+     "hitRate": 0.499,
+     "clv": 0.225
+    }
+   },
+   "vsClose": {
+    "wins": 1768,
+    "losses": 1777,
+    "hitRate": 0.499
+   }
+  },
+  "cbb-v2 \u00b7 select 2024-25": {
+   "games": 5759,
+   "modelMae": 9.771,
+   "openMae": 8.899,
+   "closeMae": 8.793,
+   "sigma": 12.49,
+   "vsOpen": {
+    "all": {
+     "picks": 5759,
+     "wins": 2854,
+     "losses": 2905,
+     "hitRate": 0.496,
+     "clv": 0.239
+    },
+    "edge2": {
+     "picks": 2961,
+     "wins": 1481,
+     "losses": 1480,
+     "hitRate": 0.5,
+     "clv": 0.435
+    },
+    "edge3": {
+     "picks": 2070,
+     "wins": 1062,
+     "losses": 1008,
+     "hitRate": 0.513,
+     "clv": 0.547
+    },
+    "edge5": {
+     "picks": 1139,
+     "wins": 572,
+     "losses": 567,
+     "hitRate": 0.502,
+     "clv": 0.857
+    }
+   },
+   "vsClose": {
+    "wins": 2855,
+    "losses": 2904,
+    "hitRate": 0.496
+   }
+  },
+  "cbb-v2 \u00b7 select Nov-Dec": {
+   "games": 2151,
+   "modelMae": 11.251,
+   "openMae": 9.297,
+   "closeMae": 9.131,
+   "sigma": 14.33,
+   "vsOpen": {
+    "all": {
+     "picks": 2151,
+     "wins": 1049,
+     "losses": 1102,
+     "hitRate": 0.488,
+     "clv": 0.387
+    },
+    "edge2": {
+     "picks": 1608,
+     "wins": 796,
+     "losses": 812,
+     "hitRate": 0.495,
+     "clv": 0.507
+    },
+    "edge3": {
+     "picks": 1363,
+     "wins": 691,
+     "losses": 672,
+     "hitRate": 0.507,
+     "clv": 0.575
+    },
+    "edge5": {
+     "picks": 944,
+     "wins": 476,
+     "losses": 468,
+     "hitRate": 0.504,
+     "clv": 0.789
+    }
+   },
+   "vsClose": {
+    "wins": 1048,
+    "losses": 1103,
+    "hitRate": 0.487
+   }
+  },
+  "cbb-v2 \u00b7 holdout 2025-26": {
+   "games": 5748,
+   "modelMae": 9.334,
+   "openMae": 9.097,
+   "closeMae": 9,
+   "sigma": 11.85,
+   "vsOpen": {
+    "all": {
+     "picks": 5748,
+     "wins": 2950,
+     "losses": 2798,
+     "hitRate": 0.513,
+     "clv": 0.369
+    },
+    "edge2": {
+     "picks": 2763,
+     "wins": 1392,
+     "losses": 1371,
+     "hitRate": 0.504,
+     "clv": 0.597
+    },
+    "edge3": {
+     "picks": 1717,
+     "wins": 867,
+     "losses": 850,
+     "hitRate": 0.505,
+     "clv": 0.757
+    },
+    "edge5": {
+     "picks": 681,
+     "wins": 352,
+     "losses": 329,
+     "hitRate": 0.517,
+     "clv": 1.342
+    }
+   },
+   "vsClose": {
+    "wins": 2914,
+    "losses": 2834,
+    "hitRate": 0.507
+   }
+  },
+  "cbb-v2 \u00b7 holdout Nov-Dec": {
+   "games": 2203,
+   "modelMae": 9.915,
+   "openMae": 9.578,
+   "closeMae": 9.382,
+   "sigma": 12.67,
+   "vsOpen": {
+    "all": {
+     "picks": 2203,
+     "wins": 1148,
+     "losses": 1055,
+     "hitRate": 0.521,
+     "clv": 0.413
+    },
+    "edge2": {
+     "picks": 1368,
+     "wins": 701,
+     "losses": 667,
+     "hitRate": 0.512,
+     "clv": 0.603
+    },
+    "edge3": {
+     "picks": 987,
+     "wins": 503,
+     "losses": 484,
+     "hitRate": 0.51,
+     "clv": 0.742
+    },
+    "edge5": {
+     "picks": 520,
+     "wins": 268,
+     "losses": 252,
+     "hitRate": 0.515,
+     "clv": 1.29
+    }
+   },
+   "vsClose": {
+    "wins": 1131,
+    "losses": 1072,
+    "hitRate": 0.513
+   }
+  },
+  "cbb-v2 \u00b7 holdout Jan-Apr": {
+   "games": 3545,
+   "modelMae": 8.972,
+   "openMae": 8.798,
+   "closeMae": 8.763,
+   "sigma": 11.31,
+   "vsOpen": {
+    "all": {
+     "picks": 3545,
+     "wins": 1802,
+     "losses": 1743,
+     "hitRate": 0.508,
+     "clv": 0.341
+    },
+    "edge2": {
+     "picks": 1395,
+     "wins": 691,
+     "losses": 704,
+     "hitRate": 0.495,
+     "clv": 0.591
+    },
+    "edge3": {
+     "picks": 730,
+     "wins": 364,
+     "losses": 366,
+     "hitRate": 0.499,
+     "clv": 0.778
+    },
+    "edge5": {
+     "picks": 161,
+     "wins": 84,
+     "losses": 77,
+     "hitRate": 0.522,
+     "clv": 1.509
+    }
+   },
+   "vsClose": {
+    "wins": 1783,
+    "losses": 1762,
+    "hitRate": 0.503
+   }
+  }
+ },
+ "priors": {
+  "coefficients": {
+   "roster": [
+    -1.4724,
+    0.6143,
+    0.3557,
+    1.0259,
+    4.1803
+   ],
+   "rosterTerms": [
+    "intercept",
+    "priorMargin",
+    "priorMargin\u00d7returningShare",
+    "transferInValue",
+    "returningShare"
+   ],
+   "marginOnly": [
+    0.0537,
+    0.8582
+   ]
+  },
+  "fit": {
+   "season2025": {
+    "roster": {
+     "teams": 358,
+     "r2": 0.716,
+     "rmse": 6.77
+    },
+    "marginOnly": {
+     "teams": 358,
+     "r2": 0.66,
+     "rmse": 7.41
+    }
+   },
+   "holdout2026": {
+    "roster": {
+     "teams": 360,
+     "r2": 0.694,
+     "rmse": 7.28
+    },
+    "marginOnly": {
+     "teams": 360,
+     "r2": 0.672,
+     "rmse": 7.53
+    }
+   }
+  },
+  "avgTempo": {
+   "2025": 67.6,
+   "2026": 67.5,
+   "2027": 67.4
+  },
+  "sources": [
+   "https://barttorvik.com/{year}_team_results.csv",
+   "ESPN box scores and team rosters"
+  ],
+  "builtAt": "2026-11-02T00:44:32.807Z"
+ }
+}

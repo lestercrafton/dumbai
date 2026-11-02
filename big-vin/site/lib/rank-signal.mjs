@@ -69,9 +69,12 @@ export function rankLabel(signal){
 export const GATED_SPORTS=new Set(['nba','cbb']);
 export const PUBLISH_MIN_GRADED=40;
 export const PUBLISH_MARGIN=0.02;
-export function publishDecision(score,sport){
+/** Fewest weighted games per team before a college basketball pick can publish. */
+export const CBB_MIN_TEAM_GAMES=5;
+export function publishDecision(score,sport,projection=null){
  if(!GATED_SPORTS.has(sport))return {published:true,reason:null};
  if(!score)return {published:false,reason:'Lean · no priced pick'};
+ if(sport==='cbb'&&projection&&Math.min(projection.homeEffectiveGames??0,projection.awayEffectiveGames??0)<CBB_MIN_TEAM_GAMES)return {published:false,reason:`Lean · a team has fewer than ${CBB_MIN_TEAM_GAMES} recent games in the ratings`};
  const n=score.bucketGraded??0;
  if(n<PUBLISH_MIN_GRADED)return {published:false,reason:`Lean · only ${n} graded picks like this (needs ${PUBLISH_MIN_GRADED})`};
  const need=score.breakEven+PUBLISH_MARGIN;
