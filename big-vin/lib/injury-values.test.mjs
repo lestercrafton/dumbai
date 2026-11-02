@@ -42,7 +42,7 @@ test('Hurts-style case: home starter out moves the line toward the away team',()
  const inj=gameInjury(table,'nfl','PHI','DAL',Date.parse('2026-10-21T00:00:00Z'));
  assert.equal(inj.homeDelta,-3.6);
  assert.equal(gameInjury(table,'nfl','PHI','DAL',Date.parse('2026-10-25T00:00:00Z')),null,'stale tables are ignored');
- assert.equal(gameInjury(table,'nba','PHI','DAL',Date.parse('2026-10-21T00:00:00Z')),null);
+ assert.equal(gameInjury(table,'cfb','PHI','DAL',Date.parse('2026-10-21T00:00:00Z')),null,'sports without an injury table are ignored');
  const live=liveMargin({sport:'nfl',baseMargin:6,homeSpread:-2.5,injury:inj});
  assert.equal(live.margin,2.4);assert.equal(live.marketCheck,null);
 });
