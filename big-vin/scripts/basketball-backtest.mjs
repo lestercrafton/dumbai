@@ -17,7 +17,7 @@ const versions=JSON.parse(process.env.VERSIONS||'null')||{
 const fat=sport==='nba'?fatigueMap(games):null;const all=fat?games.map(g=>withFatigue(g,fat)):sport==='cbb'?games.map(g=>withCbbPace(g)):games;
 const START=process.env.START||'2024-12-01';
 const windows=JSON.parse(process.env.WINDOWS||'null')||{'select 2024-25':['2024-12-01','2025-10-01'],'holdout 2025-26':['2025-10-21','2026-10-01'],'live 2026-27':['2026-10-20','2027-01-01']};
-const out={};
+const out={},dump={};
 for(const [name,params] of Object.entries(versions)){
  const preds=[];let cache=new Map();
  for(const g of all){
@@ -26,6 +26,7 @@ for(const [name,params] of Object.entries(versions)){
   const p=projectGame(g,cache.get(g.date)).predictedHomeMargin;if(!Number.isFinite(p))continue;
   preds.push({g,p,open:l.open,close:l.close,y:g.homeScore-g.awayScore});
  }
+ dump[name]=preds.map(x=>({id:x.g.id,date:x.g.date,homeId:x.g.homeId,awayId:x.g.awayId,neutral:!!x.g.neutral,p:x.p,open:x.open,close:x.close,y:x.y,total:x.g.total??null}));
  for(const [w,[a,b]] of Object.entries(windows)){
   const r=preds.filter(x=>x.g.date>=a&&x.g.date<b);if(!r.length)continue;
   const mean=f=>r.reduce((s,x)=>s+f(x),0)/r.length;
@@ -34,4 +35,5 @@ for(const [name,params] of Object.entries(versions)){
   out[`${name} · ${w}`]={games:r.length,modelMae:+mean(x=>Math.abs(x.y-x.p)).toFixed(3),openMae:+mean(x=>Math.abs(x.y+x.open)).toFixed(3),closeMae:+mean(x=>Math.abs(x.y+x.close)).toFixed(3),sigma:+Math.sqrt(mean(x=>(x.y-x.p)**2)).toFixed(2),vsOpen:{all:tier(0),edge2:tier(2),edge3:tier(3),edge5:tier(5)},vsClose:{wins:cw,losses:cl,hitRate:+(cw/Math.max(1,cw+cl)).toFixed(3)}};
  }
 }
+if(process.env.DUMP)fs.writeFileSync(process.env.DUMP,JSON.stringify(dump));
 console.log(JSON.stringify(out,null,1));
