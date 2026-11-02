@@ -1,0 +1,150 @@
+{
+ "y": {
+  "vsClose": {
+   "chosen": "g4",
+   "shrink": 0.25,
+   "tuneMae": 9.987,
+   "tuneLineMae": 9.984,
+   "seasons": {
+    "2023": {
+     "n": 285,
+     "mae_model": 9.987,
+     "mae_line": 9.984,
+     "d": 0.003,
+     "ci": [
+      -0.02,
+      0.025
+     ],
+     "rmse_model": 13.175,
+     "rmse_line": 13.174,
+     "hit": 0.5055,
+     "n_bets": 271,
+     "hit_edge15": null,
+     "n_edge15": 0
+    },
+    "2024": {
+     "n": 285,
+     "mae_model": 9.705,
+     "mae_line": 9.704,
+     "d": 0.001,
+     "ci": [
+      -0.021,
+      0.024
+     ],
+     "rmse_model": 12.717,
+     "rmse_line": 12.721,
+     "hit": 0.4947,
+     "n_bets": 281,
+     "hit_edge15": null,
+     "n_edge15": 0
+    },
+    "2025": {
+     "n": 285,
+     "mae_model": 9.671,
+     "mae_line": 9.67,
+     "d": 0.001,
+     "ci": [
+      -0.02,
+      0.024
+     ],
+     "rmse_model": 12.259,
+     "rmse_line": 12.245,
+     "hit": 0.5,
+     "n_bets": 284,
+     "hit_edge15": null,
+     "n_edge15": 0
+    },
+    "2026": {
+     "n": 119,
+     "mae_model": 9.461,
+     "mae_line": 9.471,
+     "d": -0.009,
+     "ci": [
+      -0.045,
+      0.026
+     ],
+     "rmse_model": 12.059,
+     "rmse_line": 12.1,
+     "hit": 0.5664,
+     "n_bets": 113,
+     "hit_edge15": null,
+     "n_edge15": 0
+    }
+   }
+  }
+ },
+ "tot": {
+  "vsClose": {
+   "chosen": "g7",
+   "shrink": 1.0,
+   "tuneMae": 10.09,
+   "tuneLineMae": 10.168,
+   "seasons": {
+    "2023": {
+     "n": 285,
+     "mae_model": 10.09,
+     "mae_line": 10.168,
+     "d": -0.078,
+     "ci": [
+      -0.233,
+      0.072
+     ],
+     "rmse_model": 12.895,
+     "rmse_line": 13.057,
+     "hit": 0.548,
+     "n_bets": 281,
+     "hit_edge15": 0.5634,
+     "n_edge15": 71
+    },
+    "2024": {
+     "n": 285,
+     "mae_model": 9.81,
+     "mae_line": 9.768,
+     "d": 0.042,
+     "ci": [
+      -0.103,
+      0.192
+     ],
+     "rmse_model": 12.683,
+     "rmse_line": 12.587,
+     "hit": 0.5035,
+     "n_bets": 282,
+     "hit_edge15": 0.4675,
+     "n_edge15": 77
+    },
+    "2025": {
+     "n": 285,
+     "mae_model": 10.371,
+     "mae_line": 10.423,
+     "d": -0.052,
+     "ci": [
+      -0.209,
+      0.098
+     ],
+     "rmse_model": 13.174,
+     "rmse_line": 13.237,
+     "hit": 0.5404,
+     "n_bets": 285,
+     "hit_edge15": 0.56,
+     "n_edge15": 75
+    },
+    "2026": {
+     "n": 119,
+     "mae_model": 10.885,
+     "mae_line": 10.769,
+     "d": 0.116,
+     "ci": [
+      -0.081,
+      0.312
+     ],
+     "rmse_model": 13.429,
+     "rmse_line": 13.28,
+     "hit": 0.479,
+     "n_bets": 119,
+     "hit_edge15": 0.52,
+     "n_edge15": 25
+    }
+   }
+  }
+ }
+}
