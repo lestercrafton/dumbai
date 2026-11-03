@@ -1,1 +1,16 @@
-{"status":"waiting_for_pool","at":"2026-11-01T20:03:28.784142+00:00","contest":{"id":197411852,"name":"NFL $2.5M Fantasy Football Millionaire [$1M to 1st]","draft_group":155994,"listed_start":"2026-11-08T18:00:00+00:00"},"error":"DraftKings lists NFL $2.5M Fantasy Football Millionaire [$1M to 1st] (draft group 155994) but has not posted its player pool yet. No new lineups were generated. A later scheduled run will try again.","previous_release_preserved":true,"previous_release":{"release_id":"2026-w08-20261027T185031Z","generated_at":"2026-10-27T18:50:31.341152+00:00","contest":"NFL $2.5M Fantasy Football Millionaire [$1M to 1st]","kickoff":"2026-11-01T18:00:00+00:00","is_current":false,"note":"Last successful release was generated 2026-10-27T18:50:31.341152+00:00 for the slate starting 2026-11-01T18:00:00+00:00. This run did not refresh it."}}
+{
+  "status": "failed",
+  "at": "2026-11-03T20:14:06.438199+00:00",
+  "previous_release_preserved": true,
+  "previous_release": {
+    "release_id": "2026-w08-20261027T185031Z",
+    "generated_at": "2026-10-27T18:50:31.341152+00:00",
+    "contest": "NFL $2.5M Fantasy Football Millionaire [$1M to 1st]",
+    "kickoff": "2026-11-01T18:00:00+00:00",
+    "is_current": false,
+    "note": "Last successful release was generated 2026-10-27T18:50:31.341152+00:00 for the slate starting 2026-11-01T18:00:00+00:00. This run did not refresh it."
+  },
+  "error": "A source, model, browser or final publication check failed. No staged release is approved.",
+  "detail": "Official salary game does not match NFL schedule",
+  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/41710310415"
+}
