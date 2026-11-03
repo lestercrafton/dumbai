@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-03T19:49:21.303Z",
+ "generatedAt": "2026-11-03T21:04:12.755Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -124,7 +124,7 @@
      "espnId": "4035671",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Doubtful",
-     "reported": "2026-11-03T19:07Z",
+     "reported": "2026-11-03T20:47Z",
      "weight": 1,
      "replacement": "Joe Fagnano",
      "starterEpaPerPlay": 0.032,

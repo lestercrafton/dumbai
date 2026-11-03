@@ -1,0 +1,502 @@
+{
+ "scoreboard": {
+  "schema": "big-vin-scoreboard/1",
+  "id": "scoreboard-2026-11-03",
+  "weekKey": "2026-10-26",
+  "publishedFor": "2026-11-03",
+  "liveVersionId": "v1",
+  "summary": "Playbook v1 forward record through 2026-11-03. No challenger has met the registered minimum sample yet; weekly differences are descriptive only.",
+  "won": [
+   "NFL line-move: ROI 2.8% vs live 2.4%, CLV +0.55 vs +0.26 on 29 priced picks.",
+   "CFB line-move: ROI 0.7% vs live -4.5%, CLV +0.21 vs -0.02 on 208 priced picks.",
+   "NBA line-move: ROI -21.2% vs live -29.7%, CLV +0.54 vs +0.17 on 92 priced picks.",
+   "WNBA line-move: ROI 27.8% vs live 25.8%, CLV +0.50 vs +0.00 on 6 priced picks."
+  ],
+  "lost": [
+   "NFL qb-out-unpriced: ROI 2.4% vs live 2.4%, CLV +0.26 vs +0.26 on 29 priced picks.",
+   "NFL weather-severe: ROI 2.4% vs live 2.4%, CLV +0.24 vs +0.26 on 29 priced picks.",
+   "NFL injury-values: ROI -0.2% vs live 6.1%, CLV +0.21 vs +0.27 on 28 priced picks.",
+   "NFL injury-gap-guard: ROI -0.2% vs live 6.1%, CLV +0.21 vs +0.27 on 28 priced picks.",
+   "NFL market-blend: ROI -0.5% vs live 6.1%, CLV +0.23 vs +0.27 on 28 priced picks.",
+   "CFB qb-out-unpriced: ROI -4.5% vs live -4.5%, CLV -0.02 vs -0.02 on 207 priced picks.",
+   "CFB weather-severe: ROI -4.5% vs live -4.5%, CLV -0.01 vs -0.02 on 207 priced picks.",
+   "CFB market-blend: ROI -5.0% vs live -5.0%, CLV +0.01 vs -0.02 on 204 priced picks.",
+   "NBA scorer-out-unpriced: ROI -31.7% vs live -29.7%, CLV +0.13 vs +0.17 on 92 priced picks.",
+   "WNBA scorer-out-unpriced: ROI 25.8% vs live 25.8%, CLV +0.00 vs +0.00 on 6 priced picks.",
+   "CBB scorer-out-unpriced: ROI -36.4% vs live -36.4%, CLV +0.00 vs +0.00 on 3 priced picks.",
+   "CBB line-move: ROI -36.4% vs live -36.4%, CLV +0.00 vs +0.00 on 3 priced picks."
+  ],
+  "kept": [
+   "bv-nfl-pb1",
+   "bv-nfl-ch-qb-out-unpriced-2026-10-19",
+   "bv-nfl-ch-line-move-2026-10-19",
+   "bv-nfl-ch-weather-severe-2026-10-19",
+   "bv-nfl-ch-injury-values-2026-10-21",
+   "bv-nfl-ch-injury-gap-guard-2026-10-21",
+   "bv-nfl-ch-market-blend-2026-10-21",
+   "bv-cfb-pb1",
+   "bv-cfb-ch-qb-out-unpriced-2026-10-19",
+   "bv-cfb-ch-line-move-2026-10-19",
+   "bv-cfb-ch-weather-severe-2026-10-19",
+   "bv-cfb-ch-market-blend-2026-10-21",
+   "bv-nba-pb1",
+   "bv-nba-ch-scorer-out-unpriced-2026-10-19",
+   "bv-nba-ch-line-move-2026-10-19",
+   "bv-wnba-pb1",
+   "bv-wnba-ch-scorer-out-unpriced-2026-10-19",
+   "bv-wnba-ch-line-move-2026-10-19",
+   "bv-cbb-pb1",
+   "bv-cbb-ch-scorer-out-unpriced-2026-10-19",
+   "bv-cbb-ch-line-move-2026-10-19",
+   "bv-nhl-pb1",
+   "bv-mlb-pb1"
+  ],
+  "dropped": [],
+  "lessonEntryId": null,
+  "entries": [
+   {
+    "versionId": "bv-nfl-pb1",
+    "role": "frozen",
+    "sport": "nfl",
+    "decision": "kept",
+    "record": {
+     "wins": 15,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 29,
+     "units": 0.71,
+     "roi": 0.02440066500366858,
+     "clv": 0.25862068965517243,
+     "clvCoverage": 1,
+     "bankroll": 505.88626942484603
+    },
+    "note": "Runner mirror of nfl-season-tuned-2026-10-16."
+   },
+   {
+    "versionId": "bv-nfl-ch-qb-out-unpriced-2026-10-19",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 15,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 29,
+     "units": 0.71,
+     "roi": 0.02440066500366858,
+     "clv": 0.25862068965517243,
+     "clvCoverage": 1,
+     "bankroll": 505.88626942484603
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 29/60 graded, 0/12 disagreements, 3/4 weeks."
+   },
+   {
+    "versionId": "bv-nfl-ch-line-move-2026-10-19",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 15,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 29,
+     "units": 0.82,
+     "roi": 0.028137275009740424,
+     "clv": 0.5517241379310345,
+     "clvCoverage": 1,
+     "bankroll": 505.3238239330729
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 29/60 graded, 8/12 disagreements, 3/4 weeks."
+   },
+   {
+    "versionId": "bv-nfl-ch-weather-severe-2026-10-19",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 15,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 29,
+     "units": 0.71,
+     "roi": 0.02440066500366858,
+     "clv": 0.2413793103448276,
+     "clvCoverage": 1,
+     "bankroll": 505.88626942484603
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 29/60 graded, 0/12 disagreements, 3/4 weeks."
+   },
+   {
+    "versionId": "bv-nfl-ch-injury-values-2026-10-21",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 14,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 28,
+     "units": -0.06,
+     "roi": -0.002258383236876315,
+     "clv": 0.21428571428571427,
+     "clvCoverage": 1,
+     "bankroll": 498.7484091091884
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 28/60 graded, 2/12 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-nfl-ch-injury-gap-guard-2026-10-21",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 14,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 28,
+     "units": -0.06,
+     "roi": -0.002258383236876315,
+     "clv": 0.21428571428571427,
+     "clvCoverage": 1,
+     "bankroll": 498.7484091091884
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 28/60 graded, 2/12 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-nfl-ch-market-blend-2026-10-21",
+    "role": "challenger",
+    "sport": "nfl",
+    "decision": "continuing",
+    "record": {
+     "wins": 14,
+     "losses": 13,
+     "pushes": 1,
+     "pending": 15,
+     "pricedPicks": 28,
+     "units": -0.15,
+     "roi": -0.005216088057935192,
+     "clv": 0.23214285714285715,
+     "clvCoverage": 1,
+     "bankroll": 497.9317781842195
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 28/60 graded, 0/12 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cfb-pb1",
+    "role": "frozen",
+    "sport": "cfb",
+    "decision": "kept",
+    "record": {
+     "wins": 103,
+     "losses": 102,
+     "pushes": 2,
+     "pending": 62,
+     "pricedPicks": 207,
+     "units": -9.37,
+     "roi": -0.045269275514247115,
+     "clv": -0.024154589371980676,
+     "clvCoverage": 1,
+     "bankroll": 493.0013396483601
+    },
+    "note": "Runner mirror of cfb-season-tuned-2026-10-16."
+   },
+   {
+    "versionId": "bv-cfb-ch-qb-out-unpriced-2026-10-19",
+    "role": "challenger",
+    "sport": "cfb",
+    "decision": "continuing",
+    "record": {
+     "wins": 103,
+     "losses": 102,
+     "pushes": 2,
+     "pending": 62,
+     "pricedPicks": 207,
+     "units": -9.37,
+     "roi": -0.045269275514247115,
+     "clv": -0.024154589371980676,
+     "clvCoverage": 1,
+     "bankroll": 493.0013396483601
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 207/150 graded, 0/25 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cfb-ch-line-move-2026-10-19",
+    "role": "challenger",
+    "sport": "cfb",
+    "decision": "continuing",
+    "record": {
+     "wins": 109,
+     "losses": 97,
+     "pushes": 2,
+     "pending": 62,
+     "pricedPicks": 208,
+     "units": 1.45,
+     "roi": 0.006959040727102724,
+     "clv": 0.21394230769230768,
+     "clvCoverage": 1,
+     "bankroll": 473.91509348228044
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 208/150 graded, 26/25 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cfb-ch-weather-severe-2026-10-19",
+    "role": "challenger",
+    "sport": "cfb",
+    "decision": "continuing",
+    "record": {
+     "wins": 103,
+     "losses": 102,
+     "pushes": 2,
+     "pending": 62,
+     "pricedPicks": 207,
+     "units": -9.37,
+     "roi": -0.045269275514247115,
+     "clv": -0.007246376811594203,
+     "clvCoverage": 1,
+     "bankroll": 493.0013396483601
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 207/150 graded, 0/25 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cfb-ch-market-blend-2026-10-21",
+    "role": "challenger",
+    "sport": "cfb",
+    "decision": "continuing",
+    "record": {
+     "wins": 101,
+     "losses": 101,
+     "pushes": 2,
+     "pending": 62,
+     "pricedPicks": 204,
+     "units": -10.12,
+     "roi": -0.04960448755813485,
+     "clv": 0.014705882352941176,
+     "clvCoverage": 1,
+     "bankroll": 485.90195903701044
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 204/150 graded, 0/25 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-nba-pb1",
+    "role": "frozen",
+    "sport": "nba",
+    "decision": "kept",
+    "record": {
+     "wins": 34,
+     "losses": 58,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 92,
+     "units": -27.34,
+     "roi": -0.29715509294223524,
+     "clv": 0.17391304347826086,
+     "clvCoverage": 1,
+     "bankroll": 280.87627144864723
+    },
+    "note": "Runner mirror of ridge-v1."
+   },
+   {
+    "versionId": "bv-nba-ch-scorer-out-unpriced-2026-10-19",
+    "role": "challenger",
+    "sport": "nba",
+    "decision": "continuing",
+    "record": {
+     "wins": 33,
+     "losses": 59,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 92,
+     "units": -29.21,
+     "roi": -0.31747645400083635,
+     "clv": 0.13043478260869565,
+     "clvCoverage": 1,
+     "bankroll": 268.84562068389033
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 92/200 graded, 1/30 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-nba-ch-line-move-2026-10-19",
+    "role": "challenger",
+    "sport": "nba",
+    "decision": "continuing",
+    "record": {
+     "wins": 38,
+     "losses": 54,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 92,
+     "units": -19.49,
+     "roi": -0.21181782917028502,
+     "clv": 0.5434782608695652,
+     "clvCoverage": 1,
+     "bankroll": 331.09809577782346
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 92/200 graded, 14/30 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-wnba-pb1",
+    "role": "frozen",
+    "sport": "wnba",
+    "decision": "kept",
+    "record": {
+     "wins": 4,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 6,
+     "units": 1.55,
+     "roi": 0.2580227743271222,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 515.1931369565217
+    },
+    "note": "Runner mirror of wnba-season-tuned-2026-10-16."
+   },
+   {
+    "versionId": "bv-wnba-ch-scorer-out-unpriced-2026-10-19",
+    "role": "challenger",
+    "sport": "wnba",
+    "decision": "continuing",
+    "record": {
+     "wins": 4,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 6,
+     "units": 1.55,
+     "roi": 0.2580227743271222,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 515.1931369565217
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 6/100 graded, 0/20 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-wnba-ch-line-move-2026-10-19",
+    "role": "challenger",
+    "sport": "wnba",
+    "decision": "continuing",
+    "record": {
+     "wins": 4,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 6,
+     "units": 1.67,
+     "roi": 0.27786404416839194,
+     "clv": 0.5,
+     "clvCoverage": 1,
+     "bankroll": 516.3996782608696
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 6/100 graded, 2/20 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cbb-pb1",
+    "role": "frozen",
+    "sport": "cbb",
+    "decision": "kept",
+    "record": {
+     "wins": 1,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 3,
+     "units": -1.09,
+     "roi": -0.3636363636363636,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 489.10909090909087
+    },
+    "note": "Runner mirror of ridge-v1."
+   },
+   {
+    "versionId": "bv-cbb-ch-scorer-out-unpriced-2026-10-19",
+    "role": "challenger",
+    "sport": "cbb",
+    "decision": "continuing",
+    "record": {
+     "wins": 1,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 3,
+     "units": -1.09,
+     "roi": -0.3636363636363636,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 489.10909090909087
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 3/250 graded, 0/40 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-cbb-ch-line-move-2026-10-19",
+    "role": "challenger",
+    "sport": "cbb",
+    "decision": "continuing",
+    "record": {
+     "wins": 1,
+     "losses": 2,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 3,
+     "units": -1.09,
+     "roi": -0.3636363636363636,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 489.10909090909087
+    },
+    "note": "Not enough forward games yet. Results are descriptive only. Sample 3/250 graded, 0/40 disagreements, 2/4 weeks."
+   },
+   {
+    "versionId": "bv-nhl-pb1",
+    "role": "frozen",
+    "sport": "nhl",
+    "decision": "kept",
+    "record": {
+     "wins": 64,
+     "losses": 35,
+     "pushes": 0,
+     "pending": 15,
+     "pricedPicks": 99,
+     "units": -1.64,
+     "roi": -0.016566162929437685,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 478.3096215766833
+    },
+    "note": "Runner mirror of ridge-v1."
+   },
+   {
+    "versionId": "bv-mlb-pb1",
+    "role": "frozen",
+    "sport": "mlb",
+    "decision": "kept",
+    "record": {
+     "wins": 4,
+     "losses": 1,
+     "pushes": 0,
+     "pending": 0,
+     "pricedPicks": 5,
+     "units": 2.02,
+     "roi": 0.40341903279493013,
+     "clv": 0,
+     "clvCoverage": 1,
+     "bankroll": 520.2324230675986
+    },
+    "note": "Runner mirror of mlb-weekly-tuned-2026-09-14."
+   }
+  ],
+  "supersedes": null
+ },
+ "lessons": [
+  "No challenger has met the registered minimum sample yet; weekly differences are descriptive only.",
+  "Parameter reshuffles are not tested here: the 2021-2026 NFL walk-forward showed they do not persist. Challengers use injury timing, line movement and weather."
+ ],
+ "markdown": "# Big Vin playbook scoreboard for Tuesday 2026-11-03\n\nGenerated 2026-11-03T21:08:26.412Z. Paper results, entertainment only.\n\n| Sport | Version | Role | Decision | W-L-P | Priced | ROI | CLV (pts) | CLV coverage |\n|---|---|---|---|---|---|---|---|---|\n| nfl | bv-nfl-pb1 | frozen | kept | 15-13-1 | 29 | 2.4% | +0.26 | 100.0% |\n| nfl | bv-nfl-ch-qb-out-unpriced-2026-10-19 | challenger | continuing | 15-13-1 | 29 | 2.4% | +0.26 | 100.0% |\n| nfl | bv-nfl-ch-line-move-2026-10-19 | challenger | continuing | 15-13-1 | 29 | 2.8% | +0.55 | 100.0% |\n| nfl | bv-nfl-ch-weather-severe-2026-10-19 | challenger | continuing | 15-13-1 | 29 | 2.4% | +0.24 | 100.0% |\n| nfl | bv-nfl-ch-injury-values-2026-10-21 | challenger | continuing | 14-13-1 | 28 | -0.2% | +0.21 | 100.0% |\n| nfl | bv-nfl-ch-injury-gap-guard-2026-10-21 | challenger | continuing | 14-13-1 | 28 | -0.2% | +0.21 | 100.0% |\n| nfl | bv-nfl-ch-market-blend-2026-10-21 | challenger | continuing | 14-13-1 | 28 | -0.5% | +0.23 | 100.0% |\n| cfb | bv-cfb-pb1 | frozen | kept | 103-102-2 | 207 | -4.5% | -0.02 | 100.0% |\n| cfb | bv-cfb-ch-qb-out-unpriced-2026-10-19 | challenger | continuing | 103-102-2 | 207 | -4.5% | -0.02 | 100.0% |\n| cfb | bv-cfb-ch-line-move-2026-10-19 | challenger | continuing | 109-97-2 | 208 | 0.7% | +0.21 | 100.0% |\n| cfb | bv-cfb-ch-weather-severe-2026-10-19 | challenger | continuing | 103-102-2 | 207 | -4.5% | -0.01 | 100.0% |\n| cfb | bv-cfb-ch-market-blend-2026-10-21 | challenger | continuing | 101-101-2 | 204 | -5.0% | +0.01 | 100.0% |\n| nba | bv-nba-pb1 | frozen | kept | 34-58-0 | 92 | -29.7% | +0.17 | 100.0% |\n| nba | bv-nba-ch-scorer-out-unpriced-2026-10-19 | challenger | continuing | 33-59-0 | 92 | -31.7% | +0.13 | 100.0% |\n| nba | bv-nba-ch-line-move-2026-10-19 | challenger | continuing | 38-54-0 | 92 | -21.2% | +0.54 | 100.0% |\n| wnba | bv-wnba-pb1 | frozen | kept | 4-2-0 | 6 | 25.8% | +0.00 | 100.0% |\n| wnba | bv-wnba-ch-scorer-out-unpriced-2026-10-19 | challenger | continuing | 4-2-0 | 6 | 25.8% | +0.00 | 100.0% |\n| wnba | bv-wnba-ch-line-move-2026-10-19 | challenger | continuing | 4-2-0 | 6 | 27.8% | +0.50 | 100.0% |\n| cbb | bv-cbb-pb1 | frozen | kept | 1-2-0 | 3 | -36.4% | +0.00 | 100.0% |\n| cbb | bv-cbb-ch-scorer-out-unpriced-2026-10-19 | challenger | continuing | 1-2-0 | 3 | -36.4% | +0.00 | 100.0% |\n| cbb | bv-cbb-ch-line-move-2026-10-19 | challenger | continuing | 1-2-0 | 3 | -36.4% | +0.00 | 100.0% |\n| nhl | bv-nhl-pb1 | frozen | kept | 64-35-0 | 99 | -1.7% | +0.00 | 100.0% |\n| mlb | bv-mlb-pb1 | frozen | kept | 4-1-0 | 5 | 40.3% | +0.00 | 100.0% |\n\n## Lessons\n- No challenger has met the registered minimum sample yet; weekly differences are descriptive only.\n- Parameter reshuffles are not tested here: the 2021-2026 NFL walk-forward showed they do not persist. Challengers use injury timing, line movement and weather.\n"
+}
