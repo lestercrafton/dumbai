@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-03T03:44:20.602Z",
+ "generatedAt": "2026-11-03T12:19:46.262Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -37,7 +37,7 @@
      "player": "Kendrick Bourne",
      "espnId": "3045523",
      "status": "Out",
-     "reported": "2026-11-02T23:02Z",
+     "reported": "2026-11-02T22:40Z",
      "weight": 1,
      "points": 0.4
     },
@@ -172,7 +172,7 @@
      "player": "Tyler Loop",
      "espnId": "4697745",
      "status": "Questionable",
-     "reported": "2026-11-03T01:54Z",
+     "reported": "2026-11-02T23:50Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -275,13 +275,24 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0,
+   "loss": 0.08,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "dt",
+     "position": "LDT",
+     "player": "Grady Jarrett",
+     "espnId": "2576492",
+     "status": "Questionable",
+     "reported": "2026-11-03T04:23Z",
+     "weight": 0.25,
+     "points": 0.08
+    }
+   ],
    "notes": []
   },
   "CIN": {
@@ -352,7 +363,7 @@
      "player": "P.J. Locke",
      "espnId": "3929850",
      "status": "Questionable",
-     "reported": "2026-11-02T23:11Z",
+     "reported": "2026-11-03T04:05Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -554,7 +565,7 @@
      "player": "Jakobi Meyers",
      "espnId": "3916433",
      "status": "Questionable",
-     "reported": "2026-11-03T00:54Z",
+     "reported": "2026-11-03T00:19Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -1040,23 +1051,13 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 1.38,
+   "loss": 0.98,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Rashid Shaheed",
-     "espnId": "4032473",
-     "status": "Out",
-     "reported": "2026-11-02T23:51Z",
-     "weight": 1,
-     "points": 0.4
-    },
     {
      "group": "edge",
      "position": "LDE",

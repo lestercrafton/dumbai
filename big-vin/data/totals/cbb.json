@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cbb-totals-v1",
  "sport": "cbb",
- "generatedAt": "2026-11-03T03:44:36.849Z",
+ "generatedAt": "2026-11-03T12:20:00.412Z",
  "method": "men’s college basketball: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 39,
-  "losses": 29,
+  "wins": 50,
+  "losses": 41,
   "pushes": 0,
-  "pending": 24,
-  "bankroll": 562.47,
+  "pending": 1,
+  "bankroll": 542.56,
   "bankrollStart": 500
  },
  "backtest": {
@@ -311,9 +311,12 @@
     "unshrunkTotal": 150.28,
     "note": "Gap of 8.22 points vs the market total; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 181,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401909705": {
    "side": "over",
@@ -398,9 +401,12 @@
    "awayPoints": 78.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 159,
+   "stake": {
+    "stake": 10,
+    "net": 9.09
+   }
   },
   "401909750": {
    "side": "under",
@@ -416,9 +422,12 @@
    "awayPoints": 68.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 152,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401909759": {
    "side": "under",
@@ -434,9 +443,12 @@
    "awayPoints": 71.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 153,
+   "stake": {
+    "stake": 10,
+    "net": 8.93
+   }
   },
   "401909771": {
    "side": "under",
@@ -953,9 +965,12 @@
    "awayPoints": 68.8,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 182,
+   "stake": {
+    "stake": 10,
+    "net": 9.52
+   }
   },
   "401911390": {
    "side": "under",
@@ -971,9 +986,12 @@
    "awayPoints": 63,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 132,
+   "stake": {
+    "stake": 10,
+    "net": 9.09
+   }
   },
   "401911452": {
    "side": "over",
@@ -989,9 +1007,12 @@
    "awayPoints": 70.4,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 135,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401911469": {
    "side": "under",
@@ -1202,9 +1223,12 @@
    "awayPoints": 69.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 135,
+   "stake": {
+    "stake": 10,
+    "net": 8.7
+   }
   },
   "401916313": {
    "side": "under",
@@ -1220,9 +1244,12 @@
    "awayPoints": 77.6,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 177,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401917173": {
    "side": "under",
@@ -1265,9 +1292,12 @@
    "awayPoints": 68.3,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 147,
+   "stake": {
+    "stake": 10,
+    "net": 9.26
+   }
   },
   "401917507": {
    "side": "under",
@@ -1283,9 +1313,12 @@
    "awayPoints": 66.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 175,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401917509": {
    "side": null,
@@ -1358,9 +1391,12 @@
    "awayPoints": 71.1,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 154,
+   "stake": {
+    "stake": 10,
+    "net": 8.93
+   }
   },
   "401918955": {
    "side": null,
@@ -1436,9 +1472,12 @@
    "awayPoints": 69.3,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 198,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401919014": {
    "side": "under",
@@ -1475,9 +1514,12 @@
    "awayPoints": 75.8,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 151,
+   "stake": {
+    "stake": 10,
+    "net": 9.09
+   }
   },
   "401919047": {
    "side": "under",
@@ -1754,9 +1796,12 @@
    "awayPoints": 72,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 166,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401920842": {
    "side": "over",
@@ -2051,9 +2096,12 @@
    "awayPoints": 73,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 129,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401921704": {
    "side": "under",
@@ -2090,9 +2138,12 @@
    "awayPoints": 73.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 140,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401921753": {
    "side": null,
@@ -2165,9 +2216,12 @@
    "awayPoints": 71.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 156,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401923269": {
    "side": "under",
@@ -2273,9 +2327,12 @@
    "awayPoints": 71.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 160,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401925096": {
    "side": null,
@@ -2345,9 +2402,12 @@
    "awayPoints": 71.3,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 137,
+   "stake": {
+    "stake": 10,
+    "net": 8.7
+   }
   },
   "401925811": {
    "side": "over",
@@ -2363,9 +2423,12 @@
    "awayPoints": 62,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 149,
+   "stake": {
+    "stake": 10,
+    "net": 9.26
+   }
   },
   "401925818": {
    "side": "under",
@@ -2438,9 +2501,12 @@
    "awayPoints": 73.7,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 163,
+   "stake": {
+    "stake": 10,
+    "net": -10
+   }
   },
   "401926771": {
    "side": "under",
@@ -2456,9 +2522,12 @@
    "awayPoints": 73.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 158,
+   "stake": {
+    "stake": 10,
+    "net": 9.52
+   }
   },
   "401928995": {
    "side": "over",
