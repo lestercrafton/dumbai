@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-04T00:54:54.115Z",
+ "generatedAt": "2026-11-04T08:00:02.280Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -355,8 +355,16 @@
    ]
   },
   "14": {
-   "loss": 0,
-   "items": []
+   "loss": 0.45,
+   "items": [
+    {
+     "player": "Giannis Antetokounmpo",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.45,
+     "minutes": 31.9
+    }
+   ]
   },
   "15": {
    "loss": 0,
