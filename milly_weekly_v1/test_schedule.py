@@ -72,6 +72,10 @@ class UnpostedPool(unittest.TestCase):
    with mock.patch.object(core,'PUB',pub),mock.patch.object(core,'collect',side_effect=late):
     with self.assertRaises(contest.PoolNotPosted):core.run()
    self.assertEqual(json.loads((pub/'health.json').read_text())['status'],'failed')
+try:
+ import pandas as _pd
+except ImportError:_pd=None
+@unittest.skipIf(_pd is None,'pandas not installed in this job')
 class ScheduleMatch(unittest.TestCase):
  def setUp(self):
   import pandas as pd;self.pd=pd
