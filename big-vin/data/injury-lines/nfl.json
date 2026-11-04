@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-03T21:04:12.755Z",
+ "generatedAt": "2026-11-04T00:54:50.559Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -36,8 +36,8 @@
      "position": "WR",
      "player": "Kendrick Bourne",
      "espnId": "3045523",
-     "status": "Out",
-     "reported": "2026-11-02T22:40Z",
+     "status": "Injured Reserve",
+     "reported": "2026-11-03T21:12Z",
      "weight": 1,
      "points": 0.4
     },
@@ -46,8 +46,8 @@
      "position": "RB",
      "player": "Jeremiyah Love",
      "espnId": "4870808",
-     "status": "Out",
-     "reported": "2026-11-03T18:57Z",
+     "status": "Injured Reserve",
+     "reported": "2026-11-03T21:13Z",
      "weight": 1,
      "points": 0.4
     },
@@ -110,7 +110,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 4.38,
+   "loss": 4.18,
    "starter": {
     "name": "Tyler Huntley",
     "espnId": "4035671",
@@ -137,26 +137,6 @@
      "points": 3.62
     },
     {
-     "group": "lb",
-     "position": "LILB",
-     "player": "Roquan Smith",
-     "espnId": "3915189",
-     "status": "Questionable",
-     "reported": "2026-11-03T02:13Z",
-     "weight": 0.25,
-     "points": 0.06
-    },
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Trey Hendrickson",
-     "espnId": "3052743",
-     "status": "Questionable",
-     "reported": "2026-11-03T01:03Z",
-     "weight": 0.25,
-     "points": 0.06
-    },
-    {
      "group": "s",
      "position": "SS",
      "player": "Jaylinn Hawkins",
@@ -171,8 +151,8 @@
      "position": "PK",
      "player": "Tyler Loop",
      "espnId": "4697745",
-     "status": "Doubtful",
-     "reported": "2026-11-03T01:54Z",
+     "status": "Injured Reserve",
+     "reported": "2026-11-03T21:44Z",
      "weight": 1,
      "points": 0.3
     },
@@ -183,16 +163,6 @@
      "espnId": "4035479",
      "status": "Questionable",
      "reported": "2026-11-03T01:05Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Olaivavega Ioane",
-     "espnId": "4832793",
-     "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -565,7 +535,7 @@
      "player": "Jakobi Meyers",
      "espnId": "3916433",
      "status": "Questionable",
-     "reported": "2026-11-03T00:19Z",
+     "reported": "2026-11-03T21:57Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -575,7 +545,7 @@
      "player": "Bhayshul Tuten",
      "espnId": "4882093",
      "status": "Questionable",
-     "reported": "2026-11-03T18:16Z",
+     "reported": "2026-11-03T21:49Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -911,7 +881,7 @@
      "player": "Greg Newsome II",
      "espnId": "4361266",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-11-03T22:37Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -1167,24 +1137,13 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 0.13,
+   "loss": 0,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "edge",
-     "position": "RDE",
-     "player": "Javon Kinlaw",
-     "espnId": "4259491",
-     "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
-     "weight": 0.25,
-     "points": 0.13
-    }
-   ],
+   "items": [],
    "notes": []
   }
  }
