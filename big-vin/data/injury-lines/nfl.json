@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-04T07:59:57.069Z",
+ "generatedAt": "2026-11-04T16:35:33.561Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -114,7 +114,7 @@
    "starter": {
     "name": "Tyler Huntley",
     "espnId": "4035671",
-    "basis": "depth chart QB1 (injured)"
+    "basis": "season usage leader (injured; dropped from depth chart)"
    },
    "items": [
     {
@@ -122,9 +122,9 @@
      "position": "QB",
      "player": "Tyler Huntley",
      "espnId": "4035671",
-     "starterBasis": "depth chart QB1 (injured)",
-     "status": "Doubtful",
-     "reported": "2026-11-03T20:47Z",
+     "starterBasis": "season usage leader (injured; dropped from depth chart)",
+     "status": "Out",
+     "reported": "2026-11-04T14:00Z",
      "weight": 1,
      "replacement": "Joe Fagnano",
      "starterEpaPerPlay": 0.032,
@@ -267,13 +267,23 @@
   },
   "CIN": {
    "team": "CIN",
-   "loss": 0.13,
+   "loss": 0.21,
    "starter": {
     "name": "Joe Burrow",
     "espnId": "3915511",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "Jordan Battle",
+     "espnId": "4567098",
+     "status": "Questionable",
+     "reported": "2026-11-04T16:32Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
     {
      "group": "cb",
      "position": "RCB",
@@ -289,13 +299,33 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0,
+   "loss": 0.98,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Deshaun Watson",
+     "espnId": "3122840",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-11-04T14:45Z",
+     "weight": 0.25,
+     "replacement": "Shedeur Sanders",
+     "starterEpaPerPlay": 0.005,
+     "starterPlays": 333,
+     "backupEpaPerPlay": -0.123,
+     "backupPlays": 131,
+     "gapEpaPerPlay": 0.13,
+     "fullPoints": 3.91,
+     "alreadyInRatings": 0,
+     "points": 0.98
+    }
+   ],
    "notes": []
   },
   "DAL": {
@@ -545,7 +575,7 @@
      "player": "Bhayshul Tuten",
      "espnId": "4882093",
      "status": "Questionable",
-     "reported": "2026-11-03T21:49Z",
+     "reported": "2026-11-04T15:38Z",
      "weight": 0.25,
      "points": 0.1
     },
