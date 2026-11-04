@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-04T16:35:33.561Z",
+ "generatedAt": "2026-11-04T20:34:30.053Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -110,7 +110,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 4.18,
+   "loss": 4.53,
    "starter": {
     "name": "Tyler Huntley",
     "espnId": "4035671",
@@ -137,14 +137,24 @@
      "points": 3.62
     },
     {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Nate Wiggins",
+     "espnId": "4601278",
+     "status": "Questionable",
+     "reported": "2026-11-04T20:17Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
      "group": "s",
      "position": "SS",
      "player": "Jaylinn Hawkins",
      "espnId": "3858276",
-     "status": "Questionable",
-     "reported": "2026-11-03T02:15Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-04T20:14Z",
+     "weight": 1,
+     "points": 0.3
     },
     {
      "group": "pk",
@@ -299,7 +309,7 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.98,
+   "loss": 1.04,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
@@ -313,7 +323,7 @@
      "espnId": "3122840",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-04T14:45Z",
+     "reported": "2026-11-04T17:01Z",
      "weight": 0.25,
      "replacement": "Shedeur Sanders",
      "starterEpaPerPlay": 0.005,
@@ -324,6 +334,16 @@
      "fullPoints": 3.91,
      "alreadyInRatings": 0,
      "points": 0.98
+    },
+    {
+     "group": "lb",
+     "position": "SLB",
+     "player": "Quincy Williams",
+     "espnId": "3110565",
+     "status": "Questionable",
+     "reported": "2026-11-04T17:21Z",
+     "weight": 0.25,
+     "points": 0.06
     }
    ],
    "notes": []
@@ -343,7 +363,7 @@
      "player": "Jake Ferguson",
      "espnId": "4242355",
      "status": "Questionable",
-     "reported": "2026-11-02T23:35Z",
+     "reported": "2026-11-04T18:51Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -552,7 +572,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.49,
+   "loss": 0.23,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -560,22 +580,12 @@
    },
    "items": [
     {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Jakobi Meyers",
-     "espnId": "3916433",
-     "status": "Questionable",
-     "reported": "2026-11-03T21:57Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
      "group": "rb1",
      "position": "RB",
      "player": "Bhayshul Tuten",
      "espnId": "4882093",
      "status": "Questionable",
-     "reported": "2026-11-04T15:38Z",
+     "reported": "2026-11-04T20:07Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -588,26 +598,6 @@
      "reported": "2026-11-04T01:30Z",
      "weight": 0.25,
      "points": 0.13
-    },
-    {
-     "group": "s",
-     "position": "FS",
-     "player": "Antonio Johnson",
-     "espnId": "4429168",
-     "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Ezra Cleveland",
-     "espnId": "4048231",
-     "status": "Questionable",
-     "reported": "2026-11-01T19:05Z",
-     "weight": 0.25,
-     "points": 0.08
     }
    ],
    "notes": []
@@ -827,7 +817,7 @@
      "player": "Hunter Henry",
      "espnId": "3046439",
      "status": "Questionable",
-     "reported": "2026-11-03T15:14Z",
+     "reported": "2026-11-04T19:41Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -891,7 +881,7 @@
      "player": "Cam Skattebo",
      "espnId": "4696981",
      "status": "Questionable",
-     "reported": "2026-11-02T21:11Z",
+     "reported": "2026-11-04T18:45Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -922,13 +912,23 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.13,
+   "loss": 0.33,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Garrett Wilson",
+     "espnId": "4569618",
+     "status": "Questionable",
+     "reported": "2026-11-04T17:25Z",
+     "weight": 0.25,
+     "points": 0.2
+    },
     {
      "group": "edge",
      "position": "LDE",
@@ -946,8 +946,8 @@
    "team": "PHI",
    "loss": 0.16,
    "starter": {
-    "name": "Tanner McKee",
-    "espnId": "4685201",
+    "name": "Joe Milton III",
+    "espnId": "4360698",
     "basis": "depth chart QB1"
    },
    "items": [
@@ -973,6 +973,7 @@
     }
    ],
    "notes": [
+    "Starter Joe Milton III has no PHI snaps this season (usage leader Jalen Hurts).",
     "Usage leader Jalen Hurts is not the resolved starter."
    ]
   },
@@ -1051,13 +1052,32 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 0.34,
+   "loss": 2.18,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
    "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Sam Darnold",
+     "espnId": "3912547",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Out",
+     "reported": "2026-11-04T19:02Z",
+     "weight": 1,
+     "replacement": "Drew Lock",
+     "starterEpaPerPlay": 0.045,
+     "starterPlays": 560,
+     "backupEpaPerPlay": 0.011,
+     "backupPlays": 57,
+     "gapEpaPerPlay": 0.03,
+     "fullPoints": 2,
+     "alreadyInRatings": 0.08,
+     "points": 1.84
+    },
     {
      "group": "edge",
      "position": "LDE",
@@ -1106,7 +1126,7 @@
      "player": "Emeka Egbuka",
      "espnId": "4567750",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-04T18:29Z",
      "weight": 0.25,
      "points": 0.2
     },
