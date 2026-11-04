@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-04T20:34:34.961Z",
+ "generatedAt": "2026-11-04T22:11:21.542Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -546,14 +546,14 @@
    ]
   },
   "23": {
-   "loss": 0.07,
+   "loss": 0,
    "items": [
     {
-     "player": "Precious Achiuwa",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.07,
-     "minutes": 28.7
+     "player": "Daeqwon Plowden",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 12.2
     },
     {
      "player": "Maxime Raynaud",
