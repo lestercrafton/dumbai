@@ -72,4 +72,16 @@ class UnpostedPool(unittest.TestCase):
    with mock.patch.object(core,'PUB',pub),mock.patch.object(core,'collect',side_effect=late):
     with self.assertRaises(contest.PoolNotPosted):core.run()
    self.assertEqual(json.loads((pub/'health.json').read_text())['status'],'failed')
+class ScheduleMatch(unittest.TestCase):
+ def setUp(self):
+  import pandas as pd;self.pd=pd
+  self.t=pd.DataFrame({'game_id':['2026_10_LV_SF','2026_10_SF_LV'],'team':['LV','SF'],'opp':['SF','LV'],'kick':pd.to_datetime(['2026-11-08T21:05:00Z']*2)})
+ def test_exact_match(self):
+  from schedule_match import match_game;r,g=match_game(self.t,'LV','SF','2026-11-08T21:05:00Z');self.assertEqual(r['game_id'],'2026_10_LV_SF');self.assertIsNone(g)
+ def test_small_kickoff_gap_uses_salary_time_and_records_it(self):
+  from schedule_match import match_game;r,g=match_game(self.t,'LV','SF','2026-11-08T21:25:00Z');self.assertEqual(g['minutes'],20);self.assertIn('04:05 PM ET',g['note']);self.assertIn('04:25 PM ET',g['note'])
+ def test_mismatches_fail(self):
+  from schedule_match import match_game
+  for a,b,k in [('LV','KC','2026-11-08T21:25:00Z'),('LV','SF','2026-11-09T21:05:00Z'),('LV','SF','2026-11-08T22:10:00Z')]:
+   with self.assertRaises(RuntimeError):match_game(self.t,a,b,k)
 if __name__=='__main__':unittest.main(verbosity=2)

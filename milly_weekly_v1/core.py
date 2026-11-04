@@ -13,6 +13,7 @@ from scipy.optimize import milp,Bounds,LinearConstraint
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error,mean_squared_error
 import contest as contest_lib
+from schedule_match import match_game
 ROOT=pathlib.Path(__file__).resolve().parent;CACHE=ROOT/'cache';PUB=ROOT/'public';STAGE=ROOT/'staging'
 for p in (CACHE,PUB,STAGE):p.mkdir(exist_ok=True)
 NOW=pd.Timestamp.now(tz='UTC');YEAR=NOW.year if NOW.month>=3 else NOW.year-1
@@ -95,6 +96,7 @@ def collect():
  pool,contest=slate(lobby)
  return schedule,pd.concat(stats,ignore_index=True),pd.concat(rosters,ignore_index=True),current,depth,pool,contest
 
+DISCREPANCIES=[]
 def prepare(s,st,ro,current,dep,pool):
  st=st[st.season_type=='REG'].copy();st['team']=st.team.replace(ALIASES);st['position']=st.position.replace({'FB':'RB'});st['points']=points(st)
  side=[]
@@ -122,9 +124,11 @@ def prepare(s,st,ro,current,dep,pool):
   if len(match)!=1 or pd.isna(match.iloc[0].get('gsis_id')):rejected.append({'name':p['name'],'reason':'Unresolved current roster identity'});continue
   r=match.iloc[0].to_dict();status=str(r.get('status',''));rank=deps.get((p['team'],r['gsis_id']))
   if status!='ACT' or p['disabled'] or p['status'].upper() in ['O','OUT','IR','INACTIVE','D','DOUBTFUL','SUSPENDED'] or (p['position']=='QB' and rank!=1):rejected.append({'name':p['name'],'reason':'Roster/status/depth eligibility'});continue
-  g=t[(t.team==p['team'])&(t.opp==p['opp'])&(t.kick==pd.Timestamp(p['start']))]
-  if len(g)!=1:raise RuntimeError('Official salary game does not match NFL schedule')
-  r.update(g.iloc[0].to_dict());r.update(p);r['future']=True;r['depth_rank']=rank;r.update({c:np.nan for c in COLS});rows.append(r)
+  gr,gap=match_game(t,p['team'],p['opp'],p['start'])
+  if gap:
+   gap_kick=pd.Timestamp(gap['salary_kick']);t.loc[t.game_id==gr['game_id'],'kick']=gap_kick;gr['kick']=gap_kick
+   if gap['game_id'] not in {x['game_id'] for x in DISCREPANCIES}:DISCREPANCIES.append(gap)
+  r.update(gr);r.update(p);r['future']=True;r['depth_rank']=rank;r.update({c:np.nan for c in COLS});rows.append(r)
  if not rows:raise RuntimeError('No eligible matched players')
  d=pd.concat([h,pd.DataFrame(rows)],ignore_index=True).sort_values(['gsis_id','kick']).reset_index(drop=True);features=[]
  for c in COLS:
@@ -264,7 +268,7 @@ def run():
  try:
   s,st,ro,current,dep,pool,contest=collect();d,t,st,fs,rejected=prepare(s,st,ro,current,dep,pool);print('Historical rows',int((~d.future).sum()),flush=True);f,cal,validation=fit_players(d,fs);t,tc,teamreport=team_and_defense(t,st);validation['team_models']=teamreport
   N=int(os.getenv('MILLY_WORLDS','4096'));ps,games,blocks,W,G=build_worlds(f,cal,t,tc,pool,N,811);_,_,_,H,HG=build_worlds(f,cal,t,tc,pool,N,812);lineups,diag,bank,refs,ra,rb=twenty(ps,games,W,H,HG);hyp=over_under(s,st)
-  now=pd.Timestamp.now(tz='UTC');rid=f'{YEAR}-w{int(f.week.iloc[0]):02d}-'+now.strftime('%Y%m%dT%H%M%SZ');release={'version':'1.0','release_id':rid,'generated_at':now,'contest':contest,'players':ps,'games':games,'lineups':lineups,'diagnostics':diag,'validation':validation,'hypothesis':hyp,'excluded':rejected,'source_receipts':[json.loads(x) for x in (CACHE/'source-receipts.jsonl').read_text().splitlines()],'code_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'entry_ready':False,'independent_baseline':True,'limitations':['Historical rosters are reconstructed, not authenticated pre-lock snapshots.','Joint empirical worlds are statistical, not exact conserved plays or final box scores.','DST uses a learned scoreboard-based scoring proxy, not exact rare-play attribution.','Questionable players are conditional on playing; no guaranteed final-inactive service.','No six-year full-field Millionaire Maker backtest, ownership calibration or demonstrated profitable edge.']}
+  now=pd.Timestamp.now(tz='UTC');rid=f'{YEAR}-w{int(f.week.iloc[0]):02d}-'+now.strftime('%Y%m%dT%H%M%SZ');release={'version':'1.0','release_id':rid,'generated_at':now,'contest':contest,'players':ps,'games':games,'lineups':lineups,'diagnostics':diag,'validation':validation,'hypothesis':hyp,'excluded':rejected,'schedule_discrepancies':DISCREPANCIES,'source_receipts':[json.loads(x) for x in (CACHE/'source-receipts.jsonl').read_text().splitlines()],'code_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'entry_ready':False,'independent_baseline':True,'limitations':['Historical rosters are reconstructed, not authenticated pre-lock snapshots.','Joint empirical worlds are statistical, not exact conserved plays or final box scores.','DST uses a learned scoreboard-based scoring proxy, not exact rare-play attribution.','Questionable players are conditional on playing; no guaranteed final-inactive service.','No six-year full-field Millionaire Maker backtest, ownership calibration or demonstrated profitable edge.']}
   assert len(lineups)==20 and all(legal(l['ids'],ps) for l in lineups)
   assert len({tuple(sorted(l['ids'])) for l in lineups})==20
   assert not set(fs)&{'salary','ownership','total_line','points','expert_projection','user_belief'}
