@@ -92,7 +92,7 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
    pickAbbr:side==='home'?g.home?.abbreviation:g.away?.abbreviation,
    market:moneyline?'ml':'spread',
    line:moneyline?null:finite(homeSpread)?(side==='home'?homeSpread:-homeSpread):null,odds:finite(odds)?odds:null,
-   winChance:finite(p)?p:null,stake,wager:0,idealWager:0,toWin:0,recommended:false,scoreClock:scoreClock(g,now),cover,totalCover});
+   winChance:finite(p)?p:null,stake,advantage:!!g.advantage,advantageReason:g.advantageReason??null,edge:finite(g.edge)?g.edge:null,wager:0,idealWager:0,toWin:0,recommended:false,scoreClock:scoreClock(g,now),cover,totalCover});
  }
  // Rank by Kelly % so public Bankroll and My Bankroll share one order regardless of bankroll size.
  rows.sort((a,b)=>{
@@ -104,4 +104,12 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
  const recommended=rows.filter(r=>r.recommended);
  const bySport={};for(const r of recommended){bySport[r.sport]=(bySport[r.sport]??0)+r.wager;}
  return {rows,recommended,bySport,total:recommended.reduce((a,r)=>a+r.wager,0)};
+}
+/** Top 10 plays for the day across every sport: the same Kelly order and
+ * bankroll fit as Today's plays, so it mirrors what the bankroll stakes. Staked
+ * plays come first; if fewer than ten fit, the next-best picks fill in, marked unstaked. */
+export function topTen(games,bankrolls,today,now=Date.now()){
+ const {rows}=todayPlays(games,bankrolls,today,now);
+ const staked=rows.filter(r=>r.recommended),rest=rows.filter(r=>!r.recommended);
+ return staked.concat(rest).slice(0,10);
 }

@@ -9,3 +9,9 @@ test('NBA and CBB issue every pick and star only documented edges',()=>{
  assert.equal(publishDecision(null,'nba',null,{edge:12,overUnder:{edge:2}}).advantage,false);
  assert.equal(publishDecision(null,'nfl').published,true);
 });
+test('other sports star only large edge with win chance above break-even',()=>{
+ assert.equal(publishDecision({winChance:0.55,breakEven:0.524},'nfl',null,{edge:6}).advantage,true);
+ assert.equal(publishDecision({winChance:0.55,breakEven:0.524},'nfl',null,{edge:3}).advantage,false);
+ assert.equal(publishDecision({winChance:0.525,breakEven:0.524},'cfb',null,{edge:9}).advantage,false);
+ assert.equal(publishDecision({winChance:0.56,breakEven:0.524},'mlb',null,{edge:1.2}).advantage,true);
+});

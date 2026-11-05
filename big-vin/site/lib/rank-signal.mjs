@@ -71,14 +71,24 @@ export function rankLabel(signal){
 export const GATED_SPORTS=new Set(['nba','cbb']);
 export const CBB_NEUTRAL_EDGE=3;
 export const NBA_TOTAL_EDGE=8;
-export function advantageRule(sport,game={}){
+/** Every other sport (NFL, CFB, MLB, NHL, WNBA) has no documented edge rule from
+ * research yet, so the star uses a conservative rule built only from the learned
+ * rank signal above: the model's gap to the market must fall in that sport's
+ * "large" bucket (CUTS high value; 5 points for football, 1 run MLB, 0.7 goals NHL)
+ * AND the graded-history win chance for that bucket must clear the price's
+ * break-even by at least ADVANTAGE_MARGIN. Both must hold. */
+export const ADVANTAGE_MARGIN=0.01;
+export function advantageRule(sport,game={},score=null){
  if(sport==='cbb'&&game.neutralSite===true&&Number.isFinite(game.edge)&&game.edge>=CBB_NEUTRAL_EDGE)return `Neutral-site edge ${game.edge.toFixed(1)} ≥ ${CBB_NEUTRAL_EDGE}`;
  const t=game.overUnder?.edge;
  if(sport==='nba'&&Number.isFinite(t)&&Math.abs(t)>=NBA_TOTAL_EDGE)return `Total edge ${Math.abs(t).toFixed(1)} ≥ ${NBA_TOTAL_EDGE}`;
- return null;
+ if(GATED_SPORTS.has(sport))return null;
+ const high=(CUTS[sport]??[2,5])[1];
+ if(!score||!Number.isFinite(game.edge)||game.edge<high)return null;
+ if(!(score.winChance>=score.breakEven+ADVANTAGE_MARGIN))return null;
+ return `Edge ${game.edge.toFixed(1)} ≥ ${high} and ${Math.round(score.winChance*100)}% win chance vs ${Math.round(score.breakEven*100)}% break-even`;
 }
 export function publishDecision(score,sport,projection=null,game={}){
- if(!GATED_SPORTS.has(sport))return {published:true,reason:null,advantage:false,advantageReason:null};
- const why=advantageRule(sport,game);
+ const why=advantageRule(sport,game,score);
  return {published:true,reason:null,advantage:!!why,advantageReason:why};
 }
