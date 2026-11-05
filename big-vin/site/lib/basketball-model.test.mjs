@@ -22,9 +22,8 @@ test('college prior file covers Division I teams with Torvik tempo',()=>{
  const p=cbbPriors(2027);assert.ok(Object.keys(p).length>300);
  assert.ok(cbbPace({date:'2026-11-05',homeId:Object.keys(p)[0],awayId:Object.keys(p)[1]})>55);
 });
-test('college picks need priced lines and enough recent games per team',()=>{
+test('college picks are issued on every game',()=>{
  const good={bucketGraded:80,winChance:0.6,breakEven:0.524};
- assert.equal(publishDecision(good,'cbb',{homeEffectiveGames:2,awayEffectiveGames:9}).published,false);
- assert.equal(publishDecision(good,'cbb',{homeEffectiveGames:6,awayEffectiveGames:9}).published,true);
- assert.equal(publishDecision(null,'cbb').published,false);
+ assert.equal(publishDecision(good,'cbb',{homeEffectiveGames:2,awayEffectiveGames:9}).published,true);
+ assert.equal(publishDecision(null,'cbb').published,true);
 });

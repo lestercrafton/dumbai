@@ -62,22 +62,23 @@ export function rankLabel(signal){
  return {short:value,title:clv?`Ranked by expected line movement: ${value}`:`Ranked by chance to win: ${value}`};
 }
 
-/** Publish bar for sports without a validated model. A pick is published only
- * when its own bucket of graded picks has PUBLISH_MIN_GRADED results and its
- * shrunk win chance clears break-even by PUBLISH_MARGIN. Everything else is a
- * lean: still shown, still graded in the open, never staked. */
+/** NBA and CBB issue a pick on every priced game (owner decision, Nov 4 2026).
+ * The old publish bar is gone. A game is starred as an advantage pick only when it
+ * fits a documented edge rule from the Nov 1 edge research
+ * (public/research/edges-2026-11-01): CBB neutral-site spread edge >= 3 points,
+ * or NBA model total vs market total >= 8 points. Bankroll stakes starred games
+ * with the usual Kelly method; other basketball picks are issued and graded unstaked. */
 export const GATED_SPORTS=new Set(['nba','cbb']);
-export const PUBLISH_MIN_GRADED=40;
-export const PUBLISH_MARGIN=0.02;
-/** Fewest weighted games per team before a college basketball pick can publish. */
-export const CBB_MIN_TEAM_GAMES=5;
-export function publishDecision(score,sport,projection=null){
- if(!GATED_SPORTS.has(sport))return {published:true,reason:null};
- if(!score)return {published:false,reason:'Lean · no priced pick'};
- if(sport==='cbb'&&projection&&Math.min(projection.homeEffectiveGames??0,projection.awayEffectiveGames??0)<CBB_MIN_TEAM_GAMES)return {published:false,reason:`Lean · a team has fewer than ${CBB_MIN_TEAM_GAMES} recent games in the ratings`};
- const n=score.bucketGraded??0;
- if(n<PUBLISH_MIN_GRADED)return {published:false,reason:`Lean · only ${n} graded picks like this (needs ${PUBLISH_MIN_GRADED})`};
- const need=score.breakEven+PUBLISH_MARGIN;
- if(!(score.winChance>=need))return {published:false,reason:`Lean · picks like this win ${Math.round(score.winChance*100)}% graded (needs ${Math.round(need*100)}%)`};
- return {published:true,reason:null};
+export const CBB_NEUTRAL_EDGE=3;
+export const NBA_TOTAL_EDGE=8;
+export function advantageRule(sport,game={}){
+ if(sport==='cbb'&&game.neutralSite===true&&Number.isFinite(game.edge)&&game.edge>=CBB_NEUTRAL_EDGE)return `Neutral-site edge ${game.edge.toFixed(1)} ≥ ${CBB_NEUTRAL_EDGE}`;
+ const t=game.overUnder?.edge;
+ if(sport==='nba'&&Number.isFinite(t)&&Math.abs(t)>=NBA_TOTAL_EDGE)return `Total edge ${Math.abs(t).toFixed(1)} ≥ ${NBA_TOTAL_EDGE}`;
+ return null;
+}
+export function publishDecision(score,sport,projection=null,game={}){
+ if(!GATED_SPORTS.has(sport))return {published:true,reason:null,advantage:false,advantageReason:null};
+ const why=advantageRule(sport,game);
+ return {published:true,reason:null,advantage:!!why,advantageReason:why};
 }

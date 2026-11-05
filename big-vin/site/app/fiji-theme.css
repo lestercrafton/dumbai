@@ -961,3 +961,4 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-game-card.vin-game-win:hover { background: #d3ecd9; border-color: var(--fiji-green-line); outline: 1px solid var(--fiji-green-line); }
 .vin-game-card.vin-game-win .vin-scoreboard { background: #e6f5e9; border-color: var(--fiji-green-line); }
 .vin-game-card.vin-game-win > *:not(.vin-scoreboard):not(.vin-scoreboard-link), .vin-game-card.vin-game-win details, .vin-game-card.vin-game-win summary { background: transparent; }
+.vin-advantage-star { color: #d4a017; font-size: 1.1em; }

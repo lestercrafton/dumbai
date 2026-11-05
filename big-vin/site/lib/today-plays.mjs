@@ -75,7 +75,7 @@ export function todayPlays(games,bankrolls,today,now=Date.now()){
   const homeSpread=finite(pick.marketHomeSpread)?pick.marketHomeSpread:g.market?.homeSpread;
   const odds=pickPrice(g);const p=g.rankSignal?.winChance;const bankroll=bankrolls[g.sport];
   const ok=finite(odds)&&Math.abs(odds)>=100&&finite(p)&&finite(bankroll);
-  const stake=ok&&g.published!==false?kellyStake(p,odds):0;
+  const stake=ok&&g.published!==false&&(!['nba','cbb'].includes(g.sport)||g.advantage)?kellyStake(p,odds):0;
   const moneyline=g.sport==='mlb';const cover=playCover(g,now);
   let totalCover=null;
   if(g.overUnder?.side){
