@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-05T02:46:50.024Z",
+ "generatedAt": "2026-11-05T11:29:19.746Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -43,14 +43,14 @@
    ]
   },
   "2": {
-   "loss": 3.18,
+   "loss": 3.03,
    "items": [
     {
      "player": "Payton Pritchard",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.22,
-     "minutes": 28
+     "status": "Day-To-Day",
+     "points": 0.07,
+     "minutes": 26.8
     },
     {
      "player": "Devin Carter",
@@ -88,14 +88,14 @@
    ]
   },
   "4": {
-   "loss": 0.11,
+   "loss": 0.1,
    "items": [
     {
      "player": "Jalen Smith",
      "position": "F",
      "status": "Day-To-Day",
-     "points": 0.11,
-     "minutes": 24.6
+     "points": 0.1,
+     "minutes": 22.4
     },
     {
      "player": "Nic Claxton",
@@ -107,14 +107,14 @@
    ]
   },
   "5": {
-   "loss": 1.65,
+   "loss": 0.18,
    "items": [
     {
      "player": "Jarrett Allen",
      "position": "C",
-     "status": "Doubtful",
-     "points": 1.65,
-     "minutes": 27.7
+     "status": "Day-To-Day",
+     "points": 0.18,
+     "minutes": 25.1
     },
     {
      "player": "Jaylon Tyson",
@@ -397,8 +397,15 @@
    ]
   },
   "17": {
-   "loss": 0,
+   "loss": 0.02,
    "items": [
+    {
+     "player": "Day'Ron Sharpe",
+     "position": "C",
+     "status": "Day-To-Day",
+     "points": 0.02,
+     "minutes": 23.1
+    },
     {
      "player": "Egor Demin",
      "position": "G",
@@ -515,6 +522,13 @@
   "22": {
    "loss": 1.83,
    "items": [
+    {
+     "player": "Vit Krejci",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 10.3
+    },
     {
      "player": "Ja Morant",
      "position": "G",
@@ -709,14 +723,14 @@
    ]
   },
   "29": {
-   "loss": 1,
+   "loss": 0.12,
    "items": [
     {
      "player": "Isaiah Stewart",
      "position": "C",
-     "status": "Doubtful",
-     "points": 1,
-     "minutes": 19.7
+     "status": "Day-To-Day",
+     "points": 0.12,
+     "minutes": 18.3
     },
     {
      "player": "Scotty Pippen Jr.",
@@ -735,7 +749,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 6
     },
     {
      "player": "Grant Williams",

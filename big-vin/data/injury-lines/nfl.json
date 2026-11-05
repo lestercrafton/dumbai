@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-05T02:46:46.668Z",
+ "generatedAt": "2026-11-05T11:29:10.666Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -101,7 +101,7 @@
      "player": "Divine Deablo",
      "espnId": "4037626",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-05T03:25Z",
      "weight": 0.25,
      "points": 0.06
     }
@@ -609,7 +609,7 @@
      "player": "Keisean Nixon",
      "espnId": "4259493",
      "status": "Questionable",
-     "reported": "2026-11-04T22:00Z",
+     "reported": "2026-11-05T02:35Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -661,7 +661,7 @@
      "player": "Azeez Al-Shaair",
      "espnId": "3919117",
      "status": "Questionable",
-     "reported": "2026-11-04T23:55Z",
+     "reported": "2026-11-05T02:57Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -671,7 +671,7 @@
      "player": "Reed Blankenship",
      "espnId": "4243956",
      "status": "Questionable",
-     "reported": "2026-11-03T00:50Z",
+     "reported": "2026-11-05T03:08Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -873,7 +873,7 @@
      "player": "Kam Curl",
      "espnId": "4242154",
      "status": "Questionable",
-     "reported": "2026-11-04T23:13Z",
+     "reported": "2026-11-05T03:18Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -883,7 +883,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Questionable",
-     "reported": "2026-11-01T23:28Z",
+     "reported": "2026-11-05T03:21Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -955,7 +955,7 @@
      "player": "Kadyn Proctor",
      "espnId": "4870976",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-05T03:55Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1077,13 +1077,23 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.28,
+   "loss": 0.36,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "Justin Reid",
+     "espnId": "3931399",
+     "status": "Questionable",
+     "reported": "2026-11-05T02:39Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
     {
      "group": "cb",
      "position": "RCB",
@@ -1152,7 +1162,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-11-05T02:35Z",
+     "reported": "2026-11-05T11:02Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1238,7 +1248,7 @@
      "player": "Jihaad Campbell",
      "espnId": "4685287",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-05T02:51Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1258,7 +1268,7 @@
      "player": "Jake Elliott",
      "espnId": "3050478",
      "status": "Questionable",
-     "reported": "2026-11-04T23:17Z",
+     "reported": "2026-11-05T02:44Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1314,7 +1324,7 @@
      "player": "Christian McCaffrey",
      "espnId": "3117251",
      "status": "Questionable",
-     "reported": "2026-11-04T21:57Z",
+     "reported": "2026-11-04T20:51Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -1334,7 +1344,7 @@
      "player": "Marques Sigle",
      "espnId": "4693337",
      "status": "Questionable",
-     "reported": "2026-10-27T13:11Z",
+     "reported": "2026-11-05T03:29Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1447,7 +1457,7 @@
      "player": "Tykee Smith",
      "espnId": "4428522",
      "status": "Questionable",
-     "reported": "2026-11-05T02:30Z",
+     "reported": "2026-11-05T03:32Z",
      "weight": 0.25,
      "points": 0.08
     }
