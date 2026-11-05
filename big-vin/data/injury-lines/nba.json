@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-05T18:59:07.576Z",
+ "generatedAt": "2026-11-05T20:48:30.555Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -69,13 +69,13 @@
    ]
   },
   "3": {
-   "loss": 0.54,
+   "loss": 0.05,
    "items": [
     {
      "player": "Trey Murphy III",
      "position": "F",
-     "status": "Out",
-     "points": 0.54,
+     "status": "Day-To-Day",
+     "points": 0.05,
      "minutes": 33
     },
     {
@@ -497,18 +497,18 @@
    "loss": 0.73,
    "items": [
     {
-     "player": "Jordan Goodwin",
-     "position": "G",
-     "status": "Out",
-     "points": 0.73,
-     "minutes": 18.8
-    },
-    {
      "player": "Rasheer Fleming",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 7.5
+    },
+    {
+     "player": "Jordan Goodwin",
+     "position": "G",
+     "status": "Out",
+     "points": 0.73,
+     "minutes": 18.8
     },
     {
      "player": "Mark Williams",
