@@ -113,3 +113,16 @@ export function topFive(games,bankrolls,today,now=Date.now()){
  const staked=rows.filter(r=>r.recommended),rest=rows.filter(r=>!r.recommended);
  return staked.concat(rest).slice(0,5);
 }
+/** Fri–Sun Chicago dates for the current weekend (if today is Fri/Sat/Sun) or the next one. */
+export function weekendDates(today){
+ const t=Date.parse(today+'T12:00:00Z');const dow=new Date(t).getUTCDay();
+ const back=dow===5?0:dow===6?1:dow===0?2:-(5-dow);
+ const fri=t-back*86400000;
+ return [0,1,2].map(i=>new Date(fri+i*86400000).toISOString().slice(0,10));
+}
+/** This weekend's top 5: each day's bankroll fit as on Today's plays, merged in Kelly order. */
+export function weekendTopFive(games,bankrolls,dates,now=Date.now()){
+ const rows=dates.flatMap(d=>todayPlays(games,bankrolls,d,now).rows);
+ rows.sort((a,b)=>(b.recommended-a.recommended)||(b.stake-a.stake)||(Date.parse(a.startTime)-Date.parse(b.startTime)));
+ return rows.slice(0,5);
+}

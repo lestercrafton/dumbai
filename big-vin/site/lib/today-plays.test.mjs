@@ -78,3 +78,16 @@ test('every sport stakes only starred picks; unstarred still listed',()=>{
  assert.deepEqual(out.recommended.map(r=>r.id),['cfb:s']);
  assert.equal(out.rows.find(r=>r.id==='cfb:u').stake,0);assert.equal(out.rows.find(r=>r.id==='nhl:n').stake,0);
 });
+
+import {weekendDates,weekendTopFive} from './today-plays.mjs';
+test('weekend dates: upcoming Fri–Sun, or current weekend',()=>{
+ assert.deepEqual(weekendDates('2026-11-04'),['2026-11-06','2026-11-07','2026-11-08']);
+ assert.deepEqual(weekendDates('2026-11-07'),['2026-11-06','2026-11-07','2026-11-08']);
+ assert.deepEqual(weekendDates('2026-11-08'),['2026-11-06','2026-11-07','2026-11-08']);
+ assert.deepEqual(weekendDates('2026-11-09'),['2026-11-13','2026-11-14','2026-11-15']);
+});
+test('weekend top 5 caps at five, staked first',()=>{
+ const out=weekendTopFive(Array.from({length:8},(_,i)=>g(String(i),0.5+i*0.02)),{cfb:1000},weekendDates(ctDate('2026-10-24T21:00:00Z')));
+ assert.equal(out.length,5);
+ const f=out.findIndex(r=>!r.recommended);if(f>=0)assert.ok(out.slice(f).every(r=>!r.recommended));
+});

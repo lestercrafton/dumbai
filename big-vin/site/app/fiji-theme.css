@@ -979,3 +979,9 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-top-five-meta{text-align:right;}
 .vin-top-five-meta b{font-size:.8rem;}
 @media(max-width:560px){.vin-top-five-list li{grid-template-columns:1.4rem 1fr;}.vin-top-five-meta{grid-column:2;text-align:left;flex-direction:row;gap:.5rem;}}
+.vin-top-five-head{flex-wrap:wrap;align-items:center;}
+.vin-top-five-toggle{display:inline-flex;border:1px solid currentColor;border-radius:999px;overflow:hidden;opacity:.9;}
+.vin-top-five-toggle button{background:none;border:0;color:inherit;font:inherit;font-size:.78rem;padding:.25rem .8rem;cursor:pointer;}
+.vin-top-five-toggle button[aria-pressed="true"]{background:currentColor;}
+.vin-top-five-toggle button[aria-pressed="true"]{background:#1f7a4d;color:#fff;}
+.vin-top-five-note{font-size:.75rem;opacity:.65;margin:0 0 .6rem;}
