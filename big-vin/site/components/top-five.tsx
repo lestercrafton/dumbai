@@ -17,7 +17,7 @@ export function TopFive(){
  const odds=(o:number|null)=>o==null?'':o>0?`+${o}`:`−${-o}`;
  const line=(r:any)=>r.market==='ml'?'ML':r.line==null?'':r.line===0?'PK':(r.line>0?'+':'−')+Math.abs(r.line);
  return <section id="top-5" className="vin-top-five" aria-label="All-sport top 5 plays today">
-  <header className="vin-top-five-head"><h2>All-sport top 5</h2><span>Bankroll order · ★ advantage</span></header>
+  <header className="vin-top-five-head"><h2>All-sport top 5</h2><span>★ advantage picks are staked · others graded only</span></header>
   {!rows?<p className="fine">Loading today’s games…</p>:rows.length===0?<p className="fine">No priced picks today yet.</p>:
   <ol className="vin-top-five-list">{rows.map((r,i)=><li key={r.id} className={r.recommended?'staked':'unstaked'}>
    <span className="vin-top-five-rank">{i+1}</span>

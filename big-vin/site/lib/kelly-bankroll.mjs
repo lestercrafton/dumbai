@@ -7,7 +7,9 @@
  * picks, but only stake / P&L / re-ups / series / drawdown on that day forward.
  * Used by My Bankroll so History starts when the visitor arrived, not day one. */
 import {gradeSpreadPick,spreadOffer,breakEven,ASSUMED_ODDS,isLegacyRunLine} from './spread-record.mjs';
-import {learnRankSignal,scoreGame} from './rank-signal.mjs';
+import {learnRankSignal,scoreGame,advantageRule} from './rank-signal.mjs';
+/** Every sport stakes only starred picks from this Central date on (owner decision, Nov 4 2026). */
+export const STAR_ONLY_FROM='2026-11-04';
 import {ctDate} from './today-plays.mjs';
 
 export const START_BANKROLL=1_000_000;
@@ -53,7 +55,10 @@ export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,incl
   const signal=learnRankSignal(learnFrom,{before:Date.parse(r.startTime)});
   const edge=finite(r.predictedMargin)?Math.abs(r.predictedMargin+offer.homeSpread):null;
   const p=scoreGame(signal,{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport})?.winChance;
-  const f=kellyStake(p,odds);
+  const score=scoreGame(signal,{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport});
+  // From STAR_ONLY_FROM on, every sport stakes only starred (advantage) picks; earlier history is unchanged.
+  const starred=ctDate(r.startTime)<STAR_ONLY_FROM||!!advantageRule(r.sport,{neutralSite:r.neutralSite??r.projection?.neutral??false,edge},score);
+  const f=starred?kellyStake(p,odds):0;
   // Pre-arrival / pre-override games inform the signal only — no personal stake.
   if(applyDay&&ctDate(r.startTime)<applyDay)continue;
   applied++;

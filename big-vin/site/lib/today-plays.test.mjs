@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {todayPlays,ctDate,playCover,scoreClock,fitSequentialKelly} from './today-plays.mjs';
-const g=(id,p,extra={})=>({id,sport:'cfb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpread:-3,homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p},...extra});
+const g=(id,p,extra={})=>({id,sport:'cfb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpread:-3,homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p},advantage:true,...extra});
 test('sorts by Kelly, zero Kelly is No pick, other days excluded, finals kept for status',()=>{
  const out=todayPlays([g('1',0.55),g('2',0.6),g('3',0.5),g('4',0.7,{startTime:'2026-10-26T21:00:00Z'}),g('5',0.7,{status:'final'})],{cfb:1_000_000},ctDate('2026-10-24T21:00:00Z'));
  assert.deepEqual(out.rows.filter(r=>!r.done).map(r=>r.id),['cfb:2','cfb:1','cfb:3']);
@@ -27,8 +27,8 @@ test('live cover status matches the card labels and colors',()=>{
 });
 
 test('ranks by Kelly % across sports, not dollar wager',()=>{
- const cfb=(id,p)=>({id,sport:'cfb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpread:-3,homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p}});
- const mlb=(id,p)=>({id,sport:'mlb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p}});
+ const cfb=(id,p)=>({id,sport:'cfb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpread:-3,homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p},advantage:true});
+ const mlb=(id,p)=>({id,sport:'mlb',status:'scheduled',startTime:'2026-10-24T21:00:00Z',side:'away',home:{name:'H'},away:{name:'A'},market:{homeSpreadPrice:-110,awaySpreadPrice:-110},rankSignal:{winChance:p},advantage:true});
  const out=todayPlays([cfb('hi',0.62),mlb('lo',0.54)],{cfb:1_000,mlb:1_000_000},'2026-10-24');
  assert.equal(out.rows[0].id,'cfb:hi');
  assert.ok(out.rows[0].stake>out.rows[1].stake);
@@ -70,4 +70,11 @@ test('all-sport top 5 caps at five, staked first',()=>{
  assert.equal(out.length,5);
  const firstUnstaked=out.findIndex(r=>!r.recommended);
  if(firstUnstaked>=0)assert.ok(out.slice(firstUnstaked).every(r=>!r.recommended));
+});
+
+test('every sport stakes only starred picks; unstarred still listed',()=>{
+ const out=todayPlays([g('s',0.6),g('u',0.65,{advantage:false}),g('n',0.65,{sport:'nhl',advantage:false})],{cfb:1_000_000,nhl:1_000_000},ctDate('2026-10-24T21:00:00Z'));
+ assert.equal(out.rows.length,3);
+ assert.deepEqual(out.recommended.map(r=>r.id),['cfb:s']);
+ assert.equal(out.rows.find(r=>r.id==='cfb:u').stake,0);assert.equal(out.rows.find(r=>r.id==='nhl:n').stake,0);
 });
