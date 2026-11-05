@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-05T11:29:19.746Z",
+ "generatedAt": "2026-11-05T18:59:07.576Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -13,18 +13,18 @@
    "loss": 1.9,
    "items": [
     {
-     "player": "Jalen Johnson",
-     "position": "F",
-     "status": "Out",
-     "points": 1.71,
-     "minutes": 32.7
-    },
-    {
      "player": "Jock Landale",
      "position": "C",
      "status": "Out",
      "points": 0.19,
      "minutes": 15.3
+    },
+    {
+     "player": "Jalen Johnson",
+     "position": "F",
+     "status": "Out",
+     "points": 1.71,
+     "minutes": 32.7
     },
     {
      "player": "Mouhamed Gueye",
@@ -43,8 +43,15 @@
    ]
   },
   "2": {
-   "loss": 3.03,
+   "loss": 0.37,
    "items": [
+    {
+     "player": "Jayson Tatum",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.3,
+     "minutes": 35.1
+    },
     {
      "player": "Payton Pritchard",
      "position": "G",
@@ -58,13 +65,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Jayson Tatum",
-     "position": "F",
-     "status": "Out",
-     "points": 2.96,
-     "minutes": 35.1
     }
    ]
   },
@@ -91,24 +91,31 @@
    "loss": 0.1,
    "items": [
     {
-     "player": "Jalen Smith",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.1,
-     "minutes": 22.4
-    },
-    {
      "player": "Nic Claxton",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Jalen Smith",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.1,
+     "minutes": 22.4
     }
    ]
   },
   "5": {
    "loss": 0.18,
    "items": [
+    {
+     "player": "Peyton Watson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 28.3
+    },
     {
      "player": "Jarrett Allen",
      "position": "C",
@@ -122,13 +129,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 20.8
-    },
-    {
-     "player": "Peyton Watson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 28.3
     }
    ]
   },
@@ -136,18 +136,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Santi Aldama",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Max Christie",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 23.9
+    },
+    {
+     "player": "Santi Aldama",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
     },
     {
      "player": "Tarik Biberovic",
@@ -254,18 +254,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Steven Adams",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 8
-    },
-    {
      "player": "Clint Capela",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 14.2
+    },
+    {
+     "player": "Steven Adams",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 8
     }
    ]
   },
@@ -744,13 +744,6 @@
   "30": {
    "loss": 0,
    "items": [
-    {
-     "player": "Kon Knueppel",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 6
-    },
     {
      "player": "Grant Williams",
      "position": "F",
