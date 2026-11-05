@@ -962,10 +962,20 @@ div:has(> main#ledger) > a[href="#ledger"] { color: #fff !important; }
 .vin-game-card.vin-game-win .vin-scoreboard { background: #e6f5e9; border-color: var(--fiji-green-line); }
 .vin-game-card.vin-game-win > *:not(.vin-scoreboard):not(.vin-scoreboard-link), .vin-game-card.vin-game-win details, .vin-game-card.vin-game-win summary { background: transparent; }
 .vin-advantage-star { color: #d4a017; font-size: 1.1em; }
-.vin-top-ten{margin:1.5rem 0;}
-.vin-top-ten-list{list-style:none;padding:0;margin:0;display:grid;gap:.4rem;}
-.vin-top-ten-list li{display:grid;grid-template-columns:2rem 4rem 1fr;gap:.15rem .6rem;padding:.55rem .7rem;border:1px solid rgba(127,127,127,.25);border-radius:8px;}
-.vin-top-ten-list li.unstaked{opacity:.7;}
-.vin-top-ten-rank{grid-row:span 3;font-weight:700;font-size:1.3em;}
-.vin-top-ten-sport{grid-row:span 3;font-size:.8em;text-transform:uppercase;opacity:.75;}
-.vin-top-ten-why{opacity:.75;}
+
+.vin-top-five{margin:1.25rem 0;padding:.9rem 1rem;border:1px solid rgba(127,127,127,.25);border-radius:10px;}
+.vin-top-five-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.6rem;}
+.vin-top-five-head h2{margin:0;font-size:1.15rem;}
+.vin-top-five-head span{font-size:.75rem;opacity:.65;}
+.vin-top-five-list{list-style:none;padding:0;margin:0;}
+.vin-top-five-list li{display:grid;grid-template-columns:1.6rem 1fr auto;align-items:center;gap:.75rem;padding:.5rem 0;border-top:1px solid rgba(127,127,127,.18);}
+.vin-top-five-list li:first-child{border-top:0;}
+.vin-top-five-list li.unstaked{opacity:.6;}
+.vin-top-five-rank{font-weight:700;font-size:1.1rem;opacity:.8;text-align:center;}
+.vin-top-five-main,.vin-top-five-meta{display:flex;flex-direction:column;min-width:0;}
+.vin-top-five-main strong{font-size:.95rem;}
+.vin-top-five-main em{font-style:normal;opacity:.7;font-weight:400;}
+.vin-top-five-main small,.vin-top-five-meta small{font-size:.72rem;opacity:.65;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.vin-top-five-meta{text-align:right;}
+.vin-top-five-meta b{font-size:.8rem;}
+@media(max-width:560px){.vin-top-five-list li{grid-template-columns:1.4rem 1fr;}.vin-top-five-meta{grid-column:2;text-align:left;flex-direction:row;gap:.5rem;}}

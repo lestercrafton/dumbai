@@ -1,6 +1,6 @@
 'use client';
 import {KellyNote} from '@/components/kelly-note';
-import {TopTen} from '@/components/top-ten';
+import {TopFive} from '@/components/top-five';
 import {rankByEdge} from '@/lib/kelly-rank.mjs';
 import {COLLEGE_FILTER_HINTS,collegeFiltersFor,rankWithinCollegeFilter} from '@/lib/college-filter.mjs';
 import {useState,useEffect,useCallback,useRef,type ReactNode} from 'react';
@@ -166,7 +166,7 @@ export default function Home(){
  return <main className="vin-site" id="top">
   <a href="#board" className="vin-skip-link">Skip to game board</a>
   <div className="vin-shell"><SiteHeader onBoard={()=>setTab('slate')} onResults={()=>setTab('records')}/>
-   <TopTen/>
+   <TopFive/>
    <section id="board" className="vin-board-section" aria-label="Game board and records">
     <div className="vin-board-heading"><div><p className="vin-kicker">THE BOARD / ALL SIGNAL</p><h2>Find your game.</h2></div><p>Ranked within each sport.<br/>Every result on the record.</p></div>
     <p className="vin-board-motto">We never lose; we either win or learn.</p>

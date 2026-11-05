@@ -62,3 +62,12 @@ test('sequential Kelly stops when the next bet no longer fits the day bankroll',
  assert.equal(rows[1].idealWager,400);
  assert.equal(rows[2].wager,0);
 });
+
+import {topFive} from './today-plays.mjs';
+test('all-sport top 5 caps at five, staked first',()=>{
+ const day=ctDate('2026-10-24T21:00:00Z');
+ const out=topFive(Array.from({length:8},(_,i)=>g(String(i),0.5+i*0.02)),{cfb:1000},day);
+ assert.equal(out.length,5);
+ const firstUnstaked=out.findIndex(r=>!r.recommended);
+ if(firstUnstaked>=0)assert.ok(out.slice(firstUnstaked).every(r=>!r.recommended));
+});
