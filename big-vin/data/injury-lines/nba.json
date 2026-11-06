@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-06T00:33:28.140Z",
+ "generatedAt": "2026-11-06T07:23:01.299Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -336,14 +336,14 @@
    ]
   },
   "13": {
-   "loss": 0,
+   "loss": 0.1,
    "items": [
     {
-     "player": "Adou Thiero",
+     "player": "Sandro Mamukelashvili",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
+     "status": "Questionable",
+     "points": 0.1,
+     "minutes": 23.6
     }
    ]
   },
@@ -490,18 +490,18 @@
    "loss": 0.73,
    "items": [
     {
-     "player": "Rasheer Fleming",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 7.5
-    },
-    {
      "player": "Jordan Goodwin",
      "position": "G",
      "status": "Out",
      "points": 0.73,
      "minutes": 18.8
+    },
+    {
+     "player": "Rasheer Fleming",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 7.5
     },
     {
      "player": "Mark Williams",
@@ -541,13 +541,6 @@
   "23": {
    "loss": 0,
    "items": [
-    {
-     "player": "Daeqwon Plowden",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 12.2
-    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
@@ -704,8 +697,15 @@
    ]
   },
   "28": {
-   "loss": 0,
+   "loss": 0.91,
    "items": [
+    {
+     "player": "Scottie Barnes",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.91,
+     "minutes": 33.4
+    },
     {
      "player": "Kawhi Leonard",
      "position": "F",

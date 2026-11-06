@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-06T00:33:23.517Z",
+ "generatedAt": "2026-11-06T07:22:55.990Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -67,7 +67,7 @@
      "player": "Jayden Williams",
      "espnId": "4709718",
      "status": "Questionable",
-     "reported": "2026-11-01T20:46Z",
+     "reported": "2026-11-06T02:07Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -77,7 +77,7 @@
      "player": "Jon Gaines II",
      "espnId": "4367199",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-06T02:01Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -110,7 +110,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 4.42,
+   "loss": 4.85,
    "starter": {
     "name": "Tyler Huntley",
     "espnId": "4035671",
@@ -129,12 +129,12 @@
      "replacement": "Joe Fagnano",
      "starterEpaPerPlay": 0.032,
      "starterPlays": 189,
-     "backupEpaPerPlay": -0.124,
-     "backupPlays": 27,
-     "gapEpaPerPlay": 0.16,
-     "fullPoints": 4.77,
-     "alreadyInRatings": 0.24,
-     "points": 3.62
+     "backupEpaPerPlay": -0.163,
+     "backupPlays": 49,
+     "gapEpaPerPlay": 0.19,
+     "fullPoints": 5.96,
+     "alreadyInRatings": 0.32,
+     "points": 4.05
     },
     {
      "group": "cb",
@@ -266,7 +266,7 @@
      "player": "Damien Lewis",
      "espnId": "4362647",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-06T01:16Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -493,7 +493,7 @@
      "player": "Tyler Smith",
      "espnId": "4568652",
      "status": "Questionable",
-     "reported": "2026-11-04T21:51Z",
+     "reported": "2026-11-06T01:21Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -659,7 +659,7 @@
      "player": "Aaron Banks",
      "espnId": "4242390",
      "status": "Questionable",
-     "reported": "2026-11-04T21:59Z",
+     "reported": "2026-11-06T01:20Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -669,7 +669,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-06T01:25Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -679,7 +679,7 @@
      "player": "Travis Glover",
      "espnId": "4361904",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-06T01:29Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1091,7 +1091,7 @@
      "player": "Malik Nabers",
      "espnId": "4595348",
      "status": "Questionable",
-     "reported": "2026-11-05T21:23Z",
+     "reported": "2026-11-05T20:30Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -1121,7 +1121,7 @@
      "player": "Andrew Thomas",
      "espnId": "4259566",
      "status": "Questionable",
-     "reported": "2026-11-04T21:27Z",
+     "reported": "2026-11-06T01:12Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -1131,7 +1131,7 @@
      "player": "Jermaine Eluemunor",
      "espnId": "3115303",
      "status": "Questionable",
-     "reported": "2026-11-06T00:05Z",
+     "reported": "2026-11-06T07:01Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -1227,7 +1227,7 @@
      "player": "Jake Elliott",
      "espnId": "3050478",
      "status": "Questionable",
-     "reported": "2026-11-05T02:44Z",
+     "reported": "2026-11-06T00:22Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1312,7 +1312,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 2.26,
+   "loss": 2.32,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -1344,9 +1344,19 @@
      "player": "Leonard Williams",
      "espnId": "2971622",
      "status": "Questionable",
-     "reported": "2026-11-03T03:36Z",
+     "reported": "2026-11-06T00:46Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "lb",
+     "position": "RILB",
+     "player": "Ernest Jones IV",
+     "espnId": "4362851",
+     "status": "Questionable",
+     "reported": "2026-11-06T00:42Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "lb",
@@ -1364,7 +1374,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-06T01:39Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -1374,7 +1384,7 @@
      "player": "Quenton Nelson",
      "espnId": "3129308",
      "status": "Questionable",
-     "reported": "2026-11-05T02:35Z",
+     "reported": "2026-11-06T01:51Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1416,7 +1426,7 @@
      "player": "Tristan Wirfs",
      "espnId": "4240589",
      "status": "Questionable",
-     "reported": "2026-11-05T21:02Z",
+     "reported": "2026-11-06T00:58Z",
      "weight": 0.25,
      "points": 0.15
     }
