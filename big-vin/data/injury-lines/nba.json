@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-05T20:48:30.555Z",
+ "generatedAt": "2026-11-06T00:33:28.140Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,8 +10,22 @@
  ],
  "teams": {
   "1": {
-   "loss": 1.9,
+   "loss": 0.87,
    "items": [
+    {
+     "player": "Keshon Gilbert",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
+     "player": "Asa Newell",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 11
+    },
     {
      "player": "Jock Landale",
      "position": "C",
@@ -22,8 +36,8 @@
     {
      "player": "Jalen Johnson",
      "position": "F",
-     "status": "Out",
-     "points": 1.71,
+     "status": "Questionable",
+     "points": 0.68,
      "minutes": 32.7
     },
     {
@@ -43,20 +57,13 @@
    ]
   },
   "2": {
-   "loss": 0.37,
+   "loss": 0.26,
    "items": [
-    {
-     "player": "Jayson Tatum",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.3,
-     "minutes": 35.1
-    },
     {
      "player": "Payton Pritchard",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.07,
+     "status": "Questionable",
+     "points": 0.26,
      "minutes": 26.8
     },
     {
@@ -72,18 +79,18 @@
    "loss": 0.05,
    "items": [
     {
-     "player": "Trey Murphy III",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.05,
-     "minutes": 33
-    },
-    {
      "player": "Yves Missi",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 19.5
+    },
+    {
+     "player": "Trey Murphy III",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.05,
+     "minutes": 33
     }
    ]
   },
@@ -107,28 +114,21 @@
    ]
   },
   "5": {
-   "loss": 0.18,
+   "loss": 0.73,
    "items": [
-    {
-     "player": "Peyton Watson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 28.3
-    },
-    {
-     "player": "Jarrett Allen",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.18,
-     "minutes": 25.1
-    },
     {
      "player": "Jaylon Tyson",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 20.8
+    },
+    {
+     "player": "Jarrett Allen",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.73,
+     "minutes": 25.1
     }
    ]
   },
@@ -136,11 +136,11 @@
    "loss": 0,
    "items": [
     {
-     "player": "Max Christie",
-     "position": "G",
+     "player": "Sergio de Larrea",
+     "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 23.9
+     "minutes": 11.8
     },
     {
      "player": "Santi Aldama",
@@ -162,13 +162,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Sergio de Larrea",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 11.8
     }
    ]
   },
@@ -371,13 +364,13 @@
    ]
   },
   "16": {
-   "loss": 4.26,
+   "loss": 3.88,
    "items": [
     {
      "player": "Terrence Shannon Jr.",
      "position": "G",
-     "status": "Out",
-     "points": 0.63,
+     "status": "Questionable",
+     "points": 0.25,
      "minutes": 22
     },
     {
@@ -671,8 +664,15 @@
    ]
   },
   "27": {
-   "loss": 1.05,
+   "loss": 2.08,
    "items": [
+    {
+     "player": "Anthony Davis",
+     "position": "F",
+     "status": "Questionable",
+     "points": 1.03,
+     "minutes": 33.1
+    },
     {
      "player": "Reece Beekman",
      "position": "G",
@@ -723,13 +723,13 @@
    ]
   },
   "29": {
-   "loss": 0.12,
+   "loss": 1.18,
    "items": [
     {
      "player": "Isaiah Stewart",
      "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.12,
+     "status": "Out",
+     "points": 1.18,
      "minutes": 18.3
     },
     {
@@ -742,8 +742,22 @@
    ]
   },
   "30": {
-   "loss": 0,
+   "loss": 0.37,
    "items": [
+    {
+     "player": "Moussa Diabate",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.37,
+     "minutes": 28.8
+    },
+    {
+     "player": "Kon Knueppel",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 6
+    },
     {
      "player": "Grant Williams",
      "position": "F",
