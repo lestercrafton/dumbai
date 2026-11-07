@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-07T01:12:36.482Z",
+ "generatedAt": "2026-11-07T07:46:16.167Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -47,7 +47,7 @@
      "player": "Walter Nolen III",
      "espnId": "4685503",
      "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
+     "reported": "2026-11-07T02:35Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -57,7 +57,7 @@
      "player": "Jayden Williams",
      "espnId": "4709718",
      "status": "Out",
-     "reported": "2026-11-06T02:07Z",
+     "reported": "2026-11-07T03:08Z",
      "weight": 1,
      "points": 0.6
     },
@@ -67,7 +67,7 @@
      "player": "Jon Gaines II",
      "espnId": "4367199",
      "status": "Out",
-     "reported": "2026-11-06T02:01Z",
+     "reported": "2026-11-07T03:13Z",
      "weight": 1,
      "points": 0.3
     }
@@ -226,7 +226,7 @@
      "player": "Bobby Okereke",
      "espnId": "3117253",
      "status": "Out",
-     "reported": "2026-11-06T23:05Z",
+     "reported": "2026-11-07T01:54Z",
      "weight": 1,
      "points": 0.25
     },
@@ -236,7 +236,7 @@
      "player": "Jaelan Phillips",
      "espnId": "4242975",
      "status": "Out",
-     "reported": "2026-11-06T23:05Z",
+     "reported": "2026-11-07T02:10Z",
      "weight": 1,
      "points": 0.25
     },
@@ -246,7 +246,7 @@
      "player": "Will Lee III",
      "espnId": "5151083",
      "status": "Out",
-     "reported": "2026-11-05T23:13Z",
+     "reported": "2026-11-07T02:20Z",
      "weight": 1,
      "points": 0.5
     },
@@ -256,7 +256,7 @@
      "player": "Damien Lewis",
      "espnId": "4362647",
      "status": "Out",
-     "reported": "2026-11-06T01:16Z",
+     "reported": "2026-11-07T04:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -404,7 +404,7 @@
      "player": "Eyioma Uwazurike",
      "espnId": "4066109",
      "status": "Out",
-     "reported": "2026-11-06T21:45Z",
+     "reported": "2026-11-07T01:03Z",
      "weight": 1,
      "points": 0.5
     },
@@ -424,7 +424,7 @@
      "player": "Brandon Jones",
      "espnId": "4039059",
      "status": "Out",
-     "reported": "2026-11-06T21:45Z",
+     "reported": "2026-11-07T01:00Z",
      "weight": 1,
      "points": 0.3
     }
@@ -456,7 +456,7 @@
      "player": "Jack Campbell",
      "espnId": "4569465",
      "status": "Out",
-     "reported": "2026-11-06T22:47Z",
+     "reported": "2026-11-07T01:58Z",
      "weight": 1,
      "points": 0.25
     },
@@ -466,7 +466,7 @@
      "player": "D.J. Reed",
      "espnId": "3139387",
      "status": "Out",
-     "reported": "2026-11-06T22:47Z",
+     "reported": "2026-11-07T02:12Z",
      "weight": 1,
      "points": 0.5
     },
@@ -476,7 +476,7 @@
      "player": "Cade Mays",
      "espnId": "4361788",
      "status": "Out",
-     "reported": "2026-11-06T22:47Z",
+     "reported": "2026-11-07T03:55Z",
      "weight": 1,
      "points": 0.4
     }
@@ -508,7 +508,7 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Out",
-     "reported": "2026-11-06T21:51Z",
+     "reported": "2026-11-07T01:20Z",
      "weight": 1,
      "points": 0.25
     },
@@ -518,7 +518,7 @@
      "player": "Keisean Nixon",
      "espnId": "4259493",
      "status": "Questionable",
-     "reported": "2026-11-05T20:35Z",
+     "reported": "2026-11-07T01:25Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -528,7 +528,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-11-06T21:51Z",
+     "reported": "2026-11-07T03:37Z",
      "weight": 1,
      "points": 0.4
     },
@@ -538,7 +538,7 @@
      "player": "Travis Glover",
      "espnId": "4361904",
      "status": "Out",
-     "reported": "2026-11-06T01:29Z",
+     "reported": "2026-11-07T03:39Z",
      "weight": 1,
      "points": 0.3
     }
@@ -560,7 +560,7 @@
      "player": "Reed Blankenship",
      "espnId": "4243956",
      "status": "Out",
-     "reported": "2026-11-06T22:06Z",
+     "reported": "2026-11-07T01:09Z",
      "weight": 1,
      "points": 0.3
     }
@@ -915,7 +915,7 @@
      "player": "Jihaad Campbell",
      "espnId": "4685287",
      "status": "Out",
-     "reported": "2026-11-06T22:31Z",
+     "reported": "2026-11-07T01:37Z",
      "weight": 1,
      "points": 0.25
     }
@@ -1002,7 +1002,7 @@
      "player": "Leonard Williams",
      "espnId": "2971622",
      "status": "Out",
-     "reported": "2026-11-06T00:46Z",
+     "reported": "2026-11-07T02:03Z",
      "weight": 1,
      "points": 0.5
     },
@@ -1012,7 +1012,7 @@
      "player": "Uchenna Nwosu",
      "espnId": "3120358",
      "status": "Out",
-     "reported": "2026-11-06T23:13Z",
+     "reported": "2026-11-07T02:08Z",
      "weight": 1,
      "points": 0.25
     },
@@ -1022,7 +1022,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Out",
-     "reported": "2026-11-06T01:39Z",
+     "reported": "2026-11-07T04:17Z",
      "weight": 1,
      "points": 0.6
     },

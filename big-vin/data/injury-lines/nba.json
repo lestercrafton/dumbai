@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-07T01:12:40.767Z",
+ "generatedAt": "2026-11-07T07:46:20.296Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -102,6 +102,13 @@
   "5": {
    "loss": 1.83,
    "items": [
+    {
+     "player": "Sam Merrill",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 23.1
+    },
     {
      "player": "Jarrett Allen",
      "position": "C",
@@ -307,8 +314,15 @@
    ]
   },
   "16": {
-   "loss": 4.26,
+   "loss": 4.95,
    "items": [
+    {
+     "player": "Joan Beringer",
+     "position": "F",
+     "status": "Out",
+     "points": 0.69,
+     "minutes": 16.5
+    },
     {
      "player": "Terrence Shannon Jr.",
      "position": "G",
@@ -706,7 +720,7 @@
      "position": "F",
      "status": "Day-To-Day",
      "points": 0.05,
-     "minutes": 32.9
+     "minutes": 31
     },
     {
      "player": "Dennis Schroder",
