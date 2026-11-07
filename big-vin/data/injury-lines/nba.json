@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-07T19:39:20.221Z",
+ "generatedAt": "2026-11-07T23:02:43.170Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,7 +10,7 @@
  ],
  "teams": {
   "1": {
-   "loss": 1.9,
+   "loss": 0.19,
    "items": [
     {
      "player": "Keshon Gilbert",
@@ -32,13 +32,6 @@
      "status": "Out",
      "points": 0.19,
      "minutes": 15.3
-    },
-    {
-     "player": "Jalen Johnson",
-     "position": "F",
-     "status": "Out",
-     "points": 1.71,
-     "minutes": 32.7
     },
     {
      "player": "Mouhamed Gueye",
@@ -76,6 +69,13 @@
    "loss": 0.1,
    "items": [
     {
+     "player": "Jalen Smith",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.1,
+     "minutes": 22.4
+    },
+    {
      "player": "Nic Claxton",
      "position": "C",
      "status": "Out",
@@ -83,11 +83,11 @@
      "minutes": 0
     },
     {
-     "player": "Jalen Smith",
+     "player": "Zach Collins",
      "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.1,
-     "minutes": 22.4
+     "status": "Out",
+     "points": 0,
+     "minutes": 8.7
     }
    ]
   },
@@ -223,11 +223,11 @@
    "loss": 3.6,
    "items": [
     {
-     "player": "T.J. McConnell",
+     "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
-     "points": 0,
-     "minutes": 0
+     "points": 3.6,
+     "minutes": 33
     },
     {
      "player": "Johnny Furphy",
@@ -242,13 +242,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 12
-    },
-    {
-     "player": "Tyrese Haliburton",
-     "position": "G",
-     "status": "Out",
-     "points": 3.6,
-     "minutes": 33
     }
    ]
   },
@@ -286,8 +279,16 @@
    ]
   },
   "13": {
-   "loss": 0,
-   "items": []
+   "loss": 2.54,
+   "items": [
+    {
+     "player": "Luka Doncic",
+     "position": "G",
+     "status": "Questionable",
+     "points": 2.54,
+     "minutes": 35.9
+    }
+   ]
   },
   "14": {
    "loss": 0,
@@ -454,8 +455,15 @@
    ]
   },
   "22": {
-   "loss": 1.83,
+   "loss": 3.23,
    "items": [
+    {
+     "player": "Robert Williams III",
+     "position": "C",
+     "status": "Out",
+     "points": 1.4,
+     "minutes": 16.4
+    },
     {
      "player": "Vit Krejci",
      "position": "G",

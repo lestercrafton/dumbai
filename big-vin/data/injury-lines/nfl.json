@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-07T19:39:16.098Z",
+ "generatedAt": "2026-11-07T23:02:38.588Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 0.88,
+   "loss": 0.96,
    "starter": {
     "name": "Gardner Minshew",
     "espnId": "4038524",
@@ -48,6 +48,16 @@
      "espnId": "4685503",
      "status": "Questionable",
      "reported": "2026-11-07T02:35Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Isaiah Adams",
+     "espnId": "5084939",
+     "status": "Questionable",
+     "reported": "2026-11-07T04:26Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -141,7 +151,7 @@
   },
   "BUF": {
    "team": "BUF",
-   "loss": 0.33,
+   "loss": 0.23,
    "starter": {
     "name": "Josh Allen",
     "espnId": "3918298",
@@ -167,16 +177,6 @@
      "reported": "2026-11-05T22:12Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Spencer Brown",
-     "espnId": "4030899",
-     "status": "Questionable",
-     "reported": "2026-11-03T13:03Z",
-     "weight": 0.25,
-     "points": 0.1
     }
    ],
    "notes": []
@@ -361,23 +361,13 @@
   },
   "DEN": {
    "team": "DEN",
-   "loss": 0.88,
+   "loss": 0.38,
    "starter": {
     "name": "Bo Nix",
     "espnId": "4426338",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "edge",
-     "position": "RDE",
-     "player": "Eyioma Uwazurike",
-     "espnId": "4066109",
-     "status": "Out",
-     "reported": "2026-11-07T01:03Z",
-     "weight": 1,
-     "points": 0.5
-    },
     {
      "group": "s",
      "position": "SS",
@@ -403,7 +393,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.95,
+   "loss": 0.7,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -419,16 +409,6 @@
      "reported": "2026-11-06T21:07Z",
      "weight": 0.25,
      "points": 0.2
-    },
-    {
-     "group": "lb",
-     "position": "MLB",
-     "player": "Jack Campbell",
-     "espnId": "4569465",
-     "status": "Out",
-     "reported": "2026-11-07T01:58Z",
-     "weight": 1,
-     "points": 0.25
     },
     {
      "group": "cb",
@@ -552,7 +532,7 @@
      "player": "A.J. Haulcy",
      "espnId": "4905664",
      "status": "Out",
-     "reported": "2026-11-07T00:34Z",
+     "reported": "2026-11-07T20:43Z",
      "weight": 1,
      "points": 0.3
     },
@@ -680,7 +660,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 1.9,
+   "loss": 1.84,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -705,16 +685,6 @@
      "fullPoints": 2,
      "alreadyInRatings": 0.08,
      "points": 1.84
-    },
-    {
-     "group": "lb",
-     "position": "WLB",
-     "player": "Andrew Van Ginkel",
-     "espnId": "3133487",
-     "status": "Questionable",
-     "reported": "2026-11-05T23:38Z",
-     "weight": 0.25,
-     "points": 0.06
     }
    ],
    "notes": []
@@ -919,7 +889,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 2.59,
+   "loss": 3.19,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -964,6 +934,16 @@
      "reported": "2026-11-07T02:08Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Charles Cross",
+     "espnId": "4426376",
+     "status": "Out",
+     "reported": "2026-11-07T04:17Z",
+     "weight": 1,
+     "points": 0.6
     }
    ],
    "notes": []
