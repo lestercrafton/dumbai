@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-07T18:09:04.123Z",
+ "generatedAt": "2026-11-07T19:39:20.221Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -13,13 +13,6 @@
    "loss": 1.9,
    "items": [
     {
-     "player": "Asa Newell",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 11
-    },
-    {
      "player": "Keshon Gilbert",
      "position": "G",
      "status": "Out",
@@ -27,11 +20,11 @@
      "minutes": 0
     },
     {
-     "player": "Jalen Johnson",
+     "player": "Asa Newell",
      "position": "F",
      "status": "Out",
-     "points": 1.71,
-     "minutes": 32.7
+     "points": 0,
+     "minutes": 11
     },
     {
      "player": "Jock Landale",
@@ -39,6 +32,13 @@
      "status": "Out",
      "points": 0.19,
      "minutes": 15.3
+    },
+    {
+     "player": "Jalen Johnson",
+     "position": "F",
+     "status": "Out",
+     "points": 1.71,
+     "minutes": 32.7
     },
     {
      "player": "Mouhamed Gueye",
@@ -58,15 +58,7 @@
   },
   "2": {
    "loss": 0,
-   "items": [
-    {
-     "player": "Devin Carter",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    }
-   ]
+   "items": []
   },
   "3": {
    "loss": 0,
@@ -103,18 +95,25 @@
    "loss": 1.83,
    "items": [
     {
-     "player": "Jarrett Allen",
-     "position": "C",
-     "status": "Out",
-     "points": 1.83,
-     "minutes": 25.1
-    },
-    {
      "player": "Jaylon Tyson",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 20.8
+    },
+    {
+     "player": "Sam Merrill",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 23.1
+    },
+    {
+     "player": "Jarrett Allen",
+     "position": "C",
+     "status": "Out",
+     "points": 1.83,
+     "minutes": 25.1
     }
    ]
   },
@@ -296,15 +295,7 @@
   },
   "15": {
    "loss": 0,
-   "items": [
-    {
-     "player": "Kam Jones",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    }
-   ]
+   "items": []
   },
   "16": {
    "loss": 4.95,
@@ -355,13 +346,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 21.8
-    },
-    {
-     "player": "Tyler Bilodeau",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     }
    ]
   },
@@ -380,6 +364,13 @@
   "19": {
    "loss": 0,
    "items": [
+    {
+     "player": "Desmond Bane",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 34.5
+    },
     {
      "player": "Jonathan Isaac",
      "position": "F",
@@ -596,24 +587,17 @@
      "status": "Out",
      "points": 0.71,
      "minutes": 26
-    },
-    {
-     "player": "Trey Alexander",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     }
    ]
   },
   "27": {
-   "loss": 3.62,
+   "loss": 2.08,
    "items": [
     {
      "player": "Anthony Davis",
      "position": "F",
-     "status": "Out",
-     "points": 2.57,
+     "status": "Questionable",
+     "points": 1.03,
      "minutes": 33.1
     },
     {
@@ -682,6 +666,13 @@
   "29": {
    "loss": 1.18,
    "items": [
+    {
+     "player": "Richie Saunders",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
     {
      "player": "Isaiah Stewart",
      "position": "C",

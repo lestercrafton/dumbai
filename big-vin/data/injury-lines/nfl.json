@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-07T15:08:57.886Z",
+ "generatedAt": "2026-11-07T19:39:16.098Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -141,23 +141,13 @@
   },
   "BUF": {
    "team": "BUF",
-   "loss": 0.43,
+   "loss": 0.33,
    "starter": {
     "name": "Josh Allen",
     "espnId": "3918298",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Keon Coleman",
-     "espnId": "4635008",
-     "status": "Questionable",
-     "reported": "2026-11-06T22:05Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
     {
      "group": "lt",
      "position": "LT",
@@ -292,7 +282,7 @@
      "espnId": "3122840",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-06T18:27Z",
+     "reported": "2026-11-07T18:12Z",
      "weight": 0.25,
      "replacement": "Shedeur Sanders",
      "starterEpaPerPlay": 0.005,
@@ -539,7 +529,7 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 0.43,
+   "loss": 0.65,
    "starter": {
     "name": "Daniel Jones",
     "espnId": "3917792",
@@ -561,10 +551,10 @@
      "position": "SS",
      "player": "A.J. Haulcy",
      "espnId": "4905664",
-     "status": "Questionable",
+     "status": "Out",
      "reported": "2026-11-07T00:34Z",
-     "weight": 0.25,
-     "points": 0.08
+     "weight": 1,
+     "points": 0.3
     },
     {
      "group": "rt",
@@ -690,7 +680,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 0.52,
+   "loss": 1.9,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -703,9 +693,9 @@
      "player": "Kyler Murray",
      "espnId": "3917315",
      "starterBasis": "depth chart QB1 (injured)",
-     "status": "Questionable",
-     "reported": "2026-11-07T14:40Z",
-     "weight": 0.25,
+     "status": "Out",
+     "reported": "2026-11-07T19:24Z",
+     "weight": 1,
      "replacement": "Carson Wentz",
      "starterEpaPerPlay": 0.009,
      "starterPlays": 301,
@@ -714,7 +704,7 @@
      "gapEpaPerPlay": 0.05,
      "fullPoints": 2,
      "alreadyInRatings": 0.08,
-     "points": 0.46
+     "points": 1.84
     },
     {
      "group": "lb",
