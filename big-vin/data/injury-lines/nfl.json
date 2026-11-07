@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-07T07:46:16.167Z",
+ "generatedAt": "2026-11-07T15:08:57.886Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 1.78,
+   "loss": 0.88,
    "starter": {
     "name": "Gardner Minshew",
     "espnId": "4038524",
@@ -50,26 +50,6 @@
      "reported": "2026-11-07T02:35Z",
      "weight": 0.25,
      "points": 0.08
-    },
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Jayden Williams",
-     "espnId": "4709718",
-     "status": "Out",
-     "reported": "2026-11-07T03:08Z",
-     "weight": 1,
-     "points": 0.6
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Jon Gaines II",
-     "espnId": "4367199",
-     "status": "Out",
-     "reported": "2026-11-07T03:13Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": [
@@ -433,7 +413,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 1.35,
+   "loss": 0.95,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -469,16 +449,6 @@
      "reported": "2026-11-07T02:12Z",
      "weight": 1,
      "points": 0.5
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Cade Mays",
-     "espnId": "4361788",
-     "status": "Out",
-     "reported": "2026-11-07T03:55Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -666,24 +636,13 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.3,
+   "loss": 0,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Kayode Awosika",
-     "espnId": "4040842",
-     "status": "Doubtful",
-     "reported": "2026-11-06T22:13Z",
-     "weight": 1,
-     "points": 0.3
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "LAR": {
@@ -745,7 +704,7 @@
      "espnId": "3917315",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-05T18:36Z",
+     "reported": "2026-11-07T14:40Z",
      "weight": 0.25,
      "replacement": "Carson Wentz",
      "starterEpaPerPlay": 0.009,
@@ -970,7 +929,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 3.49,
+   "loss": 2.59,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -1015,26 +974,6 @@
      "reported": "2026-11-07T02:08Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Charles Cross",
-     "espnId": "4426376",
-     "status": "Out",
-     "reported": "2026-11-07T04:17Z",
-     "weight": 1,
-     "points": 0.6
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Quenton Nelson",
-     "espnId": "3129308",
-     "status": "Out",
-     "reported": "2026-11-07T00:56Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
