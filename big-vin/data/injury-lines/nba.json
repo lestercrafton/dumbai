@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-07T23:02:43.170Z",
+ "generatedAt": "2026-11-08T02:42:22.744Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -246,7 +246,7 @@
    ]
   },
   "12": {
-   "loss": 0,
+   "loss": 0.59,
    "items": [
     {
      "player": "Brandon Ingram",
@@ -254,6 +254,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Isaiah Jackson",
+     "position": "F",
+     "status": "Out",
+     "points": 0.59,
+     "minutes": 21.1
     },
     {
      "player": "Yanic Konan Niederhauser",
@@ -299,21 +306,14 @@
    "items": []
   },
   "16": {
-   "loss": 4.95,
+   "loss": 3.91,
    "items": [
     {
      "player": "Joan Beringer",
      "position": "F",
-     "status": "Out",
-     "points": 0.69,
+     "status": "Questionable",
+     "points": 0.28,
      "minutes": 16.5
-    },
-    {
-     "player": "Terrence Shannon Jr.",
-     "position": "G",
-     "status": "Out",
-     "points": 0.63,
-     "minutes": 22
     },
     {
      "player": "Anthony Edwards",
@@ -410,8 +410,15 @@
    ]
   },
   "20": {
-   "loss": 0,
+   "loss": 0.1,
    "items": [
+    {
+     "player": "Joel Embiid",
+     "position": "C",
+     "status": "Day-To-Day",
+     "points": 0.1,
+     "minutes": 32.3
+    },
     {
      "player": "Adem Bona",
      "position": "C",
@@ -436,13 +443,13 @@
    ]
   },
   "21": {
-   "loss": 0.55,
+   "loss": 0.73,
    "items": [
     {
      "player": "Jordan Goodwin",
      "position": "G",
-     "status": "Doubtful",
-     "points": 0.55,
+     "status": "Out",
+     "points": 0.73,
      "minutes": 18.8
     },
     {
@@ -458,6 +465,13 @@
    "loss": 3.23,
    "items": [
     {
+     "player": "Ja Morant",
+     "position": "G",
+     "status": "Out",
+     "points": 1.83,
+     "minutes": 26
+    },
+    {
      "player": "Robert Williams III",
      "position": "C",
      "status": "Out",
@@ -472,13 +486,6 @@
      "minutes": 10.3
     },
     {
-     "player": "Ja Morant",
-     "position": "G",
-     "status": "Out",
-     "points": 1.83,
-     "minutes": 26
-    },
-    {
      "player": "Shaedon Sharpe",
      "position": "G",
      "status": "Out",
@@ -491,11 +498,11 @@
    "loss": 0,
    "items": [
     {
-     "player": "De'Andre Hunter",
+     "player": "Keegan Murray",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 31.3
+     "minutes": 27
     },
     {
      "player": "Maxime Raynaud",
@@ -503,13 +510,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Keegan Murray",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 27
     },
     {
      "player": "Ben Simmons",
@@ -580,8 +580,15 @@
    ]
   },
   "26": {
-   "loss": 0.71,
+   "loss": 1.14,
    "items": [
+    {
+     "player": "Lauri Markkanen",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.43,
+     "minutes": 30.9
+    },
     {
      "player": "Jusuf Nurkic",
      "position": "C",
@@ -599,13 +606,13 @@
    ]
   },
   "27": {
-   "loss": 2.08,
+   "loss": 3.62,
    "items": [
     {
      "player": "Anthony Davis",
      "position": "F",
-     "status": "Questionable",
-     "points": 1.03,
+     "status": "Out",
+     "points": 2.57,
      "minutes": 33.1
     },
     {

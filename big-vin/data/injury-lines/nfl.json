@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-07T23:02:38.588Z",
+ "generatedAt": "2026-11-08T02:42:16.784Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -164,7 +164,7 @@
      "player": "Dion Dawkins",
      "espnId": "3051324",
      "status": "Questionable",
-     "reported": "2026-11-05T22:13Z",
+     "reported": "2026-11-08T02:01Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -174,7 +174,7 @@
      "player": "Alec Anderson",
      "espnId": "4367203",
      "status": "Questionable",
-     "reported": "2026-11-05T22:12Z",
+     "reported": "2026-11-08T02:09Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -743,10 +743,10 @@
     {
      "group": "lt",
      "position": "LT",
-     "player": "Asim Richards",
-     "espnId": "4430379",
+     "player": "Kelvin Banks Jr.",
+     "espnId": "4685260",
      "status": "Questionable",
-     "reported": "2026-11-04T22:03Z",
+     "reported": "2026-11-07T03:01Z",
      "weight": 0.25,
      "points": 0.15
     }
