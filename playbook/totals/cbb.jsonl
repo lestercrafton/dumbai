@@ -567,3 +567,10 @@
 {"type":"grade","gameId":"401924843","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":148.5,"actualTotal":140,"result":"win","gradedAt":"2026-11-08T02:42:33.567Z","source":"ESPN scoreboard final"}
 {"type":"grade","gameId":"401926227","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":156.5,"actualTotal":124,"result":"win","gradedAt":"2026-11-08T02:42:33.567Z","source":"ESPN scoreboard final"}
 {"type":"grade","gameId":"401920411","pickCapturedAt":"2026-11-07T07:46:22.359Z","side":"under","line":153.5,"actualTotal":154,"result":"loss","gradedAt":"2026-11-08T02:42:33.567Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401925077","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":155.5,"actualTotal":164,"result":"loss","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401917519","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":170.5,"actualTotal":160,"result":"win","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401917518","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"over","line":139.5,"actualTotal":115,"result":"loss","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401911470","pickCapturedAt":"2026-11-07T07:46:22.359Z","side":"over","line":146.5,"actualTotal":170,"result":"win","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401920816","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":145.5,"actualTotal":162,"result":"loss","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401920371","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":151.5,"actualTotal":146,"result":"win","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401911345","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":155.5,"actualTotal":180,"result":"loss","gradedAt":"2026-11-08T10:47:25.479Z","source":"ESPN scoreboard final"}

@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-08T02:42:22.744Z",
+ "generatedAt": "2026-11-08T10:47:14.179Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,7 +10,7 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.19,
+   "loss": 0,
    "items": [
     {
      "player": "Keshon Gilbert",
@@ -30,8 +30,8 @@
      "player": "Jock Landale",
      "position": "C",
      "status": "Out",
-     "points": 0.19,
-     "minutes": 15.3
+     "points": 0,
+     "minutes": 14.7
     },
     {
      "player": "Mouhamed Gueye",
@@ -332,14 +332,14 @@
    ]
   },
   "17": {
-   "loss": 0.01,
+   "loss": 0.11,
    "items": [
     {
-     "player": "Day'Ron Sharpe",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.01,
-     "minutes": 23.1
+     "player": "Mikel Brown Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0.11,
+     "minutes": 23.3
     },
     {
      "player": "Egor Demin",
@@ -606,8 +606,15 @@
    ]
   },
   "27": {
-   "loss": 3.62,
+   "loss": 4.16,
    "items": [
+    {
+     "player": "Deandre Ayton",
+     "position": "C",
+     "status": "Out",
+     "points": 0.54,
+     "minutes": 15.1
+    },
     {
      "player": "Anthony Davis",
      "position": "F",
