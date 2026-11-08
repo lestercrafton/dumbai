@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-08T17:16:38.163Z",
+ "generatedAt": "2026-11-08T18:28:01.187Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -311,7 +311,7 @@
      "player": "DeMarvion Overshown",
      "espnId": "4362088",
      "status": "Out",
-     "reported": "2026-11-08T16:47Z",
+     "reported": "2026-11-08T17:12Z",
      "weight": 1,
      "points": 0.25
     },
@@ -321,7 +321,7 @@
      "player": "Joey Porter Jr.",
      "espnId": "4426506",
      "status": "Out",
-     "reported": "2026-11-08T16:47Z",
+     "reported": "2026-11-08T17:17Z",
      "weight": 1,
      "points": 0.5
     }
