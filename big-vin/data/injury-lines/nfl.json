@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-08T18:28:01.187Z",
+ "generatedAt": "2026-11-08T21:23:46.178Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 0.96,
+   "loss": 0.8,
    "starter": {
     "name": "Gardner Minshew",
     "espnId": "4038524",
@@ -40,26 +40,6 @@
      "reported": "2026-11-03T21:13Z",
      "weight": 1,
      "points": 0.4
-    },
-    {
-     "group": "dt",
-     "position": "RDT",
-     "player": "Walter Nolen III",
-     "espnId": "4685503",
-     "status": "Questionable",
-     "reported": "2026-11-07T02:35Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Isaiah Adams",
-     "espnId": "5084939",
-     "status": "Questionable",
-     "reported": "2026-11-08T03:11Z",
-     "weight": 0.25,
-     "points": 0.08
     }
    ],
    "notes": [
@@ -288,7 +268,7 @@
   },
   "DAL": {
    "team": "DAL",
-   "loss": 1.15,
+   "loss": 1.31,
    "starter": {
     "name": "Dak Prescott",
     "espnId": "2577417",
@@ -306,6 +286,16 @@
      "points": 0.4
     },
     {
+     "group": "te1",
+     "position": "TE",
+     "player": "Jake Ferguson",
+     "espnId": "4242355",
+     "status": "Questionable",
+     "reported": "2026-11-08T20:40Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
+    {
      "group": "lb",
      "position": "LILB",
      "player": "DeMarvion Overshown",
@@ -314,6 +304,16 @@
      "reported": "2026-11-08T17:12Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lb",
+     "position": "SLB",
+     "player": "Donovan Ezeiruaku",
+     "espnId": "4683848",
+     "status": "Questionable",
+     "reported": "2026-11-08T19:17Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "cb",
@@ -330,13 +330,23 @@
   },
   "DEN": {
    "team": "DEN",
-   "loss": 0.6,
+   "loss": 1.53,
    "starter": {
     "name": "Bo Nix",
     "espnId": "4426338",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Jaylen Waddle",
+     "espnId": "4372016",
+     "status": "Out",
+     "reported": "2026-11-08T19:52Z",
+     "weight": 1,
+     "points": 0.8
+    },
     {
      "group": "s",
      "position": "SS",
@@ -356,6 +366,16 @@
      "reported": "2026-11-08T16:36Z",
      "weight": 1,
      "points": 0.3
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Riley Moss",
+     "espnId": "4382401",
+     "status": "Questionable",
+     "reported": "2026-11-08T19:22Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []
@@ -384,7 +404,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 1.18,
+   "loss": 1.35,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -396,10 +416,10 @@
      "position": "RB",
      "player": "MarShawn Lloyd",
      "espnId": "4429023",
-     "status": "Questionable",
-     "reported": "2026-11-06T20:52Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Out",
+     "reported": "2026-11-08T20:07Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "lb",
@@ -407,19 +427,9 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Out",
-     "reported": "2026-11-07T01:20Z",
+     "reported": "2026-11-08T19:58Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "cb",
-     "position": "LCB",
-     "player": "Keisean Nixon",
-     "espnId": "4259493",
-     "status": "Questionable",
-     "reported": "2026-11-07T01:25Z",
-     "weight": 0.25,
-     "points": 0.13
     },
     {
      "group": "c",
@@ -427,7 +437,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-11-07T03:37Z",
+     "reported": "2026-11-08T19:58Z",
      "weight": 1,
      "points": 0.4
     },
@@ -437,7 +447,7 @@
      "player": "Travis Glover",
      "espnId": "4361904",
      "status": "Out",
-     "reported": "2026-11-07T03:39Z",
+     "reported": "2026-11-08T19:58Z",
      "weight": 1,
      "points": 0.3
     }
@@ -459,7 +469,7 @@
      "player": "Reed Blankenship",
      "espnId": "4243956",
      "status": "Out",
-     "reported": "2026-11-07T01:09Z",
+     "reported": "2026-11-08T19:37Z",
      "weight": 1,
      "points": 0.3
     }
@@ -468,7 +478,7 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 0.55,
+   "loss": 0.65,
    "starter": {
     "name": "Daniel Jones",
     "espnId": "3917792",
@@ -494,6 +504,16 @@
      "reported": "2026-11-07T20:43Z",
      "weight": 1,
      "points": 0.3
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Jalen Travis",
+     "espnId": "4892240",
+     "status": "Questionable",
+     "reported": "2026-11-08T20:12Z",
+     "weight": 0.25,
+     "points": 0.1
     }
    ],
    "notes": []
@@ -511,13 +531,23 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.5,
+   "loss": 0.8,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Xavier Worthy",
+     "espnId": "4683062",
+     "status": "Questionable",
+     "reported": "2026-11-08T21:11Z",
+     "weight": 0.25,
+     "points": 0.2
+    },
     {
      "group": "cb",
      "position": "RCB",
@@ -527,30 +557,29 @@
      "reported": "2026-11-08T16:44Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Jaylon Moore",
+     "espnId": "4043041",
+     "status": "Questionable",
+     "reported": "2026-11-08T20:36Z",
+     "weight": 0.25,
+     "points": 0.1
     }
    ],
    "notes": []
   },
   "LV": {
    "team": "LV",
-   "loss": 0.13,
+   "loss": 0,
    "starter": {
     "name": "Kirk Cousins",
     "espnId": "14880",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "cb",
-     "position": "RCB",
-     "player": "Darien Porter",
-     "espnId": "4430330",
-     "status": "Questionable",
-     "reported": "2026-11-07T00:14Z",
-     "weight": 0.25,
-     "points": 0.13
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "LAC": {
@@ -566,7 +595,7 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 0.5,
+   "loss": 0.58,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -582,6 +611,16 @@
      "reported": "2026-11-08T16:52Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Steve Avila",
+     "espnId": "4362474",
+     "status": "Questionable",
+     "reported": "2026-11-08T19:47Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -630,34 +669,13 @@
   },
   "NE": {
    "team": "NE",
-   "loss": 0.2,
+   "loss": 0,
    "starter": {
     "name": "Drake Maye",
     "espnId": "4431452",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "te1",
-     "position": "TE",
-     "player": "Hunter Henry",
-     "espnId": "3046439",
-     "status": "Questionable",
-     "reported": "2026-11-08T14:22Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Morgan Moses",
-     "espnId": "16771",
-     "status": "Questionable",
-     "reported": "2026-11-04T21:56Z",
-     "weight": 0.25,
-     "points": 0.1
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "NO": {
@@ -729,7 +747,7 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 0.65,
+   "loss": 0.71,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
@@ -745,6 +763,16 @@
      "reported": "2026-11-08T16:45Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "lb",
+     "position": "LILB",
+     "player": "Zack Baun",
+     "espnId": "3917657",
+     "status": "Questionable",
+     "reported": "2026-11-08T20:21Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "lb",
@@ -798,7 +826,7 @@
      "player": "Deebo Samuel Sr.",
      "espnId": "3126486",
      "status": "Out",
-     "reported": "2026-11-06T21:06Z",
+     "reported": "2026-11-08T20:01Z",
      "weight": 1,
      "points": 0.4
     }
@@ -839,7 +867,7 @@
      "player": "Leonard Williams",
      "espnId": "2971622",
      "status": "Out",
-     "reported": "2026-11-07T02:03Z",
+     "reported": "2026-11-08T20:03Z",
      "weight": 1,
      "points": 0.5
     },
@@ -849,7 +877,7 @@
      "player": "Uchenna Nwosu",
      "espnId": "3120358",
      "status": "Out",
-     "reported": "2026-11-07T02:08Z",
+     "reported": "2026-11-08T20:03Z",
      "weight": 1,
      "points": 0.25
     },
@@ -859,7 +887,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Out",
-     "reported": "2026-11-07T04:17Z",
+     "reported": "2026-11-08T20:03Z",
      "weight": 1,
      "points": 0.6
     }
@@ -942,13 +970,24 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 0,
+   "loss": 0.1,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "c",
+     "position": "C",
+     "player": "Lucas Patrick",
+     "espnId": "2576736",
+     "status": "Questionable",
+     "reported": "2026-11-08T20:35Z",
+     "weight": 0.25,
+     "points": 0.1
+    }
+   ],
    "notes": []
   }
  }

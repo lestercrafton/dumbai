@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-08T18:28:06.006Z",
+ "generatedAt": "2026-11-08T21:23:52.085Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -66,28 +66,14 @@
    ]
   },
   "4": {
-   "loss": 0.59,
+   "loss": 1.24,
    "items": [
     {
      "player": "Norman Powell",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.49,
-     "minutes": 28.9
-    },
-    {
-     "player": "Jalen Smith",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.1,
-     "minutes": 22.4
-    },
-    {
-     "player": "Nic Claxton",
-     "position": "C",
      "status": "Out",
-     "points": 0,
-     "minutes": 0
+     "points": 1.24,
+     "minutes": 28.9
     },
     {
      "player": "Zach Collins",
@@ -293,13 +279,13 @@
    ]
   },
   "13": {
-   "loss": 2.54,
+   "loss": 6.36,
    "items": [
     {
      "player": "Luka Doncic",
      "position": "G",
-     "status": "Questionable",
-     "points": 2.54,
+     "status": "Out",
+     "points": 6.36,
      "minutes": 35.9
     }
    ]
@@ -410,15 +396,8 @@
    ]
   },
   "20": {
-   "loss": 0.1,
+   "loss": 0,
    "items": [
-    {
-     "player": "Joel Embiid",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.1,
-     "minutes": 32.3
-    },
     {
      "player": "Adem Bona",
      "position": "C",
@@ -497,13 +476,6 @@
   "23": {
    "loss": 0,
    "items": [
-    {
-     "player": "Keegan Murray",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 27
-    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
