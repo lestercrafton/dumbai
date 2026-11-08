@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-08T10:47:14.179Z",
+ "generatedAt": "2026-11-08T17:16:44.792Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -13,18 +13,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Keshon Gilbert",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Asa Newell",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 11
+    },
+    {
+     "player": "Keshon Gilbert",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
     },
     {
      "player": "Jock Landale",
@@ -66,8 +66,15 @@
    ]
   },
   "4": {
-   "loss": 0.1,
+   "loss": 0.59,
    "items": [
+    {
+     "player": "Norman Powell",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.49,
+     "minutes": 28.9
+    },
     {
      "player": "Jalen Smith",
      "position": "F",
@@ -95,13 +102,6 @@
    "loss": 1.83,
    "items": [
     {
-     "player": "Jaylon Tyson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 20.8
-    },
-    {
      "player": "Sam Merrill",
      "position": "G",
      "status": "Out",
@@ -114,6 +114,13 @@
      "status": "Out",
      "points": 1.83,
      "minutes": 25.1
+    },
+    {
+     "player": "Jaylon Tyson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 20.8
     }
    ]
   },
@@ -159,18 +166,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Isaiah Joe",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13.7
-    },
-    {
      "player": "Jalen Duren",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 19
+    },
+    {
+     "player": "Isaiah Joe",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.7
     }
    ]
   },
@@ -465,18 +472,18 @@
    "loss": 3.23,
    "items": [
     {
-     "player": "Ja Morant",
-     "position": "G",
-     "status": "Out",
-     "points": 1.83,
-     "minutes": 26
-    },
-    {
      "player": "Robert Williams III",
      "position": "C",
      "status": "Out",
      "points": 1.4,
      "minutes": 16.4
+    },
+    {
+     "player": "Ja Morant",
+     "position": "G",
+     "status": "Out",
+     "points": 1.83,
+     "minutes": 26
     },
     {
      "player": "Vit Krejci",
@@ -580,8 +587,15 @@
    ]
   },
   "26": {
-   "loss": 1.14,
+   "loss": 1.71,
    "items": [
+    {
+     "player": "Keyonte George",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.57,
+     "minutes": 32.3
+    },
     {
      "player": "Lauri Markkanen",
      "position": "F",
@@ -606,21 +620,21 @@
    ]
   },
   "27": {
-   "loss": 4.16,
+   "loss": 3.67,
    "items": [
-    {
-     "player": "Deandre Ayton",
-     "position": "C",
-     "status": "Out",
-     "points": 0.54,
-     "minutes": 15.1
-    },
     {
      "player": "Anthony Davis",
      "position": "F",
      "status": "Out",
      "points": 2.57,
      "minutes": 33.1
+    },
+    {
+     "player": "Deandre Ayton",
+     "position": "C",
+     "status": "Day-To-Day",
+     "points": 0.05,
+     "minutes": 15.1
     },
     {
      "player": "Reece Beekman",
