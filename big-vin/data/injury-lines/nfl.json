@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-09T08:40:35.594Z",
+ "generatedAt": "2026-11-09T20:02:58.304Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 0.48,
+   "loss": 1.08,
    "starter": {
     "name": "Gardner Minshew",
     "espnId": "4038524",
@@ -40,6 +40,16 @@
      "reported": "2026-11-08T23:17Z",
      "weight": 0.25,
      "points": 0.08
+    },
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Jayden Williams",
+     "espnId": "4709718",
+     "status": "Out",
+     "reported": "2026-11-08T20:02Z",
+     "weight": 1,
+     "points": 0.6
     }
    ],
    "notes": [
@@ -251,7 +261,7 @@
      "espnId": "3122840",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Out",
-     "reported": "2026-11-08T16:38Z",
+     "reported": "2026-11-09T18:35Z",
      "weight": 1,
      "replacement": "Shedeur Sanders",
      "starterEpaPerPlay": 0.005,
@@ -301,7 +311,7 @@
      "player": "Jake Ferguson",
      "espnId": "4242355",
      "status": "Questionable",
-     "reported": "2026-11-08T20:40Z",
+     "reported": "2026-11-09T14:14Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -363,7 +373,7 @@
      "player": "Jaylen Waddle",
      "espnId": "4372016",
      "status": "Questionable",
-     "reported": "2026-11-08T18:52Z",
+     "reported": "2026-11-08T19:52Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -402,7 +412,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.5,
+   "loss": 0.9,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -418,6 +428,16 @@
      "reported": "2026-11-08T16:45Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "c",
+     "position": "C",
+     "player": "Cade Mays",
+     "espnId": "4361788",
+     "status": "Out",
+     "reported": "2026-11-08T16:45Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -575,7 +595,7 @@
      "espnId": "3139477",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-09T01:33Z",
+     "reported": "2026-11-09T18:13Z",
      "weight": 0.25,
      "replacement": "Justin Fields",
      "starterEpaPerPlay": 0.113,
@@ -593,7 +613,7 @@
      "player": "Xavier Worthy",
      "espnId": "4683062",
      "status": "Questionable",
-     "reported": "2026-11-08T21:04Z",
+     "reported": "2026-11-09T18:20Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -644,7 +664,7 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.63,
+   "loss": 0.93,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
@@ -679,6 +699,16 @@
      "reported": "2026-11-08T21:50Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Kayode Awosika",
+     "espnId": "4040842",
+     "status": "Out",
+     "reported": "2026-11-08T19:43Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
@@ -727,13 +757,33 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 0,
+   "loss": 0.75,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Malik Willis",
+     "espnId": "4242512",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-11-08T23:46Z",
+     "weight": 0.25,
+     "replacement": "Kyle McCord",
+     "starterEpaPerPlay": 0.019,
+     "starterPlays": 300,
+     "backupEpaPerPlay": -0.08,
+     "backupPlays": 0,
+     "gapEpaPerPlay": 0.1,
+     "fullPoints": 3.01,
+     "alreadyInRatings": 0,
+     "points": 0.75
+    }
+   ],
    "notes": []
   },
   "MIN": {
@@ -769,7 +819,7 @@
   },
   "NE": {
    "team": "NE",
-   "loss": 0.38,
+   "loss": 0.68,
    "starter": {
     "name": "Drake Maye",
     "espnId": "4431452",
@@ -782,7 +832,7 @@
      "player": "Rhamondre Stevenson",
      "espnId": "4569173",
      "status": "Questionable",
-     "reported": "2026-11-09T00:07Z",
+     "reported": "2026-11-09T16:44Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -805,13 +855,23 @@
      "reported": "2026-11-09T00:30Z",
      "weight": 0.25,
      "points": 0.15
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Ben Brown",
+     "espnId": "4362890",
+     "status": "Doubtful",
+     "reported": "2026-11-09T17:34Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
   },
   "NO": {
    "team": "NO",
-   "loss": 0.1,
+   "loss": 0.4,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -823,30 +883,49 @@
      "position": "C",
      "player": "Erik McCoy",
      "espnId": "3917331",
-     "status": "Questionable",
-     "reported": "2026-11-08T21:18Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-11-09T19:57Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
   },
   "NYG": {
    "team": "NYG",
-   "loss": 0.4,
+   "loss": 0.74,
    "starter": {
     "name": "J.J. McCarthy",
     "espnId": "4433970",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
    "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "J.J. McCarthy",
+     "espnId": "4433970",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-11-09T16:38Z",
+     "weight": 0.25,
+     "replacement": "Jameis Winston",
+     "starterEpaPerPlay": -0.025,
+     "starterPlays": 240,
+     "backupEpaPerPlay": -0.024,
+     "backupPlays": 238,
+     "gapEpaPerPlay": 0,
+     "fullPoints": 2,
+     "alreadyInRatings": 0.32,
+     "points": 0.34
+    },
     {
      "group": "rb1",
      "position": "RB",
      "player": "Cam Skattebo",
      "espnId": "4696981",
      "status": "Out",
-     "reported": "2026-11-08T16:40Z",
+     "reported": "2026-11-09T18:35Z",
      "weight": 1,
      "points": 0.4
     }
@@ -996,7 +1075,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 3.03,
+   "loss": 3.33,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -1010,7 +1089,7 @@
      "espnId": "3912547",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Out",
-     "reported": "2026-11-08T12:19Z",
+     "reported": "2026-11-09T17:58Z",
      "weight": 1,
      "replacement": "Drew Lock",
      "starterEpaPerPlay": 0.045,
@@ -1051,6 +1130,16 @@
      "reported": "2026-11-08T20:03Z",
      "weight": 1,
      "points": 0.6
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Quenton Nelson",
+     "espnId": "3129308",
+     "status": "Out",
+     "reported": "2026-11-08T20:03Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []

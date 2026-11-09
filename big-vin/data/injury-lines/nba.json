@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-09T08:40:40.311Z",
+ "generatedAt": "2026-11-09T20:03:03.647Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -111,8 +111,15 @@
    ]
   },
   "6": {
-   "loss": 0,
+   "loss": 0.13,
    "items": [
+    {
+     "player": "Morez Johnson Jr.",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.13,
+     "minutes": 17.1
+    },
     {
      "player": "Sergio de Larrea",
      "position": "F",
@@ -137,42 +144,35 @@
    ]
   },
   "7": {
-   "loss": 2.77,
+   "loss": 0.69,
    "items": [
-    {
-     "player": "DeMar DeRozan",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.01,
-     "minutes": 24.7
-    },
     {
      "player": "Christian Braun",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.1,
+     "status": "Day-To-Day",
+     "points": 0.02,
      "minutes": 34.3
-    },
-    {
-     "player": "Jamal Murray",
-     "position": "G",
-     "status": "Questionable",
-     "points": 1.12,
-     "minutes": 36.5
     },
     {
      "player": "Aaron Gordon",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.11,
+     "status": "Day-To-Day",
+     "points": 0.03,
      "minutes": 29.1
     },
     {
      "player": "Nikola Jokic",
      "position": "C",
-     "status": "Questionable",
-     "points": 1.43,
+     "status": "Day-To-Day",
+     "points": 0.36,
      "minutes": 35.9
+    },
+    {
+     "player": "Jamal Murray",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.28,
+     "minutes": 36.5
     },
     {
      "player": "Julian Strawther",
@@ -187,18 +187,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Jalen Duren",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 19
-    },
-    {
      "player": "Isaiah Joe",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 13.7
+    },
+    {
+     "player": "Jalen Duren",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 19
     }
    ]
   },
@@ -238,6 +238,13 @@
   "10": {
    "loss": 0,
    "items": [
+    {
+     "player": "Oscar Tshiebwe",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 6.8
+    },
     {
      "player": "Clint Capela",
      "position": "C",
@@ -281,21 +288,21 @@
    ]
   },
   "12": {
-   "loss": 0.59,
+   "loss": 0.06,
    "items": [
+    {
+     "player": "Isaiah Jackson",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.06,
+     "minutes": 21.1
+    },
     {
      "player": "Brandon Ingram",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Isaiah Jackson",
-     "position": "F",
-     "status": "Out",
-     "points": 0.59,
-     "minutes": 21.1
     },
     {
      "player": "Yanic Konan Niederhauser",
@@ -321,13 +328,20 @@
    ]
   },
   "13": {
-   "loss": 6.65,
+   "loss": 0.81,
    "items": [
     {
-     "player": "Luka Doncic",
+     "player": "Quentin Grimes",
      "position": "G",
      "status": "Out",
-     "points": 6.65,
+     "points": 0,
+     "minutes": 26
+    },
+    {
+     "player": "Austin Reaves",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.81,
      "minutes": 36.6
     }
    ]
@@ -550,21 +564,21 @@
    ]
   },
   "24": {
-   "loss": 0.17,
+   "loss": 0.43,
    "items": [
+    {
+     "player": "Devin Vassell",
+     "position": "G",
+     "status": "Out",
+     "points": 0.43,
+     "minutes": 30.2
+    },
     {
      "player": "Tobias Harris",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Devin Vassell",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.17,
-     "minutes": 30.2
     },
     {
      "player": "Jayden Quaintance",
@@ -619,18 +633,18 @@
    "loss": 1.95,
    "items": [
     {
-     "player": "Keyonte George",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.16,
-     "minutes": 32.1
-    },
-    {
      "player": "Lauri Markkanen",
      "position": "F",
      "status": "Out",
      "points": 1.08,
      "minutes": 30.9
+    },
+    {
+     "player": "Keyonte George",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.16,
+     "minutes": 32.1
     },
     {
      "player": "Jusuf Nurkic",
@@ -689,8 +703,15 @@
    ]
   },
   "28": {
-   "loss": 1.52,
+   "loss": 1.72,
    "items": [
+    {
+     "player": "Collin Murray-Boyles",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.2,
+     "minutes": 22.2
+    },
     {
      "player": "Nate Bittle",
      "position": "C",
@@ -748,8 +769,15 @@
    ]
   },
   "30": {
-   "loss": 0.83,
+   "loss": 1.15,
    "items": [
+    {
+     "player": "Moussa Diabate",
+     "position": "F",
+     "status": "Doubtful",
+     "points": 0.69,
+     "minutes": 28.8
+    },
     {
      "player": "Grant Williams",
      "position": "F",
@@ -763,13 +791,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 6
-    },
-    {
-     "player": "Moussa Diabate",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.37,
-     "minutes": 28.8
     },
     {
      "player": "Dennis Schroder",
