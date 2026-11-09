@@ -580,3 +580,8 @@
 {"type":"grade","gameId":"401920843","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"over","line":149.5,"actualTotal":143,"result":"loss","gradedAt":"2026-11-08T21:24:01.887Z","source":"ESPN scoreboard final"}
 {"type":"grade","gameId":"401902277","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"over","line":154.5,"actualTotal":181,"result":"win","gradedAt":"2026-11-08T21:24:01.887Z","source":"ESPN scoreboard final"}
 {"type":"grade","gameId":"401924646","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":146.5,"actualTotal":169,"result":"loss","gradedAt":"2026-11-08T21:24:01.887Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401911335","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":157.5,"actualTotal":171,"result":"loss","gradedAt":"2026-11-09T01:13:55.996Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401920134","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":155.5,"actualTotal":171,"result":"loss","gradedAt":"2026-11-09T01:13:55.996Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401911453","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"over","line":143.5,"actualTotal":191,"result":"win","gradedAt":"2026-11-09T01:13:55.996Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401926215","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":159.5,"actualTotal":191,"result":"loss","gradedAt":"2026-11-09T01:13:55.996Z","source":"ESPN scoreboard final"}
+{"type":"grade","gameId":"401911238","pickCapturedAt":"2026-11-07T23:02:45.387Z","side":"under","line":151.5,"actualTotal":132,"result":"win","gradedAt":"2026-11-09T01:13:55.996Z","source":"ESPN scoreboard final"}

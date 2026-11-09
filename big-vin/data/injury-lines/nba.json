@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-08T21:23:52.085Z",
+ "generatedAt": "2026-11-09T01:13:45.621Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -85,7 +85,7 @@
    ]
   },
   "5": {
-   "loss": 1.83,
+   "loss": 0.73,
    "items": [
     {
      "player": "Sam Merrill",
@@ -97,8 +97,8 @@
     {
      "player": "Jarrett Allen",
      "position": "C",
-     "status": "Out",
-     "points": 1.83,
+     "status": "Questionable",
+     "points": 0.73,
      "minutes": 25.1
     },
     {
@@ -137,8 +137,43 @@
    ]
   },
   "7": {
-   "loss": 0,
+   "loss": 2.77,
    "items": [
+    {
+     "player": "DeMar DeRozan",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.01,
+     "minutes": 24.7
+    },
+    {
+     "player": "Christian Braun",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.1,
+     "minutes": 34.3
+    },
+    {
+     "player": "Jamal Murray",
+     "position": "G",
+     "status": "Questionable",
+     "points": 1.12,
+     "minutes": 36.5
+    },
+    {
+     "player": "Aaron Gordon",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.11,
+     "minutes": 29.1
+    },
+    {
+     "player": "Nikola Jokic",
+     "position": "C",
+     "status": "Questionable",
+     "points": 1.43,
+     "minutes": 35.9
+    },
     {
      "player": "Julian Strawther",
      "position": "G",
@@ -296,7 +331,15 @@
   },
   "15": {
    "loss": 0,
-   "items": []
+   "items": [
+    {
+     "player": "Gary Trent Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 6.5
+    }
+   ]
   },
   "16": {
    "loss": 3.63,
@@ -403,7 +446,7 @@
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 14.2
+     "minutes": 14.8
     },
     {
      "player": "Dominick Barlow",
@@ -474,8 +517,15 @@
    ]
   },
   "23": {
-   "loss": 0,
+   "loss": 2.1,
    "items": [
+    {
+     "player": "Domantas Sabonis",
+     "position": "F",
+     "status": "Out",
+     "points": 2.1,
+     "minutes": 35.6
+    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
@@ -493,7 +543,7 @@
    ]
   },
   "24": {
-   "loss": 0,
+   "loss": 0.17,
    "items": [
     {
      "player": "Tobias Harris",
@@ -501,6 +551,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Devin Vassell",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.17,
+     "minutes": 30.2
     },
     {
      "player": "Jayden Quaintance",
@@ -552,20 +609,13 @@
    ]
   },
   "26": {
-   "loss": 1.71,
+   "loss": 1.79,
    "items": [
-    {
-     "player": "Keyonte George",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.57,
-     "minutes": 32.3
-    },
     {
      "player": "Lauri Markkanen",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.43,
+     "status": "Out",
+     "points": 1.08,
      "minutes": 30.9
     },
     {
@@ -585,21 +635,21 @@
    ]
   },
   "27": {
-   "loss": 3.67,
+   "loss": 2.08,
    "items": [
+    {
+     "player": "Tristan Vukcevic",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
     {
      "player": "Anthony Davis",
      "position": "F",
-     "status": "Out",
-     "points": 2.57,
+     "status": "Questionable",
+     "points": 1.03,
      "minutes": 33.1
-    },
-    {
-     "player": "Deandre Ayton",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.05,
-     "minutes": 15.1
     },
     {
      "player": "Reece Beekman",
@@ -607,13 +657,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 1
-    },
-    {
-     "player": "Tristan Vukcevic",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Justin Champagnie",
@@ -635,6 +678,13 @@
    "loss": 1.52,
    "items": [
     {
+     "player": "Nate Bittle",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Immanuel Quickley",
      "position": "G",
      "status": "Questionable",
@@ -654,13 +704,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 26
-    },
-    {
-     "player": "Nate Bittle",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     }
    ]
   },
@@ -668,11 +711,11 @@
    "loss": 1.18,
    "items": [
     {
-     "player": "Richie Saunders",
+     "player": "Scotty Pippen Jr.",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 16.2
     },
     {
      "player": "Isaiah Stewart",
@@ -682,37 +725,23 @@
      "minutes": 18.3
     },
     {
-     "player": "Scotty Pippen Jr.",
+     "player": "Richie Saunders",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 16.2
+     "minutes": 0
     }
    ]
   },
   "30": {
-   "loss": 0.97,
+   "loss": 0.83,
    "items": [
     {
-     "player": "Moussa Diabate",
+     "player": "Grant Williams",
      "position": "F",
-     "status": "Out",
-     "points": 0.92,
-     "minutes": 28.8
-    },
-    {
-     "player": "Brandon Miller",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.05,
-     "minutes": 31
-    },
-    {
-     "player": "Dennis Schroder",
-     "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 30
+     "minutes": 0
     },
     {
      "player": "Kon Knueppel",
@@ -722,11 +751,25 @@
      "minutes": 6
     },
     {
-     "player": "Grant Williams",
+     "player": "Moussa Diabate",
      "position": "F",
+     "status": "Questionable",
+     "points": 0.37,
+     "minutes": 28.8
+    },
+    {
+     "player": "Dennis Schroder",
+     "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 30
+    },
+    {
+     "player": "Brandon Miller",
+     "position": "F",
+     "status": "Out",
+     "points": 0.46,
+     "minutes": 31
     }
    ]
   }
