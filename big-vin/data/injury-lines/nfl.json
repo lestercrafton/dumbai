@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-09T01:13:39.978Z",
+ "generatedAt": "2026-11-09T08:40:35.594Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -194,13 +194,34 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0,
+   "loss": 0.33,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "wr1",
+     "position": "WR",
+     "player": "Luther Burden III",
+     "espnId": "4685278",
+     "status": "Questionable",
+     "reported": "2026-11-09T05:13Z",
+     "weight": 0.25,
+     "points": 0.2
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Tyrique Stevenson Sr.",
+     "espnId": "4426374",
+     "status": "Questionable",
+     "reported": "2026-11-09T03:13Z",
+     "weight": 0.25,
+     "points": 0.13
+    }
+   ],
    "notes": []
   },
   "CIN": {
@@ -342,7 +363,7 @@
      "player": "Jaylen Waddle",
      "espnId": "4372016",
      "status": "Questionable",
-     "reported": "2026-11-08T19:52Z",
+     "reported": "2026-11-08T18:52Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -372,7 +393,7 @@
      "player": "Riley Moss",
      "espnId": "4382401",
      "status": "Questionable",
-     "reported": "2026-11-08T19:22Z",
+     "reported": "2026-11-08T19:46Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -554,7 +575,7 @@
      "espnId": "3139477",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-08T21:55Z",
+     "reported": "2026-11-09T01:33Z",
      "weight": 0.25,
      "replacement": "Justin Fields",
      "starterEpaPerPlay": 0.113,
@@ -572,7 +593,7 @@
      "player": "Xavier Worthy",
      "espnId": "4683062",
      "status": "Questionable",
-     "reported": "2026-11-08T21:11Z",
+     "reported": "2026-11-08T21:04Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -623,13 +644,32 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.13,
+   "loss": 0.63,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
    "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Justin Herbert",
+     "espnId": "4038941",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-11-09T01:14Z",
+     "weight": 0.25,
+     "replacement": "DJ Uiagalelei",
+     "starterEpaPerPlay": -0.059,
+     "starterPlays": 648,
+     "backupEpaPerPlay": -0.073,
+     "backupPlays": 7,
+     "gapEpaPerPlay": 0.01,
+     "fullPoints": 2,
+     "alreadyInRatings": 0,
+     "points": 0.5
+    },
     {
      "group": "edge",
      "position": "RDE",
@@ -742,7 +782,7 @@
      "player": "Rhamondre Stevenson",
      "espnId": "4569173",
      "status": "Questionable",
-     "reported": "2026-11-09T00:19Z",
+     "reported": "2026-11-09T00:07Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -904,7 +944,7 @@
   },
   "SF": {
    "team": "SF",
-   "loss": 1.2,
+   "loss": 1.46,
    "starter": {
     "name": "Brock Purdy",
     "espnId": "4361741",
@@ -930,6 +970,26 @@
      "reported": "2026-11-08T20:01Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Renardo Green",
+     "espnId": "4427325",
+     "status": "Questionable",
+     "reported": "2026-11-09T01:11Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Deommodore Lenoir",
+     "espnId": "4242488",
+     "status": "Questionable",
+     "reported": "2026-11-09T01:16Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []
@@ -997,7 +1057,7 @@
   },
   "TB": {
    "team": "TB",
-   "loss": 0.25,
+   "loss": 0.33,
    "starter": {
     "name": "Baker Mayfield",
     "espnId": "3052587",
@@ -1013,6 +1073,16 @@
      "reported": "2026-11-09T00:04Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "s",
+     "position": "FS",
+     "player": "Antoine Winfield Jr.",
+     "espnId": "4034790",
+     "status": "Questionable",
+     "reported": "2026-11-09T03:35Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []

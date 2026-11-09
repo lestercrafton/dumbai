@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-09T01:13:45.621Z",
+ "generatedAt": "2026-11-09T08:40:40.311Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -206,6 +206,13 @@
    "loss": 0,
    "items": [
     {
+     "player": "Will Richard",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 17.1
+    },
+    {
      "player": "Kristaps Porzingis",
      "position": "C",
      "status": "Out",
@@ -314,14 +321,14 @@
    ]
   },
   "13": {
-   "loss": 6.36,
+   "loss": 6.65,
    "items": [
     {
      "player": "Luka Doncic",
      "position": "G",
      "status": "Out",
-     "points": 6.36,
-     "minutes": 35.9
+     "points": 6.65,
+     "minutes": 36.6
     }
    ]
   },
@@ -342,14 +349,14 @@
    ]
   },
   "16": {
-   "loss": 3.63,
+   "loss": 2.35,
    "items": [
     {
      "player": "Anthony Edwards",
      "position": "G",
      "status": "Out",
-     "points": 3.63,
-     "minutes": 33.8
+     "points": 2.35,
+     "minutes": 34
     },
     {
      "player": "Donte DiVincenzo",
@@ -609,8 +616,15 @@
    ]
   },
   "26": {
-   "loss": 1.79,
+   "loss": 1.95,
    "items": [
+    {
+     "player": "Keyonte George",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.16,
+     "minutes": 32.1
+    },
     {
      "player": "Lauri Markkanen",
      "position": "F",
