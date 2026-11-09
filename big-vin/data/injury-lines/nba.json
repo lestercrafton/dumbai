@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-09T20:03:03.647Z",
+ "generatedAt": "2026-11-09T23:10:05.825Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -27,13 +27,6 @@
      "minutes": 0
     },
     {
-     "player": "Jock Landale",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 14.7
-    },
-    {
      "player": "Mouhamed Gueye",
      "position": "F",
      "status": "Out",
@@ -54,8 +47,29 @@
    "items": []
   },
   "3": {
-   "loss": 0,
+   "loss": 3.76,
    "items": [
+    {
+     "player": "Zion Williamson",
+     "position": "F",
+     "status": "Out",
+     "points": 2.63,
+     "minutes": 33.1
+    },
+    {
+     "player": "Trendon Watford",
+     "position": "F",
+     "status": "Out",
+     "points": 0.33,
+     "minutes": 17.8
+    },
+    {
+     "player": "Trey Murphy III",
+     "position": "F",
+     "status": "Out",
+     "points": 0.8,
+     "minutes": 32.8
+    },
     {
      "player": "Yves Missi",
      "position": "C",
@@ -328,31 +342,46 @@
    ]
   },
   "13": {
-   "loss": 0.81,
+   "loss": 2.04,
    "items": [
+    {
+     "player": "Austin Reaves",
+     "position": "G",
+     "status": "Out",
+     "points": 2.04,
+     "minutes": 36.6
+    },
     {
      "player": "Quentin Grimes",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 26
-    },
-    {
-     "player": "Austin Reaves",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.81,
-     "minutes": 36.6
     }
    ]
   },
   "14": {
-   "loss": 0,
-   "items": []
+   "loss": 0.42,
+   "items": [
+    {
+     "player": "Giannis Antetokounmpo",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.42,
+     "minutes": 32.9
+    }
+   ]
   },
   "15": {
-   "loss": 0,
+   "loss": 0.81,
    "items": [
+    {
+     "player": "Tyler Herro",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.81,
+     "minutes": 30.7
+    },
     {
      "player": "Gary Trent Jr.",
      "position": "G",
@@ -402,15 +431,7 @@
   },
   "18": {
    "loss": 0,
-   "items": [
-    {
-     "player": "Josh Hart",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 31.7
-    }
-   ]
+   "items": []
   },
   "19": {
    "loss": 0,
@@ -663,21 +684,21 @@
    ]
   },
   "27": {
-   "loss": 2.08,
+   "loss": 1.05,
    "items": [
+    {
+     "player": "Bilal Coulibaly",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 25.8
+    },
     {
      "player": "Tristan Vukcevic",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Anthony Davis",
-     "position": "F",
-     "status": "Questionable",
-     "points": 1.03,
-     "minutes": 33.1
     },
     {
      "player": "Reece Beekman",
@@ -703,14 +724,28 @@
    ]
   },
   "28": {
-   "loss": 1.72,
+   "loss": 4.28,
    "items": [
+    {
+     "player": "Immanuel Quickley",
+     "position": "G",
+     "status": "Out",
+     "points": 1.54,
+     "minutes": 31.8
+    },
     {
      "player": "Collin Murray-Boyles",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.2,
+     "status": "Out",
+     "points": 0.5,
      "minutes": 22.2
+    },
+    {
+     "player": "Scottie Barnes",
+     "position": "F",
+     "status": "Out",
+     "points": 2.24,
+     "minutes": 33.4
     },
     {
      "player": "Nate Bittle",
@@ -718,20 +753,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Immanuel Quickley",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.62,
-     "minutes": 31.8
-    },
-    {
-     "player": "Scottie Barnes",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.9,
-     "minutes": 33.4
     },
     {
      "player": "Kawhi Leonard",
@@ -769,13 +790,13 @@
    ]
   },
   "30": {
-   "loss": 1.15,
+   "loss": 1.38,
    "items": [
     {
      "player": "Moussa Diabate",
      "position": "F",
-     "status": "Doubtful",
-     "points": 0.69,
+     "status": "Out",
+     "points": 0.92,
      "minutes": 28.8
     },
     {
