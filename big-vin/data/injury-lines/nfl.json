@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-10T20:02:05.348Z",
+ "generatedAt": "2026-11-10T20:34:52.666Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -673,8 +673,8 @@
    "team": "LV",
    "loss": 0.08,
    "starter": {
-    "name": "Kirk Cousins",
-    "espnId": "14880",
+    "name": "Fernando Mendoza",
+    "espnId": "4837248",
     "basis": "depth chart QB1"
    },
    "items": [
@@ -689,7 +689,9 @@
      "points": 0.08
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Kirk Cousins is not the resolved starter."
+   ]
   },
   "LAC": {
    "team": "LAC",
@@ -744,7 +746,7 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 0.41,
+   "loss": 1.01,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -756,10 +758,10 @@
      "position": "WR",
      "player": "Puka Nacua",
      "espnId": "4426515",
-     "status": "Questionable",
-     "reported": "2026-11-10T15:19Z",
-     "weight": 0.25,
-     "points": 0.2
+     "status": "Doubtful",
+     "reported": "2026-11-10T20:08Z",
+     "weight": 1,
+     "points": 0.8
     },
     {
      "group": "cb",
@@ -817,7 +819,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 0.42,
+   "loss": 1.68,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -830,9 +832,9 @@
      "player": "Kyler Murray",
      "espnId": "3917315",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
-     "status": "Questionable",
-     "reported": "2026-11-10T15:44Z",
-     "weight": 0.25,
+     "status": "Out",
+     "reported": "2026-11-10T20:13Z",
+     "weight": 1,
      "replacement": "Kirk Cousins",
      "starterEpaPerPlay": 0.009,
      "starterPlays": 301,
@@ -841,7 +843,7 @@
      "gapEpaPerPlay": 0,
      "fullPoints": 2,
      "alreadyInRatings": 0.16,
-     "points": 0.42
+     "points": 1.68
     }
    ],
    "notes": []
