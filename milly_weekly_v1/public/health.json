@@ -1,1 +1,16 @@
-{"status":"waiting_for_pool","at":"2026-11-08T19:58:41.870493+00:00","contest":{},"error":"DraftKings has not listed next Sunday's NFL Classic Millionaire yet. No new lineups were generated. A later scheduled run will try again.","previous_release_preserved":true,"previous_release":{"release_id":"2026-w09-20261104T155031Z","generated_at":"2026-11-04T15:50:31.267016+00:00","contest":"NFL $2.5M Fantasy Football Millionaire [$1M to 1st]","kickoff":"2026-11-08T18:00:00+00:00","is_current":false,"note":"Last successful release was generated 2026-11-04T15:50:31.267016+00:00 for the slate starting 2026-11-08T18:00:00+00:00. This run did not refresh it."}}
+{
+  "status": "failed",
+  "at": "2026-11-10T20:35:12.309567+00:00",
+  "previous_release_preserved": true,
+  "previous_release": {
+    "release_id": "2026-w09-20261104T155031Z",
+    "generated_at": "2026-11-04T15:50:31.267016+00:00",
+    "contest": "NFL $2.5M Fantasy Football Millionaire [$1M to 1st]",
+    "kickoff": "2026-11-08T18:00:00+00:00",
+    "is_current": false,
+    "note": "Last successful release was generated 2026-11-04T15:50:31.267016+00:00 for the slate starting 2026-11-08T18:00:00+00:00. This run did not refresh it."
+  },
+  "error": "A source, model, browser or final publication check failed. No staged release is approved.",
+  "detail": "Every team has one supported starting QB",
+  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/42896075253"
+}
