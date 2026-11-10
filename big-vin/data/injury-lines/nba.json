@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-10T11:44:59.012Z",
+ "generatedAt": "2026-11-10T20:02:10.592Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -47,7 +47,7 @@
    "items": []
   },
   "3": {
-   "loss": 4.07,
+   "loss": 0.43,
    "items": [
     {
      "player": "Trendon Watford",
@@ -59,16 +59,9 @@
     {
      "player": "Trey Murphy III",
      "position": "F",
-     "status": "Out",
-     "points": 1.03,
+     "status": "Day-To-Day",
+     "points": 0.1,
      "minutes": 32.9
-    },
-    {
-     "player": "Zion Williamson",
-     "position": "F",
-     "status": "Out",
-     "points": 2.71,
-     "minutes": 33.2
     },
     {
      "player": "Yves Missi",
@@ -345,8 +338,15 @@
    ]
   },
   "15": {
-   "loss": 0.81,
+   "loss": 0.94,
    "items": [
+    {
+     "player": "Kel'el Ware",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.13,
+     "minutes": 17.3
+    },
     {
      "player": "Tyler Herro",
      "position": "G",
@@ -399,8 +399,15 @@
    "items": []
   },
   "19": {
-   "loss": 0,
+   "loss": 0.06,
    "items": [
+    {
+     "player": "Tristan da Silva",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.06,
+     "minutes": 30.4
+    },
     {
      "player": "Jalen Suggs",
      "position": "G",
@@ -602,21 +609,21 @@
    ]
   },
   "26": {
-   "loss": 2.7,
+   "loss": 3.35,
    "items": [
+    {
+     "player": "Lauri Markkanen",
+     "position": "F",
+     "status": "Out",
+     "points": 1.08,
+     "minutes": 30.9
+    },
     {
      "player": "Keyonte George",
      "position": "G",
      "status": "Out",
      "points": 1.56,
      "minutes": 32.1
-    },
-    {
-     "player": "Lauri Markkanen",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.43,
-     "minutes": 30.9
     },
     {
      "player": "Jusuf Nurkic",
@@ -678,6 +685,13 @@
    "loss": 4.28,
    "items": [
     {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26
+    },
+    {
      "player": "Immanuel Quickley",
      "position": "G",
      "status": "Out",
@@ -704,13 +718,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Kawhi Leonard",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26
     }
    ]
   },
