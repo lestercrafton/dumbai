@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-10T02:57:22.796Z",
+ "generatedAt": "2026-11-10T11:44:59.012Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -47,15 +47,8 @@
    "items": []
   },
   "3": {
-   "loss": 3.76,
+   "loss": 4.07,
    "items": [
-    {
-     "player": "Zion Williamson",
-     "position": "F",
-     "status": "Out",
-     "points": 2.63,
-     "minutes": 33.1
-    },
     {
      "player": "Trendon Watford",
      "position": "F",
@@ -67,15 +60,22 @@
      "player": "Trey Murphy III",
      "position": "F",
      "status": "Out",
-     "points": 0.8,
-     "minutes": 32.8
+     "points": 1.03,
+     "minutes": 32.9
+    },
+    {
+     "player": "Zion Williamson",
+     "position": "F",
+     "status": "Out",
+     "points": 2.71,
+     "minutes": 33.2
     },
     {
      "player": "Yves Missi",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 19.5
+     "minutes": 9
     }
    ]
   },
@@ -118,21 +118,21 @@
    ]
   },
   "6": {
-   "loss": 0.33,
+   "loss": 0.42,
    "items": [
     {
      "player": "Morez Johnson Jr.",
      "position": "F",
      "status": "Out",
-     "points": 0.33,
-     "minutes": 17.1
+     "points": 0.42,
+     "minutes": 17.4
     },
     {
      "player": "Sergio de Larrea",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 11.8
+     "minutes": 13.3
     },
     {
      "player": "Tarik Biberovic",
@@ -182,21 +182,28 @@
    ]
   },
   "9": {
-   "loss": 0,
+   "loss": 0.73,
    "items": [
     {
      "player": "Gary Payton II",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 13.4
+     "minutes": 12.9
+    },
+    {
+     "player": "Brandon Williams",
+     "position": "G",
+     "status": "Out",
+     "points": 0.73,
+     "minutes": 16
     },
     {
      "player": "Will Richard",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 17.1
+     "minutes": 16.8
     },
     {
      "player": "Kristaps Porzingis",
@@ -222,14 +229,21 @@
    ]
   },
   "10": {
-   "loss": 0,
+   "loss": 0.6,
    "items": [
+    {
+     "player": "Oscar Tshiebwe",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 6.8
+    },
     {
      "player": "Clint Capela",
      "position": "C",
      "status": "Out",
-     "points": 0,
-     "minutes": 14.2
+     "points": 0.6,
+     "minutes": 15.4
     },
     {
      "player": "Steven Adams",
@@ -237,25 +251,18 @@
      "status": "Out",
      "points": 0,
      "minutes": 8
-    },
-    {
-     "player": "Oscar Tshiebwe",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 6.8
     }
    ]
   },
   "11": {
-   "loss": 3.6,
+   "loss": 3.51,
    "items": [
     {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
-     "points": 3.6,
-     "minutes": 33
+     "points": 3.51,
+     "minutes": 32.7
     },
     {
      "player": "Johnny Furphy",
@@ -269,7 +276,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 12
+     "minutes": 0
     }
    ]
   },
@@ -346,13 +353,6 @@
      "status": "Questionable",
      "points": 0.81,
      "minutes": 30.7
-    },
-    {
-     "player": "Gary Trent Jr.",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 6.5
     }
    ]
   },
@@ -536,14 +536,14 @@
    ]
   },
   "24": {
-   "loss": 0.43,
+   "loss": 0.72,
    "items": [
     {
      "player": "Devin Vassell",
      "position": "G",
      "status": "Out",
-     "points": 0.43,
-     "minutes": 30.2
+     "points": 0.72,
+     "minutes": 30.1
     },
     {
      "player": "Tobias Harris",
@@ -718,18 +718,18 @@
    "loss": 1.18,
    "items": [
     {
-     "player": "Scotty Pippen Jr.",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 16.2
-    },
-    {
      "player": "Isaiah Stewart",
      "position": "C",
      "status": "Out",
      "points": 1.18,
      "minutes": 18.3
+    },
+    {
+     "player": "Scotty Pippen Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 16.2
     },
     {
      "player": "Richie Saunders",
@@ -743,6 +743,13 @@
   "30": {
    "loss": 1.47,
    "items": [
+    {
+     "player": "Brandon Miller",
+     "position": "F",
+     "status": "Out",
+     "points": 0.74,
+     "minutes": 30.4
+    },
     {
      "player": "Moussa Diabate",
      "position": "F",
@@ -770,13 +777,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 29.4
-    },
-    {
-     "player": "Brandon Miller",
-     "position": "F",
-     "status": "Out",
-     "points": 0.74,
-     "minutes": 30.4
     }
    ]
   }

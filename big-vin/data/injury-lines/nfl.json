@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-10T02:57:12.856Z",
+ "generatedAt": "2026-11-10T11:44:55.291Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 3.23,
+   "loss": 3.63,
    "starter": {
     "name": "Gardner Minshew",
     "espnId": "4038524",
@@ -49,6 +49,16 @@
      "reported": "2026-11-09T21:39Z",
      "weight": 1,
      "points": 0.8
+    },
+    {
+     "group": "wr2",
+     "position": "WR",
+     "player": "Kendrick Bourne",
+     "espnId": "3045523",
+     "status": "Injured Reserve",
+     "reported": "2026-11-03T21:12Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "dt",
@@ -817,7 +827,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 2.14,
+   "loss": 3.26,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -836,12 +846,12 @@
      "replacement": "Carson Wentz",
      "starterEpaPerPlay": 0.009,
      "starterPlays": 301,
-     "backupEpaPerPlay": -0.037,
-     "backupPlays": 153,
-     "gapEpaPerPlay": 0.05,
-     "fullPoints": 2,
-     "alreadyInRatings": 0.08,
-     "points": 1.84
+     "backupEpaPerPlay": -0.106,
+     "backupPlays": 180,
+     "gapEpaPerPlay": 0.12,
+     "fullPoints": 3.53,
+     "alreadyInRatings": 0.16,
+     "points": 2.96
     },
     {
      "group": "dt",
