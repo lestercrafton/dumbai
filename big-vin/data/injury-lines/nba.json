@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-10T20:34:57.731Z",
+ "generatedAt": "2026-11-10T21:20:41.647Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -224,13 +224,6 @@
   "10": {
    "loss": 0.6,
    "items": [
-    {
-     "player": "Oscar Tshiebwe",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 6.8
-    },
     {
      "player": "Clint Capela",
      "position": "C",
@@ -510,7 +503,7 @@
    ]
   },
   "23": {
-   "loss": 0.84,
+   "loss": 0,
    "items": [
     {
      "player": "Maxime Raynaud",
@@ -518,13 +511,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Domantas Sabonis",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.84,
-     "minutes": 35.6
     },
     {
      "player": "Ben Simmons",

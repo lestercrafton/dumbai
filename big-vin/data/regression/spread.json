@@ -1,48 +1,60 @@
 {
  "method": "Final margin = a + b × market line + c × (our line − market line), ordinary least squares on saved graded live picks.",
  "all": {
-  "games": 503,
+  "games": 929,
   "ready": true,
-  "marketWeight": 1.0359832519703671,
-  "ourExtraWeight": 0.3380258376766101,
-  "standardError": 0.13343316281885448,
-  "t": 2.533297049516135,
-  "addsInformation": true,
+  "marketWeight": 1.052675127964306,
+  "ourExtraWeight": 0.1432957018501817,
+  "standardError": 0.0963861801418648,
+  "t": 1.486683066382273,
+  "addsInformation": false,
   "hurts": false
  },
  "sports": {
   "nfl": {
-   "games": 28,
-   "ready": false
+   "games": 43,
+   "ready": true,
+   "marketWeight": 1.820193498063997,
+   "ourExtraWeight": 1.6113551149280534,
+   "standardError": 0.6144560247731582,
+   "t": 2.62240917162937,
+   "addsInformation": true,
+   "hurts": false
   },
   "cfb": {
-   "games": 334,
+   "games": 458,
    "ready": true,
-   "marketWeight": 1.0600341346294817,
-   "ourExtraWeight": 0.35244380988014967,
-   "standardError": 0.17364942119375376,
-   "t": 2.0296284747583555,
+   "marketWeight": 1.104634746136079,
+   "ourExtraWeight": 0.3326826547169963,
+   "standardError": 0.16285370746090247,
+   "t": 2.042831323302025,
    "addsInformation": true,
    "hurts": false
   },
   "nba": {
-   "games": 15,
-   "ready": false
+   "games": 62,
+   "ready": true,
+   "marketWeight": 1.336862512144771,
+   "ourExtraWeight": 0.6374699825992426,
+   "standardError": 0.402274504940502,
+   "t": 1.584664140456843,
+   "addsInformation": false,
+   "hurts": false
   },
   "wnba": {
    "games": 7,
    "ready": false
   },
   "cbb": {
-   "games": 119,
+   "games": 359,
    "ready": true,
-   "marketWeight": 0.8911407322816755,
-   "ourExtraWeight": 0.054241236023946815,
-   "standardError": 0.26248123052297645,
-   "t": 0.20664805599956518,
+   "marketWeight": 0.9519345379871873,
+   "ourExtraWeight": -0.21599956423279743,
+   "standardError": 0.1277926430065354,
+   "t": -1.6902347361401007,
    "addsInformation": false,
    "hurts": false
   }
  },
- "updatedAt": "2026-11-03T21:09:11.347Z"
+ "updatedAt": "2026-11-10T21:26:42.232Z"
 }

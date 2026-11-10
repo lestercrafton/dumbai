@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-10T20:34:52.666Z",
+ "generatedAt": "2026-11-10T21:20:36.494Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -788,11 +788,11 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 0.75,
+   "loss": 3.01,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
-    "basis": "depth chart QB1 (injured)"
+    "basis": "season usage leader (injured; dropped from depth chart)"
    },
    "items": [
     {
@@ -800,10 +800,10 @@
      "position": "QB",
      "player": "Malik Willis",
      "espnId": "4242512",
-     "starterBasis": "depth chart QB1 (injured)",
-     "status": "Questionable",
-     "reported": "2026-11-08T23:46Z",
-     "weight": 0.25,
+     "starterBasis": "season usage leader (injured; dropped from depth chart)",
+     "status": "Injured Reserve",
+     "reported": "2026-11-10T21:04Z",
+     "weight": 1,
      "replacement": "Kyle McCord",
      "starterEpaPerPlay": 0.019,
      "starterPlays": 300,
@@ -812,7 +812,7 @@
      "gapEpaPerPlay": 0.1,
      "fullPoints": 3.01,
      "alreadyInRatings": 0,
-     "points": 0.75
+     "points": 3.01
     }
    ],
    "notes": []
@@ -832,8 +832,8 @@
      "player": "Kyler Murray",
      "espnId": "3917315",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
-     "status": "Out",
-     "reported": "2026-11-10T20:13Z",
+     "status": "Doubtful",
+     "reported": "2026-11-10T20:55Z",
      "weight": 1,
      "replacement": "Kirk Cousins",
      "starterEpaPerPlay": 0.009,
