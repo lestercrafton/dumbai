@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-09T23:10:05.825Z",
+ "generatedAt": "2026-11-10T02:57:22.796Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -17,7 +17,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 11
+     "minutes": 11.8
     },
     {
      "player": "Keshon Gilbert",
@@ -99,39 +99,32 @@
    ]
   },
   "5": {
-   "loss": 0.73,
+   "loss": 0.1,
    "items": [
     {
      "player": "Sam Merrill",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 23.1
-    },
-    {
-     "player": "Jarrett Allen",
-     "position": "C",
-     "status": "Questionable",
-     "points": 0.73,
-     "minutes": 25.1
+     "minutes": 23
     },
     {
      "player": "Jaylon Tyson",
      "position": "G",
      "status": "Out",
-     "points": 0,
-     "minutes": 20.8
+     "points": 0.1,
+     "minutes": 20
     }
    ]
   },
   "6": {
-   "loss": 0.13,
+   "loss": 0.33,
    "items": [
     {
      "player": "Morez Johnson Jr.",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.13,
+     "status": "Out",
+     "points": 0.33,
      "minutes": 17.1
     },
     {
@@ -158,36 +151,8 @@
    ]
   },
   "7": {
-   "loss": 0.69,
+   "loss": 0,
    "items": [
-    {
-     "player": "Christian Braun",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.02,
-     "minutes": 34.3
-    },
-    {
-     "player": "Aaron Gordon",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.03,
-     "minutes": 29.1
-    },
-    {
-     "player": "Nikola Jokic",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.36,
-     "minutes": 35.9
-    },
-    {
-     "player": "Jamal Murray",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.28,
-     "minutes": 36.5
-    },
     {
      "player": "Julian Strawther",
      "position": "G",
@@ -219,6 +184,13 @@
   "9": {
    "loss": 0,
    "items": [
+    {
+     "player": "Gary Payton II",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.4
+    },
     {
      "player": "Will Richard",
      "position": "G",
@@ -253,13 +225,6 @@
    "loss": 0,
    "items": [
     {
-     "player": "Oscar Tshiebwe",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 6.8
-    },
-    {
      "player": "Clint Capela",
      "position": "C",
      "status": "Out",
@@ -272,6 +237,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 8
+    },
+    {
+     "player": "Oscar Tshiebwe",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 6.8
     }
    ]
   },
@@ -302,25 +274,18 @@
    ]
   },
   "12": {
-   "loss": 0.06,
+   "loss": 0,
    "items": [
     {
-     "player": "Isaiah Jackson",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.06,
-     "minutes": 21.1
-    },
-    {
-     "player": "Brandon Ingram",
-     "position": "F",
+     "player": "Yanic Konan Niederhauser",
+     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Yanic Konan Niederhauser",
-     "position": "C",
+     "player": "Brandon Ingram",
+     "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -342,21 +307,21 @@
    ]
   },
   "13": {
-   "loss": 2.04,
+   "loss": 1.84,
    "items": [
     {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Out",
-     "points": 2.04,
-     "minutes": 36.6
+     "points": 1.84,
+     "minutes": 36.4
     },
     {
      "player": "Quentin Grimes",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 26
+     "minutes": 25.4
     }
    ]
   },
@@ -437,11 +402,11 @@
    "loss": 0,
    "items": [
     {
-     "player": "Desmond Bane",
+     "player": "Jalen Suggs",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 34.5
+     "minutes": 33.3
     },
     {
      "player": "Jonathan Isaac",
@@ -449,13 +414,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Jalen Suggs",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 33.3
     },
     {
      "player": "Paolo Banchero",
@@ -526,15 +484,8 @@
    ]
   },
   "22": {
-   "loss": 3.23,
+   "loss": 1.83,
    "items": [
-    {
-     "player": "Robert Williams III",
-     "position": "C",
-     "status": "Out",
-     "points": 1.4,
-     "minutes": 16.4
-    },
     {
      "player": "Ja Morant",
      "position": "G",
@@ -559,21 +510,21 @@
    ]
   },
   "23": {
-   "loss": 2.1,
+   "loss": 0.84,
    "items": [
-    {
-     "player": "Domantas Sabonis",
-     "position": "F",
-     "status": "Out",
-     "points": 2.1,
-     "minutes": 35.6
-    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Domantas Sabonis",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.84,
+     "minutes": 35.6
     },
     {
      "player": "Ben Simmons",
@@ -651,21 +602,21 @@
    ]
   },
   "26": {
-   "loss": 1.95,
+   "loss": 2.7,
    "items": [
-    {
-     "player": "Lauri Markkanen",
-     "position": "F",
-     "status": "Out",
-     "points": 1.08,
-     "minutes": 30.9
-    },
     {
      "player": "Keyonte George",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.16,
+     "status": "Out",
+     "points": 1.56,
      "minutes": 32.1
+    },
+    {
+     "player": "Lauri Markkanen",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.43,
+     "minutes": 30.9
     },
     {
      "player": "Jusuf Nurkic",
@@ -684,14 +635,14 @@
    ]
   },
   "27": {
-   "loss": 1.05,
+   "loss": 1.11,
    "items": [
     {
      "player": "Bilal Coulibaly",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 25.8
+     "minutes": 25.4
     },
     {
      "player": "Tristan Vukcevic",
@@ -711,8 +662,8 @@
      "player": "Justin Champagnie",
      "position": "F",
      "status": "Out",
-     "points": 1.05,
-     "minutes": 18.5
+     "points": 1.11,
+     "minutes": 17.7
     },
     {
      "player": "Jamir Watkins",
@@ -790,14 +741,14 @@
    ]
   },
   "30": {
-   "loss": 1.38,
+   "loss": 1.47,
    "items": [
     {
      "player": "Moussa Diabate",
      "position": "F",
      "status": "Out",
-     "points": 0.92,
-     "minutes": 28.8
+     "points": 0.73,
+     "minutes": 28.1
     },
     {
      "player": "Grant Williams",
@@ -818,14 +769,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 30
+     "minutes": 29.4
     },
     {
      "player": "Brandon Miller",
      "position": "F",
      "status": "Out",
-     "points": 0.46,
-     "minutes": 31
+     "points": 0.74,
+     "minutes": 30.4
     }
    ]
   }
