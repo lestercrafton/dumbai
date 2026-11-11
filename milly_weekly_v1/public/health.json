@@ -1,6 +1,6 @@
 {
   "status": "failed",
-  "at": "2026-11-11T15:42:41.054205+00:00",
+  "at": "2026-11-11T20:14:48.171159+00:00",
   "previous_release_preserved": true,
   "previous_release": {
     "release_id": "2026-w09-20261104T155031Z",
@@ -11,6 +11,6 @@
     "note": "Last successful release was generated 2026-11-04T15:50:31.267016+00:00 for the slate starting 2026-11-08T18:00:00+00:00. This run did not refresh it."
   },
   "error": "A source, model, browser or final publication check failed. No staged release is approved.",
-  "detail": "A source, model, browser or final publication check failed. No staged release is approved.",
-  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/43049270491"
+  "detail": "Every team has one supported starting QB",
+  "run_url": "https://github.com/lestercrafton/dumbai/actions/runs/43094191027"
 }
