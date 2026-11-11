@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-11T08:23:16.345Z",
+ "generatedAt": "2026-11-11T16:37:05.395Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -258,7 +258,7 @@
   },
   "CLE": {
    "team": "CLE",
-   "loss": 0.85,
+   "loss": 3.17,
    "starter": {
     "name": "Deshaun Watson",
     "espnId": "3122840",
@@ -271,9 +271,9 @@
      "player": "Deshaun Watson",
      "espnId": "3122840",
      "starterBasis": "depth chart QB1 (injured)",
-     "status": "Questionable",
-     "reported": "2026-11-10T15:44Z",
-     "weight": 0.25,
+     "status": "Out",
+     "reported": "2026-11-11T14:38Z",
+     "weight": 1,
      "replacement": "Shedeur Sanders",
      "starterEpaPerPlay": 0.005,
      "starterPlays": 333,
@@ -282,7 +282,7 @@
      "gapEpaPerPlay": 0.11,
      "fullPoints": 3.36,
      "alreadyInRatings": 0.08,
-     "points": 0.77
+     "points": 3.09
     },
     {
      "group": "dt",
@@ -741,7 +741,7 @@
      "player": "Puka Nacua",
      "espnId": "4426515",
      "status": "Doubtful",
-     "reported": "2026-11-10T20:08Z",
+     "reported": "2026-11-11T14:34Z",
      "weight": 1,
      "points": 0.8
     },
@@ -784,7 +784,7 @@
      "espnId": "4242512",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
      "status": "Injured Reserve",
-     "reported": "2026-11-11T01:01Z",
+     "reported": "2026-11-11T14:01Z",
      "weight": 1,
      "replacement": "Kyle McCord",
      "starterEpaPerPlay": 0.019,

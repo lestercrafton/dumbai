@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-11T08:23:21.949Z",
+ "generatedAt": "2026-11-11T16:37:12.050Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -49,6 +49,13 @@
   "3": {
    "loss": 0.43,
    "items": [
+    {
+     "player": "Bennedict Mathurin",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 15.5
+    },
     {
      "player": "Trendon Watford",
      "position": "F",
@@ -339,8 +346,15 @@
    ]
   },
   "17": {
-   "loss": 0.41,
+   "loss": 0.52,
    "items": [
+    {
+     "player": "Mikel Brown Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0.11,
+     "minutes": 23.3
+    },
     {
      "player": "Nolan Traore",
      "position": "G",
@@ -481,13 +495,13 @@
    ]
   },
   "23": {
-   "loss": 0.29,
+   "loss": 0.03,
    "items": [
     {
      "player": "Precious Achiuwa",
      "position": "F",
-     "status": "Out",
-     "points": 0.29,
+     "status": "Day-To-Day",
+     "points": 0.03,
      "minutes": 26.1
     },
     {
@@ -576,18 +590,18 @@
    "loss": 3.6,
    "items": [
     {
-     "player": "Lauri Markkanen",
-     "position": "F",
-     "status": "Out",
-     "points": 1.17,
-     "minutes": 30.1
-    },
-    {
      "player": "Keyonte George",
      "position": "G",
      "status": "Out",
      "points": 1.44,
      "minutes": 32.4
+    },
+    {
+     "player": "Lauri Markkanen",
+     "position": "F",
+     "status": "Out",
+     "points": 1.17,
+     "minutes": 30.1
     },
     {
      "player": "Jusuf Nurkic",
