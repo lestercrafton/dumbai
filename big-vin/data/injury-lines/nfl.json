@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-10T21:20:36.494Z",
+ "generatedAt": "2026-11-11T00:54:05.330Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,39 +14,20 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 2.78,
+   "loss": 1.13,
    "starter": {
-    "name": "Gardner Minshew",
-    "espnId": "4038524",
-    "basis": "depth chart QB1 (injured)"
+    "name": "Carson Beck",
+    "espnId": "4430841",
+    "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "qb",
-     "position": "QB",
-     "player": "Gardner Minshew",
-     "espnId": "4038524",
-     "starterBasis": "depth chart QB1 (injured)",
-     "status": "Doubtful",
-     "reported": "2026-11-09T22:51Z",
-     "weight": 1,
-     "replacement": "Carson Beck",
-     "starterEpaPerPlay": 0.028,
-     "starterPlays": 68,
-     "backupEpaPerPlay": -0.08,
-     "backupPlays": 0,
-     "gapEpaPerPlay": 0.11,
-     "fullPoints": 3.3,
-     "alreadyInRatings": 0.5,
-     "points": 1.65
-    },
     {
      "group": "wr1",
      "position": "WR",
      "player": "Michael Wilson",
      "espnId": "4360761",
-     "status": "Out",
-     "reported": "2026-11-09T21:39Z",
+     "status": "Injured Reserve",
+     "reported": "2026-11-10T22:53Z",
      "weight": 1,
      "points": 0.8
     },
@@ -82,6 +63,7 @@
     }
    ],
    "notes": [
+    "Starter Carson Beck has no ARI snaps this season (usage leader Jacoby Brissett).",
     "Usage leader Jacoby Brissett is not the resolved starter."
    ]
   },
@@ -788,7 +770,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 3.01,
+   "loss": 0.75,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -801,9 +783,9 @@
      "player": "Malik Willis",
      "espnId": "4242512",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
-     "status": "Injured Reserve",
-     "reported": "2026-11-10T21:04Z",
-     "weight": 1,
+     "status": "Questionable",
+     "reported": "2026-11-10T21:32Z",
+     "weight": 0.25,
      "replacement": "Kyle McCord",
      "starterEpaPerPlay": 0.019,
      "starterPlays": 300,
@@ -812,7 +794,7 @@
      "gapEpaPerPlay": 0.1,
      "fullPoints": 3.01,
      "alreadyInRatings": 0,
-     "points": 3.01
+     "points": 0.75
     }
    ],
    "notes": []
@@ -924,7 +906,7 @@
   },
   "NYG": {
    "team": "NYG",
-   "loss": 0.5,
+   "loss": 0.8,
    "starter": {
     "name": "J.J. McCarthy",
     "espnId": "4433970",
@@ -938,7 +920,7 @@
      "espnId": "4433970",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-10T18:38Z",
+     "reported": "2026-11-10T21:39Z",
      "weight": 0.25,
      "replacement": "Jameis Winston",
      "starterEpaPerPlay": -0.025,
@@ -955,10 +937,10 @@
      "position": "RB",
      "player": "Cam Skattebo",
      "espnId": "4696981",
-     "status": "Questionable",
-     "reported": "2026-11-10T19:02Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Out",
+     "reported": "2026-11-10T21:38Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "lb",
@@ -1261,33 +1243,13 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 0.63,
+   "loss": 0.4,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "te1",
-     "position": "TE",
-     "player": "Chig Okonkwo",
-     "espnId": "4360635",
-     "status": "Questionable",
-     "reported": "2026-11-10T00:36Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "edge",
-     "position": "RDE",
-     "player": "Shy Tuttle",
-     "espnId": "3886601",
-     "status": "Questionable",
-     "reported": "2026-11-09T22:44Z",
-     "weight": 0.25,
-     "points": 0.13
-    },
     {
      "group": "c",
      "position": "C",
