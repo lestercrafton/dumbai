@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-11T20:19:48.172Z",
+ "generatedAt": "2026-11-11T23:03:40.434Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -133,21 +133,14 @@
    ]
   },
   "6": {
-   "loss": 0.42,
+   "loss": 0.04,
    "items": [
     {
-     "player": "Morez Johnson Jr.",
-     "position": "F",
-     "status": "Out",
-     "points": 0.42,
-     "minutes": 17.4
-    },
-    {
-     "player": "Sergio de Larrea",
-     "position": "F",
+     "player": "Dereck Lively II",
+     "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 13.3
+     "minutes": 0
     },
     {
      "player": "Tarik Biberovic",
@@ -157,11 +150,18 @@
      "minutes": 0
     },
     {
-     "player": "Dereck Lively II",
-     "position": "C",
+     "player": "Sergio de Larrea",
+     "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 13.3
+    },
+    {
+     "player": "Morez Johnson Jr.",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.04,
+     "minutes": 17.4
     }
    ]
   },
@@ -376,42 +376,27 @@
    ]
   },
   "17": {
-   "loss": 0.52,
+   "loss": 1.12,
    "items": [
+    {
+     "player": "Nolan Traore",
+     "position": "G",
+     "status": "Out",
+     "points": 1.01,
+     "minutes": 22.1
+    },
     {
      "player": "Mikel Brown Jr.",
      "position": "G",
      "status": "Out",
      "points": 0.11,
      "minutes": 23.3
-    },
-    {
-     "player": "Nolan Traore",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.41,
-     "minutes": 22.1
     }
    ]
   },
   "18": {
-   "loss": 1.07,
-   "items": [
-    {
-     "player": "Karl-Anthony Towns",
-     "position": "C",
-     "status": "Questionable",
-     "points": 1.07,
-     "minutes": 31.1
-    },
-    {
-     "player": "Josh Hart",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 31.7
-    }
-   ]
+   "loss": 0,
+   "items": []
   },
   "19": {
    "loss": 0.06,
@@ -461,7 +446,7 @@
    ]
   },
   "20": {
-   "loss": 0,
+   "loss": 0.83,
    "items": [
     {
      "player": "Adem Bona",
@@ -469,6 +454,20 @@
      "status": "Out",
      "points": 0,
      "minutes": 14.9
+    },
+    {
+     "player": "Joel Embiid",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.45,
+     "minutes": 31.4
+    },
+    {
+     "player": "LeBron James",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.38,
+     "minutes": 32.3
     },
     {
      "player": "Dominick Barlow",
@@ -501,6 +500,13 @@
   "22": {
    "loss": 1.83,
    "items": [
+    {
+     "player": "Chris Youngblood",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.5
+    },
     {
      "player": "Vit Krejci",
      "position": "G",
@@ -577,7 +583,7 @@
    ]
   },
   "25": {
-   "loss": 0,
+   "loss": 2.1,
    "items": [
     {
      "player": "Jaylin Williams",
@@ -585,6 +591,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 18.7
+    },
+    {
+     "player": "Ajay Mitchell",
+     "position": "G",
+     "status": "Out",
+     "points": 2.1,
+     "minutes": 27.7
     },
     {
      "player": "Thomas Sorber",
@@ -683,8 +696,15 @@
    ]
   },
   "28": {
-   "loss": 3.06,
+   "loss": 2.24,
    "items": [
+    {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26
+    },
     {
      "player": "Trayce Jackson-Davis",
      "position": "F",
@@ -693,32 +713,11 @@
      "minutes": 7.4
     },
     {
-     "player": "Collin Murray-Boyles",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.2,
-     "minutes": 22.2
-    },
-    {
-     "player": "Immanuel Quickley",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.62,
-     "minutes": 31.8
-    },
-    {
      "player": "Scottie Barnes",
      "position": "F",
      "status": "Out",
      "points": 2.24,
      "minutes": 33.4
-    },
-    {
-     "player": "Kawhi Leonard",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26
     },
     {
      "player": "Nate Bittle",
