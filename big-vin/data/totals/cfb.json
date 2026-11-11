@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cfb-totals-v1",
  "sport": "cfb",
- "generatedAt": "2026-11-11T00:54:14.498Z",
+ "generatedAt": "2026-11-11T08:23:22.780Z",
  "method": "college football: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 180-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 24,
-  "losses": 34,
+  "wins": 26,
+  "losses": 35,
   "pushes": 0,
-  "pending": 84,
-  "bankroll": 382.49,
+  "pending": 81,
+  "bankroll": 388.62,
   "bankrollStart": 500
  },
  "backtest": {
@@ -3743,9 +3743,12 @@
    "awayPoints": 26.1,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 56,
+   "stake": {
+    "stake": 7.65,
+    "net": -7.65
+   }
   },
   "401866459": {
    "side": "over",
@@ -3761,9 +3764,12 @@
    "awayPoints": 18.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 61,
+   "stake": {
+    "stake": 7.65,
+    "net": 6.95
+   }
   },
   "401866460": {
    "side": "over",
@@ -3779,9 +3785,12 @@
    "awayPoints": 25.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 51,
+   "stake": {
+    "stake": 7.65,
+    "net": 6.83
+   }
   },
   "401866461": {
    "side": "over",
