@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-11T16:37:12.050Z",
+ "generatedAt": "2026-11-11T20:19:48.172Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -43,11 +43,19 @@
    ]
   },
   "2": {
-   "loss": 0,
-   "items": []
+   "loss": 1.8,
+   "items": [
+    {
+     "player": "Paul George",
+     "position": "F",
+     "status": "Out",
+     "points": 1.8,
+     "minutes": 30
+    }
+   ]
   },
   "3": {
-   "loss": 0.43,
+   "loss": 1.11,
    "items": [
     {
      "player": "Bennedict Mathurin",
@@ -57,18 +65,18 @@
      "minutes": 15.5
     },
     {
+     "player": "Trey Murphy III",
+     "position": "F",
+     "status": "Doubtful",
+     "points": 0.78,
+     "minutes": 32.9
+    },
+    {
      "player": "Trendon Watford",
      "position": "F",
      "status": "Out",
      "points": 0.33,
      "minutes": 17.8
-    },
-    {
-     "player": "Trey Murphy III",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.1,
-     "minutes": 32.9
     },
     {
      "player": "Yves Missi",
@@ -80,8 +88,22 @@
    ]
   },
   "4": {
-   "loss": 0.49,
+   "loss": 0.82,
    "items": [
+    {
+     "player": "Tobe Awaka",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 10
+    },
+    {
+     "player": "Caleb Wilson",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.33,
+     "minutes": 32.4
+    },
     {
      "player": "Norman Powell",
      "position": "G",
@@ -183,13 +205,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 12.9
-    },
-    {
-     "player": "Will Richard",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 16.8
     },
     {
      "player": "Brandon Williams",
@@ -308,21 +323,36 @@
   },
   "13": {
    "loss": 0,
-   "items": []
+   "items": [
+    {
+     "player": "Quentin Grimes",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 25.4
+    }
+   ]
   },
   "14": {
    "loss": 0,
    "items": []
   },
   "15": {
-   "loss": 2.01,
+   "loss": 0.8,
    "items": [
     {
      "player": "Tyler Herro",
      "position": "G",
-     "status": "Out",
-     "points": 2.01,
+     "status": "Questionable",
+     "points": 0.8,
      "minutes": 30.6
+    },
+    {
+     "player": "Myles Turner",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.6
     }
    ]
   },
@@ -361,19 +391,19 @@
      "status": "Questionable",
      "points": 0.41,
      "minutes": 22.1
-    },
-    {
-     "player": "Egor Demin",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 21.8
     }
    ]
   },
   "18": {
-   "loss": 0,
+   "loss": 1.07,
    "items": [
+    {
+     "player": "Karl-Anthony Towns",
+     "position": "C",
+     "status": "Questionable",
+     "points": 1.07,
+     "minutes": 31.1
+    },
     {
      "player": "Josh Hart",
      "position": "G",
@@ -384,13 +414,13 @@
    ]
   },
   "19": {
-   "loss": 0.16,
+   "loss": 0.06,
    "items": [
     {
      "player": "Tristan da Silva",
      "position": "F",
-     "status": "Out",
-     "points": 0.16,
+     "status": "Questionable",
+     "points": 0.06,
      "minutes": 30.4
     },
     {
@@ -472,18 +502,18 @@
    "loss": 1.83,
    "items": [
     {
-     "player": "Ja Morant",
-     "position": "G",
-     "status": "Out",
-     "points": 1.83,
-     "minutes": 26
-    },
-    {
      "player": "Vit Krejci",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 10.3
+    },
+    {
+     "player": "Ja Morant",
+     "position": "G",
+     "status": "Out",
+     "points": 1.83,
+     "minutes": 26
     },
     {
      "player": "Shaedon Sharpe",
@@ -587,13 +617,13 @@
    ]
   },
   "26": {
-   "loss": 3.6,
+   "loss": 2.73,
    "items": [
     {
      "player": "Keyonte George",
      "position": "G",
-     "status": "Out",
-     "points": 1.44,
+     "status": "Questionable",
+     "points": 0.57,
      "minutes": 32.4
     },
     {
@@ -655,6 +685,13 @@
   "28": {
    "loss": 3.06,
    "items": [
+    {
+     "player": "Trayce Jackson-Davis",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 7.4
+    },
     {
      "player": "Collin Murray-Boyles",
      "position": "F",
