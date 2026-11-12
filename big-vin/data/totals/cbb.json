@@ -2,13 +2,13 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cbb-totals-v1",
  "sport": "cbb",
- "generatedAt": "2026-11-12T20:59:06.714Z",
+ "generatedAt": "2026-11-12T21:07:56.514Z",
  "method": "men’s college basketball: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 147,
   "losses": 130,
   "pushes": 0,
-  "pending": 1,
+  "pending": 14,
   "bankroll": 528.6,
   "bankrollStart": 500
  },
@@ -1794,6 +1794,24 @@
     "net": -11.29
    }
   },
+  "401911013": {
+   "side": null,
+   "total": 145.92,
+   "modelTotal": 145.92,
+   "marketTotal": 144.5,
+   "edge": 1.42,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 84.8,
+   "awayPoints": 61.1,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401911185": {
    "side": "under",
    "total": 141.9,
@@ -2004,6 +2022,24 @@
     "net": 10.68
    }
   },
+  "401911239": {
+   "side": null,
+   "total": 150.41,
+   "modelTotal": 150.41,
+   "marketTotal": 150.5,
+   "edge": 0.09,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T01:00:00.000Z",
+   "homePoints": 80.2,
+   "awayPoints": 70.2,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401911248": {
    "side": "under",
    "total": 152.66,
@@ -2153,6 +2189,24 @@
     "stake": 11.6,
     "net": 10.55
    }
+  },
+  "401911307": {
+   "side": null,
+   "total": 138.01,
+   "modelTotal": 138.01,
+   "marketTotal": 137.5,
+   "edge": 0.51,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 78.1,
+   "awayPoints": 59.9,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401911333": {
    "side": "under",
@@ -2370,6 +2424,24 @@
     "net": 10.41
    }
   },
+  "401911471": {
+   "side": "under",
+   "total": 151.44,
+   "modelTotal": 151.44,
+   "marketTotal": 153.5,
+   "edge": 2.06,
+   "price": -110,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T03:00:00.000Z",
+   "homePoints": 79.9,
+   "awayPoints": 71.5,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401911517": {
    "side": null,
    "total": 148.04,
@@ -2408,6 +2480,24 @@
     "stake": 10,
     "net": 9.09
    }
+  },
+  "401911533": {
+   "side": "over",
+   "total": 147.21,
+   "modelTotal": 147.21,
+   "marketTotal": 144.5,
+   "edge": 2.71,
+   "price": -105,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T02:00:00.000Z",
+   "homePoints": 79.7,
+   "awayPoints": 67.5,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401911707": {
    "side": "under",
@@ -2661,6 +2751,24 @@
    "actualTotal": null,
    "stake": null
   },
+  "401916288": {
+   "side": "under",
+   "total": 161.96,
+   "modelTotal": 161.96,
+   "marketTotal": 167.5,
+   "edge": 5.54,
+   "price": -108,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-12T23:30:00.000Z",
+   "homePoints": 88.3,
+   "awayPoints": 73.6,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401916296": {
    "side": "under",
    "total": 145.05,
@@ -2744,6 +2852,24 @@
     "stake": 12.05,
     "net": 10.48
    }
+  },
+  "401916306": {
+   "side": null,
+   "total": 140.93,
+   "modelTotal": 140.93,
+   "marketTotal": 141.5,
+   "edge": 0.57,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T01:00:00.000Z",
+   "homePoints": 80.4,
+   "awayPoints": 60.5,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401916313": {
    "side": "under",
@@ -2834,6 +2960,24 @@
     "stake": 10,
     "net": -10
    }
+  },
+  "401917176": {
+   "side": null,
+   "total": 148.94,
+   "modelTotal": 148.94,
+   "marketTotal": 148.5,
+   "edge": 0.44,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-12T23:30:00.000Z",
+   "homePoints": 80.4,
+   "awayPoints": 68.5,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401917177": {
    "side": "under",
@@ -3080,6 +3224,30 @@
     "stake": 11.29,
     "net": -11.29
    }
+  },
+  "401917524": {
+   "side": "over",
+   "total": 145.53,
+   "modelTotal": 149.56,
+   "marketTotal": 141.5,
+   "edge": 4.03,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T01:00:00.000Z",
+   "homePoints": 73.5,
+   "awayPoints": 76.1,
+   "injuryEffect": 0,
+   "check": {
+    "flagged": true,
+    "review": true,
+    "gap": 8.06,
+    "unshrunkTotal": 149.56,
+    "note": "Gap of 8.06 points vs the market total; the unexplained part is halved toward the market and marked for review."
+   },
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401917913": {
    "side": "under",
@@ -3678,6 +3846,30 @@
     "net": -11.6
    }
   },
+  "401919041": {
+   "side": "under",
+   "total": 172.93,
+   "modelTotal": 166.37,
+   "marketTotal": 179.5,
+   "edge": 6.57,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T01:00:00.000Z",
+   "homePoints": 91.1,
+   "awayPoints": 75.2,
+   "injuryEffect": 0,
+   "check": {
+    "flagged": true,
+    "review": true,
+    "gap": -13.13,
+    "unshrunkTotal": 166.37,
+    "note": "Gap of 13.13 points vs the market total; the unexplained part is halved toward the market and marked for review."
+   },
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401919047": {
    "side": "under",
    "total": 149.69,
@@ -3900,6 +4092,24 @@
     "net": 10.08
    }
   },
+  "401920064": {
+   "side": null,
+   "total": 138.29,
+   "modelTotal": 138.29,
+   "marketTotal": 137.5,
+   "edge": 0.79,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 78,
+   "awayPoints": 60.3,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401920072": {
    "side": null,
    "total": 142.51,
@@ -3938,6 +4148,24 @@
     "stake": 11.96,
     "net": -11.96
    }
+  },
+  "401920135": {
+   "side": null,
+   "total": 148.71,
+   "modelTotal": 148.71,
+   "marketTotal": 147.5,
+   "edge": 1.21,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 79.7,
+   "awayPoints": 69.1,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401920155": {
    "side": null,
@@ -4293,6 +4521,24 @@
     "net": -11.45
    }
   },
+  "401920412": {
+   "side": "over",
+   "total": 159.53,
+   "modelTotal": 159.53,
+   "marketTotal": 157.5,
+   "edge": 2.03,
+   "price": -112,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 83.8,
+   "awayPoints": 75.7,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401920422": {
    "side": null,
    "total": 142.28,
@@ -4380,6 +4626,24 @@
    "startTime": "2026-11-08T02:00:00.000Z",
    "homePoints": 79.1,
    "awayPoints": 75,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401920566": {
+   "side": "over",
+   "total": 140.74,
+   "modelTotal": 140.74,
+   "marketTotal": 133.5,
+   "edge": 7.24,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 77.5,
+   "awayPoints": 63.2,
    "injuryEffect": 0,
    "check": null,
    "result": null,
@@ -5307,6 +5571,30 @@
    "actualTotal": null,
    "stake": null
   },
+  "401921086": {
+   "side": "under",
+   "total": 156.96,
+   "modelTotal": 151.43,
+   "marketTotal": 162.5,
+   "edge": 5.54,
+   "price": -108,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-12T23:00:00.000Z",
+   "homePoints": 82.3,
+   "awayPoints": 69.1,
+   "injuryEffect": 0,
+   "check": {
+    "flagged": true,
+    "review": true,
+    "gap": -11.07,
+    "unshrunkTotal": 151.43,
+    "note": "Gap of 11.07 points vs the market total; the unexplained part is halved toward the market and marked for review."
+   },
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401921095": {
    "side": "over",
    "total": 146.52,
@@ -5829,6 +6117,24 @@
     "net": 10.45
    }
   },
+  "401921741": {
+   "side": "under",
+   "total": 160.2,
+   "modelTotal": 160.2,
+   "marketTotal": 162.5,
+   "edge": 2.3,
+   "price": -108,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T02:00:00.000Z",
+   "homePoints": 87.9,
+   "awayPoints": 72.3,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401921747": {
    "side": "under",
    "total": 142.92,
@@ -5957,6 +6263,24 @@
     "stake": 11.6,
     "net": 10.09
    }
+  },
+  "401921768": {
+   "side": null,
+   "total": 150.63,
+   "modelTotal": 150.63,
+   "marketTotal": 151.5,
+   "edge": 0.87,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 81.9,
+   "awayPoints": 68.8,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401921774": {
    "side": "under",
@@ -6273,6 +6597,24 @@
    "actualTotal": null,
    "stake": null
   },
+  "401922239": {
+   "side": null,
+   "total": 150.65,
+   "modelTotal": 150.65,
+   "marketTotal": 149.5,
+   "edge": 1.15,
+   "price": null,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 86,
+   "awayPoints": 64.7,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401922261": {
    "side": "under",
    "total": 148.03,
@@ -6552,6 +6894,42 @@
     "net": -10
    }
   },
+  "401924857": {
+   "side": "over",
+   "total": 147.41,
+   "modelTotal": 147.41,
+   "marketTotal": 144.5,
+   "edge": 2.91,
+   "price": -110,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 79.9,
+   "awayPoints": 67.5,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401924876": {
+   "side": "over",
+   "total": 150.38,
+   "modelTotal": 150.38,
+   "marketTotal": 144.5,
+   "edge": 5.88,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 84.1,
+   "awayPoints": 66.3,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
   "401924894": {
    "side": "under",
    "total": 153.32,
@@ -6815,6 +7193,24 @@
     "stake": 11.29,
     "net": -11.29
    }
+  },
+  "401925631": {
+   "side": "over",
+   "total": 137.54,
+   "modelTotal": 137.54,
+   "marketTotal": 132.5,
+   "edge": 5.04,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-12T23:00:00.000Z",
+   "homePoints": 66.4,
+   "awayPoints": 71.2,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401925681": {
    "side": "over",
@@ -7556,6 +7952,24 @@
     "stake": 11.45,
     "net": -11.45
    }
+  },
+  "401928818": {
+   "side": "under",
+   "total": 150.39,
+   "modelTotal": 150.39,
+   "marketTotal": 153.5,
+   "edge": 3.11,
+   "price": -115,
+   "provider": "DraftKings",
+   "capturedAt": "2026-11-12T21:07:56.514Z",
+   "startTime": "2026-11-13T00:00:00.000Z",
+   "homePoints": 81.2,
+   "awayPoints": 69.2,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
   },
   "401928823": {
    "side": null,

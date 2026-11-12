@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-12T20:58:50.330Z",
+ "generatedAt": "2026-11-12T21:07:28.155Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -857,7 +857,7 @@
      "player": "A.J. Haulcy",
      "espnId": "4905664",
      "status": "Out",
-     "reported": "2026-11-11T23:21Z",
+     "reported": "2026-11-12T20:57Z",
      "weight": 1,
      "points": 0.3
     },
@@ -1491,24 +1491,13 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0.08,
+   "loss": 0,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "s",
-     "position": "SS",
-     "player": "DeShon Elliott",
-     "espnId": "3929846",
-     "status": "Questionable",
-     "reported": "2026-11-12T00:36Z",
-     "weight": 0.25,
-     "points": 0.08
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "SF": {
@@ -1668,7 +1657,7 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 0.5,
+   "loss": 0.58,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
@@ -1704,6 +1693,16 @@
      "reported": "2026-11-11T23:12Z",
      "weight": 0.25,
      "points": 0.06
+    },
+    {
+     "group": "s",
+     "position": "FS",
+     "player": "Kevin Winston Jr.",
+     "espnId": "4685617",
+     "status": "Questionable",
+     "reported": "2026-11-12T21:03Z",
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "lg",
