@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-12T04:11:49.803Z",
+ "generatedAt": "2026-11-12T20:58:50.330Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -79,7 +79,7 @@
   },
   "ATL": {
    "team": "ATL",
-   "loss": 0.2,
+   "loss": 0.32,
    "starter": {
     "name": "Michael Penix Jr.",
     "espnId": "4360423",
@@ -95,6 +95,26 @@
      "reported": "2026-11-11T23:18Z",
      "weight": 0.25,
      "points": 0.08
+    },
+    {
+     "group": "lb",
+     "position": "WLB",
+     "player": "Cameron Thomas",
+     "espnId": "4361510",
+     "status": "Questionable",
+     "reported": "2026-11-12T20:36Z",
+     "weight": 0.25,
+     "points": 0.06
+    },
+    {
+     "group": "lb",
+     "position": "LILB",
+     "player": "Kendal Daniels",
+     "espnId": "4595343",
+     "status": "Questionable",
+     "reported": "2026-11-12T02:32Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "lb",
@@ -121,32 +141,13 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 1.57,
+   "loss": 0.21,
    "starter": {
-    "name": "Tyler Huntley",
-    "espnId": "4035671",
-    "basis": "season usage leader (injured; dropped from depth chart)"
+    "name": "Jacoby Brissett",
+    "espnId": "2578570",
+    "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "qb",
-     "position": "QB",
-     "player": "Tyler Huntley",
-     "espnId": "4035671",
-     "starterBasis": "season usage leader (injured; dropped from depth chart)",
-     "status": "Injured Reserve",
-     "reported": "2026-11-05T21:20Z",
-     "weight": 1,
-     "replacement": "Jacoby Brissett",
-     "starterEpaPerPlay": 0.032,
-     "starterPlays": 189,
-     "backupEpaPerPlay": -0.032,
-     "backupPlays": 636,
-     "gapEpaPerPlay": 0.06,
-     "fullPoints": 2,
-     "alreadyInRatings": 0.32,
-     "points": 1.36
-    },
     {
      "group": "cb",
      "position": "LCB",
@@ -168,7 +169,10 @@
      "points": 0.08
     }
    ],
-   "notes": []
+   "notes": [
+    "Starter Jacoby Brissett has no BAL snaps this season (usage leader Tyler Huntley).",
+    "Usage leader Tyler Huntley is not the resolved starter."
+   ]
   },
   "BUF": {
    "team": "BUF",
@@ -244,7 +248,7 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.81,
+   "loss": 1.11,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
@@ -257,7 +261,7 @@
      "player": "Bobby Okereke",
      "espnId": "3117253",
      "status": "Questionable",
-     "reported": "2026-11-11T23:01Z",
+     "reported": "2026-11-12T20:44Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -280,6 +284,16 @@
      "reported": "2026-11-11T22:54Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Damien Lewis",
+     "espnId": "4362647",
+     "status": "Out",
+     "reported": "2026-11-12T01:23Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
@@ -382,7 +396,7 @@
      "player": "Denzel Boston",
      "espnId": "4832800",
      "status": "Questionable",
-     "reported": "2026-11-11T17:12Z",
+     "reported": "2026-11-12T18:15Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -494,7 +508,7 @@
      "player": "George Pickens",
      "espnId": "4426354",
      "status": "Questionable",
-     "reported": "2026-11-11T21:51Z",
+     "reported": "2026-11-12T20:02Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -709,7 +723,7 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Doubtful",
-     "reported": "2026-11-12T00:24Z",
+     "reported": "2026-11-12T20:02Z",
      "weight": 1,
      "points": 0.25
     },
@@ -729,7 +743,7 @@
      "player": "Trey Smack",
      "espnId": "4869461",
      "status": "Questionable",
-     "reported": "2026-11-11T22:18Z",
+     "reported": "2026-11-12T16:56Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -781,7 +795,7 @@
      "player": "Woody Marks",
      "espnId": "4429059",
      "status": "Questionable",
-     "reported": "2026-11-11T22:39Z",
+     "reported": "2026-11-12T17:32Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -791,7 +805,7 @@
      "player": "Azeez Al-Shaair",
      "espnId": "3919117",
      "status": "Questionable",
-     "reported": "2026-11-12T00:02Z",
+     "reported": "2026-11-12T19:20Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -820,7 +834,7 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 0.54,
+   "loss": 0.76,
    "starter": {
     "name": "Daniel Jones",
     "espnId": "3917792",
@@ -842,10 +856,10 @@
      "position": "SS",
      "player": "A.J. Haulcy",
      "espnId": "4905664",
-     "status": "Questionable",
-     "reported": "2026-11-12T02:02Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-11T23:21Z",
+     "weight": 1,
+     "points": 0.3
     },
     {
      "group": "rt",
@@ -885,7 +899,7 @@
      "player": "Bhayshul Tuten",
      "espnId": "4882093",
      "status": "Questionable",
-     "reported": "2026-11-11T21:14Z",
+     "reported": "2026-11-12T17:19Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -1133,7 +1147,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Questionable",
-     "reported": "2026-11-12T01:01Z",
+     "reported": "2026-11-12T15:01Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -1257,7 +1271,7 @@
      "player": "Rhamondre Stevenson",
      "espnId": "4569173",
      "status": "Doubtful",
-     "reported": "2026-11-11T21:30Z",
+     "reported": "2026-11-12T20:02Z",
      "weight": 1,
      "points": 0.4
     },
@@ -1414,7 +1428,7 @@
      "player": "Garrett Wilson",
      "espnId": "4569618",
      "status": "Questionable",
-     "reported": "2026-11-12T00:14Z",
+     "reported": "2026-11-12T18:43Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -1667,7 +1681,7 @@
      "player": "Carnell Tate",
      "espnId": "4871023",
      "status": "Questionable",
-     "reported": "2026-11-11T18:44Z",
+     "reported": "2026-11-12T20:36Z",
      "weight": 0.25,
      "points": 0.2
     },
