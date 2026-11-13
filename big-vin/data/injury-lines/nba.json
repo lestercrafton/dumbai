@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-13T20:41:07.753Z",
+ "generatedAt": "2026-11-13T23:52:43.424Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,7 +10,7 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.15,
+   "loss": 0,
    "items": [
     {
      "player": "Mouhamed Gueye",
@@ -32,13 +32,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 11.8
-    },
-    {
-     "player": "Kingston Flemings",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.15,
-     "minutes": 22.3
     },
     {
      "player": "Henri Veesaar",
@@ -102,7 +95,7 @@
    ]
   },
   "4": {
-   "loss": 1.5,
+   "loss": 1.01,
    "items": [
     {
      "player": "Tobe Awaka",
@@ -110,13 +103,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 10
-    },
-    {
-     "player": "Norman Powell",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.49,
-     "minutes": 28.9
     },
     {
      "player": "Caleb Wilson",
@@ -143,12 +129,26 @@
      "status": "Out",
      "points": 0,
      "minutes": 23.3
+    },
+    {
+     "player": "Nae'Qwan Tomlin",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
     }
    ]
   },
   "6": {
-   "loss": 0,
+   "loss": 0.01,
    "items": [
+    {
+     "player": "Morez Johnson Jr.",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.01,
+     "minutes": 17
+    },
     {
      "player": "Dereck Lively II",
      "position": "C",
@@ -325,20 +325,6 @@
    "loss": 0.89,
    "items": [
     {
-     "player": "Quentin Grimes",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26.1
-    },
-    {
-     "player": "Collin Sexton",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.05,
-     "minutes": 17.7
-    },
-    {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Day-To-Day",
@@ -351,24 +337,31 @@
      "status": "Day-To-Day",
      "points": 0.66,
      "minutes": 36.1
+    },
+    {
+     "player": "Collin Sexton",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.05,
+     "minutes": 17.7
     }
    ]
   },
   "14": {
-   "loss": 0.35,
+   "loss": 0.91,
    "items": [
     {
      "player": "Klay Thompson",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.05,
+     "status": "Out",
+     "points": 0.51,
      "minutes": 25.6
     },
     {
      "player": "Pelle Larsson",
      "position": "G",
-     "status": "Doubtful",
-     "points": 0.3,
+     "status": "Out",
+     "points": 0.4,
      "minutes": 30.1
     }
    ]
@@ -397,21 +390,21 @@
    ]
   },
   "17": {
-   "loss": 1.62,
+   "loss": 0.25,
    "items": [
-    {
-     "player": "Nolan Traore",
-     "position": "G",
-     "status": "Out",
-     "points": 1.33,
-     "minutes": 22.8
-    },
     {
      "player": "Mikel Brown Jr.",
      "position": "G",
-     "status": "Out",
-     "points": 0.29,
+     "status": "Questionable",
+     "points": 0.12,
      "minutes": 23.8
+    },
+    {
+     "player": "Nolan Traore",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.13,
+     "minutes": 22.8
     }
    ]
   },
@@ -420,22 +413,8 @@
    "items": []
   },
   "19": {
-   "loss": 0.04,
+   "loss": 0,
    "items": [
-    {
-     "player": "Tristan da Silva",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.04,
-     "minutes": 30.8
-    },
-    {
-     "player": "Jalen Suggs",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 34
-    },
     {
      "player": "Jonathan Isaac",
      "position": "F",
@@ -545,13 +524,13 @@
    ]
   },
   "23": {
-   "loss": 0.11,
+   "loss": 0.29,
    "items": [
     {
      "player": "Precious Achiuwa",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.11,
+     "status": "Out",
+     "points": 0.29,
      "minutes": 26.1
     },
     {
