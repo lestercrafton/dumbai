@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-13T02:08:40.160Z",
+ "generatedAt": "2026-11-13T09:58:04.972Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -67,7 +67,7 @@
      "player": "Hjalte Froholdt",
      "espnId": "3886633",
      "status": "Questionable",
-     "reported": "2026-11-10T02:08Z",
+     "reported": "2026-11-13T01:58Z",
      "weight": 0.25,
      "points": 0.1
     }
@@ -725,7 +725,7 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 0.46,
+   "loss": 0.06,
    "starter": {
     "name": "Daniel Jones",
     "espnId": "3917792",
@@ -741,16 +741,6 @@
      "reported": "2026-11-11T23:19Z",
      "weight": 0.25,
      "points": 0.06
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Jalen Travis",
-     "espnId": "4892240",
-     "status": "Doubtful",
-     "reported": "2026-11-10T02:30Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -1429,7 +1419,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Doubtful",
-     "reported": "2026-11-10T15:44Z",
+     "reported": "2026-11-13T02:24Z",
      "weight": 1,
      "points": 0.6
     },

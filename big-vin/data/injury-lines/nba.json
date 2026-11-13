@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-13T02:08:43.768Z",
+ "generatedAt": "2026-11-13T09:58:09.664Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -154,7 +154,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 13.3
+     "minutes": 19.5
     }
    ]
   },
@@ -178,14 +178,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 13.7
+     "minutes": 11
     },
     {
      "player": "Jalen Duren",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 19
+     "minutes": 10
     }
    ]
   },
@@ -371,14 +371,14 @@
    "items": []
   },
   "16": {
-   "loss": 2.35,
+   "loss": 0,
    "items": [
     {
      "player": "Anthony Edwards",
      "position": "G",
      "status": "Out",
-     "points": 2.35,
-     "minutes": 34
+     "points": 0,
+     "minutes": 34.5
     },
     {
      "player": "Donte DiVincenzo",
@@ -481,7 +481,7 @@
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 14.9
+     "minutes": 15.7
     },
     {
      "player": "Ariel Hukporti",
@@ -680,6 +680,13 @@
    "loss": 0,
    "items": [
     {
+     "player": "Bub Carrington",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 18.7
+    },
+    {
      "player": "Tristan Vukcevic",
      "position": "F",
      "status": "Out",
@@ -698,7 +705,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 15
+     "minutes": 4
     },
     {
      "player": "Jamir Watkins",
@@ -710,28 +717,28 @@
    ]
   },
   "28": {
-   "loss": 2.14,
+   "loss": 2.12,
    "items": [
     {
      "player": "Trayce Jackson-Davis",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 7.1
+     "minutes": 8
     },
     {
      "player": "Scottie Barnes",
      "position": "F",
      "status": "Out",
-     "points": 2.14,
-     "minutes": 34.4
+     "points": 2.12,
+     "minutes": 34
     },
     {
      "player": "Kawhi Leonard",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 28
+     "minutes": 0
     },
     {
      "player": "Nate Bittle",
@@ -776,14 +783,14 @@
    ]
   },
   "30": {
-   "loss": 0.74,
+   "loss": 1.18,
    "items": [
     {
      "player": "Brandon Miller",
      "position": "F",
      "status": "Out",
-     "points": 0.74,
-     "minutes": 30.4
+     "points": 1.18,
+     "minutes": 31.4
     },
     {
      "player": "Kon Knueppel",
@@ -797,7 +804,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 29.4
+     "minutes": 30.7
     }
    ]
   }
