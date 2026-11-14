@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-13T23:52:38.413Z",
+ "generatedAt": "2026-11-14T07:02:46.882Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -37,7 +37,7 @@
      "player": "Andrew Wingard",
      "espnId": "3918331",
      "status": "Questionable",
-     "reported": "2026-11-13T01:08Z",
+     "reported": "2026-11-14T00:58Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -47,7 +47,7 @@
      "player": "Jayden Williams",
      "espnId": "4709718",
      "status": "Questionable",
-     "reported": "2026-11-13T01:54Z",
+     "reported": "2026-11-14T02:25Z",
      "weight": 0.25,
      "points": 0.15
     },
@@ -57,7 +57,7 @@
      "player": "Hjalte Froholdt",
      "espnId": "3886633",
      "status": "Out",
-     "reported": "2026-11-13T01:58Z",
+     "reported": "2026-11-14T01:31Z",
      "weight": 1,
      "points": 0.4
     }
@@ -149,7 +149,7 @@
      "player": "Christian Benford",
      "espnId": "4379778",
      "status": "Questionable",
-     "reported": "2026-11-11T23:32Z",
+     "reported": "2026-11-14T01:04Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -159,7 +159,7 @@
      "player": "Spencer Brown",
      "espnId": "4030899",
      "status": "Doubtful",
-     "reported": "2026-11-13T22:37Z",
+     "reported": "2026-11-14T02:29Z",
      "weight": 1,
      "points": 0.4
     }
@@ -308,7 +308,7 @@
      "player": "Donovan Ezeiruaku",
      "espnId": "4683848",
      "status": "Out",
-     "reported": "2026-11-13T22:51Z",
+     "reported": "2026-11-14T01:00Z",
      "weight": 1,
      "points": 0.25
     },
@@ -318,7 +318,7 @@
      "player": "Joey Porter Jr.",
      "espnId": "4426506",
      "status": "Questionable",
-     "reported": "2026-11-11T23:55Z",
+     "reported": "2026-11-14T00:56Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -338,7 +338,7 @@
      "player": "DaRon Bland",
      "espnId": "4248911",
      "status": "Questionable",
-     "reported": "2026-11-13T22:52Z",
+     "reported": "2026-11-14T00:54Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -444,7 +444,7 @@
      "player": "Lukas Van Ness",
      "espnId": "4686906",
      "status": "Questionable",
-     "reported": "2026-11-12T00:21Z",
+     "reported": "2026-11-14T00:46Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -454,7 +454,7 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Doubtful",
-     "reported": "2026-11-12T23:09Z",
+     "reported": "2026-11-14T00:37Z",
      "weight": 1,
      "points": 0.25
     },
@@ -474,7 +474,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-11-13T01:39Z",
+     "reported": "2026-11-14T02:18Z",
      "weight": 1,
      "points": 0.4
     },
@@ -484,7 +484,7 @@
      "player": "Travis Glover",
      "espnId": "4361904",
      "status": "Questionable",
-     "reported": "2026-11-13T01:49Z",
+     "reported": "2026-11-14T02:20Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -536,7 +536,7 @@
      "player": "Keylan Rutledge",
      "espnId": "4839498",
      "status": "Out",
-     "reported": "2026-11-13T21:35Z",
+     "reported": "2026-11-14T02:08Z",
      "weight": 1,
      "points": 0.3
     },
@@ -577,7 +577,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.48,
+   "loss": 0.4,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -603,16 +603,6 @@
      "reported": "2026-11-11T21:25Z",
      "weight": 0.25,
      "points": 0.1
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Ezra Cleveland",
-     "espnId": "4048231",
-     "status": "Questionable",
-     "reported": "2026-11-11T21:24Z",
-     "weight": 0.25,
-     "points": 0.08
     }
    ],
    "notes": []
@@ -652,7 +642,7 @@
      "player": "Jaylon Moore",
      "espnId": "4043041",
      "status": "Out",
-     "reported": "2026-11-13T20:27Z",
+     "reported": "2026-11-14T02:02Z",
      "weight": 1,
      "points": 0.4
     }
@@ -674,23 +664,13 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.21,
+   "loss": 0.08,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "cb",
-     "position": "LCB",
-     "player": "Cam Hart",
-     "espnId": "4427404",
-     "status": "Questionable",
-     "reported": "2026-11-12T23:42Z",
-     "weight": 0.25,
-     "points": 0.13
-    },
     {
      "group": "lg",
      "position": "LG",
@@ -749,7 +729,7 @@
      "player": "Kam Curl",
      "espnId": "4242154",
      "status": "Questionable",
-     "reported": "2026-11-12T22:28Z",
+     "reported": "2026-11-14T00:21Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -759,7 +739,7 @@
      "player": "Trent McDuffie",
      "espnId": "4426405",
      "status": "Questionable",
-     "reported": "2026-11-13T01:01Z",
+     "reported": "2026-11-14T00:23Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -800,7 +780,7 @@
      "player": "Aaron Brewer",
      "espnId": "4040537",
      "status": "Out",
-     "reported": "2026-11-13T15:38Z",
+     "reported": "2026-11-14T01:25Z",
      "weight": 1,
      "points": 0.4
     }
@@ -861,7 +841,7 @@
      "player": "Blake Cashman",
      "espnId": "3728281",
      "status": "Out",
-     "reported": "2026-11-13T00:28Z",
+     "reported": "2026-11-14T00:30Z",
      "weight": 1,
      "points": 0.25
     },
@@ -871,7 +851,7 @@
      "player": "Joshua Metellus",
      "espnId": "4046537",
      "status": "Questionable",
-     "reported": "2026-11-13T22:38Z",
+     "reported": "2026-11-14T00:33Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -955,7 +935,7 @@
      "player": "Taliese Fuaga",
      "espnId": "4606711",
      "status": "Out",
-     "reported": "2026-11-13T01:42Z",
+     "reported": "2026-11-14T01:47Z",
      "weight": 1,
      "points": 0.4
     }
@@ -1010,7 +990,7 @@
      "player": "Trevin Wallace",
      "espnId": "4683815",
      "status": "Out",
-     "reported": "2026-11-13T15:43Z",
+     "reported": "2026-11-13T23:52Z",
      "weight": 1,
      "points": 0.25
     }
@@ -1097,7 +1077,7 @@
      "player": "Dre Greenlaw",
      "espnId": "3916903",
      "status": "Questionable",
-     "reported": "2026-11-13T00:44Z",
+     "reported": "2026-11-14T01:04Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -1107,7 +1087,7 @@
      "player": "Renardo Green",
      "espnId": "4427325",
      "status": "Questionable",
-     "reported": "2026-11-12T00:43Z",
+     "reported": "2026-11-14T01:12Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1117,7 +1097,7 @@
      "player": "Deommodore Lenoir",
      "espnId": "4242488",
      "status": "Questionable",
-     "reported": "2026-11-12T00:45Z",
+     "reported": "2026-11-14T01:09Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -1127,7 +1107,7 @@
      "player": "Trent Williams",
      "espnId": "13241",
      "status": "Questionable",
-     "reported": "2026-11-13T01:49Z",
+     "reported": "2026-11-14T02:47Z",
      "weight": 0.25,
      "points": 0.15
     }
@@ -1168,7 +1148,7 @@
      "player": "Leonard Williams",
      "espnId": "2971622",
      "status": "Out",
-     "reported": "2026-11-13T22:43Z",
+     "reported": "2026-11-14T00:38Z",
      "weight": 1,
      "points": 0.5
     },
@@ -1178,7 +1158,7 @@
      "player": "Charles Cross",
      "espnId": "4426376",
      "status": "Out",
-     "reported": "2026-11-13T02:24Z",
+     "reported": "2026-11-14T02:36Z",
      "weight": 1,
      "points": 0.6
     },
@@ -1188,7 +1168,7 @@
      "player": "Quenton Nelson",
      "espnId": "3129308",
      "status": "Out",
-     "reported": "2026-11-13T22:44Z",
+     "reported": "2026-11-14T02:39Z",
      "weight": 1,
      "points": 0.3
     }
@@ -1272,7 +1252,7 @@
      "player": "Peter Skoronski",
      "espnId": "4429100",
      "status": "Out",
-     "reported": "2026-11-13T17:33Z",
+     "reported": "2026-11-14T01:24Z",
      "weight": 1,
      "points": 0.3
     }
