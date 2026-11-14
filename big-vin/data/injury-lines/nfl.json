@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-14T07:02:46.882Z",
+ "generatedAt": "2026-11-14T14:31:30.867Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 1.43,
+   "loss": 1.03,
    "starter": {
     "name": "Carson Beck",
     "espnId": "4430841",
@@ -50,16 +50,6 @@
      "reported": "2026-11-14T02:25Z",
      "weight": 0.25,
      "points": 0.15
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Hjalte Froholdt",
-     "espnId": "3886633",
-     "status": "Out",
-     "reported": "2026-11-14T01:31Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": [
@@ -493,7 +483,7 @@
   },
   "HOU": {
    "team": "HOU",
-   "loss": 1.28,
+   "loss": 0.98,
    "starter": {
     "name": "C.J. Stroud",
     "espnId": "4432577",
@@ -529,16 +519,6 @@
      "reported": "2026-11-13T23:32Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Keylan Rutledge",
-     "espnId": "4839498",
-     "status": "Out",
-     "reported": "2026-11-14T02:08Z",
-     "weight": 1,
-     "points": 0.3
     },
     {
      "group": "rt",
@@ -609,7 +589,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.63,
+   "loss": 0.23,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -635,16 +615,6 @@
      "reported": "2026-11-13T23:25Z",
      "weight": 0.25,
      "points": 0.13
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Jaylon Moore",
-     "espnId": "4043041",
-     "status": "Out",
-     "reported": "2026-11-14T02:02Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -748,7 +718,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 3.41,
+   "loss": 3.01,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -773,16 +743,6 @@
      "fullPoints": 3.01,
      "alreadyInRatings": 0,
      "points": 3.01
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Aaron Brewer",
-     "espnId": "4040537",
-     "status": "Out",
-     "reported": "2026-11-14T01:25Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -912,7 +872,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.53,
+   "loss": 0.13,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -928,16 +888,6 @@
      "reported": "2026-11-13T23:17Z",
      "weight": 0.25,
      "points": 0.13
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Taliese Fuaga",
-     "espnId": "4606711",
-     "status": "Out",
-     "reported": "2026-11-14T01:47Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -1209,7 +1159,7 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 1.6,
+   "loss": 1.3,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
@@ -1245,16 +1195,6 @@
      "reported": "2026-11-13T22:28Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Peter Skoronski",
-     "espnId": "4429100",
-     "status": "Out",
-     "reported": "2026-11-14T01:24Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
