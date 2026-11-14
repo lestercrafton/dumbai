@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-14T19:28:54.504Z",
+ "generatedAt": "2026-11-14T23:22:29.938Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -81,8 +81,8 @@
      "position": "RILB",
      "player": "Divine Deablo",
      "espnId": "4037626",
-     "status": "Doubtful",
-     "reported": "2026-11-13T22:59Z",
+     "status": "Out",
+     "reported": "2026-11-14T22:57Z",
      "weight": 1,
      "points": 0.25
     },
@@ -742,7 +742,7 @@
      "espnId": "3917315",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
      "status": "Out",
-     "reported": "2026-11-13T21:27Z",
+     "reported": "2026-11-14T19:54Z",
      "weight": 1,
      "replacement": "Kirk Cousins",
      "starterEpaPerPlay": 0.009,
@@ -851,7 +851,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.13,
+   "loss": 0.53,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -867,6 +867,16 @@
      "reported": "2026-11-13T23:17Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Taliese Fuaga",
+     "espnId": "4606711",
+     "status": "Out",
+     "reported": "2026-11-14T01:47Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -972,7 +982,7 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0.1,
+   "loss": 0.23,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
@@ -988,6 +998,16 @@
      "reported": "2026-11-14T17:39Z",
      "weight": 0.25,
      "points": 0.1
+    },
+    {
+     "group": "edge",
+     "position": "LDE",
+     "player": "Derrick Harmon",
+     "espnId": "4682980",
+     "status": "Questionable",
+     "reported": "2026-11-14T20:05Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []

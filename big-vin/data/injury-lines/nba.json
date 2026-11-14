@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-14T19:28:58.919Z",
+ "generatedAt": "2026-11-14T23:22:34.602Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,13 +10,13 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.03,
+   "loss": 0.33,
    "items": [
     {
      "player": "Kingston Flemings",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.03,
+     "status": "Out",
+     "points": 0.33,
      "minutes": 22.6
     },
     {
@@ -50,26 +50,18 @@
    ]
   },
   "2": {
-   "loss": 2.04,
-   "items": [
-    {
-     "player": "Paul George",
-     "position": "F",
-     "status": "Out",
-     "points": 2.04,
-     "minutes": 29.5
-    }
-   ]
+   "loss": 0,
+   "items": []
   },
   "3": {
    "loss": 1.42,
    "items": [
     {
-     "player": "Yves Missi",
-     "position": "C",
+     "player": "Bennedict Mathurin",
+     "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 14.4
     },
     {
      "player": "Trendon Watford",
@@ -142,35 +134,42 @@
    ]
   },
   "5": {
-   "loss": 3.77,
+   "loss": 6.78,
    "items": [
+    {
+     "player": "Peyton Watson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.3
+    },
+    {
+     "player": "James Harden",
+     "position": "G",
+     "status": "Out",
+     "points": 1.33,
+     "minutes": 32.1
+    },
+    {
+     "player": "Donovan Mitchell",
+     "position": "G",
+     "status": "Out",
+     "points": 2.01,
+     "minutes": 31.9
+    },
+    {
+     "player": "Jarrett Allen",
+     "position": "C",
+     "status": "Out",
+     "points": 1.66,
+     "minutes": 25.3
+    },
     {
      "player": "Evan Mobley",
      "position": "C",
      "status": "Out",
      "points": 1.78,
      "minutes": 30.9
-    },
-    {
-     "player": "Jarrett Allen",
-     "position": "C",
-     "status": "Questionable",
-     "points": 0.66,
-     "minutes": 25.3
-    },
-    {
-     "player": "Donovan Mitchell",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.8,
-     "minutes": 31.9
-    },
-    {
-     "player": "James Harden",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.53,
-     "minutes": 32.1
     },
     {
      "player": "Sam Merrill",
@@ -189,14 +188,14 @@
    ]
   },
   "6": {
-   "loss": 0.01,
+   "loss": 0,
    "items": [
     {
-     "player": "Morez Johnson Jr.",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.01,
-     "minutes": 17
+     "player": "Max Christie",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 15.3
     },
     {
      "player": "Dereck Lively II",
@@ -293,7 +292,7 @@
    ]
   },
   "10": {
-   "loss": 0.77,
+   "loss": 1.68,
    "items": [
     {
      "player": "Clint Capela",
@@ -308,6 +307,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Fred VanVleet",
+     "position": "G",
+     "status": "Out",
+     "points": 0.91,
+     "minutes": 30.3
     }
    ]
   },
@@ -371,33 +377,26 @@
    ]
   },
   "13": {
-   "loss": 0.89,
+   "loss": 0.23,
    "items": [
-    {
-     "player": "Austin Reaves",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.18,
-     "minutes": 35.2
-    },
-    {
-     "player": "Luka Doncic",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.66,
-     "minutes": 36.1
-    },
     {
      "player": "Collin Sexton",
      "position": "G",
      "status": "Day-To-Day",
      "points": 0.05,
      "minutes": 17.7
+    },
+    {
+     "player": "Austin Reaves",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.18,
+     "minutes": 35.2
     }
    ]
   },
   "14": {
-   "loss": 0.96,
+   "loss": 0.55,
    "items": [
     {
      "player": "Pelle Larsson",
@@ -412,19 +411,20 @@
      "status": "Day-To-Day",
      "points": 0.08,
      "minutes": 25.8
-    },
-    {
-     "player": "Giannis Antetokounmpo",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.41,
-     "minutes": 32.8
     }
    ]
   },
   "15": {
    "loss": 0,
-   "items": []
+   "items": [
+    {
+     "player": "Ousmane Dieng",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 10.4
+    }
+   ]
   },
   "16": {
    "loss": 0,
@@ -446,8 +446,15 @@
    ]
   },
   "17": {
-   "loss": 0.16,
+   "loss": 0.32,
    "items": [
+    {
+     "player": "Michael Porter Jr.",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.16,
+     "minutes": 32.4
+    },
     {
      "player": "Mikel Brown Jr.",
      "position": "G",
@@ -502,14 +509,14 @@
    ]
   },
   "20": {
-   "loss": 0.96,
+   "loss": 0.8,
    "items": [
     {
-     "player": "LeBron James",
-     "position": "F",
+     "player": "Joel Embiid",
+     "position": "C",
      "status": "Out",
-     "points": 0.96,
-     "minutes": 32.3
+     "points": 0.8,
+     "minutes": 30.4
     },
     {
      "player": "Dominick Barlow",
@@ -580,8 +587,15 @@
    ]
   },
   "23": {
-   "loss": 0.15,
+   "loss": 0.17,
    "items": [
+    {
+     "player": "Keegan Murray",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.02,
+     "minutes": 29
+    },
     {
      "player": "Precious Achiuwa",
      "position": "F",
@@ -712,14 +726,14 @@
    ]
   },
   "27": {
-   "loss": 0,
+   "loss": 0.35,
    "items": [
     {
-     "player": "Bub Carrington",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 18.7
+     "player": "Alex Sarr",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.35,
+     "minutes": 28.4
     },
     {
      "player": "Tristan Vukcevic",
@@ -755,6 +769,13 @@
    "loss": 2.12,
    "items": [
     {
+     "player": "Nate Bittle",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Scottie Barnes",
      "position": "F",
      "status": "Out",
@@ -762,22 +783,8 @@
      "minutes": 34
     },
     {
-     "player": "Trayce Jackson-Davis",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 8
-    },
-    {
      "player": "Kawhi Leonard",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Nate Bittle",
-     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -785,7 +792,7 @@
    ]
   },
   "29": {
-   "loss": 0.07,
+   "loss": 2.51,
    "items": [
     {
      "player": "Quinten Post",
@@ -795,11 +802,25 @@
      "minutes": 10.7
     },
     {
+     "player": "Jerami Grant",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.24,
+     "minutes": 23.4
+    },
+    {
      "player": "Zach Edey",
      "position": "C",
-     "status": "Out",
-     "points": 0.07,
+     "status": "Questionable",
+     "points": 0.03,
      "minutes": 20.6
+    },
+    {
+     "player": "Ty Jerome",
+     "position": "G",
+     "status": "Out",
+     "points": 2.24,
+     "minutes": 30.3
     },
     {
      "player": "Scotty Pippen Jr.",
