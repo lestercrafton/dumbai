@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-14T18:55:39.364Z",
+ "generatedAt": "2026-11-14T19:28:54.504Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -114,7 +114,7 @@
      "player": "Jaylinn Hawkins",
      "espnId": "3858276",
      "status": "Out",
-     "reported": "2026-11-14T18:34Z",
+     "reported": "2026-11-14T19:16Z",
      "weight": 1,
      "points": 0.3
     }
@@ -546,7 +546,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.4,
+   "loss": 0.3,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -562,16 +562,6 @@
      "reported": "2026-11-13T16:23Z",
      "weight": 1,
      "points": 0.3
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Robert Hainsey",
-     "espnId": "4242391",
-     "status": "Questionable",
-     "reported": "2026-11-11T21:25Z",
-     "weight": 0.25,
-     "points": 0.1
     }
    ],
    "notes": []
