@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-15T17:59:47.705Z",
+ "generatedAt": "2026-11-15T19:33:16.010Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -349,7 +349,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 1.03,
+   "loss": 1.4,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -361,10 +361,10 @@
      "position": "LDE",
      "player": "Aidan Hutchinson",
      "espnId": "4372099",
-     "status": "Questionable",
-     "reported": "2026-11-15T17:11Z",
-     "weight": 0.25,
-     "points": 0.13
+     "status": "Doubtful",
+     "reported": "2026-11-15T19:03Z",
+     "weight": 1,
+     "points": 0.5
     },
     {
      "group": "cb",
@@ -391,7 +391,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 0.65,
+   "loss": 0.78,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -407,6 +407,16 @@
      "reported": "2026-11-15T16:59Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Brandon Cisse",
+     "espnId": "5076652",
+     "status": "Questionable",
+     "reported": "2026-11-15T18:44Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "c",
@@ -465,13 +475,23 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 0.4,
+   "loss": 0.55,
    "starter": {
     "name": "Daniel Jones",
     "espnId": "3917792",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Bernhard Raimann",
+     "espnId": "4362580",
+     "status": "Questionable",
+     "reported": "2026-11-15T18:52Z",
+     "weight": 0.25,
+     "points": 0.15
+    },
     {
      "group": "rt",
      "position": "RT",
@@ -509,7 +529,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.8,
+   "loss": 0.88,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -525,6 +545,16 @@
      "reported": "2026-11-15T16:21Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Trey Smith",
+     "espnId": "4242459",
+     "status": "Questionable",
+     "reported": "2026-11-15T19:05Z",
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "rt",
@@ -658,7 +688,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 3.41,
+   "loss": 3.49,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -683,6 +713,16 @@
      "fullPoints": 3.01,
      "alreadyInRatings": 0,
      "points": 3.01
+    },
+    {
+     "group": "dt",
+     "position": "RDT",
+     "player": "Zeek Biggers",
+     "espnId": "4683276",
+     "status": "Questionable",
+     "reported": "2026-11-15T18:49Z",
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "c",
@@ -774,7 +814,7 @@
      "espnId": "4431452",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-15T15:43Z",
+     "reported": "2026-11-15T17:54Z",
      "weight": 0.25,
      "replacement": "Tommy DeVito",
      "starterEpaPerPlay": 0.141,
@@ -821,13 +861,23 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.8,
+   "loss": 0.86,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "lb",
+     "position": "RILB",
+     "player": "Pete Werner",
+     "espnId": "4241993",
+     "status": "Questionable",
+     "reported": "2026-11-15T19:05Z",
+     "weight": 0.25,
+     "points": 0.06
+    },
     {
      "group": "c",
      "position": "C",
@@ -866,7 +916,7 @@
   },
   "NYJ": {
    "team": "NYJ",
-   "loss": 0.25,
+   "loss": 0.33,
    "starter": {
     "name": "Geno Smith",
     "espnId": "15864",
@@ -882,6 +932,16 @@
      "reported": "2026-11-15T16:36Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Dylan Parham",
+     "espnId": "4243375",
+     "status": "Questionable",
+     "reported": "2026-11-15T19:02Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -977,7 +1037,7 @@
      "player": "Mike Evans",
      "espnId": "16737",
      "status": "Out",
-     "reported": "2026-11-13T22:08Z",
+     "reported": "2026-11-15T18:01Z",
      "weight": 1,
      "points": 0.8
     },

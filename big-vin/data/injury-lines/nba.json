@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-15T17:59:52.166Z",
+ "generatedAt": "2026-11-15T19:33:21.073Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -181,21 +181,21 @@
    ]
   },
   "6": {
-   "loss": 0.11,
+   "loss": 1.13,
    "items": [
+    {
+     "player": "Kyrie Irving",
+     "position": "G",
+     "status": "Questionable",
+     "points": 1.02,
+     "minutes": 32.2
+    },
     {
      "player": "Daniel Gafford",
      "position": "F",
      "status": "Day-To-Day",
      "points": 0.11,
      "minutes": 21.6
-    },
-    {
-     "player": "Max Christie",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 14
     },
     {
      "player": "Dereck Lively II",
@@ -479,14 +479,14 @@
    "loss": 0,
    "items": [
     {
-     "player": "Noah Penda",
+     "player": "Jonathan Isaac",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Jonathan Isaac",
+     "player": "Noah Penda",
      "position": "F",
      "status": "Out",
      "points": 0,
@@ -620,8 +620,15 @@
    ]
   },
   "24": {
-   "loss": 0,
+   "loss": 0.35,
    "items": [
+    {
+     "player": "De'Aaron Fox",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.35,
+     "minutes": 28
+    },
     {
      "player": "Tobias Harris",
      "position": "F",
