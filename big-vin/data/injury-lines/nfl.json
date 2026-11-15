@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-15T03:05:32.663Z",
+ "generatedAt": "2026-11-15T11:29:43.167Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -822,7 +822,7 @@
      "player": "Rhamondre Stevenson",
      "espnId": "4569173",
      "status": "Questionable",
-     "reported": "2026-11-13T17:07Z",
+     "reported": "2026-11-15T11:14Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -849,10 +849,10 @@
     {
      "group": "lg",
      "position": "LG",
-     "player": "Walter Rouse",
-     "espnId": "4428394",
+     "player": "Greg Van Roten",
+     "espnId": "15718",
      "status": "Questionable",
-     "reported": "2026-11-11T23:13Z",
+     "reported": "2026-11-15T00:57Z",
      "weight": 0.25,
      "points": 0.08
     }

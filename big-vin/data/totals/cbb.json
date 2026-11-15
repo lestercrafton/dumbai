@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cbb-totals-v1",
  "sport": "cbb",
- "generatedAt": "2026-11-15T03:05:50.523Z",
+ "generatedAt": "2026-11-15T11:29:59.295Z",
  "method": "men’s college basketball: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 167,
-  "losses": 143,
+  "wins": 170,
+  "losses": 144,
   "pushes": 0,
-  "pending": 7,
-  "bankroll": 582.31,
+  "pending": 3,
+  "bankroll": 600.29,
   "bankrollStart": 500
  },
  "backtest": {
@@ -2681,9 +2681,12 @@
     "unshrunkTotal": 153.37,
     "note": "Gap of 8.13 points vs the market total; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 131,
+   "stake": {
+    "stake": 11.02,
+    "net": 9.58
+   }
   },
   "401911532": {
    "side": "over",
@@ -3515,9 +3518,12 @@
    "awayPoints": 73.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 175,
+   "stake": {
+    "stake": 11.02,
+    "net": -11.02
+   }
   },
   "401917913": {
    "side": "under",
@@ -5519,9 +5525,12 @@
    "awayPoints": 71.3,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 134,
+   "stake": {
+    "stake": 11.02,
+    "net": 9.84
+   }
   },
   "401920769": {
    "side": "under",
@@ -7841,9 +7850,12 @@
    "awayPoints": 62.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 139,
+   "stake": {
+    "stake": 11.02,
+    "net": 9.58
+   }
   },
   "401925077": {
    "side": "under",

@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-15T03:05:38.535Z",
+ "generatedAt": "2026-11-15T11:29:47.501Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -94,14 +94,14 @@
    ]
   },
   "4": {
-   "loss": 3.89,
+   "loss": 3.65,
    "items": [
     {
      "player": "Jalen Smith",
      "position": "F",
      "status": "Out",
-     "points": 1.26,
-     "minutes": 25.2
+     "points": 1.05,
+     "minutes": 25.3
     },
     {
      "player": "Nic Claxton",
@@ -121,8 +121,8 @@
      "player": "Caleb Wilson",
      "position": "F",
      "status": "Out",
-     "points": 1.48,
-     "minutes": 30.6
+     "points": 1.45,
+     "minutes": 30.3
     }
    ]
   },
@@ -233,28 +233,28 @@
    ]
   },
   "8": {
-   "loss": 0.46,
+   "loss": 0.42,
    "items": [
     {
      "player": "Duncan Robinson",
      "position": "F",
      "status": "Questionable",
-     "points": 0.46,
-     "minutes": 32.2
+     "points": 0.42,
+     "minutes": 31.1
     },
     {
      "player": "Isaiah Joe",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 11
+     "minutes": 4
     },
     {
      "player": "Jalen Duren",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 10
+     "minutes": 0
     }
    ]
   },
@@ -410,14 +410,14 @@
    ]
   },
   "14": {
-   "loss": 0.62,
+   "loss": 0.59,
    "items": [
     {
      "player": "Pelle Larsson",
      "position": "G",
      "status": "Out",
-     "points": 0.62,
-     "minutes": 30.2
+     "points": 0.59,
+     "minutes": 29.5
     }
    ]
   },
@@ -441,14 +441,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 17.1
+     "minutes": 16.9
     },
     {
      "player": "Anthony Edwards",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 34.5
+     "minutes": 41
     },
     {
      "player": "Donte DiVincenzo",
@@ -460,14 +460,14 @@
    ]
   },
   "17": {
-   "loss": 1.57,
+   "loss": 1.25,
    "items": [
     {
      "player": "Michael Porter Jr.",
      "position": "F",
      "status": "Out",
-     "points": 1.57,
-     "minutes": 32.4
+     "points": 1.25,
+     "minutes": 32.3
     }
    ]
   },
@@ -792,14 +792,14 @@
    ]
   },
   "29": {
-   "loss": 2.9,
+   "loss": 2.64,
    "items": [
     {
      "player": "GG Jackson",
      "position": "F",
      "status": "Out",
-     "points": 0,
-     "minutes": 15.9
+     "points": 0.11,
+     "minutes": 15.1
     },
     {
      "player": "Zach Edey",
@@ -812,29 +812,29 @@
      "player": "Jerami Grant",
      "position": "F",
      "status": "Out",
-     "points": 0.59,
-     "minutes": 23.4
+     "points": 0.69,
+     "minutes": 23.6
     },
     {
      "player": "Quinten Post",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 10.7
+     "minutes": 9.4
     },
     {
      "player": "Ty Jerome",
      "position": "G",
      "status": "Out",
-     "points": 2.24,
-     "minutes": 30.3
+     "points": 1.77,
+     "minutes": 30.1
     },
     {
      "player": "Scotty Pippen Jr.",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 14.7
+     "minutes": 13.5
     },
     {
      "player": "Richie Saunders",
