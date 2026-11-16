@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-16T22:32:26.935Z",
+ "generatedAt": "2026-11-16T23:07:41.790Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -102,7 +102,7 @@
    ]
   },
   "4": {
-   "loss": 1.87,
+   "loss": 1.45,
    "items": [
     {
      "player": "Tobe Awaka",
@@ -110,13 +110,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 8.7
-    },
-    {
-     "player": "Jalen Smith",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.42,
-     "minutes": 25.3
     },
     {
      "player": "Caleb Wilson",
@@ -130,6 +123,13 @@
   "5": {
    "loss": 1.6,
    "items": [
+    {
+     "player": "Jaylon Tyson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.3
+    },
     {
      "player": "Evan Mobley",
      "position": "C",
@@ -213,14 +213,14 @@
    ]
   },
   "8": {
-   "loss": 0.11,
+   "loss": 1.06,
    "items": [
     {
-     "player": "Duncan Robinson",
+     "player": "Ronald Holland II",
      "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.11,
-     "minutes": 31.1
+     "status": "Out",
+     "points": 0,
+     "minutes": 16.7
     },
     {
      "player": "Isaiah Joe",
@@ -228,6 +228,13 @@
      "status": "Out",
      "points": 0,
      "minutes": 4
+    },
+    {
+     "player": "Duncan Robinson",
+     "position": "F",
+     "status": "Out",
+     "points": 1.06,
+     "minutes": 31.1
     },
     {
      "player": "Jalen Duren",
@@ -383,13 +390,20 @@
    ]
   },
   "14": {
-   "loss": 0.44,
+   "loss": 0.59,
    "items": [
+    {
+     "player": "Nikola Jovic",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 10.6
+    },
     {
      "player": "Pelle Larsson",
      "position": "G",
-     "status": "Doubtful",
-     "points": 0.44,
+     "status": "Out",
+     "points": 0.59,
      "minutes": 29.5
     }
    ]
@@ -680,13 +694,6 @@
      "status": "Out",
      "points": 0.27,
      "minutes": 24.1
-    },
-    {
-     "player": "Trey Alexander",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Lauri Markkanen",
