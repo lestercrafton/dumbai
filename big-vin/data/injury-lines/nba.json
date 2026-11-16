@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-16T03:05:20.199Z",
+ "generatedAt": "2026-11-16T12:01:49.514Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,21 +10,21 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.33,
+   "loss": 0.5,
    "items": [
     {
      "player": "Jock Landale",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 13.8
+     "minutes": 13
     },
     {
      "player": "Kingston Flemings",
      "position": "G",
      "status": "Out",
-     "points": 0.33,
-     "minutes": 22.6
+     "points": 0.5,
+     "minutes": 23.1
     },
     {
      "player": "Mouhamed Gueye",
@@ -34,18 +34,11 @@
      "minutes": 0
     },
     {
-     "player": "Keshon Gilbert",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Asa Newell",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 11.8
+     "minutes": 15.3
     },
     {
      "player": "Henri Veesaar",
@@ -387,21 +380,21 @@
    ]
   },
   "15": {
-   "loss": 0.11,
+   "loss": 0.03,
    "items": [
     {
      "player": "Ousmane Dieng",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 10.4
+     "minutes": 11.4
     },
     {
      "player": "Ryan Rollins",
      "position": "G",
      "status": "Out",
-     "points": 0.11,
-     "minutes": 22.7
+     "points": 0.03,
+     "minutes": 21.7
     }
    ]
   },
@@ -551,28 +544,28 @@
    ]
   },
   "23": {
-   "loss": 1.62,
+   "loss": 1.51,
    "items": [
     {
      "player": "De'Andre Hunter",
      "position": "F",
      "status": "Out",
-     "points": 0,
-     "minutes": 34.7
+     "points": 0.2,
+     "minutes": 35.4
     },
     {
      "player": "Zach LaVine",
      "position": "G",
      "status": "Out",
-     "points": 1.47,
-     "minutes": 32.3
+     "points": 1.12,
+     "minutes": 31.4
     },
     {
      "player": "Precious Achiuwa",
      "position": "F",
      "status": "Out",
-     "points": 0.15,
-     "minutes": 26.1
+     "points": 0.19,
+     "minutes": 24.5
     },
     {
      "player": "Maxime Raynaud",
@@ -624,7 +617,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 23
+     "minutes": 22
     },
     {
      "player": "Thomas Sorber",

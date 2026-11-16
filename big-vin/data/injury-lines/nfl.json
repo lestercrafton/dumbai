@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-16T03:05:15.224Z",
+ "generatedAt": "2026-11-16T12:01:41.788Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -201,7 +201,7 @@
   },
   "CIN": {
    "team": "CIN",
-   "loss": 0.08,
+   "loss": 0.14,
    "starter": {
     "name": "Joe Burrow",
     "espnId": "3915511",
@@ -209,12 +209,22 @@
    },
    "items": [
     {
+     "group": "lb",
+     "position": "SLB",
+     "player": "Oren Burks",
+     "espnId": "3051746",
+     "status": "Questionable",
+     "reported": "2026-11-16T04:15Z",
+     "weight": 0.25,
+     "points": 0.06
+    },
+    {
      "group": "rg",
      "position": "RG",
      "player": "Dalton Risner",
      "espnId": "3125082",
      "status": "Questionable",
-     "reported": "2026-11-16T02:51Z",
+     "reported": "2026-11-16T03:38Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1085,7 +1095,7 @@
      "player": "Mason McCormick",
      "espnId": "4368304",
      "status": "Questionable",
-     "reported": "2026-11-16T02:53Z",
+     "reported": "2026-11-16T03:00Z",
      "weight": 0.25,
      "points": 0.08
     }
