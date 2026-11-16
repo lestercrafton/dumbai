@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-15T23:12:06.978Z",
+ "generatedAt": "2026-11-16T03:05:15.224Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,23 +14,13 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 1.8,
+   "loss": 1,
    "starter": {
     "name": "Carson Beck",
     "espnId": "4430841",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr1",
-     "position": "WR",
-     "player": "Michael Wilson",
-     "espnId": "4360761",
-     "status": "Injured Reserve",
-     "reported": "2026-11-10T22:53Z",
-     "weight": 1,
-     "points": 0.8
-    },
     {
      "group": "lt",
      "position": "LT",
@@ -53,7 +43,6 @@
     }
    ],
    "notes": [
-    "Starter Carson Beck has no ARI snaps this season (usage leader Jacoby Brissett).",
     "Usage leader Jacoby Brissett is not the resolved starter."
    ]
   },
@@ -225,7 +214,7 @@
      "player": "Dalton Risner",
      "espnId": "3125082",
      "status": "Questionable",
-     "reported": "2026-11-15T16:29Z",
+     "reported": "2026-11-16T02:51Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -274,16 +263,6 @@
      "points": 0.4
     },
     {
-     "group": "dt",
-     "position": "NT",
-     "player": "Otito Ogbonnia",
-     "espnId": "4367210",
-     "status": "Questionable",
-     "reported": "2026-11-15T22:32Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
      "group": "lb",
      "position": "SLB",
      "player": "Donovan Ezeiruaku",
@@ -309,9 +288,19 @@
      "player": "DaRon Bland",
      "espnId": "4248911",
      "status": "Questionable",
-     "reported": "2026-11-15T22:04Z",
+     "reported": "2026-11-16T01:24Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Tyler Booker",
+     "espnId": "4685263",
+     "status": "Questionable",
+     "reported": "2026-11-16T01:27Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -444,7 +433,7 @@
   },
   "HOU": {
    "team": "HOU",
-   "loss": 1.15,
+   "loss": 1.45,
    "starter": {
     "name": "C.J. Stroud",
     "espnId": "4432577",
@@ -456,10 +445,10 @@
      "position": "RB",
      "player": "Woody Marks",
      "espnId": "4429059",
-     "status": "Questionable",
-     "reported": "2026-11-15T20:25Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-11-15T23:18Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "edge",
@@ -622,7 +611,7 @@
   },
   "LV": {
    "team": "LV",
-   "loss": 0.4,
+   "loss": 0.16,
    "starter": {
     "name": "Fernando Mendoza",
     "espnId": "4837248",
@@ -634,10 +623,20 @@
      "position": "TE",
      "player": "Brock Bowers",
      "espnId": "4432665",
-     "status": "Out",
-     "reported": "2026-11-15T22:42Z",
-     "weight": 1,
-     "points": 0.4
+     "status": "Questionable",
+     "reported": "2026-11-16T00:29Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
+    {
+     "group": "lb",
+     "position": "SLB",
+     "player": "Kwity Paye",
+     "espnId": "4258194",
+     "status": "Questionable",
+     "reported": "2026-11-15T23:31Z",
+     "weight": 0.25,
+     "points": 0.06
     }
    ],
    "notes": [
@@ -866,7 +865,7 @@
      "espnId": "4431452",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-15T17:54Z",
+     "reported": "2026-11-16T01:28Z",
      "weight": 0.25,
      "replacement": "Tommy DeVito",
      "starterEpaPerPlay": 0.144,
@@ -982,7 +981,7 @@
      "espnId": "15864",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-15T20:55Z",
+     "reported": "2026-11-16T00:40Z",
      "weight": 0.25,
      "replacement": "Cade Klubnik",
      "starterEpaPerPlay": -0.023,
@@ -1063,7 +1062,7 @@
   },
   "PIT": {
    "team": "PIT",
-   "loss": 0.23,
+   "loss": 0.38,
    "starter": {
     "name": "Aaron Rodgers",
     "espnId": "8439",
@@ -1071,24 +1070,24 @@
    },
    "items": [
     {
-     "group": "te1",
-     "position": "TE",
-     "player": "Pat Freiermuth",
-     "espnId": "4361411",
-     "status": "Questionable",
-     "reported": "2026-11-14T17:39Z",
-     "weight": 0.25,
-     "points": 0.1
+     "group": "s",
+     "position": "SS",
+     "player": "DeShon Elliott",
+     "espnId": "3929846",
+     "status": "Out",
+     "reported": "2026-11-15T23:46Z",
+     "weight": 1,
+     "points": 0.3
     },
     {
-     "group": "edge",
-     "position": "LDE",
-     "player": "Derrick Harmon",
-     "espnId": "4682980",
+     "group": "lg",
+     "position": "LG",
+     "player": "Mason McCormick",
+     "espnId": "4368304",
      "status": "Questionable",
-     "reported": "2026-11-14T20:05Z",
+     "reported": "2026-11-16T02:53Z",
      "weight": 0.25,
-     "points": 0.13
+     "points": 0.08
     }
    ],
    "notes": []
@@ -1117,7 +1116,7 @@
   },
   "SEA": {
    "team": "SEA",
-   "loss": 3.71,
+   "loss": 3.55,
    "starter": {
     "name": "Sam Darnold",
     "espnId": "3912547",
@@ -1136,12 +1135,12 @@
      "replacement": "Drew Lock",
      "starterEpaPerPlay": 0.045,
      "starterPlays": 560,
-     "backupEpaPerPlay": 0.033,
-     "backupPlays": 90,
-     "gapEpaPerPlay": 0.01,
+     "backupEpaPerPlay": 0.056,
+     "backupPlays": 116,
+     "gapEpaPerPlay": 0,
      "fullPoints": 2,
-     "alreadyInRatings": 0.16,
-     "points": 1.68
+     "alreadyInRatings": 0.24,
+     "points": 1.52
     },
     {
      "group": "rb1",
@@ -1199,7 +1198,7 @@
      "player": "Abraham Lucas",
      "espnId": "4245171",
      "status": "Questionable",
-     "reported": "2026-11-15T22:03Z",
+     "reported": "2026-11-16T01:36Z",
      "weight": 0.25,
      "points": 0.1
     }

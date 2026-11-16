@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-15T23:12:11.544Z",
+ "generatedAt": "2026-11-16T03:05:20.199Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -12,6 +12,13 @@
   "1": {
    "loss": 0.33,
    "items": [
+    {
+     "player": "Jock Landale",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.8
+    },
     {
      "player": "Kingston Flemings",
      "position": "G",
@@ -57,6 +64,13 @@
    "loss": 2.02,
    "items": [
     {
+     "player": "Bryce McGowens",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 11.8
+    },
+    {
      "player": "Bennedict Mathurin",
      "position": "G",
      "status": "Out",
@@ -76,13 +90,6 @@
      "status": "Out",
      "points": 0.33,
      "minutes": 17.8
-    },
-    {
-     "player": "Bryce McGowens",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 11.8
     },
     {
      "player": "Dejounte Murray",
@@ -146,7 +153,7 @@
    ]
   },
   "6": {
-   "loss": 2.55,
+   "loss": 2.64,
    "items": [
     {
      "player": "Santi Aldama",
@@ -160,14 +167,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 14
+     "minutes": 12.3
     },
     {
      "player": "Kyrie Irving",
      "position": "G",
      "status": "Out",
-     "points": 2.55,
-     "minutes": 32.2
+     "points": 2.64,
+     "minutes": 32.1
     },
     {
      "player": "Dereck Lively II",
@@ -188,7 +195,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 6
+     "minutes": 0
     }
    ]
   },
@@ -271,21 +278,21 @@
    ]
   },
   "10": {
-   "loss": 1.68,
+   "loss": 2.18,
    "items": [
     {
      "player": "Clint Capela",
      "position": "C",
      "status": "Out",
-     "points": 0.77,
-     "minutes": 16.5
+     "points": 0.91,
+     "minutes": 20.7
     },
     {
      "player": "Fred VanVleet",
      "position": "G",
      "status": "Out",
-     "points": 0.91,
-     "minutes": 30.3
+     "points": 1.27,
+     "minutes": 30.5
     }
    ]
   },
@@ -356,14 +363,14 @@
    ]
   },
   "13": {
-   "loss": 1.85,
+   "loss": 1.6,
    "items": [
     {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Out",
-     "points": 1.85,
-     "minutes": 35.2
+     "points": 1.6,
+     "minutes": 34.8
     }
    ]
   },
@@ -380,7 +387,7 @@
    ]
   },
   "15": {
-   "loss": 0.05,
+   "loss": 0.11,
    "items": [
     {
      "player": "Ousmane Dieng",
@@ -392,8 +399,8 @@
     {
      "player": "Ryan Rollins",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.05,
+     "status": "Out",
+     "points": 0.11,
      "minutes": 22.7
     }
    ]
@@ -544,21 +551,35 @@
    ]
   },
   "23": {
-   "loss": 0.06,
+   "loss": 1.62,
    "items": [
+    {
+     "player": "De'Andre Hunter",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 34.7
+    },
+    {
+     "player": "Zach LaVine",
+     "position": "G",
+     "status": "Out",
+     "points": 1.47,
+     "minutes": 32.3
+    },
+    {
+     "player": "Precious Achiuwa",
+     "position": "F",
+     "status": "Out",
+     "points": 0.15,
+     "minutes": 26.1
+    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Precious Achiuwa",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.06,
-     "minutes": 26.1
     },
     {
      "player": "Ben Simmons",
@@ -570,14 +591,14 @@
    ]
   },
   "24": {
-   "loss": 0.89,
+   "loss": 0.95,
    "items": [
     {
      "player": "De'Aaron Fox",
      "position": "G",
      "status": "Out",
-     "points": 0.89,
-     "minutes": 28
+     "points": 0.95,
+     "minutes": 28.2
     },
     {
      "player": "Tobias Harris",
@@ -596,7 +617,7 @@
    ]
   },
   "25": {
-   "loss": 0.9,
+   "loss": 0,
    "items": [
     {
      "player": "Jaylin Williams",
@@ -604,13 +625,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 23
-    },
-    {
-     "player": "Ajay Mitchell",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.9,
-     "minutes": 28.3
     },
     {
      "player": "Thomas Sorber",
@@ -643,7 +657,7 @@
    ]
   },
   "26": {
-   "loss": 1.16,
+   "loss": 1.47,
    "items": [
     {
      "player": "Jaxson Hayes",
@@ -663,8 +677,8 @@
      "player": "Lauri Markkanen",
      "position": "F",
      "status": "Out",
-     "points": 0.89,
-     "minutes": 27.8
+     "points": 1.2,
+     "minutes": 33.3
     },
     {
      "player": "Jusuf Nurkic",
@@ -678,7 +692,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 10
+     "minutes": 0
     }
    ]
   },
@@ -690,7 +704,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 23.9
+     "minutes": 24
     },
     {
      "player": "Tristan Vukcevic",
@@ -711,7 +725,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 4
+     "minutes": 0
     },
     {
      "player": "Jamir Watkins",
@@ -810,7 +824,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 30.7
+     "minutes": 29.5
     }
    ]
   }
