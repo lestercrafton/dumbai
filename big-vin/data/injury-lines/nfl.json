@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-16T23:07:34.905Z",
+ "generatedAt": "2026-11-17T04:49:33.306Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -27,7 +27,7 @@
      "player": "Andrew Wingard",
      "espnId": "3918331",
      "status": "Out",
-     "reported": "2026-11-16T21:32Z",
+     "reported": "2026-11-17T00:06Z",
      "weight": 1,
      "points": 0.3
     },
@@ -80,7 +80,7 @@
   },
   "BAL": {
    "team": "BAL",
-   "loss": 0.3,
+   "loss": 0.51,
    "starter": {
     "name": "Jacoby Brissett",
     "espnId": "2578570",
@@ -88,14 +88,34 @@
    },
    "items": [
     {
+     "group": "edge",
+     "position": "LDE",
+     "player": "Nnamdi Madubuike",
+     "espnId": "4035245",
+     "status": "Questionable",
+     "reported": "2026-11-17T03:49Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
      "group": "s",
      "position": "SS",
      "player": "Jaylinn Hawkins",
      "espnId": "3858276",
      "status": "Out",
-     "reported": "2026-11-14T19:16Z",
+     "reported": "2026-11-16T23:47Z",
      "weight": 1,
      "points": 0.3
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Olaivavega Ioane",
+     "espnId": "4832793",
+     "status": "Questionable",
+     "reported": "2026-11-17T03:27Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": [
@@ -424,7 +444,7 @@
      "player": "Brandon Cisse",
      "espnId": "5076652",
      "status": "Questionable",
-     "reported": "2026-11-15T18:44Z",
+     "reported": "2026-11-17T00:27Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -444,7 +464,7 @@
      "player": "Kevin Zeitler",
      "espnId": "14931",
      "status": "Out",
-     "reported": "2026-11-16T19:15Z",
+     "reported": "2026-11-17T00:39Z",
      "weight": 1,
      "points": 0.3
     }
@@ -453,7 +473,7 @@
   },
   "HOU": {
    "team": "HOU",
-   "loss": 1.45,
+   "loss": 1.15,
    "starter": {
     "name": "C.J. Stroud",
     "espnId": "4432577",
@@ -466,7 +486,7 @@
      "player": "Woody Marks",
      "espnId": "4429059",
      "status": "Doubtful",
-     "reported": "2026-11-15T23:18Z",
+     "reported": "2026-11-17T00:49Z",
      "weight": 1,
      "points": 0.4
     },
@@ -486,19 +506,9 @@
      "player": "Azeez Al-Shaair",
      "espnId": "3919117",
      "status": "Out",
-     "reported": "2026-11-16T19:16Z",
+     "reported": "2026-11-17T01:03Z",
      "weight": 1,
      "points": 0.25
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Keylan Rutledge",
-     "espnId": "4839498",
-     "status": "Out",
-     "reported": "2026-11-16T19:19Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
@@ -655,7 +665,7 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.21,
+   "loss": 0.5,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
@@ -667,27 +677,17 @@
      "position": "RDE",
      "player": "Justin Eboigbe",
      "espnId": "4567138",
-     "status": "Questionable",
-     "reported": "2026-11-14T23:58Z",
-     "weight": 0.25,
-     "points": 0.13
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Kayode Awosika",
-     "espnId": "4040842",
-     "status": "Questionable",
-     "reported": "2026-11-15T01:18Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-17T00:02Z",
+     "weight": 1,
+     "points": 0.5
     }
    ],
    "notes": []
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.6,
+   "loss": 1.9,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -729,17 +729,17 @@
      "position": "C",
      "player": "Coleman Shelton",
      "espnId": "3052180",
-     "status": "Questionable",
-     "reported": "2026-11-15T22:54Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-11-17T01:07Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
   },
   "MIA": {
    "team": "MIA",
-   "loss": 4.39,
+   "loss": 4.31,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -772,16 +772,6 @@
      "espnId": "4837188",
      "status": "Questionable",
      "reported": "2026-11-16T19:56Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "dt",
-     "position": "RDT",
-     "player": "Zeek Biggers",
-     "espnId": "4683276",
-     "status": "Questionable",
-     "reported": "2026-11-15T20:12Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -1001,7 +991,7 @@
      "espnId": "15864",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-16T14:48Z",
+     "reported": "2026-11-17T00:15Z",
      "weight": 0.25,
      "replacement": "Cade Klubnik",
      "starterEpaPerPlay": -0.023,
@@ -1029,7 +1019,7 @@
      "player": "Dylan Parham",
      "espnId": "4243375",
      "status": "Questionable",
-     "reported": "2026-11-15T19:02Z",
+     "reported": "2026-11-17T00:35Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -1105,7 +1095,7 @@
      "player": "Mason McCormick",
      "espnId": "4368304",
      "status": "Doubtful",
-     "reported": "2026-11-16T03:00Z",
+     "reported": "2026-11-17T00:45Z",
      "weight": 1,
      "points": 0.3
     }
@@ -1137,7 +1127,7 @@
      "player": "Renardo Green",
      "espnId": "4427325",
      "status": "Questionable",
-     "reported": "2026-11-16T22:10Z",
+     "reported": "2026-11-17T00:16Z",
      "weight": 0.25,
      "points": 0.13
     }
