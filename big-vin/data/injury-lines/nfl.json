@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-17T14:55:50.764Z",
+ "generatedAt": "2026-11-17T21:59:26.656Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -188,23 +188,13 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0.33,
+   "loss": 0.13,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr1",
-     "position": "WR",
-     "player": "Luther Burden III",
-     "espnId": "4685278",
-     "status": "Questionable",
-     "reported": "2026-11-16T20:25Z",
-     "weight": 0.25,
-     "points": 0.2
-    },
     {
      "group": "cb",
      "position": "RCB",
@@ -388,7 +378,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.23,
+   "loss": 0.53,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -410,10 +400,10 @@
      "position": "C",
      "player": "Cade Mays",
      "espnId": "4361788",
-     "status": "Questionable",
-     "reported": "2026-11-17T12:19Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Doubtful",
+     "reported": "2026-11-17T15:10Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -472,7 +462,7 @@
   },
   "HOU": {
    "team": "HOU",
-   "loss": 0.59,
+   "loss": 0.66,
    "starter": {
     "name": "C.J. Stroud",
     "espnId": "4432577",
@@ -500,14 +490,14 @@
      "points": 0.13
     },
     {
-     "group": "lb",
-     "position": "MLB",
-     "player": "Azeez Al-Shaair",
-     "espnId": "3919117",
+     "group": "cb",
+     "position": "RCB",
+     "player": "Kamari Lassiter",
+     "espnId": "4602699",
      "status": "Questionable",
-     "reported": "2026-11-17T01:03Z",
+     "reported": "2026-11-17T21:53Z",
      "weight": 0.25,
-     "points": 0.06
+     "points": 0.13
     }
    ],
    "notes": []
@@ -728,7 +718,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 4.06,
+   "loss": 3.98,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -753,16 +743,6 @@
      "fullPoints": 4.22,
      "alreadyInRatings": 0.08,
      "points": 3.88
-    },
-    {
-     "group": "dt",
-     "position": "LDT",
-     "player": "Jordan Phillips",
-     "espnId": "4837188",
-     "status": "Questionable",
-     "reported": "2026-11-16T19:56Z",
-     "weight": 0.25,
-     "points": 0.08
     },
     {
      "group": "c",
@@ -1220,7 +1200,7 @@
      "espnId": "3052587",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-15T16:19Z",
+     "reported": "2026-11-17T15:19Z",
      "weight": 0.25,
      "replacement": "Jalon Daniels",
      "starterEpaPerPlay": -0.016,
@@ -1257,7 +1237,7 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 0.5,
+   "loss": 1.1,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
@@ -1269,10 +1249,10 @@
      "position": "WR",
      "player": "Wan'Dale Robinson",
      "espnId": "4569587",
-     "status": "Questionable",
-     "reported": "2026-11-15T21:09Z",
-     "weight": 0.25,
-     "points": 0.2
+     "status": "Injured Reserve",
+     "reported": "2026-11-17T21:26Z",
+     "weight": 1,
+     "points": 0.8
     },
     {
      "group": "wr2",
@@ -1332,7 +1312,7 @@
      "player": "Jacory Croskey-Merritt",
      "espnId": "4575131",
      "status": "Injured Reserve",
-     "reported": "2026-11-16T20:18Z",
+     "reported": "2026-11-17T19:02Z",
      "weight": 1,
      "points": 0.4
     },

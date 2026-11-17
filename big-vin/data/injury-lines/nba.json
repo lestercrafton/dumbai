@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-17T14:55:53.510Z",
+ "generatedAt": "2026-11-17T21:59:31.156Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,8 +10,29 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.5,
+   "loss": 0.72,
    "items": [
+    {
+     "player": "Asa Newell",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 15.3
+    },
+    {
+     "player": "CJ McCollum",
+     "position": "G",
+     "status": "Out",
+     "points": 0.67,
+     "minutes": 26.2
+    },
+    {
+     "player": "Kingston Flemings",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.05,
+     "minutes": 23.1
+    },
     {
      "player": "Jock Landale",
      "position": "C",
@@ -20,25 +41,11 @@
      "minutes": 13
     },
     {
-     "player": "Kingston Flemings",
-     "position": "G",
-     "status": "Out",
-     "points": 0.5,
-     "minutes": 23.1
-    },
-    {
      "player": "Mouhamed Gueye",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Asa Newell",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 15.3
     },
     {
      "player": "Henri Veesaar",
@@ -79,18 +86,18 @@
      "minutes": 13
     },
     {
-     "player": "Trey Murphy III",
-     "position": "F",
-     "status": "Out",
-     "points": 1.62,
-     "minutes": 33.3
-    },
-    {
      "player": "Trendon Watford",
      "position": "F",
      "status": "Out",
      "points": 0.16,
      "minutes": 18
+    },
+    {
+     "player": "Trey Murphy III",
+     "position": "F",
+     "status": "Out",
+     "points": 1.62,
+     "minutes": 33.3
     },
     {
      "player": "Dejounte Murray",
@@ -102,20 +109,13 @@
    ]
   },
   "4": {
-   "loss": 1.23,
+   "loss": 1.02,
    "items": [
-    {
-     "player": "Jalen Smith",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.15,
-     "minutes": 25.8
-    },
     {
      "player": "Patrick Williams",
      "position": "F",
-     "status": "Out",
-     "points": 0.07,
+     "status": "Day-To-Day",
+     "points": 0.01,
      "minutes": 22.7
     },
     {
@@ -171,20 +171,6 @@
    "loss": 2.64,
    "items": [
     {
-     "player": "Max Christie",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 12.3
-    },
-    {
-     "player": "Santi Aldama",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 14.6
-    },
-    {
      "player": "Kyrie Irving",
      "position": "G",
      "status": "Out",
@@ -230,20 +216,6 @@
    "loss": 1.06,
    "items": [
     {
-     "player": "Taurean Prince",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 7
-    },
-    {
-     "player": "Ronald Holland II",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 16.7
-    },
-    {
      "player": "Isaiah Joe",
      "position": "G",
      "status": "Out",
@@ -256,6 +228,20 @@
      "status": "Out",
      "points": 1.06,
      "minutes": 31.1
+    },
+    {
+     "player": "Taurean Prince",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 7
+    },
+    {
+     "player": "Ronald Holland II",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 16.7
     },
     {
      "player": "Jalen Duren",
@@ -307,28 +293,21 @@
    ]
   },
   "10": {
-   "loss": 1.08,
+   "loss": 0.43,
    "items": [
-    {
-     "player": "Amen Thompson",
-     "position": "G",
-     "status": "Out",
-     "points": 1.08,
-     "minutes": 33
-    },
-    {
-     "player": "Steven Adams",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 12
-    },
     {
      "player": "Clint Capela",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 20
+    },
+    {
+     "player": "Amen Thompson",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.43,
+     "minutes": 33
     }
    ]
   },
@@ -336,18 +315,18 @@
    "loss": 0.84,
    "items": [
     {
-     "player": "Andrew Nembhard",
-     "position": "G",
-     "status": "Out",
-     "points": 0.84,
-     "minutes": 33.9
-    },
-    {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Andrew Nembhard",
+     "position": "G",
+     "status": "Out",
+     "points": 0.84,
+     "minutes": 33.9
     },
     {
      "player": "Johnny Furphy",
@@ -418,28 +397,14 @@
    ]
   },
   "14": {
-   "loss": 3.84,
+   "loss": 0.33,
    "items": [
-    {
-     "player": "Nikola Jovic",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 10.6
-    },
     {
      "player": "Bam Adebayo",
      "position": "C",
-     "status": "Out",
-     "points": 3.3,
+     "status": "Day-To-Day",
+     "points": 0.33,
      "minutes": 33.2
-    },
-    {
-     "player": "Pelle Larsson",
-     "position": "G",
-     "status": "Out",
-     "points": 0.54,
-     "minutes": 28.9
     }
    ]
   },
@@ -463,13 +428,20 @@
    ]
   },
   "16": {
-   "loss": 0.01,
+   "loss": 0.07,
    "items": [
+    {
+     "player": "Zyon Pullin",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 3
+    },
     {
      "player": "Jonathan Kuminga",
      "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.01,
+     "status": "Out",
+     "points": 0.07,
      "minutes": 30.6
     },
     {
@@ -507,6 +479,13 @@
    "loss": 0,
    "items": [
     {
+     "player": "Izaiyah Nelson",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Jonathan Isaac",
      "position": "F",
      "status": "Out",
@@ -522,13 +501,6 @@
     },
     {
      "player": "Paolo Banchero",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Izaiyah Nelson",
      "position": "F",
      "status": "Out",
      "points": 0,
@@ -589,8 +561,15 @@
    ]
   },
   "22": {
-   "loss": 0,
+   "loss": 1.12,
    "items": [
+    {
+     "player": "Deni Avdija",
+     "position": "F",
+     "status": "Questionable",
+     "points": 1.12,
+     "minutes": 32.9
+    },
     {
      "player": "Chris Youngblood",
      "position": "G",
@@ -787,8 +766,15 @@
    ]
   },
   "28": {
-   "loss": 0,
+   "loss": 1.34,
    "items": [
+    {
+     "player": "Scottie Barnes",
+     "position": "F",
+     "status": "Questionable",
+     "points": 1.34,
+     "minutes": 35.3
+    },
     {
      "player": "Nate Bittle",
      "position": "C",
