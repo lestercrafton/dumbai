@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-17T21:59:31.156Z",
+ "generatedAt": "2026-11-17T22:57:34.338Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -138,18 +138,11 @@
    "loss": 1.68,
    "items": [
     {
-     "player": "Jaylon Tyson",
-     "position": "G",
+     "player": "Nae'Qwan Tomlin",
+     "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 29
-    },
-    {
-     "player": "Evan Mobley",
-     "position": "C",
-     "status": "Out",
-     "points": 1.68,
-     "minutes": 30.4
+     "minutes": 0
     },
     {
      "player": "Sam Merrill",
@@ -159,34 +152,27 @@
      "minutes": 21.3
     },
     {
-     "player": "Nae'Qwan Tomlin",
-     "position": "F",
+     "player": "Evan Mobley",
+     "position": "C",
      "status": "Out",
-     "points": 0,
-     "minutes": 0
+     "points": 1.68,
+     "minutes": 30.4
     }
    ]
   },
   "6": {
-   "loss": 2.64,
+   "loss": 0,
    "items": [
     {
-     "player": "Kyrie Irving",
-     "position": "G",
-     "status": "Out",
-     "points": 2.64,
-     "minutes": 32.1
-    },
-    {
-     "player": "Dereck Lively II",
-     "position": "C",
+     "player": "Tarik Biberovic",
+     "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Tarik Biberovic",
-     "position": "F",
+     "player": "Dereck Lively II",
+     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -312,21 +298,21 @@
    ]
   },
   "11": {
-   "loss": 0.84,
+   "loss": 0.34,
    "items": [
+    {
+     "player": "Andrew Nembhard",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.34,
+     "minutes": 33.9
+    },
     {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Andrew Nembhard",
-     "position": "G",
-     "status": "Out",
-     "points": 0.84,
-     "minutes": 33.9
     },
     {
      "player": "Johnny Furphy",
@@ -409,15 +395,8 @@
    ]
   },
   "15": {
-   "loss": 0.03,
+   "loss": 0,
    "items": [
-    {
-     "player": "Ryan Rollins",
-     "position": "G",
-     "status": "Out",
-     "points": 0.03,
-     "minutes": 21.7
-    },
     {
      "player": "Ousmane Dieng",
      "position": "F",
@@ -509,28 +488,21 @@
    ]
   },
   "20": {
-   "loss": 1.38,
+   "loss": 2.45,
    "items": [
-    {
-     "player": "Jaylen Brown",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.24,
-     "minutes": 33.8
-    },
-    {
-     "player": "LeBron James",
-     "position": "F",
-     "status": "Out",
-     "points": 1.14,
-     "minutes": 32.1
-    },
     {
      "player": "Dominick Barlow",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Jaylen Brown",
+     "position": "G",
+     "status": "Out",
+     "points": 2.45,
+     "minutes": 33.8
     },
     {
      "player": "Adem Bona",
@@ -769,6 +741,13 @@
    "loss": 1.34,
    "items": [
     {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Scottie Barnes",
      "position": "F",
      "status": "Questionable",
@@ -778,13 +757,6 @@
     {
      "player": "Nate Bittle",
      "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Kawhi Leonard",
-     "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
