@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-18T04:43:30.226Z",
+ "generatedAt": "2026-11-18T14:34:41.844Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -356,21 +356,21 @@
    ]
   },
   "13": {
-   "loss": 3.87,
+   "loss": 4.48,
    "items": [
     {
      "player": "Walker Kessler",
      "position": "C",
      "status": "Out",
-     "points": 2.27,
-     "minutes": 30.6
+     "points": 2.35,
+     "minutes": 31.1
     },
     {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Out",
-     "points": 1.6,
-     "minutes": 34.8
+     "points": 2.13,
+     "minutes": 35.3
     }
    ]
   },
@@ -568,6 +568,13 @@
    "loss": 0.16,
    "items": [
     {
+     "player": "Maxime Raynaud",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "De'Andre Hunter",
      "position": "F",
      "status": "Questionable",
@@ -582,13 +589,6 @@
      "minutes": 24.5
     },
     {
-     "player": "Maxime Raynaud",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Ben Simmons",
      "position": "G",
      "status": "Out",
@@ -598,13 +598,13 @@
    ]
   },
   "24": {
-   "loss": 2.09,
+   "loss": 0.21,
    "items": [
     {
      "player": "Dylan Harper",
      "position": "G",
-     "status": "Out",
-     "points": 2.09,
+     "status": "Day-To-Day",
+     "points": 0.21,
      "minutes": 31.4
     },
     {
@@ -664,14 +664,14 @@
    ]
   },
   "26": {
-   "loss": 1.47,
+   "loss": 1.67,
    "items": [
     {
      "player": "Jaxson Hayes",
      "position": "C",
      "status": "Out",
-     "points": 0.27,
-     "minutes": 24.1
+     "points": 0.47,
+     "minutes": 22.5
     },
     {
      "player": "Lauri Markkanen",
@@ -789,14 +789,14 @@
    ]
   },
   "30": {
-   "loss": 0.65,
+   "loss": 0.69,
    "items": [
     {
      "player": "Grayson Allen",
      "position": "G",
      "status": "Out",
-     "points": 0.65,
-     "minutes": 27
+     "points": 0.69,
+     "minutes": 26.9
     },
     {
      "player": "Kon Knueppel",
@@ -810,7 +810,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 29.5
+     "minutes": 28.2
     }
    ]
   }
