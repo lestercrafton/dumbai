@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-18T14:34:41.844Z",
+ "generatedAt": "2026-11-18T21:35:08.387Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -130,6 +130,13 @@
    "loss": 1.68,
    "items": [
     {
+     "player": "Jaylon Tyson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 29
+    },
+    {
      "player": "Nae'Qwan Tomlin",
      "position": "F",
      "status": "Out",
@@ -191,21 +198,21 @@
    ]
   },
   "8": {
-   "loss": 0.99,
+   "loss": 2.43,
    "items": [
+    {
+     "player": "Cade Cunningham",
+     "position": "G",
+     "status": "Questionable",
+     "points": 1.44,
+     "minutes": 35.7
+    },
     {
      "player": "Isaiah Joe",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Duncan Robinson",
-     "position": "F",
-     "status": "Out",
-     "points": 0.99,
-     "minutes": 31
     },
     {
      "player": "Taurean Prince",
@@ -222,6 +229,13 @@
      "minutes": 15.9
     },
     {
+     "player": "Duncan Robinson",
+     "position": "F",
+     "status": "Out",
+     "points": 0.99,
+     "minutes": 31
+    },
+    {
      "player": "Jalen Duren",
      "position": "C",
      "status": "Out",
@@ -234,18 +248,18 @@
    "loss": 5.7,
    "items": [
     {
-     "player": "Stephen Curry",
-     "position": "G",
-     "status": "Out",
-     "points": 4.96,
-     "minutes": 26.7
-    },
-    {
      "player": "Brandon Williams",
      "position": "G",
      "status": "Out",
      "points": 0.74,
      "minutes": 16
+    },
+    {
+     "player": "Stephen Curry",
+     "position": "G",
+     "status": "Out",
+     "points": 4.96,
+     "minutes": 26.7
     },
     {
      "player": "Kristaps Porzingis",
@@ -356,15 +370,8 @@
    ]
   },
   "13": {
-   "loss": 4.48,
+   "loss": 2.13,
    "items": [
-    {
-     "player": "Walker Kessler",
-     "position": "C",
-     "status": "Out",
-     "points": 2.35,
-     "minutes": 31.1
-    },
     {
      "player": "Austin Reaves",
      "position": "G",
@@ -375,20 +382,27 @@
    ]
   },
   "14": {
-   "loss": 0.33,
+   "loss": 0,
    "items": [
     {
-     "player": "Bam Adebayo",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.33,
-     "minutes": 33.2
+     "player": "Myron Gardner",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 11.9
     }
    ]
   },
   "15": {
-   "loss": 0,
+   "loss": 0.03,
    "items": [
+    {
+     "player": "Ryan Rollins",
+     "position": "G",
+     "status": "Out",
+     "points": 0.03,
+     "minutes": 21.7
+    },
     {
      "player": "Ousmane Dieng",
      "position": "F",
@@ -565,7 +579,7 @@
    ]
   },
   "23": {
-   "loss": 0.16,
+   "loss": 0,
    "items": [
     {
      "player": "Maxime Raynaud",
@@ -573,20 +587,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "De'Andre Hunter",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.08,
-     "minutes": 35.4
-    },
-    {
-     "player": "Precious Achiuwa",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.08,
-     "minutes": 24.5
     },
     {
      "player": "Ben Simmons",
@@ -664,13 +664,13 @@
    ]
   },
   "26": {
-   "loss": 1.67,
+   "loss": 1.39,
    "items": [
     {
      "player": "Jaxson Hayes",
      "position": "C",
-     "status": "Out",
-     "points": 0.47,
+     "status": "Questionable",
+     "points": 0.19,
      "minutes": 22.5
     },
     {
@@ -730,8 +730,22 @@
    ]
   },
   "28": {
-   "loss": 0,
+   "loss": 3.08,
    "items": [
+    {
+     "player": "RJ Barrett",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.38,
+     "minutes": 35.3
+    },
+    {
+     "player": "Scottie Barnes",
+     "position": "F",
+     "status": "Out",
+     "points": 2.7,
+     "minutes": 35.8
+    },
     {
      "player": "Kawhi Leonard",
      "position": "F",
