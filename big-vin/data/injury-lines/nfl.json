@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-18T21:35:03.291Z",
+ "generatedAt": "2026-11-18T22:20:19.329Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -114,13 +114,23 @@
   },
   "BUF": {
    "team": "BUF",
-   "loss": 0.19,
+   "loss": 0.45,
    "starter": {
     "name": "Josh Allen",
     "espnId": "3918298",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "te1",
+     "position": "TE",
+     "player": "Dalton Kincaid",
+     "espnId": "4385690",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:29Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
     {
      "group": "lb",
      "position": "LILB",
@@ -140,6 +150,26 @@
      "reported": "2026-11-15T20:48Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "Amani Hooker",
+     "espnId": "4036134",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:35Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
+    {
+     "group": "s",
+     "position": "FS",
+     "player": "Cole Bishop",
+     "espnId": "4676004",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:35Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -329,7 +359,7 @@
      "player": "Jaylen Waddle",
      "espnId": "4372016",
      "status": "Questionable",
-     "reported": "2026-11-08T19:52Z",
+     "reported": "2026-11-18T21:50Z",
      "weight": 0.25,
      "points": 0.2
     },
@@ -368,7 +398,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.66,
+   "loss": 0.53,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -382,16 +412,6 @@
      "espnId": "3139387",
      "status": "Questionable",
      "reported": "2026-11-17T12:19Z",
-     "weight": 0.25,
-     "points": 0.13
-    },
-    {
-     "group": "cb",
-     "position": "RCB",
-     "player": "Ennis Rakestraw Jr.",
-     "espnId": "4566092",
-     "status": "Questionable",
-     "reported": "2026-11-18T21:24Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -546,7 +566,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.68,
+   "loss": 0.81,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -574,6 +594,16 @@
      "points": 0.1
     },
     {
+     "group": "edge",
+     "position": "LDE",
+     "player": "Travon Walker",
+     "espnId": "4426349",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:26Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
      "group": "s",
      "position": "FS",
      "player": "Antonio Johnson",
@@ -598,7 +628,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.28,
+   "loss": 0.34,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -614,6 +644,16 @@
      "reported": "2026-11-18T18:03Z",
      "weight": 0.25,
      "points": 0.1
+    },
+    {
+     "group": "lb",
+     "position": "MLB",
+     "player": "Nick Bolton",
+     "espnId": "4362759",
+     "status": "Questionable",
+     "reported": "2026-11-18T03:13Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "rg",
@@ -653,7 +693,7 @@
      "player": "Brock Bowers",
      "espnId": "4432665",
      "status": "Questionable",
-     "reported": "2026-11-18T21:02Z",
+     "reported": "2026-11-18T22:01Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -728,7 +768,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 3.98,
+   "loss": 4.29,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -753,6 +793,36 @@
      "fullPoints": 4.22,
      "alreadyInRatings": 0.08,
      "points": 3.88
+    },
+    {
+     "group": "wr2",
+     "position": "WR",
+     "player": "Caleb Douglas",
+     "espnId": "4869645",
+     "status": "Questionable",
+     "reported": "2026-11-18T20:27Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "Dante Trader Jr.",
+     "espnId": "4431664",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:31Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "JuJu Brents",
+     "espnId": "4360488",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:31Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "c",
@@ -901,7 +971,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.86,
+   "loss": 0.99,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -917,6 +987,16 @@
      "reported": "2026-11-15T19:46Z",
      "weight": 0.25,
      "points": 0.06
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Martin Emerson Jr.",
+     "espnId": "4429568",
+     "status": "Questionable",
+     "reported": "2026-11-18T21:59Z",
+     "weight": 0.25,
+     "points": 0.13
     },
     {
      "group": "c",
