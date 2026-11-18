@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-17T23:10:53.347Z",
+ "generatedAt": "2026-11-18T04:43:23.991Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -391,7 +391,7 @@
      "player": "Cade Mays",
      "espnId": "4361788",
      "status": "Doubtful",
-     "reported": "2026-11-17T15:10Z",
+     "reported": "2026-11-18T01:32Z",
      "weight": 1,
      "points": 0.4
     }
@@ -475,7 +475,7 @@
      "player": "Danielle Hunter",
      "espnId": "2976560",
      "status": "Questionable",
-     "reported": "2026-11-17T12:19Z",
+     "reported": "2026-11-18T01:15Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -485,7 +485,7 @@
      "player": "Kamari Lassiter",
      "espnId": "4602699",
      "status": "Questionable",
-     "reported": "2026-11-17T21:53Z",
+     "reported": "2026-11-18T01:10Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -507,7 +507,7 @@
      "player": "Sauce Gardner",
      "espnId": "4427250",
      "status": "Questionable",
-     "reported": "2026-11-16T22:31Z",
+     "reported": "2026-11-17T00:28Z",
      "weight": 0.25,
      "points": 0.13
     },

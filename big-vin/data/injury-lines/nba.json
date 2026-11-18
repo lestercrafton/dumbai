@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-17T23:10:59.101Z",
+ "generatedAt": "2026-11-18T04:43:30.226Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,8 +10,22 @@
  ],
  "teams": {
   "1": {
-   "loss": 0.72,
+   "loss": 1.17,
    "items": [
+    {
+     "player": "Jock Landale",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13
+    },
+    {
+     "player": "Kingston Flemings",
+     "position": "G",
+     "status": "Out",
+     "points": 0.5,
+     "minutes": 23.1
+    },
     {
      "player": "Asa Newell",
      "position": "F",
@@ -25,20 +39,6 @@
      "status": "Out",
      "points": 0.67,
      "minutes": 26.2
-    },
-    {
-     "player": "Kingston Flemings",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.05,
-     "minutes": 23.1
-    },
-    {
-     "player": "Jock Landale",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13
     },
     {
      "player": "Mouhamed Gueye",
@@ -57,16 +57,8 @@
    ]
   },
   "2": {
-   "loss": 0.9,
-   "items": [
-    {
-     "player": "Neemias Queta",
-     "position": "C",
-     "status": "Out",
-     "points": 0.9,
-     "minutes": 23
-    }
-   ]
+   "loss": 0,
+   "items": []
   },
   "3": {
    "loss": 1.78,
@@ -199,21 +191,21 @@
    ]
   },
   "8": {
-   "loss": 1.06,
+   "loss": 0.99,
    "items": [
     {
      "player": "Isaiah Joe",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 4
+     "minutes": 0
     },
     {
      "player": "Duncan Robinson",
      "position": "F",
      "status": "Out",
-     "points": 1.06,
-     "minutes": 31.1
+     "points": 0.99,
+     "minutes": 31
     },
     {
      "player": "Taurean Prince",
@@ -227,7 +219,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 16.7
+     "minutes": 15.9
     },
     {
      "player": "Jalen Duren",
@@ -367,18 +359,18 @@
    "loss": 3.87,
    "items": [
     {
-     "player": "Austin Reaves",
-     "position": "G",
-     "status": "Out",
-     "points": 1.6,
-     "minutes": 34.8
-    },
-    {
      "player": "Walker Kessler",
      "position": "C",
      "status": "Out",
      "points": 2.27,
      "minutes": 30.6
+    },
+    {
+     "player": "Austin Reaves",
+     "position": "G",
+     "status": "Out",
+     "points": 1.6,
+     "minutes": 34.8
     }
    ]
   },
@@ -407,7 +399,7 @@
    ]
   },
   "16": {
-   "loss": 0.07,
+   "loss": 0,
    "items": [
     {
      "player": "Zyon Pullin",
@@ -420,15 +412,15 @@
      "player": "Jonathan Kuminga",
      "position": "F",
      "status": "Out",
-     "points": 0.07,
-     "minutes": 30.6
+     "points": 0,
+     "minutes": 30.4
     },
     {
      "player": "Jaylen Clark",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 16.9
+     "minutes": 18.1
     },
     {
      "player": "Anthony Edwards",
@@ -533,14 +525,14 @@
    ]
   },
   "22": {
-   "loss": 1.12,
+   "loss": 2.67,
    "items": [
     {
      "player": "Deni Avdija",
      "position": "F",
-     "status": "Questionable",
-     "points": 1.12,
-     "minutes": 32.9
+     "status": "Out",
+     "points": 2.67,
+     "minutes": 33
     },
     {
      "player": "Chris Youngblood",
@@ -554,14 +546,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 11.5
+     "minutes": 12.7
     },
     {
      "player": "Ja Morant",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 23
+     "minutes": 0
     },
     {
      "player": "Shaedon Sharpe",
@@ -573,27 +565,20 @@
    ]
   },
   "23": {
-   "loss": 1.51,
+   "loss": 0.16,
    "items": [
-    {
-     "player": "Zach LaVine",
-     "position": "G",
-     "status": "Out",
-     "points": 1.12,
-     "minutes": 31.4
-    },
     {
      "player": "De'Andre Hunter",
      "position": "F",
-     "status": "Out",
-     "points": 0.2,
+     "status": "Questionable",
+     "points": 0.08,
      "minutes": 35.4
     },
     {
      "player": "Precious Achiuwa",
      "position": "F",
-     "status": "Out",
-     "points": 0.19,
+     "status": "Questionable",
+     "points": 0.08,
      "minutes": 24.5
     },
     {
@@ -613,8 +598,15 @@
    ]
   },
   "24": {
-   "loss": 0,
+   "loss": 2.09,
    "items": [
+    {
+     "player": "Dylan Harper",
+     "position": "G",
+     "status": "Out",
+     "points": 2.09,
+     "minutes": 31.4
+    },
     {
      "player": "Tobias Harris",
      "position": "F",
@@ -635,18 +627,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "Jaylin Williams",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 22
-    },
-    {
      "player": "Thomas Sorber",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Jaylin Williams",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 22
     },
     {
      "player": "Cason Wallace",
@@ -760,6 +752,13 @@
    "loss": 3.52,
    "items": [
     {
+     "player": "GG Jackson",
+     "position": "F",
+     "status": "Out",
+     "points": 0.28,
+     "minutes": 15
+    },
+    {
      "player": "Isaiah Stewart",
      "position": "C",
      "status": "Out",
@@ -781,13 +780,6 @@
      "minutes": 14
     },
     {
-     "player": "GG Jackson",
-     "position": "F",
-     "status": "Out",
-     "points": 0.28,
-     "minutes": 15
-    },
-    {
      "player": "Richie Saunders",
      "position": "G",
      "status": "Out",
@@ -797,8 +789,15 @@
    ]
   },
   "30": {
-   "loss": 0,
+   "loss": 0.65,
    "items": [
+    {
+     "player": "Grayson Allen",
+     "position": "G",
+     "status": "Out",
+     "points": 0.65,
+     "minutes": 27
+    },
     {
      "player": "Kon Knueppel",
      "position": "G",
