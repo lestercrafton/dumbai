@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-19T13:52:54.804Z",
+ "generatedAt": "2026-11-19T21:44:18.940Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -64,13 +64,6 @@
    "loss": 1.94,
    "items": [
     {
-     "player": "Bennedict Mathurin",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13
-    },
-    {
      "player": "Bryce McGowens",
      "position": "G",
      "status": "Out",
@@ -83,6 +76,13 @@
      "status": "Out",
      "points": 0.28,
      "minutes": 18
+    },
+    {
+     "player": "Bennedict Mathurin",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13
     },
     {
      "player": "Trey Murphy III",
@@ -123,18 +123,18 @@
    "loss": 1.09,
    "items": [
     {
-     "player": "Peyton Watson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26.7
-    },
-    {
      "player": "Jaylon Tyson",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 29
+    },
+    {
+     "player": "Peyton Watson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.7
     },
     {
      "player": "Nae'Qwan Tomlin",
@@ -198,13 +198,20 @@
    ]
   },
   "8": {
-   "loss": 5.16,
+   "loss": 1.69,
    "items": [
+    {
+     "player": "Ronald Holland II",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 16.4
+    },
     {
      "player": "Cade Cunningham",
      "position": "G",
-     "status": "Out",
-     "points": 3.86,
+     "status": "Day-To-Day",
+     "points": 0.39,
      "minutes": 35.7
     },
     {
@@ -213,13 +220,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 7
-    },
-    {
-     "player": "Ronald Holland II",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 16.4
     },
     {
      "player": "Duncan Robinson",
@@ -241,11 +241,11 @@
    "loss": 5.21,
    "items": [
     {
-     "player": "Al Horford",
-     "position": "C",
+     "player": "Draymond Green",
+     "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 16.3
+     "minutes": 24.7
     },
     {
      "player": "Brandon Williams",
@@ -307,18 +307,18 @@
    "loss": 0.77,
    "items": [
     {
-     "player": "Braden Smith",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.01,
-     "minutes": 17
-    },
-    {
      "player": "Andrew Nembhard",
      "position": "G",
      "status": "Out",
      "points": 0.76,
      "minutes": 33.7
+    },
+    {
+     "player": "Braden Smith",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.01,
+     "minutes": 17
     },
     {
      "player": "Tyrese Haliburton",
@@ -394,14 +394,21 @@
    ]
   },
   "15": {
-   "loss": 0.24,
+   "loss": 0.34,
    "items": [
     {
-     "player": "Ryan Rollins",
-     "position": "G",
+     "player": "Kyle Kuzma",
+     "position": "F",
      "status": "Out",
-     "points": 0.24,
-     "minutes": 22.3
+     "points": 0.34,
+     "minutes": 26.8
+    },
+    {
+     "player": "Myles Turner",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.8
     },
     {
      "player": "Ousmane Dieng",
@@ -440,7 +447,15 @@
   },
   "17": {
    "loss": 0,
-   "items": []
+   "items": [
+    {
+     "player": "Grant Nelson",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    }
+   ]
   },
   "18": {
    "loss": 0,
@@ -483,18 +498,18 @@
    "loss": 5.87,
    "items": [
     {
-     "player": "Tyrese Maxey",
-     "position": "G",
-     "status": "Out",
-     "points": 3.42,
-     "minutes": 35.1
-    },
-    {
      "player": "Dean Wade",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 26.4
+    },
+    {
+     "player": "Tyrese Maxey",
+     "position": "G",
+     "status": "Out",
+     "points": 3.42,
+     "minutes": 35.1
     },
     {
      "player": "Jaylen Brown",
@@ -542,6 +557,13 @@
    "loss": 1.88,
    "items": [
     {
+     "player": "Chris Youngblood",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.5
+    },
+    {
      "player": "Robert Williams III",
      "position": "C",
      "status": "Out",
@@ -554,13 +576,6 @@
      "status": "Questionable",
      "points": 1.07,
      "minutes": 33
-    },
-    {
-     "player": "Chris Youngblood",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13.5
     },
     {
      "player": "Vit Krejci",
@@ -631,15 +646,8 @@
    ]
   },
   "25": {
-   "loss": 0.05,
+   "loss": 0,
    "items": [
-    {
-     "player": "Alex Caruso",
-     "position": "G",
-     "status": "Out",
-     "points": 0.05,
-     "minutes": 19.4
-    },
     {
      "player": "Thomas Sorber",
      "position": "C",
@@ -730,21 +738,21 @@
    ]
   },
   "28": {
-   "loss": 3.72,
+   "loss": 1.35,
    "items": [
+    {
+     "player": "Collin Murray-Boyles",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26.1
+    },
     {
      "player": "RJ Barrett",
      "position": "F",
      "status": "Out",
      "points": 1.35,
      "minutes": 35.4
-    },
-    {
-     "player": "Scottie Barnes",
-     "position": "F",
-     "status": "Out",
-     "points": 2.37,
-     "minutes": 35.2
     },
     {
      "player": "Kawhi Leonard",
@@ -763,21 +771,21 @@
    ]
   },
   "29": {
-   "loss": 3.48,
+   "loss": 3.5,
    "items": [
-    {
-     "player": "GG Jackson",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 14.1
-    },
     {
      "player": "Isaiah Stewart",
      "position": "C",
-     "status": "Out",
-     "points": 1.01,
+     "status": "Questionable",
+     "points": 0.41,
      "minutes": 18.7
+    },
+    {
+     "player": "Zach Edey",
+     "position": "C",
+     "status": "Out",
+     "points": 0.62,
+     "minutes": 20.9
     },
     {
      "player": "Ty Jerome",
@@ -785,6 +793,13 @@
      "status": "Out",
      "points": 2.47,
      "minutes": 31.2
+    },
+    {
+     "player": "GG Jackson",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 14.1
     },
     {
      "player": "Scotty Pippen Jr.",
