@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-19T21:44:18.940Z",
+ "generatedAt": "2026-11-19T22:28:15.752Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -18,13 +18,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 12
-    },
-    {
-     "player": "Kingston Flemings",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 22.4
     },
     {
      "player": "Asa Newell",
@@ -130,13 +123,6 @@
      "minutes": 29
     },
     {
-     "player": "Peyton Watson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26.7
-    },
-    {
      "player": "Nae'Qwan Tomlin",
      "position": "F",
      "status": "Out",
@@ -201,6 +187,20 @@
    "loss": 1.69,
    "items": [
     {
+     "player": "Taurean Prince",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 7
+    },
+    {
+     "player": "Ebuka Okorie",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 5
+    },
+    {
      "player": "Ronald Holland II",
      "position": "F",
      "status": "Out",
@@ -213,13 +213,6 @@
      "status": "Day-To-Day",
      "points": 0.39,
      "minutes": 35.7
-    },
-    {
-     "player": "Taurean Prince",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 7
     },
     {
      "player": "Duncan Robinson",
@@ -304,20 +297,20 @@
    ]
   },
   "11": {
-   "loss": 0.77,
+   "loss": 0.34,
    "items": [
     {
      "player": "Andrew Nembhard",
      "position": "G",
-     "status": "Out",
-     "points": 0.76,
+     "status": "Questionable",
+     "points": 0.3,
      "minutes": 33.7
     },
     {
      "player": "Braden Smith",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.01,
+     "status": "Questionable",
+     "points": 0.04,
      "minutes": 17
     },
     {
@@ -818,8 +811,15 @@
    ]
   },
   "30": {
-   "loss": 0.69,
+   "loss": 1.05,
    "items": [
+    {
+     "player": "Grant Williams",
+     "position": "F",
+     "status": "Out",
+     "points": 0.36,
+     "minutes": 22
+    },
     {
      "player": "Grayson Allen",
      "position": "G",

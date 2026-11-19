@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-19T21:44:14.059Z",
+ "generatedAt": "2026-11-19T22:28:09.257Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -134,7 +134,7 @@
   },
   "BUF": {
    "team": "BUF",
-   "loss": 0.58,
+   "loss": 0.5,
    "starter": {
     "name": "Josh Allen",
     "espnId": "3918298",
@@ -188,16 +188,6 @@
      "espnId": "4036134",
      "status": "Questionable",
      "reported": "2026-11-19T00:54Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "s",
-     "position": "FS",
-     "player": "Cole Bishop",
-     "espnId": "4676004",
-     "status": "Questionable",
-     "reported": "2026-11-19T00:57Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -870,7 +860,7 @@
      "player": "Caleb Douglas",
      "espnId": "4869645",
      "status": "Questionable",
-     "reported": "2026-11-19T18:09Z",
+     "reported": "2026-11-19T22:08Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -909,7 +899,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 2.14,
+   "loss": 2.27,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -951,7 +941,7 @@
      "player": "T.J. Hockenson",
      "espnId": "4036133",
      "status": "Questionable",
-     "reported": "2026-11-18T22:10Z",
+     "reported": "2026-11-19T21:45Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -974,6 +964,16 @@
      "reported": "2026-11-19T01:09Z",
      "weight": 0.25,
      "points": 0.06
+    },
+    {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Isaiah Rodgers",
+     "espnId": "4044540",
+     "status": "Questionable",
+     "reported": "2026-11-19T22:13Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []
@@ -1370,7 +1370,7 @@
      "espnId": "3052587",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-19T18:37Z",
+     "reported": "2026-11-19T21:53Z",
      "weight": 0.25,
      "replacement": "Jalon Daniels",
      "starterEpaPerPlay": -0.016,
