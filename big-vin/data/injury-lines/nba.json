@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-19T03:52:40.169Z",
+ "generatedAt": "2026-11-19T13:52:54.804Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -370,14 +370,14 @@
    ]
   },
   "13": {
-   "loss": 2.13,
+   "loss": 2.6,
    "items": [
     {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Out",
-     "points": 2.13,
-     "minutes": 35.3
+     "points": 2.6,
+     "minutes": 35
     }
    ]
   },
@@ -671,14 +671,14 @@
    ]
   },
   "26": {
-   "loss": 1.2,
+   "loss": 1.93,
    "items": [
     {
      "player": "Lauri Markkanen",
      "position": "F",
      "status": "Out",
-     "points": 1.2,
-     "minutes": 33.3
+     "points": 1.93,
+     "minutes": 34.7
     },
     {
      "player": "Jusuf Nurkic",
