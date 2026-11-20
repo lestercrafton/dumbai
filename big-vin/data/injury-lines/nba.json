@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-20T13:36:13.370Z",
+ "generatedAt": "2026-11-20T21:17:46.591Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -94,8 +94,15 @@
    ]
   },
   "4": {
-   "loss": 1.14,
+   "loss": 1.88,
    "items": [
+    {
+     "player": "Jalen Smith",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.74,
+     "minutes": 25.9
+    },
     {
      "player": "Tobe Awaka",
      "position": "F",
@@ -142,6 +149,13 @@
    "loss": 0,
    "items": [
     {
+     "player": "Dereck Lively II",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Tobi Lawal",
      "position": "F",
      "status": "Out",
@@ -151,13 +165,6 @@
     {
      "player": "Sergio de Larrea",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Dereck Lively II",
-     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -199,13 +206,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 5
-    },
-    {
-     "player": "Ronald Holland II",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 16.4
     },
     {
      "player": "Cade Cunningham",
@@ -300,6 +300,13 @@
    "loss": 0.34,
    "items": [
     {
+     "player": "Tyrese Haliburton",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Andrew Nembhard",
      "position": "G",
      "status": "Questionable",
@@ -312,13 +319,6 @@
      "status": "Questionable",
      "points": 0.04,
      "minutes": 17
-    },
-    {
-     "player": "Tyrese Haliburton",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Johnny Furphy",
@@ -488,20 +488,20 @@
    ]
   },
   "20": {
-   "loss": 5.87,
+   "loss": 2.79,
    "items": [
     {
-     "player": "Dean Wade",
-     "position": "F",
+     "player": "Adem Bona",
+     "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 26.4
+     "minutes": 17
     },
     {
      "player": "Tyrese Maxey",
      "position": "G",
-     "status": "Out",
-     "points": 3.42,
+     "status": "Day-To-Day",
+     "points": 0.34,
      "minutes": 35.1
     },
     {
@@ -517,13 +517,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Adem Bona",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 17
     },
     {
      "player": "Ariel Hukporti",
@@ -649,6 +642,13 @@
    "loss": 0.02,
    "items": [
     {
+     "player": "Nikola Topic",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 11.3
+    },
+    {
      "player": "Alex Caruso",
      "position": "G",
      "status": "Questionable",
@@ -748,6 +748,13 @@
    "loss": 1.35,
    "items": [
     {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Collin Murray-Boyles",
      "position": "F",
      "status": "Out",
@@ -760,13 +767,6 @@
      "status": "Out",
      "points": 1.35,
      "minutes": 35.4
-    },
-    {
-     "player": "Kawhi Leonard",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
     },
     {
      "player": "Nate Bittle",
