@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-20T21:17:42.305Z",
+ "generatedAt": "2026-11-20T21:33:10.663Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -576,64 +576,13 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.51,
+   "loss": 0,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Jakobi Meyers",
-     "espnId": "3916433",
-     "status": "Questionable",
-     "reported": "2026-11-19T21:20Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "rb1",
-     "position": "RB",
-     "player": "Bhayshul Tuten",
-     "espnId": "4882093",
-     "status": "Questionable",
-     "reported": "2026-11-20T17:28Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "edge",
-     "position": "LDE",
-     "player": "Travon Walker",
-     "espnId": "4426349",
-     "status": "Questionable",
-     "reported": "2026-11-19T00:40Z",
-     "weight": 0.25,
-     "points": 0.13
-    },
-    {
-     "group": "s",
-     "position": "FS",
-     "player": "Antonio Johnson",
-     "espnId": "4429168",
-     "status": "Questionable",
-     "reported": "2026-11-19T00:47Z",
-     "weight": 0.25,
-     "points": 0.08
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Jonah Monheim",
-     "espnId": "4430481",
-     "status": "Questionable",
-     "reported": "2026-11-18T21:26Z",
-     "weight": 0.25,
-     "points": 0.1
-    }
-   ],
+   "items": [],
    "notes": []
   },
   "KC": {
@@ -673,7 +622,7 @@
      "player": "Brock Bowers",
      "espnId": "4432665",
      "status": "Questionable",
-     "reported": "2026-11-20T20:22Z",
+     "reported": "2026-11-20T21:14Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -993,24 +942,13 @@
   },
   "NYG": {
    "team": "NYG",
-   "loss": 0.1,
+   "loss": 0,
    "starter": {
     "name": "J.J. McCarthy",
     "espnId": "4433970",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "te1",
-     "position": "TE",
-     "player": "Isaiah Likely",
-     "espnId": "4361050",
-     "status": "Questionable",
-     "reported": "2026-11-20T18:30Z",
-     "weight": 0.25,
-     "points": 0.1
-    }
-   ],
+   "items": [],
    "notes": [
     "Usage leader Jameis Winston is not the resolved starter."
    ]
@@ -1049,7 +987,7 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 0.12,
+   "loss": 0.31,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
@@ -1071,10 +1009,10 @@
      "position": "LILB",
      "player": "Zack Baun",
      "espnId": "3917657",
-     "status": "Questionable",
-     "reported": "2026-11-19T01:34Z",
-     "weight": 0.25,
-     "points": 0.06
+     "status": "Out",
+     "reported": "2026-11-20T21:22Z",
+     "weight": 1,
+     "points": 0.25
     }
    ],
    "notes": [
