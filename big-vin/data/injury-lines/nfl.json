@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-20T03:44:30.692Z",
+ "generatedAt": "2026-11-20T13:36:09.445Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -501,7 +501,7 @@
   },
   "HOU": {
    "team": "HOU",
-   "loss": 0.98,
+   "loss": 1.06,
    "starter": {
     "name": "C.J. Stroud",
     "espnId": "4432577",
@@ -537,6 +537,16 @@
      "reported": "2026-11-19T00:23Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Keylan Rutledge",
+     "espnId": "4839498",
+     "status": "Questionable",
+     "reported": "2026-11-20T04:23Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -699,7 +709,7 @@
   },
   "LV": {
    "team": "LV",
-   "loss": 0.44,
+   "loss": 0.52,
    "starter": {
     "name": "Fernando Mendoza",
     "espnId": "4837248",
@@ -743,6 +753,16 @@
      "espnId": "4249087",
      "status": "Questionable",
      "reported": "2026-11-19T00:07Z",
+     "weight": 0.25,
+     "points": 0.08
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Trey Zuhn III",
+     "espnId": "4431623",
+     "status": "Questionable",
+     "reported": "2026-11-20T12:40Z",
      "weight": 0.25,
      "points": 0.08
     }

@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-20T03:44:38.230Z",
+ "generatedAt": "2026-11-20T13:36:13.370Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -390,18 +390,18 @@
    "loss": 0.25,
    "items": [
     {
-     "player": "Kyle Kuzma",
-     "position": "F",
-     "status": "Out",
-     "points": 0.25,
-     "minutes": 27.2
-    },
-    {
      "player": "Myles Turner",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 27.1
+    },
+    {
+     "player": "Kyle Kuzma",
+     "position": "F",
+     "status": "Out",
+     "points": 0.25,
+     "minutes": 27.2
     },
     {
      "player": "Ousmane Dieng",
@@ -550,6 +550,13 @@
    "loss": 3.64,
    "items": [
     {
+     "player": "Robert Williams III",
+     "position": "C",
+     "status": "Out",
+     "points": 0.93,
+     "minutes": 15.9
+    },
+    {
      "player": "Deni Avdija",
      "position": "F",
      "status": "Out",
@@ -562,13 +569,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 14.8
-    },
-    {
-     "player": "Robert Williams III",
-     "position": "C",
-     "status": "Out",
-     "points": 0.93,
-     "minutes": 15.9
     },
     {
      "player": "Vit Krejci",
@@ -781,18 +781,18 @@
    "loss": 3.46,
    "items": [
     {
-     "player": "Jerami Grant",
-     "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.09,
-     "minutes": 20.7
-    },
-    {
      "player": "Zach Edey",
      "position": "C",
      "status": "Out",
      "points": 0.9,
      "minutes": 21.3
+    },
+    {
+     "player": "Jerami Grant",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.09,
+     "minutes": 20.7
     },
     {
      "player": "Ty Jerome",
