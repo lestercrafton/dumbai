@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-21T11:45:29.432Z",
+ "generatedAt": "2026-11-21T19:48:37.587Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -76,14 +76,14 @@
    ]
   },
   "3": {
-   "loss": 0.36,
+   "loss": 2.29,
    "items": [
     {
-     "player": "Bryce McGowens",
-     "position": "G",
+     "player": "Trey Murphy III",
+     "position": "F",
      "status": "Out",
-     "points": 0,
-     "minutes": 14.7
+     "points": 1.93,
+     "minutes": 31
     },
     {
      "player": "Trendon Watford",
@@ -91,6 +91,13 @@
      "status": "Out",
      "points": 0.36,
      "minutes": 18.7
+    },
+    {
+     "player": "Bryce McGowens",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 14.7
     },
     {
      "player": "Bennedict Mathurin",
@@ -161,14 +168,21 @@
    ]
   },
   "6": {
-   "loss": 0.16,
+   "loss": 0.26,
    "items": [
     {
      "player": "P.J. Washington",
      "position": "F",
-     "status": "Questionable",
-     "points": 0.11,
+     "status": "Doubtful",
+     "points": 0.21,
      "minutes": 29.6
+    },
+    {
+     "player": "Tobi Lawal",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 5.8
     },
     {
      "player": "Walter Clayton Jr.",
@@ -183,13 +197,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Tobi Lawal",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 5.8
     },
     {
      "player": "Sergio de Larrea",
@@ -223,6 +230,13 @@
    "loss": 1.51,
    "items": [
     {
+     "player": "Ebuka Okorie",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 5
+    },
+    {
      "player": "Ronald Holland II",
      "position": "F",
      "status": "Out",
@@ -235,13 +249,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 8
-    },
-    {
-     "player": "Ebuka Okorie",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 5
     },
     {
      "player": "Duncan Robinson",
@@ -321,13 +328,6 @@
   "11": {
    "loss": 0,
    "items": [
-    {
-     "player": "T.J. McConnell",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13.7
-    },
     {
      "player": "Tyrese Haliburton",
      "position": "G",
@@ -440,13 +440,13 @@
    ]
   },
   "17": {
-   "loss": 1.35,
+   "loss": 0.14,
    "items": [
     {
      "player": "Nolan Traore",
      "position": "G",
-     "status": "Out",
-     "points": 1.35,
+     "status": "Day-To-Day",
+     "points": 0.14,
      "minutes": 24
     },
     {
@@ -459,21 +459,28 @@
    ]
   },
   "18": {
-   "loss": 0.13,
+   "loss": 1.43,
    "items": [
+    {
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Doubtful",
+     "points": 0.24,
+     "minutes": 34.2
+    },
+    {
+     "player": "Karl-Anthony Towns",
+     "position": "C",
+     "status": "Questionable",
+     "points": 1.19,
+     "minutes": 33.6
+    },
     {
      "player": "Jordan Clarkson",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 10.6
-    },
-    {
-     "player": "OG Anunoby",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.13,
-     "minutes": 34.2
     }
    ]
   },
@@ -511,28 +518,14 @@
    ]
   },
   "20": {
-   "loss": 3.82,
+   "loss": 2.45,
    "items": [
-    {
-     "player": "Dominick Barlow",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
     {
      "player": "Dean Wade",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 26.4
-    },
-    {
-     "player": "Tyrese Maxey",
-     "position": "G",
-     "status": "Questionable",
-     "points": 1.37,
-     "minutes": 35.1
     },
     {
      "player": "Adem Bona",
@@ -560,13 +553,6 @@
   "21": {
    "loss": 0,
    "items": [
-    {
-     "player": "Ryan Dunn",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 18.2
-    },
     {
      "player": "Mark Williams",
      "position": "C",
@@ -672,18 +658,18 @@
    "loss": 0.05,
    "items": [
     {
-     "player": "Alex Caruso",
-     "position": "G",
-     "status": "Out",
-     "points": 0.05,
-     "minutes": 19.4
-    },
-    {
      "player": "Nikola Topic",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 11.3
+    },
+    {
+     "player": "Alex Caruso",
+     "position": "G",
+     "status": "Out",
+     "points": 0.05,
+     "minutes": 19.4
     },
     {
      "player": "Thomas Sorber",
@@ -745,13 +731,6 @@
    "loss": 0,
    "items": [
     {
-     "player": "Felix Okpara",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 2.5
-    },
-    {
      "player": "Tristan Vukcevic",
      "position": "F",
      "status": "Out",
@@ -785,18 +764,18 @@
    "loss": 1.36,
    "items": [
     {
-     "player": "Kawhi Leonard",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Collin Murray-Boyles",
      "position": "F",
      "status": "Out",
      "points": 0.09,
      "minutes": 26.9
+    },
+    {
+     "player": "Kawhi Leonard",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
     },
     {
      "player": "RJ Barrett",
@@ -815,7 +794,7 @@
    ]
   },
   "29": {
-   "loss": 5.62,
+   "loss": 3.15,
    "items": [
     {
      "player": "Jerami Grant",
@@ -837,13 +816,6 @@
      "status": "Out",
      "points": 1.47,
      "minutes": 30.6
-    },
-    {
-     "player": "Ty Jerome",
-     "position": "G",
-     "status": "Out",
-     "points": 2.47,
-     "minutes": 31.2
     },
     {
      "player": "GG Jackson",

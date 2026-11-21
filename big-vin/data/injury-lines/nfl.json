@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-21T11:45:23.902Z",
+ "generatedAt": "2026-11-21T19:48:32.202Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -14,7 +14,7 @@
  "teams": {
   "ARI": {
    "team": "ARI",
-   "loss": 0.25,
+   "loss": 1,
    "starter": {
     "name": "Carson Beck",
     "espnId": "4430841",
@@ -27,9 +27,9 @@
      "player": "Carson Beck",
      "espnId": "4430841",
      "starterBasis": "depth chart QB1 (injured)",
-     "status": "Questionable",
-     "reported": "2026-11-20T17:36Z",
-     "weight": 0.25,
+     "status": "Out",
+     "reported": "2026-11-21T19:25Z",
+     "weight": 1,
      "replacement": "Josh Johnson",
      "starterEpaPerPlay": -0.04,
      "starterPlays": 24,
@@ -38,7 +38,7 @@
      "gapEpaPerPlay": 0.03,
      "fullPoints": 2,
      "alreadyInRatings": 0.5,
-     "points": 0.25
+     "points": 1
     }
    ],
    "notes": [
@@ -113,7 +113,7 @@
   },
   "BUF": {
    "team": "BUF",
-   "loss": 1.28,
+   "loss": 1.41,
    "starter": {
     "name": "Josh Allen",
     "espnId": "3918298",
@@ -137,6 +137,16 @@
      "espnId": "4684527",
      "status": "Questionable",
      "reported": "2026-11-19T21:35Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
+     "group": "edge",
+     "position": "RDE",
+     "player": "Ed Oliver",
+     "espnId": "4039303",
+     "status": "Questionable",
+     "reported": "2026-11-21T18:54Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -208,23 +218,13 @@
   },
   "CIN": {
    "team": "CIN",
-   "loss": 0.22,
+   "loss": 0.38,
    "starter": {
     "name": "Joe Burrow",
     "espnId": "3915511",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "lb",
-     "position": "SLB",
-     "player": "Oren Burks",
-     "espnId": "3051746",
-     "status": "Questionable",
-     "reported": "2026-11-20T01:00Z",
-     "weight": 0.25,
-     "points": 0.06
-    },
     {
      "group": "lg",
      "position": "LG",
@@ -240,10 +240,10 @@
      "position": "RG",
      "player": "Dalton Risner",
      "espnId": "3125082",
-     "status": "Questionable",
-     "reported": "2026-11-20T02:16Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-21T17:48Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
@@ -272,7 +272,7 @@
   },
   "DAL": {
    "team": "DAL",
-   "loss": 1.5,
+   "loss": 1,
    "starter": {
     "name": "Dak Prescott",
     "espnId": "2577417",
@@ -298,16 +298,6 @@
      "reported": "2026-11-21T01:18Z",
      "weight": 1,
      "points": 0.3
-    },
-    {
-     "group": "cb",
-     "position": "RCB",
-     "player": "DaRon Bland",
-     "espnId": "4248911",
-     "status": "Out",
-     "reported": "2026-11-16T19:32Z",
-     "weight": 1,
-     "points": 0.5
     },
     {
      "group": "rg",
@@ -550,7 +540,7 @@
      "player": "Kenneth Walker III",
      "espnId": "4567048",
      "status": "Out",
-     "reported": "2026-11-20T18:01Z",
+     "reported": "2026-11-20T20:13Z",
      "weight": 1,
      "points": 0.4
     }
@@ -667,32 +657,13 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 4.28,
+   "loss": 0.4,
    "starter": {
-    "name": "Malik Willis",
-    "espnId": "4242512",
-    "basis": "season usage leader (injured; dropped from depth chart)"
+    "name": "Kyle McCord",
+    "espnId": "4433971",
+    "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "qb",
-     "position": "QB",
-     "player": "Malik Willis",
-     "espnId": "4242512",
-     "starterBasis": "season usage leader (injured; dropped from depth chart)",
-     "status": "Injured Reserve",
-     "reported": "2026-11-16T17:27Z",
-     "weight": 1,
-     "replacement": "Kyle McCord",
-     "starterEpaPerPlay": 0.03,
-     "starterPlays": 300,
-     "backupEpaPerPlay": -0.108,
-     "backupPlays": 37,
-     "gapEpaPerPlay": 0.14,
-     "fullPoints": 4.22,
-     "alreadyInRatings": 0.08,
-     "points": 3.88
-    },
     {
      "group": "s",
      "position": "SS",
@@ -714,7 +685,9 @@
      "points": 0.1
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Malik Willis is not the resolved starter."
+   ]
   },
   "MIN": {
    "team": "MIN",
@@ -1090,7 +1063,7 @@
      "espnId": "3052587",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-20T17:25Z",
+     "reported": "2026-11-21T15:31Z",
      "weight": 0.25,
      "replacement": "Jalon Daniels",
      "starterEpaPerPlay": -0.016,
@@ -1127,7 +1100,7 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 1.04,
+   "loss": 0.96,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
@@ -1150,7 +1123,7 @@
      "player": "Carnell Tate",
      "espnId": "4871023",
      "status": "Questionable",
-     "reported": "2026-11-20T20:44Z",
+     "reported": "2026-11-21T16:43Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -1163,16 +1136,6 @@
      "reported": "2026-11-20T22:53Z",
      "weight": 0.25,
      "points": 0.06
-    },
-    {
-     "group": "s",
-     "position": "SS",
-     "player": "Tony Adams",
-     "espnId": "4240532",
-     "status": "Questionable",
-     "reported": "2026-11-20T22:45Z",
-     "weight": 0.25,
-     "points": 0.08
     }
    ],
    "notes": []
@@ -1192,7 +1155,7 @@
      "player": "Jacory Croskey-Merritt",
      "espnId": "4575131",
      "status": "Injured Reserve",
-     "reported": "2026-11-20T19:55Z",
+     "reported": "2026-11-21T17:50Z",
      "weight": 1,
      "points": 0.4
     }
