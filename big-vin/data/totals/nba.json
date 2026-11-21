@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nba-totals-v1",
  "sport": "nba",
- "generatedAt": "2026-11-21T02:50:52.934Z",
+ "generatedAt": "2026-11-21T11:45:36.640Z",
  "method": "NBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 28,
-  "losses": 20,
+  "wins": 29,
+  "losses": 23,
   "pushes": 0,
-  "pending": 6,
-  "bankroll": 553.97,
+  "pending": 4,
+  "bankroll": 530.05,
   "bankrollStart": 500
  },
  "backtest": {
@@ -716,9 +716,12 @@
    "awayPoints": 112.6,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 247,
+   "stake": {
+    "stake": 11.31,
+    "net": -11.31
+   }
   },
   "401909308": {
    "side": "over",
@@ -734,9 +737,12 @@
    "awayPoints": 108.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 207,
+   "stake": {
+    "stake": 11.31,
+    "net": -11.31
+   }
   },
   "401909309": {
    "side": null,
@@ -770,9 +776,12 @@
    "awayPoints": 109,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 246,
+   "stake": {
+    "stake": 11.31,
+    "net": 10.01
+   }
   },
   "401909311": {
    "side": "over",
@@ -788,9 +797,12 @@
    "awayPoints": 116.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 212,
+   "stake": {
+    "stake": 11.31,
+    "net": -11.31
+   }
   },
   "401909312": {
    "side": null,
@@ -3725,13 +3737,13 @@
   },
   "401910023": {
    "side": null,
-   "total": 228.47,
-   "modelTotal": 228.47,
-   "marketTotal": 228.5,
-   "edge": 0.03,
+   "total": 228.67,
+   "modelTotal": 228.67,
+   "marketTotal": 229.5,
+   "edge": 0.83,
    "price": null,
    "provider": "Draft Kings",
-   "capturedAt": "2026-11-21T02:50:52.934Z",
+   "capturedAt": "2026-11-21T11:45:36.640Z",
    "startTime": "2026-11-21T18:00:00.000Z",
    "homePoints": 118.8,
    "awayPoints": 109.7,
@@ -3742,14 +3754,14 @@
    "stake": null
   },
   "401910024": {
-   "side": null,
-   "total": 219.5,
-   "modelTotal": 219.5,
-   "marketTotal": 218.5,
-   "edge": 1,
-   "price": null,
+   "side": "over",
+   "total": 219,
+   "modelTotal": 219,
+   "marketTotal": 216.5,
+   "edge": 2.5,
+   "price": -112,
    "provider": "Draft Kings",
-   "capturedAt": "2026-11-21T02:50:52.934Z",
+   "capturedAt": "2026-11-21T11:45:36.640Z",
    "startTime": "2026-11-22T00:30:00.000Z",
    "homePoints": 112,
    "awayPoints": 107.8,
@@ -3779,13 +3791,13 @@
   },
   "401910026": {
    "side": "over",
-   "total": 229.39,
-   "modelTotal": 229.39,
-   "marketTotal": 227.5,
-   "edge": 1.89,
+   "total": 229.19,
+   "modelTotal": 229.19,
+   "marketTotal": 226.5,
+   "edge": 2.69,
    "price": -110,
    "provider": "Draft Kings",
-   "capturedAt": "2026-11-21T02:50:52.934Z",
+   "capturedAt": "2026-11-21T11:45:36.640Z",
    "startTime": "2026-11-22T01:00:00.000Z",
    "homePoints": 117.1,
    "awayPoints": 112.8,
@@ -3797,16 +3809,34 @@
   },
   "401910027": {
    "side": "over",
-   "total": 230.8,
-   "modelTotal": 230.8,
-   "marketTotal": 226.5,
-   "edge": 4.3,
-   "price": -114,
+   "total": 231,
+   "modelTotal": 231,
+   "marketTotal": 227.5,
+   "edge": 3.5,
+   "price": -115,
    "provider": "Draft Kings",
-   "capturedAt": "2026-11-21T02:50:52.934Z",
+   "capturedAt": "2026-11-21T11:45:36.640Z",
    "startTime": "2026-11-22T01:00:00.000Z",
    "homePoints": 122.8,
    "awayPoints": 109.1,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401910028": {
+   "side": "over",
+   "total": 220.72,
+   "modelTotal": 220.72,
+   "marketTotal": 217.5,
+   "edge": 3.22,
+   "price": -110,
+   "provider": "Draft Kings",
+   "capturedAt": "2026-11-21T11:45:36.640Z",
+   "startTime": "2026-11-22T03:00:00.000Z",
+   "homePoints": 104.9,
+   "awayPoints": 117.2,
    "injuryEffect": 0,
    "check": null,
    "result": null,

@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cfb-totals-v1",
  "sport": "cfb",
- "generatedAt": "2026-11-21T02:50:49.766Z",
+ "generatedAt": "2026-11-21T11:45:33.429Z",
  "method": "college football: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 180-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 7+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 34,
-  "losses": 48,
+  "wins": 37,
+  "losses": 49,
   "pushes": 0,
-  "pending": 100,
-  "bankroll": 345.21,
+  "pending": 96,
+  "bankroll": 357.51,
   "bankrollStart": 500
  },
  "backtest": {
@@ -2120,9 +2120,12 @@
    "awayPoints": 15.4,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 30,
+   "stake": {
+    "stake": 6.78,
+    "net": -6.78
+   }
   },
   "401858304": {
    "side": null,
@@ -2948,9 +2951,12 @@
     "unshrunkTotal": 51.08,
     "note": "Gap of 7.58 points vs the market total; the unexplained part is halved toward the market and marked for review."
    },
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 52,
+   "stake": {
+    "stake": 6.78,
+    "net": 6.46
+   }
   },
   "401858530": {
    "side": "over",
@@ -4484,9 +4490,12 @@
    "awayPoints": 19.4,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 41,
+   "stake": {
+    "stake": 6.78,
+    "net": 6.16
+   }
   },
   "401864543": {
    "side": "over",
@@ -4538,9 +4547,12 @@
    "awayPoints": 18.7,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 55,
+   "stake": {
+    "stake": 6.78,
+    "net": 6.46
+   }
   },
   "401866446": {
    "side": "over",

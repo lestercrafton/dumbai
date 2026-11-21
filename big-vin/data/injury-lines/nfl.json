@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-21T02:50:40.879Z",
+ "generatedAt": "2026-11-21T11:45:23.902Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -28,7 +28,7 @@
      "espnId": "4430841",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-20T21:02Z",
+     "reported": "2026-11-20T17:36Z",
      "weight": 0.25,
      "replacement": "Josh Johnson",
      "starterEpaPerPlay": -0.04,
@@ -178,7 +178,7 @@
      "player": "Darren Waller",
      "espnId": "2576925",
      "status": "Questionable",
-     "reported": "2026-11-20T16:38Z",
+     "reported": "2026-11-20T17:34Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -550,7 +550,7 @@
      "player": "Kenneth Walker III",
      "espnId": "4567048",
      "status": "Out",
-     "reported": "2026-11-20T20:13Z",
+     "reported": "2026-11-20T18:01Z",
      "weight": 1,
      "points": 0.4
     }
@@ -572,7 +572,7 @@
      "player": "Brock Bowers",
      "espnId": "4432665",
      "status": "Questionable",
-     "reported": "2026-11-20T21:14Z",
+     "reported": "2026-11-20T20:22Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -602,7 +602,7 @@
      "player": "Matt Gay",
      "espnId": "4249087",
      "status": "Questionable",
-     "reported": "2026-11-20T21:59Z",
+     "reported": "2026-11-20T18:53Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -658,7 +658,7 @@
      "player": "Davante Adams",
      "espnId": "16800",
      "status": "Injured Reserve",
-     "reported": "2026-11-20T23:18Z",
+     "reported": "2026-11-20T17:49Z",
      "weight": 1,
      "points": 0.4
     }
@@ -1090,7 +1090,7 @@
      "espnId": "3052587",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-20T16:13Z",
+     "reported": "2026-11-20T17:25Z",
      "weight": 0.25,
      "replacement": "Jalon Daniels",
      "starterEpaPerPlay": -0.016,
