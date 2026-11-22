@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-22T17:24:38.147Z",
+ "generatedAt": "2026-11-22T20:26:14.387Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -10,15 +10,8 @@
  ],
  "teams": {
   "1": {
-   "loss": 1.07,
+   "loss": 0.98,
    "items": [
-    {
-     "player": "Kingston Flemings",
-     "position": "G",
-     "status": "Out",
-     "points": 0.09,
-     "minutes": 23.5
-    },
     {
      "player": "Jock Landale",
      "position": "C",
@@ -130,28 +123,28 @@
    ]
   },
   "4": {
-   "loss": 3.96,
+   "loss": 2.8,
    "items": [
+    {
+     "player": "Nic Claxton",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.36,
+     "minutes": 20.7
+    },
+    {
+     "player": "Jalen Smith",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.17,
+     "minutes": 25.4
+    },
     {
      "player": "Norman Powell",
      "position": "G",
      "status": "Out",
      "points": 1.17,
      "minutes": 29.4
-    },
-    {
-     "player": "Jalen Smith",
-     "position": "F",
-     "status": "Out",
-     "points": 1.69,
-     "minutes": 25.4
-    },
-    {
-     "player": "Tobe Awaka",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 7
     },
     {
      "player": "Caleb Wilson",
@@ -189,14 +182,21 @@
    ]
   },
   "6": {
-   "loss": 0.64,
+   "loss": 0.66,
    "items": [
     {
      "player": "P.J. Washington",
      "position": "F",
-     "status": "Out",
-     "points": 0.64,
+     "status": "Doubtful",
+     "points": 0.48,
      "minutes": 29.1
+    },
+    {
+     "player": "Walter Clayton Jr.",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.18,
+     "minutes": 21.9
     },
     {
      "player": "Tobi Lawal",
@@ -241,28 +241,14 @@
    ]
   },
   "8": {
-   "loss": 1.87,
+   "loss": 1.51,
    "items": [
-    {
-     "player": "Ronald Holland II",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 17
-    },
     {
      "player": "Ebuka Okorie",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 5
-    },
-    {
-     "player": "Cade Cunningham",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.36,
-     "minutes": 35.3
     },
     {
      "player": "Taurean Prince",
@@ -487,13 +473,20 @@
    ]
   },
   "18": {
-   "loss": 3.56,
+   "loss": 1.73,
    "items": [
+    {
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Out",
+     "points": 0.51,
+     "minutes": 34.2
+    },
     {
      "player": "Karl-Anthony Towns",
      "position": "C",
-     "status": "Out",
-     "points": 3.05,
+     "status": "Questionable",
+     "points": 1.22,
      "minutes": 33.4
     },
     {
@@ -502,13 +495,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 10.9
-    },
-    {
-     "player": "OG Anunoby",
-     "position": "F",
-     "status": "Out",
-     "points": 0.51,
-     "minutes": 34.2
     }
    ]
   },
@@ -789,13 +775,13 @@
    ]
   },
   "28": {
-   "loss": 1.36,
+   "loss": 1.28,
    "items": [
     {
      "player": "Collin Murray-Boyles",
      "position": "F",
-     "status": "Out",
-     "points": 0.09,
+     "status": "Day-To-Day",
+     "points": 0.01,
      "minutes": 26.9
     },
     {
