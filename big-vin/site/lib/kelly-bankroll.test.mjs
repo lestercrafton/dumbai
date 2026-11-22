@@ -49,3 +49,50 @@ t3('applyFrom skips pre-arrival P&L but keeps start and learns from earlier pick
  assert3.equal(empty.betCount,0);
  assert3.equal(empty.kelly.net,0);
 });
+
+import {test as t4} from 'node:test';
+import assert4 from 'node:assert/strict';
+import {replayKellyBankroll as rk4} from './kelly-bankroll.mjs';
+import {savedNeutralSite,pregameTotal} from './saved-game-context.mjs';
+const pick=(id,startTime,win,extra={})=>({sport:'nfl',id,gameId:id,startTime,side:'home',marketHomeSpread:-3,predictedMargin:12,odds:-110,home:'H'+id,away:'A'+id,
+ result:{status:'completed',homeScore:win?30:0,awayScore:win?0:30,observedAt:extra.observedAt??new Date(Date.parse(startTime)+4*3600e3).toISOString()},...extra});
+
+t4('win chance only counts finals recorded before kickoff',()=>{
+ // 120 earlier wins graded well before; one game whose final lands after the next kickoff.
+ const history=Array.from({length:120},(_,i)=>pick('h'+i,new Date(Date.parse('2026-09-01T17:00:00Z')+i*3600e3).toISOString(),true));
+ const late=pick('late','2026-10-01T17:00:00Z',false,{observedAt:'2026-10-03T00:00:00Z'});
+ const next=pick('next','2026-10-02T17:00:00Z',true);
+ const withLate=rk4([...history,late,next]).bets.find(b=>b.t===next.startTime);
+ const without=rk4([...history,next]).bets.find(b=>b.t===next.startTime);
+ assert4.equal(withLate.winChance,without.winChance);
+});
+
+t4('a day never risks more than its opening bankroll, sized like Today\'s plays',()=>{
+ const history=Array.from({length:150},(_,i)=>pick('h'+i,new Date(Date.parse('2026-09-01T17:00:00Z')+i*3600e3).toISOString(),i%4!==0));
+ const day=Array.from({length:12},(_,i)=>pick('d'+i,`2026-10-20T${String(12+i%8).padStart(2,'0')}:00:00Z`,i%2===0));
+ const r=rk4([...history,...day]);
+ const today=r.bets.filter(b=>b.t.startsWith('2026-10-20'));
+ const opening=today[0].before;
+ const risked=today.reduce((s,b)=>s+b.amount,0);
+ assert4.ok(risked<=opening+1e-6);
+ assert4.ok(today.some(b=>b.overBudget));
+ for(const b of today)if(b.amount>0)assert4.ok(Math.abs(b.amount-opening*b.kelly)<1e-6);
+});
+
+t4('neutral site comes from the saved flag or the saved projection, never invented',()=>{
+ assert4.equal(savedNeutralSite({neutralSite:true}),true);
+ assert4.equal(savedNeutralSite({homeAdvantage:5.6,projection:{homeAdvantage:0}}),true);
+ assert4.equal(savedNeutralSite({homeAdvantage:5.6,projection:{homeAdvantage:5.6}}),false);
+ assert4.equal(savedNeutralSite({projection:{}}),false);
+ assert4.equal(pregameTotal({games:{g:{edge:9,capturedAt:'2026-11-01T00:00:00Z'}}},{gameId:'g',startTime:'2026-11-01T01:00:00Z'}).edge,9);
+ assert4.equal(pregameTotal({games:{g:{edge:9,capturedAt:'2026-11-01T02:00:00Z'}}},{gameId:'g',startTime:'2026-11-01T01:00:00Z'}),null);
+});
+
+t4('a CBB neutral-site star after Nov 4 is staked when Kelly is positive',()=>{
+ const cbb=(id,startTime,win,extra={})=>({...pick(id,startTime,win,extra),sport:'cbb',homeAdvantage:5.6,projection:{homeAdvantage:extra.neutral?0:5.6}});
+ const history=Array.from({length:150},(_,i)=>cbb('h'+i,new Date(Date.parse('2026-10-01T17:00:00Z')+i*3600e3).toISOString(),i%3!==0));
+ const neutral=cbb('n','2026-11-10T20:00:00Z',true,{neutral:true}),home=cbb('x','2026-11-11T20:00:00Z',true);
+ const r=rk4([...history,neutral,home]);
+ assert4.ok(r.bets.find(b=>b.t===neutral.startTime).stake>0);
+ assert4.equal(r.bets.find(b=>b.t===home.startTime).stake,0);
+});

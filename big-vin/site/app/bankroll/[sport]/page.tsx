@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useMemo,useState} from 'react';
 import {useParams} from 'next/navigation';
-import {KELLY_NOTE} from '@/lib/bankroll-copy';
+import {REPLAY_CHANGE_NOTE,KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel} from '@/lib/presentation.mjs';
 import {HISTORY_SORT_COLUMNS,nextHistorySort,sortHistoryBets} from '@/lib/bankroll-history-sort.mjs';
 type Bet={t:string;betType?:string;game:string;pick:string;line:number;odds:number;edge:number|null;winChance:number|null;stake:number;amount:number;outcome:string;pl:number;after:number;reup:boolean;afterReup?:number};
@@ -21,7 +21,7 @@ export default function SportBankroll(){
  return <main className="bk">
   <a href="/bankroll" className="bk-back">← Bankroll</a>
   <h1>{sportLabel(sport)}</h1>
-  <p className="bk-explain">{KELLY_NOTE}</p>
+  <p className="bk-explain">{KELLY_NOTE}</p><p className="bk-foot">{REPLAY_CHANGE_NOTE}</p>
   {error&&<p className="bk-sub">{error}</p>}
   {!s&&!error&&<p className="bk-sub">Loading…</p>}
   {s&&<section className="bk-total">
