@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-21T20:13:28.806Z",
+ "generatedAt": "2026-11-22T00:40:53.816Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -57,21 +57,28 @@
    ]
   },
   "2": {
-   "loss": 1.35,
+   "loss": 3.56,
    "items": [
     {
-     "player": "Jayson Tatum",
-     "position": "F",
-     "status": "Questionable",
-     "points": 1.16,
-     "minutes": 33
+     "player": "Mitchell Robinson",
+     "position": "C",
+     "status": "Out",
+     "points": 0.18,
+     "minutes": 16.1
     },
     {
      "player": "Derrick White",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.19,
+     "status": "Out",
+     "points": 0.48,
      "minutes": 30.2
+    },
+    {
+     "player": "Jayson Tatum",
+     "position": "F",
+     "status": "Out",
+     "points": 2.9,
+     "minutes": 33
     }
    ]
   },
@@ -116,8 +123,15 @@
    ]
   },
   "4": {
-   "loss": 2.79,
+   "loss": 3.26,
    "items": [
+    {
+     "player": "Norman Powell",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.47,
+     "minutes": 29.4
+    },
     {
      "player": "Jalen Smith",
      "position": "F",
@@ -168,13 +182,13 @@
    ]
   },
   "6": {
-   "loss": 0.26,
+   "loss": 0.28,
    "items": [
     {
      "player": "P.J. Washington",
      "position": "F",
-     "status": "Doubtful",
-     "points": 0.21,
+     "status": "Out",
+     "points": 0.28,
      "minutes": 29.6
     },
     {
@@ -183,13 +197,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 5.8
-    },
-    {
-     "player": "Walter Clayton Jr.",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.05,
-     "minutes": 20.3
     },
     {
      "player": "Dereck Lively II",
@@ -227,8 +234,15 @@
    ]
   },
   "8": {
-   "loss": 1.51,
+   "loss": 1.87,
    "items": [
+    {
+     "player": "Ronald Holland II",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 17
+    },
     {
      "player": "Ebuka Okorie",
      "position": "G",
@@ -237,11 +251,11 @@
      "minutes": 5
     },
     {
-     "player": "Ronald Holland II",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 17
+     "player": "Cade Cunningham",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.36,
+     "minutes": 35.3
     },
     {
      "player": "Taurean Prince",
@@ -326,8 +340,22 @@
    ]
   },
   "11": {
-   "loss": 0,
+   "loss": 1.1,
    "items": [
+    {
+     "player": "T.J. McConnell",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.7
+    },
+    {
+     "player": "Pascal Siakam",
+     "position": "F",
+     "status": "Questionable",
+     "points": 1.1,
+     "minutes": 32.7
+    },
     {
      "player": "Tyrese Haliburton",
      "position": "G",
@@ -390,14 +418,14 @@
    ]
   },
   "14": {
-   "loss": 0,
+   "loss": 2.09,
    "items": [
     {
-     "player": "Myron Gardner",
+     "player": "Giannis Antetokounmpo",
      "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 11.9
+     "status": "Questionable",
+     "points": 2.09,
+     "minutes": 32.5
     }
    ]
   },
@@ -459,21 +487,21 @@
    ]
   },
   "18": {
-   "loss": 1.43,
+   "loss": 3.31,
    "items": [
-    {
-     "player": "OG Anunoby",
-     "position": "F",
-     "status": "Doubtful",
-     "points": 0.24,
-     "minutes": 34.2
-    },
     {
      "player": "Karl-Anthony Towns",
      "position": "C",
-     "status": "Questionable",
-     "points": 1.19,
+     "status": "Out",
+     "points": 2.98,
      "minutes": 33.6
+    },
+    {
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Out",
+     "points": 0.33,
+     "minutes": 34.2
     },
     {
      "player": "Jordan Clarkson",
@@ -488,14 +516,14 @@
    "loss": 0,
    "items": [
     {
-     "player": "Izaiyah Nelson",
+     "player": "Jonathan Isaac",
      "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Jonathan Isaac",
+     "player": "Izaiyah Nelson",
      "position": "F",
      "status": "Out",
      "points": 0,
@@ -518,28 +546,28 @@
    ]
   },
   "20": {
-   "loss": 2.45,
+   "loss": 2.8,
    "items": [
     {
      "player": "Dean Wade",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 26.4
+     "minutes": 26
     },
     {
      "player": "Adem Bona",
      "position": "C",
      "status": "Out",
      "points": 0,
-     "minutes": 17
+     "minutes": 14.5
     },
     {
      "player": "Jaylen Brown",
      "position": "G",
      "status": "Out",
-     "points": 2.45,
-     "minutes": 33.8
+     "points": 2.8,
+     "minutes": 33.3
     },
     {
      "player": "Ariel Hukporti",
@@ -563,7 +591,7 @@
    ]
   },
   "22": {
-   "loss": 1.09,
+   "loss": 0,
    "items": [
     {
      "player": "Chris Youngblood",
@@ -571,13 +599,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 14.8
-    },
-    {
-     "player": "Deni Avdija",
-     "position": "F",
-     "status": "Questionable",
-     "points": 1.09,
-     "minutes": 33.4
     },
     {
      "player": "Vit Krejci",
@@ -605,13 +626,6 @@
   "23": {
    "loss": 0,
    "items": [
-    {
-     "player": "Precious Achiuwa",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 21.3
-    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
@@ -655,14 +669,28 @@
    ]
   },
   "25": {
-   "loss": 0.05,
+   "loss": 1.93,
    "items": [
+    {
+     "player": "Shai Gilgeous-Alexander",
+     "position": "G",
+     "status": "Questionable",
+     "points": 1.88,
+     "minutes": 34
+    },
     {
      "player": "Nikola Topic",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 11.3
+    },
+    {
+     "player": "Jaylin Williams",
+     "position": "F",
+     "status": "Out",
+     "points": 0,
+     "minutes": 15
     },
     {
      "player": "Alex Caruso",

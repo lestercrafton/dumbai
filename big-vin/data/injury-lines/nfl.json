@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-21T19:48:32.202Z",
+ "generatedAt": "2026-11-22T00:40:48.274Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -175,7 +175,7 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.35,
+   "loss": 0.48,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
@@ -201,6 +201,16 @@
      "reported": "2026-11-20T19:19Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Mike Jackson",
+     "espnId": "3917853",
+     "status": "Questionable",
+     "reported": "2026-11-22T00:19Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []
@@ -336,7 +346,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.53,
+   "loss": 0.13,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -352,16 +362,6 @@
      "reported": "2026-11-20T22:43Z",
      "weight": 0.25,
      "points": 0.13
-    },
-    {
-     "group": "c",
-     "position": "C",
-     "player": "Cade Mays",
-     "espnId": "4361788",
-     "status": "Out",
-     "reported": "2026-11-20T20:39Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": []
@@ -603,7 +603,7 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.25,
+   "loss": 0.33,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
@@ -619,13 +619,23 @@
      "reported": "2026-11-21T00:06Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lg",
+     "position": "LG",
+     "player": "Trey Pipkins III",
+     "espnId": "4411189",
+     "status": "Questionable",
+     "reported": "2026-11-21T21:04Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.2,
+   "loss": 1.3,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -651,6 +661,16 @@
      "reported": "2026-11-20T17:49Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "rb1",
+     "position": "RB",
+     "player": "Kyren Williams",
+     "espnId": "4430737",
+     "status": "Questionable",
+     "reported": "2026-11-21T21:55Z",
+     "weight": 0.25,
+     "points": 0.1
     }
    ],
    "notes": []
@@ -803,7 +823,7 @@
   },
   "NO": {
    "team": "NO",
-   "loss": 0.56,
+   "loss": 0.96,
    "starter": {
     "name": "Tyler Shough",
     "espnId": "4360689",
@@ -829,6 +849,16 @@
      "reported": "2026-11-20T22:05Z",
      "weight": 1,
      "points": 0.5
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Taliese Fuaga",
+     "espnId": "4606711",
+     "status": "Out",
+     "reported": "2026-11-21T01:03Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -880,24 +910,13 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 0.25,
+   "loss": 0,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
     "basis": "depth chart QB1"
    },
-   "items": [
-    {
-     "group": "lb",
-     "position": "LILB",
-     "player": "Zack Baun",
-     "espnId": "3917657",
-     "status": "Out",
-     "reported": "2026-11-21T00:16Z",
-     "weight": 1,
-     "points": 0.25
-    }
-   ],
+   "items": [],
    "notes": [
     "Usage leader Jalen Hurts is not the resolved starter."
    ]
@@ -1142,7 +1161,7 @@
   },
   "WAS": {
    "team": "WAS",
-   "loss": 0.4,
+   "loss": 0.5,
    "starter": {
     "name": "Jayden Daniels",
     "espnId": "4426348",
@@ -1155,9 +1174,19 @@
      "player": "Jacory Croskey-Merritt",
      "espnId": "4575131",
      "status": "Injured Reserve",
-     "reported": "2026-11-21T17:50Z",
+     "reported": "2026-11-21T23:35Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "c",
+     "position": "C",
+     "player": "Lucas Patrick",
+     "espnId": "2576736",
+     "status": "Questionable",
+     "reported": "2026-11-21T22:09Z",
+     "weight": 0.25,
+     "points": 0.1
     }
    ],
    "notes": []
