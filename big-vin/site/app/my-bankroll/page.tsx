@@ -1,7 +1,7 @@
 'use client';
 import {KellyNote} from '@/components/kelly-note';
 import {useEffect,useState,FormEvent,type ReactNode} from 'react';
-import {MY_KELLY_NOTE,ENTERTAINMENT_NOTE,CARRY_NOTE} from '@/lib/bankroll-copy';
+import {REPLAY_CHANGE_NOTE,MY_KELLY_NOTE,ENTERTAINMENT_NOTE,CARRY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
 import {fetchSlate} from '@/lib/board-client';
 import {todayPlays,ctDate} from '@/lib/today-plays.mjs';
@@ -331,7 +331,7 @@ export default function MyBankroll(){
 
   {phase==='app'&&<>
    <div className="bk-userbar"><span>Signed in as <b>{email}</b></span><button type="button" className="bk-linkish" onClick={logout}>Log out</button></div>
-   <p className="bk-explain">{MY_KELLY_NOTE}</p>
+   <p className="bk-explain">{MY_KELLY_NOTE}</p><p className="bk-foot">{REPLAY_CHANGE_NOTE}</p>
    <nav className="bk-tabs" role="tablist">
     {(['setup','history','today'] as const).map(t=><button key={t} role="tab" aria-selected={tab===t} className={tab===t?'on':''} onClick={()=>setTab(t)}>{t==='setup'?'Starting bankrolls':t==='history'?'History':"Today's plays"}</button>)}
    </nav>

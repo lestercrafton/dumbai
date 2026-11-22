@@ -1,6 +1,7 @@
 import {readForecastRecords} from '@/lib/result-store';
 import {selectTrackedHistory} from '@/lib/tracked-history.mjs';
 import {historicalModelSpecs} from '@/lib/model-versions';
+import {totalsTable} from '@/lib/feeds/service';
 import {replayKellyBankroll,bankrollApplyFrom} from '@/lib/kelly-bankroll.mjs';
 import {SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
 import {currentUser,loadStarts} from '@/lib/my-bankroll-session';
@@ -18,7 +19,7 @@ export async function GET(request:Request){
    const {records}=selectTrackedHistory(await readForecastRecords(sport),{sport,models:historicalModelSpecs(sport)});
    // Floor at account created_at (arrived); override effective_from can only push later.
    const applyFrom=bankrollApplyFrom(arrivedFrom,effectiveFrom[sport]);
-   const replay=replayKellyBankroll(records,{start,includeLegacy:sport==='mlb',applyFrom});
+   const replay=replayKellyBankroll(records,{start,includeLegacy:sport==='mlb',totals:sport==='nba'?await totalsTable(sport):null,applyFrom});
    const step=Math.max(1,Math.ceil(replay.series.length/120));
    const {rows,bets,...rest}=replay;
    return {

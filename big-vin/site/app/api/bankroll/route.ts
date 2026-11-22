@@ -1,6 +1,7 @@
 import {readForecastRecords} from '@/lib/result-store';
 import {selectTrackedHistory} from '@/lib/tracked-history.mjs';
 import {historicalModelSpecs} from '@/lib/model-versions';
+import {totalsTable} from '@/lib/feeds/service';
 import {replayKellyBankroll} from '@/lib/kelly-bankroll.mjs';
 import {SUPPORTED_SPORTS,sportLabel} from '@/lib/presentation.mjs';
 export async function GET(request:Request){
@@ -9,7 +10,7 @@ export async function GET(request:Request){
  try{
   const sports=await Promise.all(SUPPORTED_SPORTS.filter((s:string)=>!only||s===only).map(async(sport:string)=>{
    const {records}=selectTrackedHistory(await readForecastRecords(sport),{sport,models:historicalModelSpecs(sport)});
-   const replay=replayKellyBankroll(records,{includeLegacy:sport==='mlb'});
+   const replay=replayKellyBankroll(records,{includeLegacy:sport==='mlb',totals:sport==='nba'?await totalsTable(sport):null});
    // Thin the chart to at most 120 points.
    const step=Math.max(1,Math.ceil(replay.series.length/120));
    const {rows,bets,...rest}=replay;
