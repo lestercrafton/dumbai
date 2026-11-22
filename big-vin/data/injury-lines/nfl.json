@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-22T20:26:09.504Z",
+ "generatedAt": "2026-11-22T22:47:11.856Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -33,9 +33,9 @@
      "replacement": "Josh Johnson",
      "starterEpaPerPlay": -0.04,
      "starterPlays": 24,
-     "backupEpaPerPlay": -0.072,
-     "backupPlays": 34,
-     "gapEpaPerPlay": 0.03,
+     "backupEpaPerPlay": -0.076,
+     "backupPlays": 70,
+     "gapEpaPerPlay": 0.04,
      "fullPoints": 2,
      "alreadyInRatings": 0.5,
      "points": 1
@@ -165,13 +165,23 @@
   },
   "CAR": {
    "team": "CAR",
-   "loss": 0.75,
+   "loss": 0.85,
    "starter": {
     "name": "Bryce Young",
     "espnId": "4685720",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "wr2",
+     "position": "WR",
+     "player": "Jalen Coker",
+     "espnId": "4695883",
+     "status": "Questionable",
+     "reported": "2026-11-22T21:49Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
     {
      "group": "lb",
      "position": "RILB",
@@ -285,7 +295,7 @@
      "player": "Dee Winters",
      "espnId": "4428914",
      "status": "Questionable",
-     "reported": "2026-11-22T19:05Z",
+     "reported": "2026-11-22T20:37Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -358,7 +368,7 @@
   },
   "GB": {
    "team": "GB",
-   "loss": 1.33,
+   "loss": 1.39,
    "starter": {
     "name": "Jordan Love",
     "espnId": "4036378",
@@ -371,9 +381,19 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Out",
-     "reported": "2026-11-22T00:36Z",
+     "reported": "2026-11-22T21:42Z",
      "weight": 1,
      "points": 0.25
+    },
+    {
+     "group": "lb",
+     "position": "RILB",
+     "player": "Isaiah McDuffie",
+     "espnId": "4239947",
+     "status": "Questionable",
+     "reported": "2026-11-22T21:35Z",
+     "weight": 0.25,
+     "points": 0.06
     },
     {
      "group": "lb",
@@ -381,7 +401,7 @@
      "player": "Micah Parsons",
      "espnId": "4361423",
      "status": "Out",
-     "reported": "2026-11-22T14:36Z",
+     "reported": "2026-11-22T21:54Z",
      "weight": 1,
      "points": 0.25
     },
@@ -391,7 +411,7 @@
      "player": "Brandon Cisse",
      "espnId": "5076652",
      "status": "Questionable",
-     "reported": "2026-11-22T00:37Z",
+     "reported": "2026-11-22T21:41Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -401,7 +421,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Out",
-     "reported": "2026-11-17T12:21Z",
+     "reported": "2026-11-22T21:43Z",
      "weight": 1,
      "points": 0.4
     },
@@ -688,7 +708,7 @@
   },
   "MIA": {
    "team": "MIA",
-   "loss": 0.3,
+   "loss": 0.43,
    "starter": {
     "name": "Kyle McCord",
     "espnId": "4433971",
@@ -704,6 +724,16 @@
      "reported": "2026-11-22T17:06Z",
      "weight": 1,
      "points": 0.3
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "JuJu Brents",
+     "espnId": "4360488",
+     "status": "Questionable",
+     "reported": "2026-11-22T20:53Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": [
@@ -837,7 +867,7 @@
      "player": "Juwan Johnson",
      "espnId": "3929645",
      "status": "Questionable",
-     "reported": "2026-11-22T20:15Z",
+     "reported": "2026-11-22T20:20Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -886,13 +916,24 @@
   },
   "NYG": {
    "team": "NYG",
-   "loss": 0,
+   "loss": 0.13,
    "starter": {
     "name": "J.J. McCarthy",
     "espnId": "4433970",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Greg Newsome II",
+     "espnId": "4361266",
+     "status": "Questionable",
+     "reported": "2026-11-22T21:51Z",
+     "weight": 0.25,
+     "points": 0.13
+    }
+   ],
    "notes": [
     "Usage leader Jameis Winston is not the resolved starter."
    ]
@@ -921,13 +962,44 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 0,
+   "loss": 0.36,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "rb1",
+     "position": "RB",
+     "player": "Saquon Barkley",
+     "espnId": "3929630",
+     "status": "Questionable",
+     "reported": "2026-11-22T22:41Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
+    {
+     "group": "cb",
+     "position": "LCB",
+     "player": "Jonathan Jones",
+     "espnId": "2971027",
+     "status": "Questionable",
+     "reported": "2026-11-22T22:18Z",
+     "weight": 0.25,
+     "points": 0.13
+    },
+    {
+     "group": "cb",
+     "position": "RCB",
+     "player": "Quinyon Mitchell",
+     "espnId": "4686273",
+     "status": "Questionable",
+     "reported": "2026-11-22T20:56Z",
+     "weight": 0.25,
+     "points": 0.13
+    }
+   ],
    "notes": [
     "Usage leader Jalen Hurts is not the resolved starter."
    ]
@@ -1101,7 +1173,7 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 1.01,
+   "loss": 0.76,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
@@ -1109,14 +1181,14 @@
    },
    "items": [
     {
-     "group": "wr1",
+     "group": "wr2",
      "position": "WR",
      "player": "Wan'Dale Robinson",
      "espnId": "4569587",
      "status": "Injured Reserve",
      "reported": "2026-11-18T17:29Z",
      "weight": 1,
-     "points": 0.8
+     "points": 0.4
     },
     {
      "group": "s",
@@ -1137,6 +1209,16 @@
      "reported": "2026-11-22T19:36Z",
      "weight": 0.25,
      "points": 0.13
+    },
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Dan Moore Jr.",
+     "espnId": "4240920",
+     "status": "Questionable",
+     "reported": "2026-11-22T20:34Z",
+     "weight": 0.25,
+     "points": 0.15
     }
    ],
    "notes": []
