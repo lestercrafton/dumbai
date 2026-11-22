@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-22T00:40:53.816Z",
+ "generatedAt": "2026-11-22T08:48:59.024Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -57,7 +57,7 @@
    ]
   },
   "2": {
-   "loss": 3.56,
+   "loss": 3.38,
    "items": [
     {
      "player": "Mitchell Robinson",
@@ -70,21 +70,28 @@
      "player": "Derrick White",
      "position": "G",
      "status": "Out",
-     "points": 0.48,
-     "minutes": 30.2
+     "points": 0.51,
+     "minutes": 29.8
     },
     {
      "player": "Jayson Tatum",
      "position": "F",
      "status": "Out",
-     "points": 2.9,
-     "minutes": 33
+     "points": 2.69,
+     "minutes": 32.9
     }
    ]
   },
   "3": {
-   "loss": 2.29,
+   "loss": 4.59,
    "items": [
+    {
+     "player": "Zion Williamson",
+     "position": "F",
+     "status": "Out",
+     "points": 2.66,
+     "minutes": 31.9
+    },
     {
      "player": "Trey Murphy III",
      "position": "F",
@@ -96,8 +103,8 @@
      "player": "Trendon Watford",
      "position": "F",
      "status": "Out",
-     "points": 0.36,
-     "minutes": 18.7
+     "points": 0,
+     "minutes": 18
     },
     {
      "player": "Bryce McGowens",
@@ -111,14 +118,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 13
+     "minutes": 12.5
     },
     {
      "player": "Dejounte Murray",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 30.8
+     "minutes": 27.3
     }
    ]
   },
@@ -182,14 +189,14 @@
    ]
   },
   "6": {
-   "loss": 0.28,
+   "loss": 0.64,
    "items": [
     {
      "player": "P.J. Washington",
      "position": "F",
      "status": "Out",
-     "points": 0.28,
-     "minutes": 29.6
+     "points": 0.64,
+     "minutes": 29.1
     },
     {
      "player": "Tobi Lawal",
@@ -283,13 +290,6 @@
   "9": {
    "loss": 5.28,
    "items": [
-    {
-     "player": "Draymond Green",
-     "position": "F",
-     "status": "Out",
-     "points": 0,
-     "minutes": 23.8
-    },
     {
      "player": "Brandon Williams",
      "position": "G",
@@ -449,7 +449,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 18.3
+     "minutes": 18
     },
     {
      "player": "Anthony Edwards",
@@ -487,28 +487,28 @@
    ]
   },
   "18": {
-   "loss": 3.31,
+   "loss": 3.56,
    "items": [
     {
      "player": "Karl-Anthony Towns",
      "position": "C",
      "status": "Out",
-     "points": 2.98,
-     "minutes": 33.6
-    },
-    {
-     "player": "OG Anunoby",
-     "position": "F",
-     "status": "Out",
-     "points": 0.33,
-     "minutes": 34.2
+     "points": 3.05,
+     "minutes": 33.4
     },
     {
      "player": "Jordan Clarkson",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 10.6
+     "minutes": 10.9
+    },
+    {
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Out",
+     "points": 0.51,
+     "minutes": 34.2
     }
    ]
   },
@@ -605,7 +605,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 7
+     "minutes": 12
     },
     {
      "player": "Ja Morant",
@@ -643,14 +643,14 @@
    ]
   },
   "24": {
-   "loss": 2.01,
+   "loss": 1.81,
    "items": [
     {
      "player": "Dylan Harper",
      "position": "G",
      "status": "Out",
-     "points": 2.01,
-     "minutes": 30.6
+     "points": 1.81,
+     "minutes": 31
     },
     {
      "player": "Tobias Harris",
@@ -822,14 +822,14 @@
    ]
   },
   "29": {
-   "loss": 3.15,
+   "loss": 3.25,
    "items": [
     {
      "player": "Jerami Grant",
      "position": "F",
      "status": "Out",
-     "points": 0.86,
-     "minutes": 20.7
+     "points": 0.91,
+     "minutes": 20.3
     },
     {
      "player": "Javon Small",
@@ -842,15 +842,15 @@
      "player": "Cameron Boozer",
      "position": "F",
      "status": "Out",
-     "points": 1.47,
-     "minutes": 30.6
+     "points": 1.52,
+     "minutes": 29.8
     },
     {
      "player": "GG Jackson",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 13
+     "minutes": 12.4
     },
     {
      "player": "Scotty Pippen Jr.",

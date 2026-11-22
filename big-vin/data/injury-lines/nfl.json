@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-22T00:40:48.274Z",
+ "generatedAt": "2026-11-22T08:48:52.443Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -251,7 +251,7 @@
      "player": "Dalton Risner",
      "espnId": "3125082",
      "status": "Out",
-     "reported": "2026-11-21T17:48Z",
+     "reported": "2026-11-22T00:42Z",
      "weight": 1,
      "points": 0.3
     }
@@ -381,7 +381,7 @@
      "player": "Zaire Franklin",
      "espnId": "3124005",
      "status": "Out",
-     "reported": "2026-11-17T12:21Z",
+     "reported": "2026-11-22T00:36Z",
      "weight": 1,
      "points": 0.25
     },
@@ -391,7 +391,7 @@
      "player": "Brandon Cisse",
      "espnId": "5076652",
      "status": "Questionable",
-     "reported": "2026-11-17T00:27Z",
+     "reported": "2026-11-22T00:37Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -626,7 +626,7 @@
      "player": "Trey Pipkins III",
      "espnId": "4411189",
      "status": "Questionable",
-     "reported": "2026-11-21T21:04Z",
+     "reported": "2026-11-22T00:44Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -648,7 +648,7 @@
      "player": "Puka Nacua",
      "espnId": "4426515",
      "status": "Injured Reserve",
-     "reported": "2026-11-20T17:09Z",
+     "reported": "2026-11-22T01:25Z",
      "weight": 1,
      "points": 0.8
     },
@@ -1184,7 +1184,7 @@
      "player": "Lucas Patrick",
      "espnId": "2576736",
      "status": "Questionable",
-     "reported": "2026-11-21T22:09Z",
+     "reported": "2026-11-22T00:59Z",
      "weight": 0.25,
      "points": 0.1
     }
