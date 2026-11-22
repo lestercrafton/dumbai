@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-22T08:48:59.024Z",
+ "generatedAt": "2026-11-22T15:40:55.718Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -60,18 +60,18 @@
    "loss": 3.38,
    "items": [
     {
-     "player": "Mitchell Robinson",
-     "position": "C",
-     "status": "Out",
-     "points": 0.18,
-     "minutes": 16.1
-    },
-    {
      "player": "Derrick White",
      "position": "G",
      "status": "Out",
      "points": 0.51,
      "minutes": 29.8
+    },
+    {
+     "player": "Mitchell Robinson",
+     "position": "C",
+     "status": "Out",
+     "points": 0.18,
+     "minutes": 16.1
     },
     {
      "player": "Jayson Tatum",
@@ -130,13 +130,13 @@
    ]
   },
   "4": {
-   "loss": 3.26,
+   "loss": 3.96,
    "items": [
     {
      "player": "Norman Powell",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.47,
+     "status": "Out",
+     "points": 1.17,
      "minutes": 29.4
     },
     {
@@ -546,7 +546,7 @@
    ]
   },
   "20": {
-   "loss": 2.8,
+   "loss": 0.28,
    "items": [
     {
      "player": "Dean Wade",
@@ -556,18 +556,18 @@
      "minutes": 26
     },
     {
+     "player": "Jaylen Brown",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.28,
+     "minutes": 33.3
+    },
+    {
      "player": "Adem Bona",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 14.5
-    },
-    {
-     "player": "Jaylen Brown",
-     "position": "G",
-     "status": "Out",
-     "points": 2.8,
-     "minutes": 33.3
     },
     {
      "player": "Ariel Hukporti",
@@ -825,13 +825,6 @@
    "loss": 3.25,
    "items": [
     {
-     "player": "Jerami Grant",
-     "position": "F",
-     "status": "Out",
-     "points": 0.91,
-     "minutes": 20.3
-    },
-    {
      "player": "Javon Small",
      "position": "G",
      "status": "Out",
@@ -844,6 +837,13 @@
      "status": "Out",
      "points": 1.52,
      "minutes": 29.8
+    },
+    {
+     "player": "Jerami Grant",
+     "position": "F",
+     "status": "Out",
+     "points": 0.91,
+     "minutes": 20.3
     },
     {
      "player": "GG Jackson",

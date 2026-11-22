@@ -1,43 +1,43 @@
 {
  "method": "Final margin = a + b × market line + c × (our line − market line), ordinary least squares on saved graded live picks.",
  "all": {
-  "games": 1419,
+  "games": 1828,
   "ready": true,
-  "marketWeight": 1.0015099492421116,
-  "ourExtraWeight": 0.0025313676650851047,
-  "standardError": 0.07773082363026461,
-  "t": 0.03256581555247426,
+  "marketWeight": 0.9914662376552508,
+  "ourExtraWeight": -0.019216309724406022,
+  "standardError": 0.07046243843093103,
+  "t": -0.2727170695808705,
   "addsInformation": false,
   "hurts": false
  },
  "sports": {
   "nfl": {
-   "games": 57,
+   "games": 58,
    "ready": true,
-   "marketWeight": 1.8509472342626487,
-   "ourExtraWeight": 0.8838888886110406,
-   "standardError": 0.5643858289638165,
-   "t": 1.5661075159059459,
+   "marketWeight": 1.8844246490098187,
+   "ourExtraWeight": 0.8607754865450584,
+   "standardError": 0.5583695747069417,
+   "t": 1.5415873742705866,
    "addsInformation": false,
    "hurts": false
   },
   "cfb": {
-   "games": 587,
+   "games": 717,
    "ready": true,
-   "marketWeight": 1.0879761964140515,
-   "ourExtraWeight": 0.33911789763987477,
-   "standardError": 0.15240672648878523,
-   "t": 2.225084846664091,
+   "marketWeight": 1.0757357934625298,
+   "ourExtraWeight": 0.2839971439600135,
+   "standardError": 0.14250582144531768,
+   "t": 1.9928810000859432,
    "addsInformation": true,
    "hurts": false
   },
   "nba": {
-   "games": 113,
+   "games": 149,
    "ready": true,
-   "marketWeight": 1.1174514486498013,
-   "ourExtraWeight": -0.04806506104924174,
-   "standardError": 0.30774056893136,
-   "t": -0.15618695063881038,
+   "marketWeight": 0.99943285313482,
+   "ourExtraWeight": -0.14595162995303407,
+   "standardError": 0.2668274896030813,
+   "t": -0.5469887310716903,
    "addsInformation": false,
    "hurts": false
   },
@@ -46,15 +46,15 @@
    "ready": false
   },
   "cbb": {
-   "games": 655,
+   "games": 897,
    "ready": true,
-   "marketWeight": 0.9576237888974867,
-   "ourExtraWeight": -0.25770938844123137,
-   "standardError": 0.09410596258211383,
-   "t": -2.738502230571867,
+   "marketWeight": 0.9570918062172782,
+   "ourExtraWeight": -0.21136693364357018,
+   "standardError": 0.08605128768875496,
+   "t": -2.456290188336034,
    "addsInformation": false,
    "hurts": true
   }
  },
- "updatedAt": "2026-11-17T23:03:51.077Z"
+ "updatedAt": "2026-11-22T15:44:16.633Z"
 }
