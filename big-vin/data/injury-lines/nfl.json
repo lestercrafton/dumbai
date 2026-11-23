@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-22T22:47:11.856Z",
+ "generatedAt": "2026-11-23T04:01:55.694Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -536,13 +536,23 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.4,
+   "loss": 0.55,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Walker Little",
+     "espnId": "4242554",
+     "status": "Questionable",
+     "reported": "2026-11-23T00:22Z",
+     "weight": 0.25,
+     "points": 0.15
+    },
     {
      "group": "c",
      "position": "C",
@@ -600,7 +610,7 @@
   },
   "LV": {
    "team": "LV",
-   "loss": 0.9,
+   "loss": 0.98,
    "starter": {
     "name": "Fernando Mendoza",
     "espnId": "4837248",
@@ -613,9 +623,19 @@
      "player": "Brock Bowers",
      "espnId": "4432665",
      "status": "Out",
-     "reported": "2026-11-22T19:58Z",
+     "reported": "2026-11-23T01:15Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "dt",
+     "position": "NT",
+     "player": "Adam Butler",
+     "espnId": "2972342",
+     "status": "Questionable",
+     "reported": "2026-11-22T23:19Z",
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "edge",
@@ -634,13 +654,32 @@
   },
   "LAC": {
    "team": "LAC",
-   "loss": 0.25,
+   "loss": 0.75,
    "starter": {
     "name": "Justin Herbert",
     "espnId": "4038941",
-    "basis": "depth chart QB1"
+    "basis": "depth chart QB1 (injured)"
    },
    "items": [
+    {
+     "group": "qb",
+     "position": "QB",
+     "player": "Justin Herbert",
+     "espnId": "4038941",
+     "starterBasis": "depth chart QB1 (injured)",
+     "status": "Questionable",
+     "reported": "2026-11-23T00:32Z",
+     "weight": 0.25,
+     "replacement": "DJ Uiagalelei",
+     "starterEpaPerPlay": -0.035,
+     "starterPlays": 710,
+     "backupEpaPerPlay": -0.073,
+     "backupPlays": 7,
+     "gapEpaPerPlay": 0.04,
+     "fullPoints": 2,
+     "alreadyInRatings": 0,
+     "points": 0.5
+    },
     {
      "group": "lb",
      "position": "LILB",
@@ -656,7 +695,7 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.6,
+   "loss": 1.74,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -689,9 +728,29 @@
      "player": "Kyren Williams",
      "espnId": "4430737",
      "status": "Questionable",
-     "reported": "2026-11-21T21:55Z",
+     "reported": "2026-11-22T23:44Z",
      "weight": 0.25,
      "points": 0.1
+    },
+    {
+     "group": "lb",
+     "position": "SLB",
+     "player": "Myles Garrett",
+     "espnId": "3122132",
+     "status": "Questionable",
+     "reported": "2026-11-23T00:12Z",
+     "weight": 0.25,
+     "points": 0.06
+    },
+    {
+     "group": "s",
+     "position": "SS",
+     "player": "Kam Curl",
+     "espnId": "4242154",
+     "status": "Questionable",
+     "reported": "2026-11-23T00:14Z",
+     "weight": 0.25,
+     "points": 0.08
     },
     {
      "group": "lg",
@@ -742,7 +801,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 2.05,
+   "loss": 2.42,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -756,7 +815,7 @@
      "espnId": "3917315",
      "starterBasis": "season usage leader (injured; dropped from depth chart)",
      "status": "Out",
-     "reported": "2026-11-20T19:49Z",
+     "reported": "2026-11-23T00:00Z",
      "weight": 1,
      "replacement": "Kirk Cousins",
      "starterEpaPerPlay": 0.011,
@@ -774,7 +833,7 @@
      "player": "Jordan Addison",
      "espnId": "4429205",
      "status": "Out",
-     "reported": "2026-11-18T19:25Z",
+     "reported": "2026-11-23T00:00Z",
      "weight": 1,
      "points": 0.4
     },
@@ -783,10 +842,10 @@
      "position": "LCB",
      "player": "Isaiah Rodgers",
      "espnId": "4044540",
-     "status": "Questionable",
-     "reported": "2026-11-20T22:27Z",
-     "weight": 0.25,
-     "points": 0.13
+     "status": "Out",
+     "reported": "2026-11-23T00:09Z",
+     "weight": 1,
+     "points": 0.5
     }
    ],
    "notes": []
@@ -929,7 +988,7 @@
      "player": "Greg Newsome II",
      "espnId": "4361266",
      "status": "Questionable",
-     "reported": "2026-11-22T21:51Z",
+     "reported": "2026-11-22T23:59Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -1028,7 +1087,7 @@
   },
   "SF": {
    "team": "SF",
-   "loss": 0.26,
+   "loss": 0.65,
    "starter": {
     "name": "Brock Purdy",
     "espnId": "4361741",
@@ -1036,24 +1095,24 @@
    },
    "items": [
     {
-     "group": "wr1",
-     "position": "WR",
-     "player": "Mike Evans",
-     "espnId": "16737",
-     "status": "Questionable",
-     "reported": "2026-11-22T18:00Z",
-     "weight": 0.25,
-     "points": 0.2
-    },
-    {
      "group": "lb",
      "position": "WLB",
      "player": "Dre Greenlaw",
      "espnId": "3916903",
-     "status": "Questionable",
-     "reported": "2026-11-21T00:49Z",
-     "weight": 0.25,
-     "points": 0.06
+     "status": "Out",
+     "reported": "2026-11-23T00:25Z",
+     "weight": 1,
+     "points": 0.25
+    },
+    {
+     "group": "rt",
+     "position": "RT",
+     "player": "Colton McKivitz",
+     "espnId": "3916075",
+     "status": "Out",
+     "reported": "2026-11-23T02:51Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
