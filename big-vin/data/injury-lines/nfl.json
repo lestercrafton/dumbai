@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-23T04:01:55.694Z",
+ "generatedAt": "2026-11-23T15:20:16.231Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -536,13 +536,23 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.55,
+   "loss": 0.65,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
     "basis": "depth chart QB1"
    },
    "items": [
+    {
+     "group": "rb1",
+     "position": "RB",
+     "player": "Bhayshul Tuten",
+     "espnId": "4882093",
+     "status": "Questionable",
+     "reported": "2026-11-23T12:56Z",
+     "weight": 0.25,
+     "points": 0.1
+    },
     {
      "group": "lt",
      "position": "LT",
@@ -801,7 +811,7 @@
   },
   "MIN": {
    "team": "MIN",
-   "loss": 2.42,
+   "loss": 2.26,
    "starter": {
     "name": "Kyler Murray",
     "espnId": "3917315",
@@ -820,12 +830,12 @@
      "replacement": "Kirk Cousins",
      "starterEpaPerPlay": 0.011,
      "starterPlays": 301,
-     "backupEpaPerPlay": 0.035,
-     "backupPlays": 533,
+     "backupEpaPerPlay": 0.029,
+     "backupPlays": 573,
      "gapEpaPerPlay": 0,
      "fullPoints": 2,
-     "alreadyInRatings": 0.24,
-     "points": 1.52
+     "alreadyInRatings": 0.32,
+     "points": 1.36
     },
     {
      "group": "wr2",
@@ -1087,7 +1097,7 @@
   },
   "SF": {
    "team": "SF",
-   "loss": 0.65,
+   "loss": 0.38,
    "starter": {
     "name": "Brock Purdy",
     "espnId": "4361741",
@@ -1105,14 +1115,14 @@
      "points": 0.25
     },
     {
-     "group": "rt",
-     "position": "RT",
-     "player": "Colton McKivitz",
-     "espnId": "3916075",
-     "status": "Out",
-     "reported": "2026-11-23T02:51Z",
-     "weight": 1,
-     "points": 0.4
+     "group": "cb",
+     "position": "RCB",
+     "player": "Deommodore Lenoir",
+     "espnId": "4242488",
+     "status": "Questionable",
+     "reported": "2026-11-23T13:43Z",
+     "weight": 0.25,
+     "points": 0.13
     }
    ],
    "notes": []
@@ -1232,23 +1242,13 @@
   },
   "TEN": {
    "team": "TEN",
-   "loss": 0.76,
+   "loss": 0.36,
    "starter": {
     "name": "Cam Ward",
     "espnId": "4688380",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Wan'Dale Robinson",
-     "espnId": "4569587",
-     "status": "Injured Reserve",
-     "reported": "2026-11-18T17:29Z",
-     "weight": 1,
-     "points": 0.4
-    },
     {
      "group": "s",
      "position": "SS",

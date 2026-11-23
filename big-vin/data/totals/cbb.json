@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-cbb-totals-v1",
  "sport": "cbb",
- "generatedAt": "2026-11-23T04:02:11.944Z",
+ "generatedAt": "2026-11-23T15:20:31.177Z",
  "method": "men’s college basketball: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 268,
-  "losses": 207,
+  "wins": 269,
+  "losses": 208,
   "pushes": 0,
-  "pending": 4,
-  "bankroll": 974.44,
+  "pending": 2,
+  "bankroll": 973.24,
   "bankrollStart": 500
  },
  "backtest": {
@@ -2813,9 +2813,12 @@
    "awayPoints": 74.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 135,
+   "stake": {
+    "stake": 16.22,
+    "net": -16.22
+   }
   },
   "401911237": {
    "side": "under",
@@ -4937,9 +4940,12 @@
    "awayPoints": 76.1,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 154,
+   "stake": {
+    "stake": 16.22,
+    "net": 15.02
+   }
   },
   "401917913": {
    "side": "under",

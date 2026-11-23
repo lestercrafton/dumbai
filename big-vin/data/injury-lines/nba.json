@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-23T04:02:00.569Z",
+ "generatedAt": "2026-11-23T15:20:21.075Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -53,18 +53,18 @@
    "loss": 1.86,
    "items": [
     {
-     "player": "Mitchell Robinson",
-     "position": "C",
-     "status": "Out",
-     "points": 0.33,
-     "minutes": 16.3
-    },
-    {
      "player": "Paul George",
      "position": "F",
      "status": "Out",
      "points": 1.53,
      "minutes": 29.5
+    },
+    {
+     "player": "Mitchell Robinson",
+     "position": "C",
+     "status": "Out",
+     "points": 0.33,
+     "minutes": 16.3
     }
    ]
   },
@@ -572,8 +572,15 @@
    ]
   },
   "24": {
-   "loss": 1.85,
+   "loss": 4.63,
    "items": [
+    {
+     "player": "Victor Wembanyama",
+     "position": "F",
+     "status": "Questionable",
+     "points": 2.78,
+     "minutes": 29.6
+    },
     {
      "player": "De'Aaron Fox",
      "position": "G",
@@ -615,11 +622,11 @@
      "minutes": 25.7
     },
     {
-     "player": "Shai Gilgeous-Alexander",
-     "position": "G",
+     "player": "Jaylin Williams",
+     "position": "F",
      "status": "Out",
-     "points": 4.55,
-     "minutes": 33.4
+     "points": 0,
+     "minutes": 12.5
     },
     {
      "player": "Nikola Topic",
@@ -629,11 +636,11 @@
      "minutes": 11.3
     },
     {
-     "player": "Jaylin Williams",
-     "position": "F",
+     "player": "Shai Gilgeous-Alexander",
+     "position": "G",
      "status": "Out",
-     "points": 0,
-     "minutes": 12.5
+     "points": 4.55,
+     "minutes": 33.4
     },
     {
      "player": "Alex Caruso",
@@ -772,13 +779,13 @@
    ]
   },
   "29": {
-   "loss": 1.61,
+   "loss": 2.43,
    "items": [
     {
      "player": "Jerami Grant",
      "position": "F",
-     "status": "Day-To-Day",
-     "points": 0.09,
+     "status": "Out",
+     "points": 0.91,
      "minutes": 20.3
     },
     {
