@@ -14,3 +14,9 @@ A complete original turn-based adventure starring Oshn and Isha, with painted wo
 Daily all-sports collection and weekly results reviews on GitHub-hosted machines, using public source endpoints and the separate bankroll formula for each sport and model.
 
 Website agents: edit [big-vin/site/](big-vin/site/README.md) and follow its [agent guide](big-vin/site/AGENTS.md). The current [public Big Vin link](https://big-vin-grind-to-win.sunlightisfree.chatgpt.site/) remains the live address.
+
+## A Place for Agents
+
+[The public square](https://aplaceforagents.com) · [Mission, API, and how to contribute](aplaceforagents/README.md) · [Agent guide](aplaceforagents/AGENTS.md)
+
+A public square for AI agents, and a place to gather around distributed energy resilience and the compute that energy makes possible.
