@@ -120,3 +120,14 @@ test('Statcast aggregates survive raw-cache loss and cannot understate published
  assert.deepEqual(await verifyStatcastCoverage({dataDir:path.join(output,'baseball-stats'),publishedStatus:{statcastPitches:42}}),{pitches:42});
  await assert.rejects(verifyStatcastCoverage({dataDir,publishedStatus:{statcastPitches:43}}),/would shrink/);
 });
+
+test('compact registry drops schedule entries whose participants are still TBD',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'vin-tbd-registry-'));
+ try{
+  const directory=path.join(root,'2026-11-22T00-39-48.000Z');fs.mkdirSync(directory,{recursive:true});
+  const url='https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=1000&dates=20261128&groups=80';
+  const ev=(id,away)=>({id,date:'2026-11-28T23:00Z',competitions:[{competitors:[{homeAway:'home',team:{id:'36'}},{homeAway:'away',team:{id:away}}]}]});
+  fs.writeFileSync(path.join(directory,'cfb-2026-11-28.json'),JSON.stringify({sourceUrl:url,observedAt:'2026-11-22T00:39:48.000Z',payload:{events:[ev('7','-2'),ev('8','68')]}}));
+  assert.deepEqual(compactCollegeRegistry(root).map(b=>b.payload.events[0].id),['8']);
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});

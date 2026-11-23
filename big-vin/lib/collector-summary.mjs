@@ -80,6 +80,9 @@ export function knownCollegeEvents(root,startDate,endDate) {
   const group=directGroup||(board.sourceGroup===archivedGroup?archivedGroup:null);
   if(!['80','81'].includes(group))continue;
   for(const event of board.payload?.events||[]) {
+   // A schedule observed before both participants were set (ESPN TBD ids such
+   // as -2) is not a verified identity; wait for a schedule with real teams.
+   if(!(event.competitions?.[0]?.competitors||[]).every(c=>eventId(c.team?.id)))continue;
    const date=easternDay(event.date);if(date<startDate||date>endDate)continue;
    const prior=events.get(String(event.id));
    // FBS membership takes precedence for a game appearing in both groups.

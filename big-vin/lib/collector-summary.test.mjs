@@ -89,3 +89,15 @@ test('later hourly refreshes reuse verified archive teams and still request curr
   assert.equal(requests.filter(url=>url.includes('/events/')).length,0);
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
+
+test('archived schedules with TBD participants are not treated as verified identities',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'vin-tbd-archive-'));
+ try{
+  const directory=path.join(root,'zz-cfb-registry');fs.mkdirSync(directory);
+  const board=(id,away)=>({sourceUrl:'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=1000&dates=20260926&groups=80',observedAt:'2026-09-20T00:00:00Z',sourceGroup:'80',scheduleSourceUrl:'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=1000&dates=20260926&groups=80',scheduleObservedAt:'2026-09-20T00:00:00Z',archiveOnly:true,payload:{events:[{id,date:start,competitions:[{competitors:[{homeAway:'home',team:{id:'36'}},{homeAway:'away',team:{id:away}}]}]}]}});
+  fs.writeFileSync(path.join(directory,'cfb-7.json'),JSON.stringify(board('7','-2')));
+  fs.writeFileSync(path.join(directory,'cfb-8.json'),JSON.stringify(board('8','68')));
+  const known=knownCollegeEvents(root,date,date);
+  assert.deepEqual(known.map(k=>String(k.event.id)),['8']);
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});

@@ -144,7 +144,7 @@ export function compactCollegeRegistry(collectionRoot){
   const group=direct||(board.sourceGroup===archived?archived:null);if(!['80','81'].includes(group))continue;
   for(const event of board.payload?.events||[]){
    const competition=event.competitions?.[0],competitors=competition?.competitors;
-   if(!/^\d+$/.test(String(event.id))||!Number.isFinite(Date.parse(event.date))||competitors?.length!==2||!['home','away'].every(side=>competitors.some(c=>c.homeAway===side&&c.team?.id)))continue;
+   if(!/^\d+$/.test(String(event.id))||!Number.isFinite(Date.parse(event.date))||competitors?.length!==2||!['home','away'].every(side=>competitors.some(c=>c.homeAway===side&&/^\d+$/.test(String(c.team?.id)))))continue;
    const prior=entries.get(String(event.id));if(prior?.sourceGroup==='80'&&group==='81')continue;
    const observedAt=board.scheduleObservedAt||board.observedAt;
    if(!Number.isFinite(Date.parse(observedAt)))continue;
