@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-24T00:54:35.309Z",
+ "generatedAt": "2026-11-24T02:36:27.047Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -217,13 +217,24 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0,
+   "loss": 0.15,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
     "basis": "depth chart QB1"
    },
-   "items": [],
+   "items": [
+    {
+     "group": "lt",
+     "position": "LT",
+     "player": "Theo Benedet",
+     "espnId": "5125873",
+     "status": "Questionable",
+     "reported": "2026-11-24T01:27Z",
+     "weight": 0.25,
+     "points": 0.15
+    }
+   ],
    "notes": []
   },
   "CIN": {
@@ -369,7 +380,7 @@
      "player": "DJ Wonnum",
      "espnId": "4038849",
      "status": "Questionable",
-     "reported": "2026-11-24T00:41Z",
+     "reported": "2026-11-24T01:35Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -492,7 +503,7 @@
   },
   "IND": {
    "team": "IND",
-   "loss": 2,
+   "loss": 1,
    "starter": {
     "name": "Anthony Richardson",
     "espnId": "4429084",
@@ -518,26 +529,6 @@
      "reported": "2026-11-23T15:33Z",
      "weight": 1,
      "points": 0.5
-    },
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Bernhard Raimann",
-     "espnId": "4362580",
-     "status": "Out",
-     "reported": "2026-11-23T15:33Z",
-     "weight": 1,
-     "points": 0.6
-    },
-    {
-     "group": "rt",
-     "position": "RT",
-     "player": "Jalen Travis",
-     "espnId": "4892240",
-     "status": "Out",
-     "reported": "2026-11-23T15:33Z",
-     "weight": 1,
-     "points": 0.4
     }
    ],
    "notes": [
@@ -588,7 +579,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 1.1,
+   "loss": 0.8,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -604,16 +595,6 @@
      "reported": "2026-11-23T22:45Z",
      "weight": 1,
      "points": 0.4
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Trey Smith",
-     "espnId": "4242459",
-     "status": "Out",
-     "reported": "2026-11-23T15:35Z",
-     "weight": 1,
-     "points": 0.3
     },
     {
      "group": "rt",

@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nba-totals-v1",
  "sport": "nba",
- "generatedAt": "2026-11-24T00:54:47.527Z",
+ "generatedAt": "2026-11-24T02:36:40.965Z",
  "method": "NBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 32,
-  "losses": 29,
+  "wins": 33,
+  "losses": 30,
   "pushes": 0,
-  "pending": 7,
-  "bankroll": 495.31,
+  "pending": 5,
+  "bankroll": 494.41,
   "bankrollStart": 500
  },
  "backtest": {
@@ -4010,9 +4010,12 @@
    "awayPoints": 113,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 228,
+   "stake": {
+    "stake": 9.91,
+    "net": 9.01
+   }
   },
   "401910037": {
    "side": "under",
@@ -4028,9 +4031,12 @@
    "awayPoints": 114.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 239,
+   "stake": {
+    "stake": 9.91,
+    "net": -9.91
+   }
   },
   "401910038": {
    "side": "over",

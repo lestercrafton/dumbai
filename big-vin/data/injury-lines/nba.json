@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-24T00:54:40.700Z",
+ "generatedAt": "2026-11-24T02:36:34.106Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -438,14 +438,14 @@
    ]
   },
   "20": {
-   "loss": 2.36,
+   "loss": 2.52,
    "items": [
     {
      "player": "Joel Embiid",
      "position": "C",
      "status": "Out",
-     "points": 2.36,
-     "minutes": 30.3
+     "points": 2.52,
+     "minutes": 31
     },
     {
      "player": "Ariel Hukporti",
@@ -469,21 +469,21 @@
    ]
   },
   "22": {
-   "loss": 0,
+   "loss": 0.2,
    "items": [
     {
      "player": "Chris Youngblood",
      "position": "G",
      "status": "Out",
-     "points": 0,
-     "minutes": 14.8
+     "points": 0.2,
+     "minutes": 18.3
     },
     {
      "player": "Vit Krejci",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 12
+     "minutes": 0
     },
     {
      "player": "Ja Morant",
@@ -521,21 +521,21 @@
    ]
   },
   "24": {
-   "loss": 4.63,
+   "loss": 8.85,
    "items": [
-    {
-     "player": "Victor Wembanyama",
-     "position": "F",
-     "status": "Questionable",
-     "points": 2.78,
-     "minutes": 29.6
-    },
     {
      "player": "De'Aaron Fox",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.04,
+     "status": "Out",
+     "points": 0.09,
      "minutes": 27.8
+    },
+    {
+     "player": "Victor Wembanyama",
+     "position": "F",
+     "status": "Out",
+     "points": 6.95,
+     "minutes": 29.6
     },
     {
      "player": "Dylan Harper",
@@ -714,28 +714,28 @@
    ]
   },
   "29": {
-   "loss": 2.43,
+   "loss": 3,
    "items": [
     {
      "player": "Cameron Boozer",
      "position": "F",
      "status": "Out",
-     "points": 1.52,
-     "minutes": 29.8
+     "points": 1.96,
+     "minutes": 29.4
     },
     {
      "player": "Jerami Grant",
      "position": "F",
      "status": "Out",
-     "points": 0.91,
-     "minutes": 20.3
+     "points": 1.04,
+     "minutes": 19.7
     },
     {
      "player": "GG Jackson",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 12.4
+     "minutes": 13.8
     },
     {
      "player": "Scotty Pippen Jr.",
@@ -754,14 +754,21 @@
    ]
   },
   "30": {
-   "loss": 1.33,
+   "loss": 2.17,
    "items": [
+    {
+     "player": "Ryan Kalkbrenner",
+     "position": "C",
+     "status": "Out",
+     "points": 0.39,
+     "minutes": 18.4
+    },
     {
      "player": "Grayson Allen",
      "position": "G",
      "status": "Out",
-     "points": 0.97,
-     "minutes": 26.5
+     "points": 1.42,
+     "minutes": 27.3
     },
     {
      "player": "Grant Williams",
@@ -782,7 +789,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 26.8
+     "minutes": 26
     }
    ]
   }
