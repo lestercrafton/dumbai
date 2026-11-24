@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-24T02:36:34.106Z",
+ "generatedAt": "2026-11-24T12:57:02.292Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -69,45 +69,45 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 18
+     "minutes": 17
     },
     {
      "player": "Bennedict Mathurin",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 12.5
+     "minutes": 14.3
     },
     {
      "player": "Dejounte Murray",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 27.3
+     "minutes": 24.7
     }
    ]
   },
   "4": {
-   "loss": 2,
+   "loss": 1.33,
    "items": [
     {
      "player": "Norman Powell",
      "position": "G",
      "status": "Out",
-     "points": 1.26,
-     "minutes": 29.1
+     "points": 1.33,
+     "minutes": 29.2
     },
     {
      "player": "Caleb Wilson",
      "position": "F",
      "status": "Out",
-     "points": 0.74,
-     "minutes": 25.8
+     "points": 0,
+     "minutes": 23
     }
    ]
   },
   "5": {
-   "loss": 0.93,
+   "loss": 0.97,
    "items": [
     {
      "player": "Nae'Qwan Tomlin",
@@ -120,8 +120,8 @@
      "player": "Evan Mobley",
      "position": "C",
      "status": "Out",
-     "points": 0.93,
-     "minutes": 31
+     "points": 0.97,
+     "minutes": 30.5
     }
    ]
   },
@@ -257,18 +257,18 @@
    "loss": 0,
    "items": [
     {
-     "player": "T.J. McConnell",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13.7
-    },
-    {
      "player": "Aaron Nesmith",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 30.2
+    },
+    {
+     "player": "T.J. McConnell",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 13.7
     },
     {
      "player": "Tyrese Haliburton",
@@ -313,14 +313,14 @@
    ]
   },
   "13": {
-   "loss": 3.22,
+   "loss": 3.43,
    "items": [
     {
      "player": "Austin Reaves",
      "position": "G",
      "status": "Out",
-     "points": 3.22,
-     "minutes": 34.2
+     "points": 3.43,
+     "minutes": 34.3
     }
    ]
   },
@@ -348,7 +348,7 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 18
+     "minutes": 17.4
     },
     {
      "player": "Anthony Edwards",
@@ -367,14 +367,14 @@
    ]
   },
   "17": {
-   "loss": 1.35,
+   "loss": 1.38,
    "items": [
     {
      "player": "Nolan Traore",
      "position": "G",
      "status": "Out",
-     "points": 1.35,
-     "minutes": 24
+     "points": 1.38,
+     "minutes": 23.3
     }
    ]
   },
@@ -521,28 +521,28 @@
    ]
   },
   "24": {
-   "loss": 8.85,
+   "loss": 8.38,
    "items": [
-    {
-     "player": "De'Aaron Fox",
-     "position": "G",
-     "status": "Out",
-     "points": 0.09,
-     "minutes": 27.8
-    },
     {
      "player": "Victor Wembanyama",
      "position": "F",
      "status": "Out",
-     "points": 6.95,
-     "minutes": 29.6
+     "points": 6.17,
+     "minutes": 29.1
+    },
+    {
+     "player": "De'Aaron Fox",
+     "position": "G",
+     "status": "Out",
+     "points": 0.23,
+     "minutes": 27.1
     },
     {
      "player": "Dylan Harper",
      "position": "G",
      "status": "Out",
-     "points": 1.81,
-     "minutes": 31
+     "points": 1.98,
+     "minutes": 30.3
     },
     {
      "player": "Tobias Harris",
@@ -561,7 +561,7 @@
    ]
   },
   "25": {
-   "loss": 1.8,
+   "loss": 1.84,
    "items": [
     {
      "player": "Jaylin Williams",
@@ -571,18 +571,18 @@
      "minutes": 12.5
     },
     {
+     "player": "Aday Mara",
+     "position": "C",
+     "status": "Out",
+     "points": 1.84,
+     "minutes": 25.8
+    },
+    {
      "player": "Nikola Topic",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 11.3
-    },
-    {
-     "player": "Aday Mara",
-     "position": "C",
-     "status": "Out",
-     "points": 1.75,
-     "minutes": 25.7
     },
     {
      "player": "Jalen Williams",
@@ -595,8 +595,8 @@
      "player": "Alex Caruso",
      "position": "G",
      "status": "Out",
-     "points": 0.05,
-     "minutes": 19.4
+     "points": 0,
+     "minutes": 19.3
     },
     {
      "player": "Thomas Sorber",
@@ -622,14 +622,14 @@
    ]
   },
   "26": {
-   "loss": 1.14,
+   "loss": 1.23,
    "items": [
     {
      "player": "Jaxson Hayes",
      "position": "C",
      "status": "Out",
-     "points": 1.14,
-     "minutes": 22.8
+     "points": 1.23,
+     "minutes": 22
     },
     {
      "player": "Jusuf Nurkic",
@@ -643,7 +643,7 @@
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 34
+     "minutes": 0
     },
     {
      "player": "Jaren Jackson Jr.",
@@ -688,7 +688,7 @@
    ]
   },
   "28": {
-   "loss": 1.27,
+   "loss": 1.15,
    "items": [
     {
      "player": "Nate Bittle",
@@ -708,8 +708,8 @@
      "player": "RJ Barrett",
      "position": "F",
      "status": "Out",
-     "points": 1.27,
-     "minutes": 35.9
+     "points": 1.15,
+     "minutes": 35.7
     }
    ]
   },
@@ -757,6 +757,13 @@
    "loss": 2.17,
    "items": [
     {
+     "player": "Grant Williams",
+     "position": "F",
+     "status": "Out",
+     "points": 0.36,
+     "minutes": 22
+    },
+    {
      "player": "Ryan Kalkbrenner",
      "position": "C",
      "status": "Out",
@@ -769,13 +776,6 @@
      "status": "Out",
      "points": 1.42,
      "minutes": 27.3
-    },
-    {
-     "player": "Grant Williams",
-     "position": "F",
-     "status": "Out",
-     "points": 0.36,
-     "minutes": 22
     },
     {
      "player": "Kon Knueppel",
