@@ -1,0 +1,1810 @@
+{
+ "generatedAt": "2026-11-24T22:26:36.135Z",
+ "clvSwitch": 100,
+ "sports": {
+  "cfb": {
+   "counts": {
+    "graded": 1083,
+    "withClosingLine": 0,
+    "pickedBeforeKickoff": 1083,
+    "pickedBeforeKickoffWithClose": 0,
+    "eligibleOutOfSample": 0,
+    "eligibleWithClose": 0,
+    "firstEligibleDay": null
+   },
+   "predict": {
+    "corrExpClvRealClv": "",
+    "corrExpClvWin": "",
+    "corrPWin": "",
+    "corrRealClvWin": "",
+    "overallRealizedClv": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyZero": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "byBucket": {}
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 537403.1857382742,
+      "maxDD": 0.669007714362541,
+      "bets": 185,
+      "won": 93,
+      "lost": 88,
+      "roiRisked": -0.04109155189008032
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 537403.1857382742,
+      "maxDD": 0.669007714362541,
+      "bets": 185,
+      "won": 93,
+      "lost": 88,
+      "roiRisked": -0.04109155189008032
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 537403.1857382742,
+      "maxDD": 0.669007714362541,
+      "bets": 185,
+      "won": 93,
+      "lost": 88,
+      "roiRisked": -0.04109155189008032
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 537403.1857382742,
+      "maxDD": 0.669007714362541,
+      "bets": 185,
+      "won": 93,
+      "lost": 88,
+      "roiRisked": -0.04109155189008032
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    }
+   }
+  },
+  "cbb": {
+   "counts": {
+    "graded": 980,
+    "withClosingLine": 956,
+    "pickedBeforeKickoff": 980,
+    "pickedBeforeKickoffWithClose": 956,
+    "eligibleOutOfSample": 859,
+    "eligibleWithClose": 837,
+    "firstEligibleDay": "2026-11-03"
+   },
+   "predict": {
+    "corrExpClvRealClv": 0.103,
+    "corrExpClvWin": -0.023,
+    "corrPWin": 0.041,
+    "corrRealClvWin": 0.089,
+    "overallRealizedClv": {
+     "n": 956,
+     "wins": 462,
+     "losses": 494,
+     "winPct": 0.48326359832635984,
+     "flatPer1": -0.08011294804404007,
+     "clvN": 956,
+     "clvMean": 0.19351464435146443
+    },
+    "expClvPositive": {
+     "n": 813,
+     "wins": 386,
+     "losses": 427,
+     "winPct": 0.4747847478474785,
+     "flatPer1": -0.09666523435394285,
+     "clvN": 801,
+     "clvMean": 0.19975031210986266
+    },
+    "expClvNonPositive": {
+     "n": 46,
+     "wins": 23,
+     "losses": 23,
+     "winPct": 0.5,
+     "flatPer1": -0.03357969297588998,
+     "clvN": 36,
+     "clvMean": -1.1666666666666667
+    },
+    "kellyPositive": {
+     "n": 199,
+     "wins": 107,
+     "losses": 92,
+     "winPct": 0.5376884422110553,
+     "flatPer1": 0.028519305600232366,
+     "clvN": 196,
+     "clvMean": 0.09693877551020408
+    },
+    "kellyZero": {
+     "n": 660,
+     "wins": 302,
+     "losses": 358,
+     "winPct": 0.4575757575757576,
+     "flatPer1": -0.1300133988198374,
+     "clvN": 641,
+     "clvMean": 0.1544461778471139
+    },
+    "byBucket": {
+     "favorite:large": {
+      "n": 74,
+      "wins": 32,
+      "losses": 42,
+      "winPct": 0.43243243243243246,
+      "flatPer1": -0.179633445146688,
+      "clvN": 74,
+      "clvMean": -0.05405405405405406
+     },
+     "favorite:medium": {
+      "n": 127,
+      "wins": 57,
+      "losses": 70,
+      "winPct": 0.44881889763779526,
+      "flatPer1": -0.13774274415996968,
+      "clvN": 121,
+      "clvMean": -0.39669421487603307
+     },
+     "favorite:small": {
+      "n": 124,
+      "wins": 52,
+      "losses": 72,
+      "winPct": 0.41935483870967744,
+      "flatPer1": -0.19367031780198998,
+      "clvN": 120,
+      "clvMean": -0.3416666666666667
+     },
+     "underdog:large": {
+      "n": 183,
+      "wins": 77,
+      "losses": 106,
+      "winPct": 0.4207650273224044,
+      "flatPer1": -0.2018807743427659,
+      "clvN": 179,
+      "clvMean": 0.547486033519553
+     },
+     "underdog:medium": {
+      "n": 205,
+      "wins": 104,
+      "losses": 101,
+      "winPct": 0.5073170731707317,
+      "flatPer1": -0.03814100567810253,
+      "clvN": 200,
+      "clvMean": 0.43
+     },
+     "underdog:small": {
+      "n": 146,
+      "wins": 87,
+      "losses": 59,
+      "winPct": 0.5958904109589042,
+      "flatPer1": 0.13308841999115734,
+      "clvN": 143,
+      "clvMean": 0.1888111888111888
+     }
+    }
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 66,
+      "wins": 37,
+      "losses": 29,
+      "winPct": 0.5606060606060606,
+      "flatPer1": 0.08917791508080587,
+      "clvN": 63,
+      "clvMean": -0.09523809523809523
+     },
+     "B_rankClv": {
+      "n": 66,
+      "wins": 24,
+      "losses": 42,
+      "winPct": 0.36363636363636365,
+      "flatPer1": -0.30590666085909596,
+      "clvN": 63,
+      "clvMean": 0.6031746031746031
+     },
+     "C_blend": {
+      "n": 66,
+      "wins": 35,
+      "losses": 31,
+      "winPct": 0.5303030303030303,
+      "flatPer1": 0.030415689651913772,
+      "clvN": 63,
+      "clvMean": -0.09523809523809523
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": -0.395,
+      "ci95": [
+       -0.695,
+       -0.074
+      ],
+      "days": 22
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 110,
+      "wins": 58,
+      "losses": 52,
+      "winPct": 0.5272727272727272,
+      "flatPer1": 0.01675089766812622,
+      "clvN": 104,
+      "clvMean": -0.04807692307692308
+     },
+     "B_rankClv": {
+      "n": 110,
+      "wins": 43,
+      "losses": 67,
+      "winPct": 0.39090909090909093,
+      "flatPer1": -0.2565069190379031,
+      "clvN": 103,
+      "clvMean": 0.39805825242718446
+     },
+     "C_blend": {
+      "n": 110,
+      "wins": 57,
+      "losses": 53,
+      "winPct": 0.5181818181818182,
+      "flatPer1": 0.0009012664034751912,
+      "clvN": 104,
+      "clvMean": -0.0673076923076923
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": -0.273,
+      "ci95": [
+       -0.557,
+       -0.009
+      ],
+      "days": 22
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 220,
+      "wins": 112,
+      "losses": 108,
+      "winPct": 0.509090909090909,
+      "flatPer1": -0.025539340111709944,
+      "clvN": 208,
+      "clvMean": 0.18269230769230768
+     },
+     "B_rankClv": {
+      "n": 220,
+      "wins": 98,
+      "losses": 122,
+      "winPct": 0.44545454545454544,
+      "flatPer1": -0.15325298307550633,
+      "clvN": 208,
+      "clvMean": 0.5048076923076923
+     },
+     "C_blend": {
+      "n": 220,
+      "wins": 108,
+      "losses": 112,
+      "winPct": 0.4909090909090909,
+      "flatPer1": -0.05880930508764398,
+      "clvN": 208,
+      "clvMean": 0.15865384615384615
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": -0.128,
+      "ci95": [
+       -0.281,
+       0.01
+      ],
+      "days": 22
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 889285.8000671815,
+      "maxDD": 0.27801658700959625,
+      "bets": 34,
+      "won": 15,
+      "lost": 19,
+      "roiRisked": -0.07747719772210662
+     },
+     "oosWindow": {
+      "end": 988560.0590496467,
+      "maxDD": 0.11269264775366518,
+      "bets": 18,
+      "won": 8,
+      "lost": 10,
+      "roiRisked": -0.022674846782737828
+     },
+     "oosWindowAllPicks": {
+      "end": 837503.7971096653,
+      "maxDD": 0.5154429005456638,
+      "bets": 186,
+      "won": 101,
+      "lost": 85,
+      "roiRisked": -0.022128301076738768
+     }
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 889285.8000671815,
+      "maxDD": 0.27801658700959625,
+      "bets": 34,
+      "won": 15,
+      "lost": 19,
+      "roiRisked": -0.07747719772210662
+     },
+     "oosWindow": {
+      "end": 988560.0590496467,
+      "maxDD": 0.11269264775366518,
+      "bets": 18,
+      "won": 8,
+      "lost": 10,
+      "roiRisked": -0.022674846782737828
+     },
+     "oosWindowAllPicks": {
+      "end": 860001.9424141366,
+      "maxDD": 0.5154429005456641,
+      "bets": 188,
+      "won": 102,
+      "lost": 86,
+      "roiRisked": -0.018769179654029734
+     }
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 889285.8000671815,
+      "maxDD": 0.27801658700959625,
+      "bets": 34,
+      "won": 15,
+      "lost": 19,
+      "roiRisked": -0.07747719772210662
+     },
+     "oosWindow": {
+      "end": 988560.0590496467,
+      "maxDD": 0.11269264775366518,
+      "bets": 18,
+      "won": 8,
+      "lost": 10,
+      "roiRisked": -0.022674846782737828
+     },
+     "oosWindowAllPicks": {
+      "end": 837503.7971096653,
+      "maxDD": 0.5154429005456638,
+      "bets": 186,
+      "won": 101,
+      "lost": 85,
+      "roiRisked": -0.022128301076738768
+     }
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 811110.3070153181,
+      "maxDD": 0.3188853601955929,
+      "bets": 39,
+      "won": 18,
+      "lost": 21,
+      "roiRisked": -0.10132820469958397
+     },
+     "oosWindow": {
+      "end": 901657.5469194102,
+      "maxDD": 0.20869650620603794,
+      "bets": 23,
+      "won": 11,
+      "lost": 12,
+      "roiRisked": -0.09951223622724256
+     },
+     "oosWindowAllPicks": {
+      "end": 755753.3920393822,
+      "maxDD": 0.5578556855651777,
+      "bets": 181,
+      "won": 98,
+      "lost": 83,
+      "roiRisked": -0.02803662497372809
+     }
+    }
+   }
+  },
+  "nba": {
+   "counts": {
+    "graded": 258,
+    "withClosingLine": 250,
+    "pickedBeforeKickoff": 258,
+    "pickedBeforeKickoffWithClose": 250,
+    "eligibleOutOfSample": 151,
+    "eligibleWithClose": 143,
+    "firstEligibleDay": "2026-11-04"
+   },
+   "predict": {
+    "corrExpClvRealClv": -0.045,
+    "corrExpClvWin": 0.126,
+    "corrPWin": -0.209,
+    "corrRealClvWin": 0.05,
+    "overallRealizedClv": {
+     "n": 250,
+     "wins": 131,
+     "losses": 119,
+     "winPct": 0.524,
+     "flatPer1": -0.0026318019751899687,
+     "clvN": 250,
+     "clvMean": 0.104
+    },
+    "expClvPositive": {
+     "n": 151,
+     "wins": 91,
+     "losses": 60,
+     "winPct": 0.6026490066225165,
+     "flatPer1": 0.15046581533403414,
+     "clvN": 143,
+     "clvMean": 0.09090909090909091
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 20,
+     "wins": 10,
+     "losses": 10,
+     "winPct": 0.5,
+     "flatPer1": -0.021772858421458118,
+     "clvN": 14,
+     "clvMean": -0.21428571428571427
+    },
+    "kellyZero": {
+     "n": 131,
+     "wins": 81,
+     "losses": 50,
+     "winPct": 0.6183206106870229,
+     "flatPer1": 0.17676179606006354,
+     "clvN": 129,
+     "clvMean": 0.12403100775193798
+    },
+    "byBucket": {
+     "favorite:large": {
+      "n": 24,
+      "wins": 13,
+      "losses": 11,
+      "winPct": 0.5416666666666666,
+      "flatPer1": 0.027850411677801393,
+      "clvN": 23,
+      "clvMean": -0.13043478260869565
+     },
+     "favorite:medium": {
+      "n": 26,
+      "wins": 15,
+      "losses": 11,
+      "winPct": 0.5769230769230769,
+      "flatPer1": 0.10800171674109715,
+      "clvN": 24,
+      "clvMean": 0.08333333333333333
+     },
+     "favorite:small": {
+      "n": 26,
+      "wins": 16,
+      "losses": 10,
+      "winPct": 0.6153846153846154,
+      "flatPer1": 0.17460676174457315,
+      "clvN": 23,
+      "clvMean": 0
+     },
+     "underdog:large": {
+      "n": 17,
+      "wins": 7,
+      "losses": 10,
+      "winPct": 0.4117647058823529,
+      "flatPer1": -0.22082114934569497,
+      "clvN": 17,
+      "clvMean": 0.4117647058823529
+     },
+     "underdog:medium": {
+      "n": 30,
+      "wins": 22,
+      "losses": 8,
+      "winPct": 0.7333333333333333,
+      "flatPer1": 0.4018945149754948,
+      "clvN": 29,
+      "clvMean": 0.20689655172413793
+     },
+     "underdog:small": {
+      "n": 28,
+      "wins": 18,
+      "losses": 10,
+      "winPct": 0.6428571428571429,
+      "flatPer1": 0.22861542443415955,
+      "clvN": 27,
+      "clvMean": 0.037037037037037035
+     }
+    }
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 59,
+      "wins": 29,
+      "losses": 30,
+      "winPct": 0.4915254237288136,
+      "flatPer1": -0.05935395803694714,
+      "clvN": 56,
+      "clvMean": -0.017857142857142856
+     },
+     "B_rankClv": {
+      "n": 59,
+      "wins": 39,
+      "losses": 20,
+      "winPct": 0.6610169491525424,
+      "flatPer1": 0.2651779489430008,
+      "clvN": 56,
+      "clvMean": 0.03571428571428571
+     },
+     "C_blend": {
+      "n": 59,
+      "wins": 28,
+      "losses": 31,
+      "winPct": 0.4745762711864407,
+      "flatPer1": -0.08904316344236676,
+      "clvN": 56,
+      "clvMean": -0.03571428571428571
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0.325,
+      "ci95": [
+       0.072,
+       0.581
+      ],
+      "days": 20
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 95,
+      "wins": 55,
+      "losses": 40,
+      "winPct": 0.5789473684210527,
+      "flatPer1": 0.10652825091314808,
+      "clvN": 90,
+      "clvMean": 0.022222222222222223
+     },
+     "B_rankClv": {
+      "n": 95,
+      "wins": 58,
+      "losses": 37,
+      "winPct": 0.6105263157894737,
+      "flatPer1": 0.1671017558078761,
+      "clvN": 90,
+      "clvMean": -0.03333333333333333
+     },
+     "C_blend": {
+      "n": 95,
+      "wins": 54,
+      "losses": 41,
+      "winPct": 0.5684210526315789,
+      "flatPer1": 0.08781675645794651,
+      "clvN": 90,
+      "clvMean": 0.022222222222222223
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0.061,
+      "ci95": [
+       -0.084,
+       0.228
+      ],
+      "days": 20
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 145,
+      "wins": 87,
+      "losses": 58,
+      "winPct": 0.6,
+      "flatPer1": 0.14505083199848223,
+      "clvN": 137,
+      "clvMean": 0.08759124087591241
+     },
+     "B_rankClv": {
+      "n": 145,
+      "wins": 87,
+      "losses": 58,
+      "winPct": 0.6,
+      "flatPer1": 0.1454430577040536,
+      "clvN": 137,
+      "clvMean": 0.0948905109489051
+     },
+     "C_blend": {
+      "n": 145,
+      "wins": 87,
+      "losses": 58,
+      "winPct": 0.6,
+      "flatPer1": 0.14505083199848223,
+      "clvN": 137,
+      "clvMean": 0.08759124087591241
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       -0.035,
+       0.042
+      ],
+      "days": 20
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 944949.8585434281,
+      "maxDD": 0.09434216463160416,
+      "bets": 8,
+      "won": 4,
+      "lost": 4,
+      "roiRisked": -0.3933463532222897
+     },
+     "oosWindow": {
+      "end": 1000000,
+      "maxDD": 0,
+      "bets": 0,
+      "won": 0,
+      "lost": 0,
+      "roiRisked": null
+     },
+     "oosWindowAllPicks": {
+      "end": 1046607.4086024386,
+      "maxDD": 0.07656605442304731,
+      "bets": 20,
+      "won": 10,
+      "lost": 10,
+      "roiRisked": 0.12655799495200062
+     }
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 944949.8585434281,
+      "maxDD": 0.09434216463160416,
+      "bets": 8,
+      "won": 4,
+      "lost": 4,
+      "roiRisked": -0.3933463532222897
+     },
+     "oosWindow": {
+      "end": 1000000,
+      "maxDD": 0,
+      "bets": 0,
+      "won": 0,
+      "lost": 0,
+      "roiRisked": null
+     },
+     "oosWindowAllPicks": {
+      "end": 1046607.4086024386,
+      "maxDD": 0.07656605442304731,
+      "bets": 20,
+      "won": 10,
+      "lost": 10,
+      "roiRisked": 0.12655799495200062
+     }
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 944949.8585434281,
+      "maxDD": 0.09434216463160416,
+      "bets": 8,
+      "won": 4,
+      "lost": 4,
+      "roiRisked": -0.3933463532222897
+     },
+     "oosWindow": {
+      "end": 1000000,
+      "maxDD": 0,
+      "bets": 0,
+      "won": 0,
+      "lost": 0,
+      "roiRisked": null
+     },
+     "oosWindowAllPicks": {
+      "end": 1046607.4086024386,
+      "maxDD": 0.07656605442304731,
+      "bets": 20,
+      "won": 10,
+      "lost": 10,
+      "roiRisked": 0.12655799495200062
+     }
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 944949.8585434281,
+      "maxDD": 0.09434216463160416,
+      "bets": 8,
+      "won": 4,
+      "lost": 4,
+      "roiRisked": -0.3933463532222897
+     },
+     "oosWindow": {
+      "end": 1000000,
+      "maxDD": 0,
+      "bets": 0,
+      "won": 0,
+      "lost": 0,
+      "roiRisked": null
+     },
+     "oosWindowAllPicks": {
+      "end": 1053512.4562893216,
+      "maxDD": 0.09178888148576667,
+      "bets": 26,
+      "won": 13,
+      "lost": 13,
+      "roiRisked": 0.11610860470077468
+     }
+    }
+   }
+  },
+  "nfl": {
+   "counts": {
+    "graded": 161,
+    "withClosingLine": 0,
+    "pickedBeforeKickoff": 161,
+    "pickedBeforeKickoffWithClose": 0,
+    "eligibleOutOfSample": 0,
+    "eligibleWithClose": 0,
+    "firstEligibleDay": null
+   },
+   "predict": {
+    "corrExpClvRealClv": "",
+    "corrExpClvWin": "",
+    "corrPWin": "",
+    "corrRealClvWin": "",
+    "overallRealizedClv": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyZero": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "byBucket": {}
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 894449.5403258817,
+      "maxDD": 0.13210500696968858,
+      "bets": 15,
+      "won": 6,
+      "lost": 9,
+      "roiRisked": -0.39369286064645226
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 894449.5403258817,
+      "maxDD": 0.13210500696968858,
+      "bets": 15,
+      "won": 6,
+      "lost": 9,
+      "roiRisked": -0.39369286064645226
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 894449.5403258817,
+      "maxDD": 0.13210500696968858,
+      "bets": 15,
+      "won": 6,
+      "lost": 9,
+      "roiRisked": -0.39369286064645226
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 894449.5403258817,
+      "maxDD": 0.13210500696968858,
+      "bets": 15,
+      "won": 6,
+      "lost": 9,
+      "roiRisked": -0.39369286064645226
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    }
+   }
+  },
+  "nhl": {
+   "counts": {
+    "graded": 384,
+    "withClosingLine": 0,
+    "pickedBeforeKickoff": 384,
+    "pickedBeforeKickoffWithClose": 0,
+    "eligibleOutOfSample": 0,
+    "eligibleWithClose": 0,
+    "firstEligibleDay": null
+   },
+   "predict": {
+    "corrExpClvRealClv": "",
+    "corrExpClvWin": "",
+    "corrPWin": "",
+    "corrRealClvWin": "",
+    "overallRealizedClv": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyZero": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "byBucket": {}
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 553607.9000253305,
+      "maxDD": 0.7271901821183842,
+      "bets": 71,
+      "won": 41,
+      "lost": 30,
+      "roiRisked": -0.09595849432387837
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 553607.9000253305,
+      "maxDD": 0.7271901821183842,
+      "bets": 71,
+      "won": 41,
+      "lost": 30,
+      "roiRisked": -0.09595849432387837
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 553607.9000253305,
+      "maxDD": 0.7271901821183842,
+      "bets": 71,
+      "won": 41,
+      "lost": 30,
+      "roiRisked": -0.09595849432387837
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 553607.9000253305,
+      "maxDD": 0.7271901821183842,
+      "bets": 71,
+      "won": 41,
+      "lost": 30,
+      "roiRisked": -0.09595849432387837
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    }
+   }
+  },
+  "mlb": {
+   "counts": {
+    "graded": 232,
+    "withClosingLine": 0,
+    "pickedBeforeKickoff": 232,
+    "pickedBeforeKickoffWithClose": 0,
+    "eligibleOutOfSample": 0,
+    "eligibleWithClose": 0,
+    "firstEligibleDay": null
+   },
+   "predict": {
+    "corrExpClvRealClv": "",
+    "corrExpClvWin": "",
+    "corrPWin": "",
+    "corrRealClvWin": "",
+    "overallRealizedClv": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyZero": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "byBucket": {}
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 156481.472937006,
+      "maxDD": 0.8881212297221676,
+      "bets": 72,
+      "won": 31,
+      "lost": 41,
+      "roiRisked": -0.25402800942380754
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 156481.472937006,
+      "maxDD": 0.8881212297221676,
+      "bets": 72,
+      "won": 31,
+      "lost": 41,
+      "roiRisked": -0.25402800942380754
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 156481.472937006,
+      "maxDD": 0.8881212297221676,
+      "bets": 72,
+      "won": 31,
+      "lost": 41,
+      "roiRisked": -0.25402800942380754
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 156481.472937006,
+      "maxDD": 0.8881212297221676,
+      "bets": 72,
+      "won": 31,
+      "lost": 41,
+      "roiRisked": -0.25402800942380754
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    }
+   }
+  },
+  "wnba": {
+   "counts": {
+    "graded": 50,
+    "withClosingLine": 0,
+    "pickedBeforeKickoff": 50,
+    "pickedBeforeKickoffWithClose": 0,
+    "eligibleOutOfSample": 0,
+    "eligibleWithClose": 0,
+    "firstEligibleDay": null
+   },
+   "predict": {
+    "corrExpClvRealClv": "",
+    "corrExpClvWin": "",
+    "corrPWin": "",
+    "corrRealClvWin": "",
+    "overallRealizedClv": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "expClvNonPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyPositive": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "kellyZero": {
+     "n": 0,
+     "wins": 0,
+     "losses": 0,
+     "winPct": null,
+     "flatPer1": null,
+     "clvN": 0,
+     "clvMean": null
+    },
+    "byBucket": {}
+   },
+   "top": {
+    "top3": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top5": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    },
+    "top10": {
+     "A_current": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "B_rankClv": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "C_blend": {
+      "n": 0,
+      "wins": 0,
+      "losses": 0,
+      "winPct": null,
+      "flatPer1": null,
+      "clvN": 0,
+      "clvMean": null
+     },
+     "clvMinusKellyFlatPer1": {
+      "diff": 0,
+      "ci95": [
+       0,
+       0
+      ],
+      "days": 0
+     }
+    }
+   },
+   "bank": {
+    "A_current": {
+     "season": {
+      "end": 1244254.5939767603,
+      "maxDD": 0.02800697945465384,
+      "bets": 15,
+      "won": 11,
+      "lost": 4,
+      "roiRisked": 0.6393904508686065
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B1_rankClv_stakeKelly": {
+     "season": {
+      "end": 1244254.5939767603,
+      "maxDD": 0.02800697945465384,
+      "bets": 15,
+      "won": 11,
+      "lost": 4,
+      "roiRisked": 0.6393904508686065
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "B2_kelly_onlyPositiveExpClv": {
+     "season": {
+      "end": 1244254.5939767603,
+      "maxDD": 0.02800697945465384,
+      "bets": 15,
+      "won": 11,
+      "lost": 4,
+      "roiRisked": 0.6393904508686065
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    },
+    "C_blend_pPlusClv": {
+     "season": {
+      "end": 1244254.5939767603,
+      "maxDD": 0.02800697945465384,
+      "bets": 15,
+      "won": 11,
+      "lost": 4,
+      "roiRisked": 0.6393904508686065
+     },
+     "oosWindow": null,
+     "oosWindowAllPicks": null
+    }
+   }
+  }
+ }
+}
