@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-24T12:57:02.292Z",
+ "generatedAt": "2026-11-24T23:13:04.221Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -88,8 +88,15 @@
    ]
   },
   "4": {
-   "loss": 1.33,
+   "loss": 2.29,
    "items": [
+    {
+     "player": "Jalen Smith",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.96,
+     "minutes": 25.9
+    },
     {
      "player": "Norman Powell",
      "position": "G",
@@ -180,20 +187,6 @@
      "minutes": 6
     },
     {
-     "player": "Jalen Duren",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Cade Cunningham",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.33,
-     "minutes": 35.9
-    },
-    {
      "player": "Taurean Prince",
      "position": "F",
      "status": "Out",
@@ -206,6 +199,20 @@
      "status": "Out",
      "points": 1.29,
      "minutes": 31.3
+    },
+    {
+     "player": "Jalen Duren",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
+     "player": "Cade Cunningham",
+     "position": "G",
+     "status": "Day-To-Day",
+     "points": 0.33,
+     "minutes": 35.9
     }
    ]
   },
@@ -257,20 +264,6 @@
    "loss": 0,
    "items": [
     {
-     "player": "Aaron Nesmith",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 30.2
-    },
-    {
-     "player": "T.J. McConnell",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 13.7
-    },
-    {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
@@ -278,11 +271,11 @@
      "minutes": 0
     },
     {
-     "player": "Johnny Furphy",
+     "player": "Aaron Nesmith",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 0
+     "minutes": 30.2
     },
     {
      "player": "Ben Sheppard",
@@ -325,13 +318,13 @@
    ]
   },
   "14": {
-   "loss": 4.92,
+   "loss": 1.97,
    "items": [
     {
      "player": "Giannis Antetokounmpo",
      "position": "F",
-     "status": "Out",
-     "points": 4.92,
+     "status": "Questionable",
+     "points": 1.97,
      "minutes": 32.7
     }
    ]
@@ -344,6 +337,13 @@
    "loss": 0,
    "items": [
     {
+     "player": "Donte DiVincenzo",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
      "player": "Jaylen Clark",
      "position": "G",
      "status": "Out",
@@ -352,13 +352,6 @@
     },
     {
      "player": "Anthony Edwards",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
-     "player": "Donte DiVincenzo",
      "position": "G",
      "status": "Out",
      "points": 0,
@@ -379,14 +372,21 @@
    ]
   },
   "18": {
-   "loss": 0.58,
+   "loss": 2.12,
    "items": [
     {
      "player": "Miles McBride",
      "position": "G",
-     "status": "Out",
-     "points": 0.06,
+     "status": "Questionable",
+     "points": 0.02,
      "minutes": 16.2
+    },
+    {
+     "player": "Jordan Clarkson",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 10.8
     },
     {
      "player": "OG Anunoby",
@@ -396,11 +396,11 @@
      "minutes": 33.8
     },
     {
-     "player": "Jordan Clarkson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 10.8
+     "player": "Karl-Anthony Towns",
+     "position": "C",
+     "status": "Questionable",
+     "points": 1.58,
+     "minutes": 32.8
     }
    ]
   },
@@ -438,13 +438,13 @@
    ]
   },
   "20": {
-   "loss": 2.52,
+   "loss": 1.89,
    "items": [
     {
      "player": "Joel Embiid",
      "position": "C",
-     "status": "Out",
-     "points": 2.52,
+     "status": "Doubtful",
+     "points": 1.89,
      "minutes": 31
     },
     {
@@ -521,13 +521,13 @@
    ]
   },
   "24": {
-   "loss": 8.38,
+   "loss": 8.37,
    "items": [
     {
      "player": "Victor Wembanyama",
      "position": "F",
      "status": "Out",
-     "points": 6.17,
+     "points": 6.16,
      "minutes": 29.1
     },
     {
@@ -691,15 +691,15 @@
    "loss": 1.15,
    "items": [
     {
-     "player": "Nate Bittle",
-     "position": "C",
+     "player": "Kawhi Leonard",
+     "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Kawhi Leonard",
-     "position": "F",
+     "player": "Nate Bittle",
+     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -716,6 +716,13 @@
   "29": {
    "loss": 3,
    "items": [
+    {
+     "player": "Scotty Pippen Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
     {
      "player": "Cameron Boozer",
      "position": "F",
@@ -738,13 +745,6 @@
      "minutes": 13.8
     },
     {
-     "player": "Scotty Pippen Jr.",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Richie Saunders",
      "position": "G",
      "status": "Out",
@@ -754,21 +754,21 @@
    ]
   },
   "30": {
-   "loss": 2.17,
+   "loss": 1.71,
    "items": [
-    {
-     "player": "Grant Williams",
-     "position": "F",
-     "status": "Out",
-     "points": 0.36,
-     "minutes": 22
-    },
     {
      "player": "Ryan Kalkbrenner",
      "position": "C",
-     "status": "Out",
-     "points": 0.39,
+     "status": "Doubtful",
+     "points": 0.29,
      "minutes": 18.4
+    },
+    {
+     "player": "Dennis Schroder",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 26
     },
     {
      "player": "Grayson Allen",
@@ -783,13 +783,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 6
-    },
-    {
-     "player": "Dennis Schroder",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 26
     }
    ]
   }
