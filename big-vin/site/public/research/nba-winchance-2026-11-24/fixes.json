@@ -1,0 +1,92 @@
+{
+ "live (all versions, k=100, buckets)": {
+  "corrWithWin": -0.209,
+  "estimateRange": [
+   0.425,
+   0.535
+  ],
+  "kellyPositive": {
+   "record": "10-10",
+   "flatPer1": -0.022
+  },
+  "top3PerDay": {
+   "record": "29-30",
+   "flatPer1": -0.059
+  }
+ },
+ "same model version only": {
+  "corrWithWin": -0.111,
+  "estimateRange": [
+   0.525,
+   0.595
+  ],
+  "kellyPositive": {
+   "record": "89-58",
+   "flatPer1": 0.157
+  },
+  "top3PerDay": {
+   "record": "36-23",
+   "flatPer1": 0.177
+  }
+ },
+ "stronger prior k=300": {
+  "corrWithWin": -0.196,
+  "estimateRange": [
+   0.478,
+   0.527
+  ],
+  "kellyPositive": {
+   "record": "14-13",
+   "flatPer1": 0.017
+  },
+  "top3PerDay": {
+   "record": "29-30",
+   "flatPer1": -0.055
+  }
+ },
+ "same version + k=300": {
+  "corrWithWin": -0.095,
+  "estimateRange": [
+   0.526,
+   0.56
+  ],
+  "kellyPositive": {
+   "record": "87-55",
+   "flatPer1": 0.171
+  },
+  "top3PerDay": {
+   "record": "37-22",
+   "flatPer1": 0.214
+  }
+ },
+ "no buckets (sport rate only)": {
+  "corrWithWin": -0.067,
+  "estimateRange": [
+   0.473,
+   0.524
+  ],
+  "kellyPositive": {
+   "record": "13-5",
+   "flatPer1": 0.418
+  },
+  "top3PerDay": {
+   "record": "31-28",
+   "flatPer1": 0.01
+  }
+ },
+ "same version + k=300 + backtest prior 49.5%": {
+  "corrWithWin": -0.072,
+  "estimateRange": [
+   0.498,
+   0.543
+  ],
+  "kellyPositive": {
+   "record": "30-26",
+   "flatPer1": 0.04
+  },
+  "top3PerDay": {
+   "record": "33-26",
+   "flatPer1": 0.08
+  }
+ }
+}
