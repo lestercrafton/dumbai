@@ -1,23 +1,23 @@
 {
  "method": "Final margin = a + b × market line + c × (our line − market line), ordinary least squares on saved graded live picks.",
  "all": {
-  "games": 1828,
+  "games": 1943,
   "ready": true,
-  "marketWeight": 0.9914662376552508,
-  "ourExtraWeight": -0.019216309724406022,
-  "standardError": 0.07046243843093103,
-  "t": -0.2727170695808705,
+  "marketWeight": 0.9840659373138869,
+  "ourExtraWeight": -0.025730728718221574,
+  "standardError": 0.06840489292032143,
+  "t": -0.3761533366946855,
   "addsInformation": false,
   "hurts": false
  },
  "sports": {
   "nfl": {
-   "games": 58,
+   "games": 70,
    "ready": true,
-   "marketWeight": 1.8844246490098187,
-   "ourExtraWeight": 0.8607754865450584,
-   "standardError": 0.5583695747069417,
-   "t": 1.5415873742705866,
+   "marketWeight": 1.7091404964079706,
+   "ourExtraWeight": 0.7060681791406218,
+   "standardError": 0.5021991695080424,
+   "t": 1.4059525025345836,
    "addsInformation": false,
    "hurts": false
   },
@@ -32,12 +32,12 @@
    "hurts": false
   },
   "nba": {
-   "games": 149,
+   "games": 166,
    "ready": true,
-   "marketWeight": 0.99943285313482,
-   "ourExtraWeight": -0.14595162995303407,
-   "standardError": 0.2668274896030813,
-   "t": -0.5469887310716903,
+   "marketWeight": 0.9480531827190168,
+   "ourExtraWeight": -0.007561596368855339,
+   "standardError": 0.25175711662518885,
+   "t": -0.030035283491560233,
    "addsInformation": false,
    "hurts": false
   },
@@ -46,15 +46,15 @@
    "ready": false
   },
   "cbb": {
-   "games": 897,
+   "games": 983,
    "ready": true,
-   "marketWeight": 0.9570918062172782,
-   "ourExtraWeight": -0.21136693364357018,
-   "standardError": 0.08605128768875496,
-   "t": -2.456290188336034,
+   "marketWeight": 0.9509913908408506,
+   "ourExtraWeight": -0.21529135507358688,
+   "standardError": 0.0835231706548643,
+   "t": -2.5776243093454516,
    "addsInformation": false,
    "hurts": true
   }
  },
- "updatedAt": "2026-11-22T15:44:16.633Z"
+ "updatedAt": "2026-11-25T00:03:12.390Z"
 }

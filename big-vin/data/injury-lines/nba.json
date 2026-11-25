@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-24T23:13:04.221Z",
+ "generatedAt": "2026-11-24T23:56:44.479Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -177,8 +177,15 @@
    "items": []
   },
   "8": {
-   "loss": 1.62,
+   "loss": 4.63,
    "items": [
+    {
+     "player": "Cade Cunningham",
+     "position": "G",
+     "status": "Out",
+     "points": 3.34,
+     "minutes": 35.9
+    },
     {
      "player": "Ebuka Okorie",
      "position": "G",
@@ -206,19 +213,19 @@
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Cade Cunningham",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.33,
-     "minutes": 35.9
     }
    ]
   },
   "9": {
-   "loss": 4.33,
+   "loss": 4.7,
    "items": [
+    {
+     "player": "Yaxel Lendeborg",
+     "position": "F",
+     "status": "Questionable",
+     "points": 0.37,
+     "minutes": 31.3
+    },
     {
      "player": "Brandon Williams",
      "position": "G",
@@ -564,6 +571,13 @@
    "loss": 1.84,
    "items": [
     {
+     "player": "Nikola Topic",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 11.3
+    },
+    {
      "player": "Jaylin Williams",
      "position": "F",
      "status": "Out",
@@ -578,25 +592,11 @@
      "minutes": 25.8
     },
     {
-     "player": "Nikola Topic",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 11.3
-    },
-    {
      "player": "Jalen Williams",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Alex Caruso",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 19.3
     },
     {
      "player": "Thomas Sorber",

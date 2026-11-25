@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-24T23:12:59.451Z",
+ "generatedAt": "2026-11-24T23:56:37.242Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -997,23 +997,13 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 0.36,
+   "loss": 0.26,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "te1",
-     "position": "TE",
-     "player": "Dallas Goedert",
-     "espnId": "3121023",
-     "status": "Questionable",
-     "reported": "2026-11-23T22:07Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
     {
      "group": "cb",
      "position": "LCB",
