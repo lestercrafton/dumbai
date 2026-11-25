@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-24T23:56:37.242Z",
+ "generatedAt": "2026-11-25T05:42:26.569Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -156,7 +156,7 @@
      "player": "Christian Benford",
      "espnId": "4379778",
      "status": "Questionable",
-     "reported": "2026-11-24T00:34Z",
+     "reported": "2026-11-25T00:53Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -359,7 +359,7 @@
      "player": "Chuck Clark",
      "espnId": "3045463",
      "status": "Questionable",
-     "reported": "2026-11-24T01:21Z",
+     "reported": "2026-11-25T00:47Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -401,7 +401,7 @@
      "player": "Sean Rhyan",
      "espnId": "4426411",
      "status": "Questionable",
-     "reported": "2026-11-24T12:39Z",
+     "reported": "2026-11-25T01:18Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -411,7 +411,7 @@
      "player": "Kevin Zeitler",
      "espnId": "14931",
      "status": "Questionable",
-     "reported": "2026-11-24T12:39Z",
+     "reported": "2026-11-25T01:25Z",
      "weight": 0.25,
      "points": 0.08
     }
@@ -591,7 +591,7 @@
      "player": "Trey Smith",
      "espnId": "4242459",
      "status": "Questionable",
-     "reported": "2026-11-24T12:39Z",
+     "reported": "2026-11-25T02:10Z",
      "weight": 0.25,
      "points": 0.08
     },
@@ -1020,7 +1020,7 @@
      "player": "Quinyon Mitchell",
      "espnId": "4686273",
      "status": "Questionable",
-     "reported": "2026-11-22T20:56Z",
+     "reported": "2026-11-25T01:05Z",
      "weight": 0.25,
      "points": 0.13
     }
@@ -1033,8 +1033,8 @@
    "team": "PIT",
    "loss": 0.25,
    "starter": {
-    "name": "Aaron Rodgers",
-    "espnId": "8439",
+    "name": "Mason Rudolph",
+    "espnId": "3116407",
     "basis": "depth chart QB1"
    },
    "items": [
@@ -1049,7 +1049,9 @@
      "points": 0.25
     }
    ],
-   "notes": []
+   "notes": [
+    "Usage leader Aaron Rodgers is not the resolved starter."
+   ]
   },
   "SF": {
    "team": "SF",

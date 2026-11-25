@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-24T23:56:44.479Z",
+ "generatedAt": "2026-11-25T05:42:32.556Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -50,14 +50,14 @@
    ]
   },
   "2": {
-   "loss": 0.33,
+   "loss": 0.47,
    "items": [
     {
      "player": "Mitchell Robinson",
      "position": "C",
      "status": "Out",
-     "points": 0.33,
-     "minutes": 16.3
+     "points": 0.47,
+     "minutes": 15.7
     }
    ]
   },
@@ -133,7 +133,7 @@
    ]
   },
   "6": {
-   "loss": 0.34,
+   "loss": 0,
    "items": [
     {
      "player": "Tobi Lawal",
@@ -141,13 +141,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 6.8
-    },
-    {
-     "player": "P.J. Washington",
-     "position": "F",
-     "status": "Questionable",
-     "points": 0.34,
-     "minutes": 28
     },
     {
      "player": "Dereck Lively II",
@@ -177,14 +170,14 @@
    "items": []
   },
   "8": {
-   "loss": 4.63,
+   "loss": 3.48,
    "items": [
     {
      "player": "Cade Cunningham",
      "position": "G",
      "status": "Out",
-     "points": 3.34,
-     "minutes": 35.9
+     "points": 2.84,
+     "minutes": 37
     },
     {
      "player": "Ebuka Okorie",
@@ -204,8 +197,8 @@
      "player": "Duncan Robinson",
      "position": "F",
      "status": "Out",
-     "points": 1.29,
-     "minutes": 31.3
+     "points": 0.64,
+     "minutes": 31.2
     },
     {
      "player": "Jalen Duren",
@@ -528,21 +521,21 @@
    ]
   },
   "24": {
-   "loss": 8.37,
+   "loss": 4.53,
    "items": [
-    {
-     "player": "Victor Wembanyama",
-     "position": "F",
-     "status": "Out",
-     "points": 6.16,
-     "minutes": 29.1
-    },
     {
      "player": "De'Aaron Fox",
      "position": "G",
-     "status": "Out",
-     "points": 0.23,
+     "status": "Questionable",
+     "points": 0.09,
      "minutes": 27.1
+    },
+    {
+     "player": "Victor Wembanyama",
+     "position": "F",
+     "status": "Questionable",
+     "points": 2.46,
+     "minutes": 29.1
     },
     {
      "player": "Dylan Harper",
