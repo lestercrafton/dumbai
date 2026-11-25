@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-25T05:42:26.569Z",
+ "generatedAt": "2026-11-25T17:38:00.531Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -33,7 +33,7 @@
      "replacement": "Josh Johnson",
      "starterEpaPerPlay": -0.04,
      "starterPlays": 24,
-     "backupEpaPerPlay": -0.076,
+     "backupEpaPerPlay": -0.079,
      "backupPlays": 70,
      "gapEpaPerPlay": 0.04,
      "fullPoints": 2,
@@ -526,7 +526,7 @@
   },
   "JAX": {
    "team": "JAX",
-   "loss": 0.35,
+   "loss": 0.2,
    "starter": {
     "name": "Trevor Lawrence",
     "espnId": "4360310",
@@ -539,19 +539,9 @@
      "player": "Bhayshul Tuten",
      "espnId": "4882093",
      "status": "Questionable",
-     "reported": "2026-11-23T19:28Z",
+     "reported": "2026-11-25T17:05Z",
      "weight": 0.25,
      "points": 0.1
-    },
-    {
-     "group": "lt",
-     "position": "LT",
-     "player": "Walker Little",
-     "espnId": "4242554",
-     "status": "Questionable",
-     "reported": "2026-11-23T00:22Z",
-     "weight": 0.25,
-     "points": 0.15
     },
     {
      "group": "c",
@@ -568,7 +558,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.28,
+   "loss": 0.8,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -580,30 +570,20 @@
      "position": "RB",
      "player": "Kenneth Walker III",
      "espnId": "4567048",
-     "status": "Questionable",
-     "reported": "2026-11-24T21:49Z",
-     "weight": 0.25,
-     "points": 0.1
-    },
-    {
-     "group": "rg",
-     "position": "RG",
-     "player": "Trey Smith",
-     "espnId": "4242459",
-     "status": "Questionable",
-     "reported": "2026-11-25T02:10Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-25T16:48Z",
+     "weight": 1,
+     "points": 0.4
     },
     {
      "group": "rt",
      "position": "RT",
      "player": "Jaylon Moore",
      "espnId": "4043041",
-     "status": "Questionable",
-     "reported": "2026-11-24T12:39Z",
-     "weight": 0.25,
-     "points": 0.1
+     "status": "Out",
+     "reported": "2026-11-25T16:54Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -671,7 +651,7 @@
      "reported": "2026-11-23T00:32Z",
      "weight": 0.25,
      "replacement": "DJ Uiagalelei",
-     "starterEpaPerPlay": -0.035,
+     "starterEpaPerPlay": -0.034,
      "starterPlays": 710,
      "backupEpaPerPlay": -0.075,
      "backupPlays": 7,
@@ -695,7 +675,7 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.5,
+   "loss": 1.2,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
@@ -721,23 +701,13 @@
      "reported": "2026-11-22T14:32Z",
      "weight": 1,
      "points": 0.4
-    },
-    {
-     "group": "lg",
-     "position": "LG",
-     "player": "Steve Avila",
-     "espnId": "4362474",
-     "status": "Out",
-     "reported": "2026-11-22T01:01Z",
-     "weight": 1,
-     "points": 0.3
     }
    ],
    "notes": []
   },
   "MIA": {
    "team": "MIA",
-   "loss": 4.55,
+   "loss": 4.38,
    "starter": {
     "name": "Malik Willis",
     "espnId": "4242512",
@@ -754,14 +724,14 @@
      "reported": "2026-11-23T17:19Z",
      "weight": 1,
      "replacement": "Kyle McCord",
-     "starterEpaPerPlay": 0.026,
+     "starterEpaPerPlay": 0.02,
      "starterPlays": 300,
      "backupEpaPerPlay": -0.142,
      "backupPlays": 74,
-     "gapEpaPerPlay": 0.17,
-     "fullPoints": 5.16,
+     "gapEpaPerPlay": 0.16,
+     "fullPoints": 4.97,
      "alreadyInRatings": 0.16,
-     "points": 4.34
+     "points": 4.17
     },
     {
      "group": "s",
@@ -805,9 +775,9 @@
      "reported": "2026-11-24T12:39Z",
      "weight": 0.25,
      "replacement": "Kirk Cousins",
-     "starterEpaPerPlay": 0.01,
+     "starterEpaPerPlay": 0.009,
      "starterPlays": 301,
-     "backupEpaPerPlay": 0.03,
+     "backupEpaPerPlay": 0.031,
      "backupPlays": 573,
      "gapEpaPerPlay": 0,
      "fullPoints": 2,
@@ -839,7 +809,7 @@
   },
   "NE": {
    "team": "NE",
-   "loss": 7.73,
+   "loss": 7.32,
    "starter": {
     "name": "Drake Maye",
     "espnId": "4431452",
@@ -856,14 +826,14 @@
      "reported": "2026-11-23T20:26Z",
      "weight": 1,
      "replacement": "Tommy DeVito",
-     "starterEpaPerPlay": 0.131,
+     "starterEpaPerPlay": 0.118,
      "starterPlays": 751,
      "backupEpaPerPlay": -0.113,
      "backupPlays": 41,
-     "gapEpaPerPlay": 0.24,
-     "fullPoints": 7.48,
+     "gapEpaPerPlay": 0.23,
+     "fullPoints": 7.07,
      "alreadyInRatings": 0,
-     "points": 7.48
+     "points": 7.07
     },
     {
      "group": "lb",
@@ -1104,11 +1074,11 @@
      "reported": "2026-11-24T15:31Z",
      "weight": 0.25,
      "replacement": "Drew Lock",
-     "starterEpaPerPlay": 0.046,
+     "starterEpaPerPlay": 0.033,
      "starterPlays": 560,
      "backupEpaPerPlay": 0.032,
      "backupPlays": 116,
-     "gapEpaPerPlay": 0.01,
+     "gapEpaPerPlay": 0,
      "fullPoints": 2,
      "alreadyInRatings": 0.24,
      "points": 0.38
