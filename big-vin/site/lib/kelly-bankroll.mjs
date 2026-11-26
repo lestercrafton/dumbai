@@ -17,6 +17,7 @@
  * Used by My Bankroll so History starts when the visitor arrived, not day one. */
 import {gradeSpreadPick,spreadOffer,breakEven,ASSUMED_ODDS,isLegacyRunLine} from './spread-record.mjs';
 import {learnRankSignal,scoreGame,advantageRule} from './rank-signal.mjs';
+import {nhlPriceAware} from './nhl-pricing.mjs';
 /** Every sport stakes only starred picks from this Central date on (owner decision, Nov 4 2026). */
 export const STAR_ONLY_FROM='2026-11-04';
 import {ctDate,fitSequentialKelly} from './today-plays.mjs';
@@ -67,11 +68,12 @@ export function replayKellyBankroll(records,{start=START_BANKROLL,reupFloor,incl
  const picks=graded.map(({r,offer,outcome})=>{
   const odds=finite(r.odds)&&Math.abs(r.odds)>=100?r.odds:ASSUMED_ODDS;
   const edge=finite(r.predictedMargin)?Math.abs(r.predictedMargin+offer.homeSpread):null;
-  const score=scoreGame(signalAt(Date.parse(r.startTime)),{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport});
+  const score=scoreGame(signalAt(Date.parse(r.startTime)),{side:offer.side,homeSpread:offer.homeSpread,edge,odds,sport:r.sport,margin:r.predictedMargin,homePrice:r.marketHomePrice,awayPrice:r.marketAwayPrice,startTime:r.startTime});
   const p=score?.winChance;
   const day=ctDate(r.startTime);
   // From STAR_ONLY_FROM on, every sport stakes only starred (advantage) picks; earlier history is unchanged.
-  const starred=day<STAR_ONLY_FROM||!!advantageRule(r.sport,{neutralSite:savedNeutralSite(r),edge,overUnder:r.overUnder??pregameTotal(totals,r)},score);
+  // NHL from NHL_PRICE_AWARE_FROM is graded but never staked (lib/nhl-pricing.mjs).
+  const starred=!nhlPriceAware(r.sport,r.startTime)&&(day<STAR_ONLY_FROM||!!advantageRule(r.sport,{neutralSite:savedNeutralSite(r),edge,overUnder:r.overUnder??pregameTotal(totals,r),startTime:r.startTime},score));
   return {r,offer,outcome,odds,edge,p,day,f:starred?kellyStake(p,odds):0};
  });
  // Pass 2: one Central day at a time, sized like Today's plays, settled in kickoff order.

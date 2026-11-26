@@ -1,0 +1,284 @@
+{
+ "window": [
+  "2026-10-22T23:00:00.000Z",
+  "2026-11-24T03:00:00.000Z"
+ ],
+ "n": 231,
+ "puckLineBrier": {
+  "model": 0.226,
+  "market": 0.2254,
+  "blend": 0.2251
+ },
+ "moneylineGames": {
+  "n": 231,
+  "from": "2026-10-22T23:00:00.000Z",
+  "to": "2026-11-24T03:00:00.000Z"
+ },
+ "moneylineBrier": {
+  "model": 0.2398,
+  "market": 0.234,
+  "blend": 0.2363
+ },
+ "mlModelVsMarket": {
+  "avgAbsDiff": 0.039,
+  "favShading": -0.01,
+  "mktFavActualWin": 0.615,
+  "mktFavAvgVigFree": 0.582,
+  "modelFavAvg": 0.572
+ },
+ "results": [
+  {
+   "name": "Current: margin vs puck line (price-blind)",
+   "n": 231,
+   "w": 144,
+   "l": 87,
+   "winPct": 0.623,
+   "avgBE": 0.66,
+   "flatROI": -0.065,
+   "roiSE": 0.048,
+   "dogShare": 0.965
+  },
+  {
+   "name": "Puck line, side by EV, model normal σ2.6, EV ≥ any",
+   "n": 231,
+   "w": 133,
+   "l": 98,
+   "winPct": 0.576,
+   "avgBE": 0.565,
+   "flatROI": 0.021,
+   "roiSE": 0.063,
+   "dogShare": 0.701
+  },
+  {
+   "name": "Puck line, side by EV, model normal σ2.6, EV ≥ 0",
+   "n": 156,
+   "w": 88,
+   "l": 68,
+   "winPct": 0.564,
+   "avgBE": 0.55,
+   "flatROI": 0.019,
+   "roiSE": 0.078,
+   "dogShare": 0.673
+  },
+  {
+   "name": "Puck line, side by EV, model normal σ2.6, EV ≥ 0.03",
+   "n": 98,
+   "w": 53,
+   "l": 45,
+   "winPct": 0.541,
+   "avgBE": 0.531,
+   "flatROI": -0.018,
+   "roiSE": 0.099,
+   "dogShare": 0.633
+  },
+  {
+   "name": "Puck line, side by EV, model normal σ2.6, EV ≥ 0.05",
+   "n": 77,
+   "w": 41,
+   "l": 36,
+   "winPct": 0.532,
+   "avgBE": 0.526,
+   "flatROI": -0.025,
+   "roiSE": 0.113,
+   "dogShare": 0.636
+  },
+  {
+   "name": "Puck line, side by EV, 50/50 model+market, EV ≥ any",
+   "n": 231,
+   "w": 133,
+   "l": 98,
+   "winPct": 0.576,
+   "avgBE": 0.565,
+   "flatROI": 0.021,
+   "roiSE": 0.063,
+   "dogShare": 0.701
+  },
+  {
+   "name": "Puck line, side by EV, 50/50 model+market, EV ≥ 0",
+   "n": 85,
+   "w": 46,
+   "l": 39,
+   "winPct": 0.541,
+   "avgBE": 0.531,
+   "flatROI": -0.023,
+   "roiSE": 0.106,
+   "dogShare": 0.635
+  },
+  {
+   "name": "Puck line, side by EV, 50/50 model+market, EV ≥ 0.03",
+   "n": 31,
+   "w": 13,
+   "l": 18,
+   "winPct": 0.419,
+   "avgBE": 0.457,
+   "flatROI": -0.143,
+   "roiSE": 0.192,
+   "dogShare": 0.516
+  },
+  {
+   "name": "Puck line, side by EV, 50/50 model+market, EV ≥ 0.05",
+   "n": 13,
+   "w": 4,
+   "l": 9,
+   "winPct": 0.308,
+   "avgBE": 0.436,
+   "flatROI": -0.348,
+   "roiSE": 0.279,
+   "dogShare": 0.538
+  },
+  {
+   "name": "Puck line, side by EV, 25 model/75 market, EV ≥ any",
+   "n": 231,
+   "w": 133,
+   "l": 98,
+   "winPct": 0.576,
+   "avgBE": 0.565,
+   "flatROI": 0.021,
+   "roiSE": 0.063,
+   "dogShare": 0.701
+  },
+  {
+   "name": "Puck line, side by EV, 25 model/75 market, EV ≥ 0",
+   "n": 18,
+   "w": 6,
+   "l": 12,
+   "winPct": 0.333,
+   "avgBE": 0.426,
+   "flatROI": -0.201,
+   "roiSE": 0.277,
+   "dogShare": 0.444
+  },
+  {
+   "name": "Puck line, side by EV, 25 model/75 market, EV ≥ 0.03",
+   "n": 2,
+   "w": 1,
+   "l": 1,
+   "winPct": 0.5,
+   "avgBE": 0.392,
+   "flatROI": 0.07,
+   "roiSE": 0.757,
+   "dogShare": 0.5
+  },
+  {
+   "name": "Puck line, side by EV, 25 model/75 market, EV ≥ 0.05",
+   "n": 0,
+   "w": 0,
+   "l": 0,
+   "winPct": null,
+   "avgBE": 0,
+   "flatROI": null,
+   "roiSE": 0,
+   "dogShare": null
+  },
+  {
+   "name": "Moneyline, side by EV, model normal σ2.6, EV ≥ any",
+   "n": 231,
+   "w": 104,
+   "l": 127,
+   "winPct": 0.45,
+   "avgBE": 0.495,
+   "flatROI": -0.1,
+   "roiSE": 0.069,
+   "dogShare": 0.502
+  },
+  {
+   "name": "Moneyline, side by EV, model normal σ2.6, EV ≥ 0",
+   "n": 152,
+   "w": 64,
+   "l": 88,
+   "winPct": 0.421,
+   "avgBE": 0.484,
+   "flatROI": -0.138,
+   "roiSE": 0.085,
+   "dogShare": 0.559
+  },
+  {
+   "name": "Moneyline, side by EV, model normal σ2.6, EV ≥ 0.03",
+   "n": 96,
+   "w": 37,
+   "l": 59,
+   "winPct": 0.385,
+   "avgBE": 0.473,
+   "flatROI": -0.207,
+   "roiSE": 0.106,
+   "dogShare": 0.594
+  },
+  {
+   "name": "Moneyline, side by EV, model normal σ2.6, EV ≥ 0.05",
+   "n": 79,
+   "w": 30,
+   "l": 49,
+   "winPct": 0.38,
+   "avgBE": 0.467,
+   "flatROI": -0.194,
+   "roiSE": 0.121,
+   "dogShare": 0.62
+  },
+  {
+   "name": "Moneyline, side by EV, 50/50 model+market, EV ≥ any",
+   "n": 231,
+   "w": 104,
+   "l": 127,
+   "winPct": 0.45,
+   "avgBE": 0.495,
+   "flatROI": -0.1,
+   "roiSE": 0.069,
+   "dogShare": 0.502
+  },
+  {
+   "name": "Moneyline, side by EV, 50/50 model+market, EV ≥ 0",
+   "n": 89,
+   "w": 33,
+   "l": 56,
+   "winPct": 0.371,
+   "avgBE": 0.472,
+   "flatROI": -0.23,
+   "roiSE": 0.111,
+   "dogShare": 0.596
+  },
+  {
+   "name": "Moneyline, side by EV, 50/50 model+market, EV ≥ 0.03",
+   "n": 42,
+   "w": 15,
+   "l": 27,
+   "winPct": 0.357,
+   "avgBE": 0.421,
+   "flatROI": -0.142,
+   "roiSE": 0.183,
+   "dogShare": 0.81
+  },
+  {
+   "name": "Moneyline, side by EV, 50/50 model+market, EV ≥ 0.05",
+   "n": 24,
+   "w": 9,
+   "l": 15,
+   "winPct": 0.375,
+   "avgBE": 0.407,
+   "flatROI": -0.109,
+   "roiSE": 0.245,
+   "dogShare": 0.792
+  },
+  {
+   "name": "Moneyline: model straight-up winner, any price",
+   "n": 231,
+   "w": 139,
+   "l": 92,
+   "winPct": 0.602,
+   "avgBE": 0.598,
+   "flatROI": 0.005,
+   "roiSE": 0.055,
+   "dogShare": 0.087
+  },
+  {
+   "name": "Moneyline: market favorite every game",
+   "n": 231,
+   "w": 142,
+   "l": 89,
+   "winPct": 0.615,
+   "avgBE": 0.607,
+   "flatROI": 0.014,
+   "roiSE": 0.054,
+   "dogShare": 0
+  }
+ ]
+}

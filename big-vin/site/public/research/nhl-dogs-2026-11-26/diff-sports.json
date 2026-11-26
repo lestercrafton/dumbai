@@ -1,0 +1,86 @@
+{
+ "cfb": {
+  "records": 1172,
+  "priced": 1150,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ },
+ "cbb": {
+  "records": 1534,
+  "priced": 1058,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ },
+ "nba": {
+  "records": 296,
+  "priced": 265,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ },
+ "nfl": {
+  "records": 176,
+  "priced": 176,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ },
+ "nhl": {
+  "records": 429,
+  "priced": 399,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 82,
+  "scoreDiff_ifStartingAfterNov27": 399,
+  "starDiff_ifStartingAfterNov27": 76
+ },
+ "mlb": {
+  "records": 253,
+  "priced": 235,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ },
+ "wnba": {
+  "records": 56,
+  "priced": 50,
+  "bankrollReplayIdentical": true,
+  "rankSignalIdentical": true,
+  "sideDiff": 0,
+  "scoreDiff": 0,
+  "starDiff": 0,
+  "sideDiff_ifQuotedAfterNov27": 0,
+  "scoreDiff_ifStartingAfterNov27": 0,
+  "starDiff_ifStartingAfterNov27": 0
+ }
+}

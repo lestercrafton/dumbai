@@ -1,5 +1,6 @@
 import {liveMargin} from './injury-lines.mjs';
 import {winProbability,moneylineExpectedValue} from './moneyline.mjs';
+import {nhlPriceAware,nhlSelection} from './nhl-pricing.mjs';
 const at=value=>typeof value==='string'?Date.parse(value):NaN;
 const finite=Number.isFinite;
 export const PICK_PROTOCOL='pregame-revisions-v1';
@@ -13,9 +14,16 @@ const earlier=(...dates)=>new Date(Math.min(...dates.map(at).filter(finite))).to
  * never leaves a priced first-pitch market as "No ATS pick". */
 export const MIN_ML_VALUE=0.03;
 const ML_SPORTS=new Set(['mlb']);
-export const quotePrices=(sport,q)=>({sport,homePrice:q?.homeSpreadPrice??q?.marketHomePrice??null,awayPrice:q?.awaySpreadPrice??q?.marketAwayPrice??null});
-export function spreadSelection(margin,homeSpread,{sport,homePrice,awayPrice}={}){
+export const quotePrices=(sport,q)=>({sport,homePrice:q?.homeSpreadPrice??q?.marketHomePrice??null,awayPrice:q?.awaySpreadPrice??q?.marketAwayPrice??null,observedAt:q?.observedAt??q?.marketObservedAt??null});
+/** NHL quotes observed from NHL_PRICE_AWARE_FROM on: puck-line side by expected
+ * value at each side's price (lib/nhl-pricing.mjs). Earlier quotes, or a quote
+ * missing either price, keep the margin-vs-line rule below. */
+export function spreadSelection(margin,homeSpread,{sport,homePrice,awayPrice,observedAt}={}){
  if(!finite(margin)||!finite(homeSpread))return {side:null,edge:null};
+ if(nhlPriceAware(sport,observedAt)){
+  const pick=nhlSelection(margin,homeSpread,homePrice,awayPrice);
+  if(pick)return {side:pick.side,edge:Math.abs(margin+homeSpread)};
+ }
  if(ML_SPORTS.has(sport)&&homeSpread===0){
   const p=winProbability(margin,sport);
   const home=moneylineExpectedValue(p,homePrice),away=moneylineExpectedValue(1-p,awayPrice);
@@ -96,16 +104,18 @@ export function withPickState(f,state){
   if(!(r.forecastId===f.id&&r.gameId===f.gameId&&r.homeId===f.homeId&&r.awayId===f.awayId
    &&(r.baseMargin??r.predictedMargin)===baseMargin(f)&&r.modelVersion===f.modelVersion&&finite(r.marketHomeSpread)
    &&at(r.recordedAt)<cutoff&&at(r.observedAt)<=at(r.recordedAt)&&at(r.observedAt)>=Math.min(at(f.capturedAt),finite(at(f.marketObservedAt))?at(f.marketObservedAt):Infinity)))return false;
-  const expected=spreadSelection(r.predictedMargin,r.marketHomeSpread,quotePrices(f.sport,r)).side;
+  const prices=quotePrices(f.sport,r),expected=spreadSelection(r.predictedMargin,r.marketHomeSpread,prices).side;
+  // NHL: a revision saved under the margin-vs-line rule (before the price-aware rule was deployed) stays valid.
+  const legacy=f.sport==='nhl'?spreadSelection(r.predictedMargin,r.marketHomeSpread,{...prices,observedAt:null}).side:expected;
   // Keep tipoff quotes even when a legacy revision recorded an MLB pass.
-  return r.side===expected||(r.side==null&&(expected==='home'||expected==='away'));
+  return r.side===expected||r.side===legacy||(r.side==null&&(expected==='home'||expected==='away'));
  });
  const selected=hydrateTipoffPick([...revisions].sort((a,b)=>at(a.observedAt)-at(b.observedAt)||at(a.recordedAt)-at(b.recordedAt)||a.id.localeCompare(b.id)).at(-1),f.sport);
  const originalPick={side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,marketObservedAt:f.marketObservedAt,capturedAt:f.capturedAt,recordedAt:f.firstMarket?.recordedAt??f.capturedAt,provider:f.provider};
  const validOriginal=at(f.capturedAt)<cutoff&&(!finite(f.marketHomeSpread)||at(f.marketObservedAt)<cutoff);
  // Tipoff revision wins. A priced original with a legacy null side is hydrated
  // so the board never shows "No ATS pick" when a book line existed at lock.
- const pricedOriginal=validOriginal?hydrateTipoffPick({side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,predictedMargin:baseMargin(f),marketHomePrice:f.marketHomePrice,marketAwayPrice:f.marketAwayPrice},f.sport):null;
+ const pricedOriginal=validOriginal?hydrateTipoffPick({side:f.side,marketHomeSpread:f.marketHomeSpread,odds:f.odds,predictedMargin:baseMargin(f),marketHomePrice:f.marketHomePrice,marketAwayPrice:f.marketAwayPrice,marketObservedAt:f.marketObservedAt},f.sport):null;
  return {...f,baseMargin:baseMargin(f),...(selected?{predictedMargin:selected.predictedMargin,injuryAdjustment:selected.injuryAdjustment??f.injuryAdjustment??null,injury:selected.injury??f.injury??null,marketCheck:selected.marketCheck??null,side:selected.side,marketHomeSpread:selected.marketHomeSpread,odds:selected.odds,marketHomePrice:selected.marketHomePrice??null,marketAwayPrice:selected.marketAwayPrice??null,...(finite(selected.runLineHomeSpread)?{runLineHomeSpread:selected.runLineHomeSpread,runLineHomePrice:selected.runLineHomePrice,runLineAwayPrice:selected.runLineAwayPrice}:{}),edge:selected.edge??f.edge,provider:selected.provider,marketObservedAt:selected.observedAt}:!validOriginal?{side:null,marketHomeSpread:null,odds:null}:pricedOriginal&&(pricedOriginal.side==='home'||pricedOriginal.side==='away')?{side:pricedOriginal.side,odds:pricedOriginal.odds??f.odds,edge:pricedOriginal.edge??f.edge}:{}),
   originalPick,pickRevision:selected??null,pickRevisions:state.revisions,pickLock:{lockAt:state.lockAt,closedAt:state.closedAt,verifiedAt:state.verifiedAt,protocol:PICK_PROTOCOL}};
 }

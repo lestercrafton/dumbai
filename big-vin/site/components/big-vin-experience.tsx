@@ -177,6 +177,7 @@ export function GameCards({games, sport, onInspect, offline=false, refreshFailed
           <span>{pregame ? 'Updates until kickoff' : awaitingQuote ? 'Current recommendation unavailable' : game.archived ? 'Uses the locked pregame line' : game.stale ? 'Stale price' : 'Feed observation'}{decision.outcome==='pending'?' · awaiting final':''}</span>
         </div>;})()}
       {(game.stale || game.rankReason) && <p className="vin-data-note">{game.stale ? 'Waiting for a verified current quote.' : game.rankReason}</p>}
+      {game.methodNote && <p className="vin-data-note">{game.methodNote}</p>}
       <details className="vin-game-details"><summary>Behind the line <CfbNewsFlag gameId={game.id} sport={sport}/><ChevronDown size={15}/></summary><div>
         <p>{game.modelLabel || 'Experimental ratings'} · results before {game.modelAsOf || 'the model cutoff'}.</p>
         <p>Source: {game.market?.provider || 'No market provider returned'}.{game.market?.observedAt ? ' Price observed ' + centralTime(game.market.observedAt) + '.' : ''}</p>

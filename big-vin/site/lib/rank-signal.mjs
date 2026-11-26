@@ -6,6 +6,7 @@
  * unless the record supports it. Once a sport has CLV_SWITCH graded picks with
  * a saved closing line, it ranks by expected line movement instead. */
 import {gradeSpreadPick,spreadOffer,breakEven,ASSUMED_ODDS} from './spread-record.mjs';
+import {nhlPriceAware,nhlWinChance} from './nhl-pricing.mjs';
 export const CLV_SWITCH=100;
 export const PRIOR_PICKS=100;
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
@@ -42,11 +43,20 @@ export function learnRankSignal(records,{before=Date.now(),frozen=false}={}){
  return {basis:clvRows.length>=CLV_SWITCH?'clv':'win',graded:rows.length,closingLines:clvRows.length,sportRate,clvMean,buckets};
 }
 /** Score one board game; higher ranks first. */
-export function scoreGame(signal,{side,homeSpread,edge,odds,sport}){
+/** NHL games starting from NHL_PRICE_AWARE_FROM (lib/nhl-pricing.mjs) use a price-aware
+ * win chance instead of the bucket: 50% the model's cover chance from its margin,
+ * 50% the market's no-vig chance from both puck-line prices. Needs margin. */
+export function scoreGame(signal,{side,homeSpread,edge,odds,sport,margin,homePrice,awayPrice,startTime}){
  if(!signal||!side||!finite(homeSpread))return null;
  const b=signal.buckets[bucketOf({side,homeSpread,edge,sport})];
- const winChance=b?.winChance??signal.sportRate,expectedClv=b?.expectedClv??signal.clvMean;
- return {basis:signal.basis,value:signal.basis==='clv'?expectedClv:winChance,winChance,expectedClv,bucketGraded:b?.n??0,bucket:bucketOf({side,homeSpread,edge,sport}),breakEven:breakEven(finite(odds)&&Math.abs(odds)>=100?odds:ASSUMED_ODDS)};
+ const expectedClv=b?.expectedClv??signal.clvMean;
+ let winChance=b?.winChance??signal.sportRate,nhl=null;
+ if(nhlPriceAware(sport,startTime)){
+  nhl=nhlWinChance({margin,homeSpread,side,homePrice,awayPrice,odds});
+  winChance=nhl?nhl.winChance:null;
+  if(winChance===null)return null;
+ }
+ return {basis:nhl?'win':signal.basis,value:nhl||signal.basis!=='clv'?winChance:expectedClv,winChance,expectedClv,bucketGraded:b?.n??0,bucket:bucketOf({side,homeSpread,edge,sport}),breakEven:breakEven(finite(odds)&&Math.abs(odds)>=100?odds:ASSUMED_ODDS),...(nhl?{method:'nhl-price-aware',modelChance:nhl.modelChance,marketChance:nhl.marketChance}:{})};
 }
 /** Higher signal first; ties go to the cheaper price, then the earlier kickoff. */
 export function compareSignal(a,b){
@@ -79,6 +89,8 @@ export const NBA_TOTAL_EDGE=8;
  * break-even by at least ADVANTAGE_MARGIN. Both must hold. */
 export const ADVANTAGE_MARGIN=0.01;
 export function advantageRule(sport,game={},score=null){
+ // NHL is unstaked from NHL_PRICE_AWARE_FROM until a walk-forward test shows an edge: no stars.
+ if(nhlPriceAware(sport,game.startTime))return null;
  if(sport==='cbb'&&game.neutralSite===true&&Number.isFinite(game.edge)&&game.edge>=CBB_NEUTRAL_EDGE)return `Neutral-site edge ${game.edge.toFixed(1)} ≥ ${CBB_NEUTRAL_EDGE}`;
  const t=game.overUnder?.edge;
  if(sport==='nba'&&Number.isFinite(t)&&Math.abs(t)>=NBA_TOTAL_EDGE)return `Total edge ${Math.abs(t).toFixed(1)} ≥ ${NBA_TOTAL_EDGE}`;
