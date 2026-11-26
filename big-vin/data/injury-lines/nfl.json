@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-26T10:02:36.302Z",
+ "generatedAt": "2026-11-26T19:50:52.628Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -28,7 +28,7 @@
      "espnId": "4430841",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-25T19:21Z",
+     "reported": "2026-11-26T18:20Z",
      "weight": 0.25,
      "replacement": "Josh Johnson",
      "starterEpaPerPlay": -0.04,
@@ -47,7 +47,7 @@
   },
   "ATL": {
    "team": "ATL",
-   "loss": 0.32,
+   "loss": 0.38,
    "starter": {
     "name": "Michael Penix Jr.",
     "espnId": "4360423",
@@ -60,17 +60,27 @@
      "player": "Jahan Dotson",
      "espnId": "4361409",
      "status": "Questionable",
-     "reported": "2026-11-25T22:19Z",
+     "reported": "2026-11-26T18:35Z",
      "weight": 0.25,
      "points": 0.1
     },
     {
      "group": "lb",
-     "position": "SLB",
-     "player": "James Pearce Jr.",
-     "espnId": "5081394",
+     "position": "WLB",
+     "player": "Cameron Thomas",
+     "espnId": "4361510",
      "status": "Questionable",
-     "reported": "2026-11-26T01:29Z",
+     "reported": "2026-11-26T18:26Z",
+     "weight": 0.25,
+     "points": 0.06
+    },
+    {
+     "group": "lb",
+     "position": "LILB",
+     "player": "Kendal Daniels",
+     "espnId": "4595343",
+     "status": "Questionable",
+     "reported": "2026-11-26T18:46Z",
      "weight": 0.25,
      "points": 0.06
     },
@@ -277,7 +287,7 @@
   },
   "CHI": {
    "team": "CHI",
-   "loss": 0.13,
+   "loss": 0.4,
    "starter": {
     "name": "Caleb Williams",
     "espnId": "4431611",
@@ -285,14 +295,14 @@
    },
    "items": [
     {
-     "group": "cb",
-     "position": "RCB",
-     "player": "Tyrique Stevenson Sr.",
-     "espnId": "4426374",
-     "status": "Questionable",
-     "reported": "2026-11-25T23:56Z",
-     "weight": 0.25,
-     "points": 0.13
+     "group": "te1",
+     "position": "TE",
+     "player": "Colston Loveland",
+     "espnId": "4723086",
+     "status": "Out",
+     "reported": "2026-11-26T18:45Z",
+     "weight": 1,
+     "points": 0.4
     }
    ],
    "notes": []
@@ -467,7 +477,7 @@
   },
   "DET": {
    "team": "DET",
-   "loss": 0.21,
+   "loss": 0.8,
    "starter": {
     "name": "Jared Goff",
     "espnId": "3046779",
@@ -479,20 +489,20 @@
      "position": "RDE",
      "player": "DJ Wonnum",
      "espnId": "4038849",
-     "status": "Questionable",
-     "reported": "2026-11-26T00:56Z",
-     "weight": 0.25,
-     "points": 0.13
+     "status": "Out",
+     "reported": "2026-11-26T16:51Z",
+     "weight": 1,
+     "points": 0.5
     },
     {
      "group": "s",
      "position": "FS",
      "player": "Chuck Clark",
      "espnId": "3045463",
-     "status": "Questionable",
-     "reported": "2026-11-26T01:04Z",
-     "weight": 0.25,
-     "points": 0.08
+     "status": "Out",
+     "reported": "2026-11-26T16:46Z",
+     "weight": 1,
+     "points": 0.3
     }
    ],
    "notes": []
@@ -724,7 +734,7 @@
      "player": "Brock Bowers",
      "espnId": "4432665",
      "status": "Questionable",
-     "reported": "2026-11-25T21:29Z",
+     "reported": "2026-11-26T19:32Z",
      "weight": 0.25,
      "points": 0.1
     },
@@ -769,7 +779,7 @@
      "espnId": "4038941",
      "starterBasis": "depth chart QB1 (injured)",
      "status": "Questionable",
-     "reported": "2026-11-25T20:27Z",
+     "reported": "2026-11-26T18:59Z",
      "weight": 0.25,
      "replacement": "DJ Uiagalelei",
      "starterEpaPerPlay": -0.034,
@@ -806,33 +816,13 @@
   },
   "LAR": {
    "team": "LAR",
-   "loss": 1.6,
+   "loss": 0.4,
    "starter": {
     "name": "Matthew Stafford",
     "espnId": "12483",
     "basis": "depth chart QB1"
    },
    "items": [
-    {
-     "group": "wr1",
-     "position": "WR",
-     "player": "Puka Nacua",
-     "espnId": "4426515",
-     "status": "Injured Reserve",
-     "reported": "2026-11-22T01:25Z",
-     "weight": 1,
-     "points": 0.8
-    },
-    {
-     "group": "wr2",
-     "position": "WR",
-     "player": "Davante Adams",
-     "espnId": "16800",
-     "status": "Injured Reserve",
-     "reported": "2026-11-22T14:32Z",
-     "weight": 1,
-     "points": 0.4
-    },
     {
      "group": "te1",
      "position": "TE",
@@ -951,7 +941,7 @@
      "player": "Jordan Addison",
      "espnId": "4429205",
      "status": "Doubtful",
-     "reported": "2026-11-25T19:37Z",
+     "reported": "2026-11-26T19:36Z",
      "weight": 1,
      "points": 0.4
     },
@@ -1235,8 +1225,8 @@
      "position": "SLB",
      "player": "Alex Highsmith",
      "espnId": "4037333",
-     "status": "Doubtful",
-     "reported": "2026-11-23T20:06Z",
+     "status": "Out",
+     "reported": "2026-11-26T19:38Z",
      "weight": 1,
      "points": 0.25
     },
