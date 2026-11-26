@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nfl-totals-v1",
  "sport": "nfl",
- "generatedAt": "2026-11-26T01:12:31.332Z",
+ "generatedAt": "2026-11-26T10:02:42.107Z",
  "method": "Offense and defense points ratings fit to nflverse finals (ridge shrinkage, 150-day half-life, home edge, indoor edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. Injuries: 60% of each team’s offensive injury value comes off its own points; 60% of its defensive injury value is added to the opponent’s points. A total 4+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 30,
-  "losses": 24,
+  "losses": 25,
   "pushes": 0,
-  "pending": 11,
-  "bankroll": 530.63,
+  "pending": 10,
+  "bankroll": 520.02,
   "bankrollStart": 500
  },
  "backtest": {
@@ -1618,9 +1618,12 @@
    "awayPoints": 21.9,
    "injuryEffect": -0.94,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 39,
+   "stake": {
+    "stake": 10.61,
+    "net": -10.61
+   }
   },
   "401873080": {
    "side": null,
