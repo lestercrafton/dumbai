@@ -1,0 +1,148 @@
+{
+ "window": "Oct 22 – Nov 23, 2026 (Central)",
+ "picksInWindow": 231,
+ "withBothPrices": 231,
+ "sidesFlipped": 73,
+ "results": [
+  {
+   "rule": "A. Current rules, as live (stars only from Nov 4)",
+   "picks": 231,
+   "flatRecord": "144-87",
+   "flatROI": -0.065,
+   "dogShare": 0.965,
+   "kellyBets": 49,
+   "stakedRecord": "28-21",
+   "stakedDogShare": 0.98,
+   "avgWinChanceStaked": 0.64,
+   "avgStake": 0.087,
+   "maxStake": 0.252,
+   "end": 571459,
+   "change": -0.429,
+   "maxDrawdown": 0.682,
+   "reups": 0,
+   "flat1pct": 855995
+  },
+  {
+   "rule": "B. Current rules, every positive-Kelly pick staked",
+   "picks": 231,
+   "flatRecord": "144-87",
+   "flatROI": -0.065,
+   "dogShare": 0.965,
+   "kellyBets": 73,
+   "stakedRecord": "37-36",
+   "stakedDogShare": 0.932,
+   "avgWinChanceStaked": 0.632,
+   "avgStake": 0.085,
+   "maxStake": 0.303,
+   "end": 205075,
+   "change": -0.795,
+   "maxDrawdown": 0.877,
+   "reups": 0,
+   "flat1pct": 855995
+  },
+  {
+   "rule": "C. Fixed side + 50/50 win chance, every positive-Kelly pick staked",
+   "picks": 231,
+   "flatRecord": "133-98",
+   "flatROI": 0.021,
+   "dogShare": 0.701,
+   "kellyBets": 85,
+   "stakedRecord": "46-39",
+   "stakedDogShare": 0.635,
+   "avgWinChanceStaked": 0.545,
+   "avgStake": 0.032,
+   "maxStake": 0.131,
+   "end": 858010,
+   "change": -0.142,
+   "maxDrawdown": 0.405,
+   "reups": 0,
+   "flat1pct": 1038378
+  },
+  {
+   "rule": "D. Fixed rules as shipped (items 1-3: NHL unstaked)",
+   "picks": 231,
+   "flatRecord": "133-98",
+   "flatROI": 0.021,
+   "dogShare": 0.701,
+   "kellyBets": 0,
+   "stakedRecord": "0-0",
+   "stakedDogShare": null,
+   "avgWinChanceStaked": null,
+   "avgStake": 0,
+   "maxStake": 0,
+   "end": 1000000,
+   "change": 0,
+   "maxDrawdown": 0,
+   "reups": 0,
+   "flat1pct": 1038378
+  }
+ ],
+ "calibrationCurrent": [
+  {
+   "bin": "0-0.4",
+   "n": 0,
+   "predicted": null,
+   "actual": null
+  },
+  {
+   "bin": "0.4-0.5",
+   "n": 0,
+   "predicted": null,
+   "actual": null
+  },
+  {
+   "bin": "0.5-0.6",
+   "n": 26,
+   "predicted": 0.588,
+   "actual": 0.5
+  },
+  {
+   "bin": "0.6-0.7",
+   "n": 205,
+   "predicted": 0.644,
+   "actual": 0.639
+  },
+  {
+   "bin": "0.7-1",
+   "n": 0,
+   "predicted": null,
+   "actual": null
+  }
+ ],
+ "calibrationFixed": [
+  {
+   "bin": "0-0.4",
+   "n": 53,
+   "predicted": 0.35,
+   "actual": 0.377
+  },
+  {
+   "bin": "0.4-0.5",
+   "n": 21,
+   "predicted": 0.434,
+   "actual": 0.524
+  },
+  {
+   "bin": "0.5-0.6",
+   "n": 32,
+   "predicted": 0.563,
+   "actual": 0.5
+  },
+  {
+   "bin": "0.6-0.7",
+   "n": 89,
+   "predicted": 0.656,
+   "actual": 0.674
+  },
+  {
+   "bin": "0.7-1",
+   "n": 36,
+   "predicted": 0.717,
+   "actual": 0.722
+  }
+ ],
+ "fullHistoryCurrent": {
+  "end": 553608,
+  "bets": 71
+ }
+}

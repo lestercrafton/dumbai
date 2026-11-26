@@ -1,7 +1,7 @@
 'use client';
 import {KellyNote} from '@/components/kelly-note';
 import {useEffect,useState} from 'react';
-import {REPLAY_CHANGE_NOTE,KELLY_NOTE} from '@/lib/bankroll-copy';
+import {NHL_NOTE,REPLAY_CHANGE_NOTE,KELLY_NOTE} from '@/lib/bankroll-copy';
 import {sportLabel,SUPPORTED_SPORTS} from '@/lib/presentation.mjs';
 import {fetchSlate} from '@/lib/board-client';
 import {todayPlays,ctDate} from '@/lib/today-plays.mjs';
@@ -85,7 +85,7 @@ export default function Bankroll(){
   <div className="bk-navrow"><a href="/" className="bk-back">← Big Vin</a><a href="/my-bankroll" className="bk-mylink">My Bankroll →</a></div>
   <h1>Bankroll</h1>
   <p className="bk-sub">$1M per sport · full Kelly · re-up to $1M below $100K</p>
-  <p className="bk-explain">{KELLY_NOTE}</p><p className="bk-foot">{REPLAY_CHANGE_NOTE}</p>
+  <p className="bk-explain">{KELLY_NOTE}</p><p className="bk-foot">{REPLAY_CHANGE_NOTE}</p><p className="bk-foot">{NHL_NOTE}</p>
   <p className="bk-foot"><a href="/my-bankroll">My Bankroll</a> — sign in with email, set your own starts, see recommended wagers sized to you.</p>
   {error&&<p className="bk-sub">{error}</p>}
   {!data&&!error&&<p className="bk-sub">Loading…</p>}
