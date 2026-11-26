@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-25T22:42:33.441Z",
+ "generatedAt": "2026-11-26T01:12:30.941Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -364,14 +364,14 @@
    ]
   },
   "18": {
-   "loss": 1.3,
+   "loss": 0.58,
    "items": [
     {
-     "player": "Jalen Brunson",
-     "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.32,
-     "minutes": 33.9
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Out",
+     "points": 0.52,
+     "minutes": 33.8
     },
     {
      "player": "Miles McBride",
@@ -381,25 +381,11 @@
      "minutes": 16.2
     },
     {
-     "player": "Karl-Anthony Towns",
-     "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.4,
-     "minutes": 32.8
-    },
-    {
      "player": "Jordan Clarkson",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 10.8
-    },
-    {
-     "player": "OG Anunoby",
-     "position": "F",
-     "status": "Out",
-     "points": 0.52,
-     "minutes": 33.8
     }
    ]
   },
@@ -437,14 +423,21 @@
    ]
   },
   "20": {
-   "loss": 2.52,
+   "loss": 4.2,
    "items": [
+    {
+     "player": "Jaylen Brown",
+     "position": "G",
+     "status": "Out",
+     "points": 1.81,
+     "minutes": 30.3
+    },
     {
      "player": "Joel Embiid",
      "position": "C",
      "status": "Out",
-     "points": 2.52,
-     "minutes": 31
+     "points": 2.39,
+     "minutes": 30.7
     },
     {
      "player": "Ariel Hukporti",
@@ -501,21 +494,21 @@
    ]
   },
   "23": {
-   "loss": 0.37,
+   "loss": 0.91,
    "items": [
+    {
+     "player": "Zach LaVine",
+     "position": "G",
+     "status": "Out",
+     "points": 0.91,
+     "minutes": 32.8
+    },
     {
      "player": "Maxime Raynaud",
      "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Zach LaVine",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.37,
-     "minutes": 32.8
     },
     {
      "player": "Ben Simmons",
