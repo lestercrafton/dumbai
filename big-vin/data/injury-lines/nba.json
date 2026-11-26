@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-26T19:50:57.311Z",
+ "generatedAt": "2026-11-26T22:30:46.646Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -173,18 +173,18 @@
    "loss": 3.48,
    "items": [
     {
-     "player": "Jalen Duren",
-     "position": "C",
-     "status": "Out",
-     "points": 0,
-     "minutes": 0
-    },
-    {
      "player": "Cade Cunningham",
      "position": "G",
      "status": "Out",
      "points": 2.84,
      "minutes": 37
+    },
+    {
+     "player": "Jalen Duren",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
     },
     {
      "player": "Ebuka Okorie",
@@ -304,8 +304,16 @@
    ]
   },
   "14": {
-   "loss": 0,
-   "items": []
+   "loss": 0.5,
+   "items": [
+    {
+     "player": "Giannis Antetokounmpo",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.5,
+     "minutes": 32.9
+    }
+   ]
   },
   "15": {
    "loss": 0,
@@ -367,11 +375,11 @@
    "loss": 0.27,
    "items": [
     {
-     "player": "Miles McBride",
+     "player": "Jordan Clarkson",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 16.9
+     "minutes": 10
     },
     {
      "player": "OG Anunoby",
@@ -379,13 +387,6 @@
      "status": "Out",
      "points": 0.27,
      "minutes": 35.1
-    },
-    {
-     "player": "Jordan Clarkson",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 10
     }
    ]
   },
@@ -423,20 +424,20 @@
    ]
   },
   "20": {
-   "loss": 2.57,
+   "loss": 2.76,
    "items": [
     {
      "player": "Joel Embiid",
      "position": "C",
-     "status": "Out",
-     "points": 2.39,
+     "status": "Questionable",
+     "points": 0.95,
      "minutes": 30.7
     },
     {
      "player": "Jaylen Brown",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.18,
+     "status": "Out",
+     "points": 1.81,
      "minutes": 30.3
     },
     {
