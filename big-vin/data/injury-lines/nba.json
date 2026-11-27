@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-26T22:30:46.646Z",
+ "generatedAt": "2026-11-27T03:17:00.680Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -143,15 +143,15 @@
      "minutes": 6.8
     },
     {
-     "player": "Dereck Lively II",
-     "position": "C",
+     "player": "Sergio de Larrea",
+     "position": "F",
      "status": "Out",
      "points": 0,
      "minutes": 0
     },
     {
-     "player": "Sergio de Larrea",
-     "position": "F",
+     "player": "Dereck Lively II",
+     "position": "C",
      "status": "Out",
      "points": 0,
      "minutes": 0
@@ -172,6 +172,13 @@
   "8": {
    "loss": 3.48,
    "items": [
+    {
+     "player": "Duncan Robinson",
+     "position": "F",
+     "status": "Out",
+     "points": 0.64,
+     "minutes": 31.2
+    },
     {
      "player": "Cade Cunningham",
      "position": "G",
@@ -199,13 +206,6 @@
      "status": "Out",
      "points": 0,
      "minutes": 8
-    },
-    {
-     "player": "Duncan Robinson",
-     "position": "F",
-     "status": "Out",
-     "points": 0.64,
-     "minutes": 31.2
     }
    ]
   },
@@ -247,21 +247,21 @@
    "items": []
   },
   "11": {
-   "loss": 0,
+   "loss": 0.36,
    "items": [
+    {
+     "player": "Kelly Oubre Jr.",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.36,
+     "minutes": 25.9
+    },
     {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
-    },
-    {
-     "player": "Aaron Nesmith",
-     "position": "G",
-     "status": "Out",
-     "points": 0,
-     "minutes": 30.2
     },
     {
      "player": "Ben Sheppard",
@@ -320,13 +320,13 @@
    "items": []
   },
   "16": {
-   "loss": 0.07,
+   "loss": 0.29,
    "items": [
     {
      "player": "LaMelo Ball",
      "position": "G",
-     "status": "Day-To-Day",
-     "points": 0.07,
+     "status": "Questionable",
+     "points": 0.29,
      "minutes": 30.1
     },
     {
@@ -521,21 +521,21 @@
    ]
   },
   "24": {
-   "loss": 2.3,
+   "loss": 2.12,
    "items": [
-    {
-     "player": "De'Aaron Fox",
-     "position": "G",
-     "status": "Out",
-     "points": 0.31,
-     "minutes": 27.3
-    },
     {
      "player": "Dylan Harper",
      "position": "G",
      "status": "Out",
      "points": 1.99,
      "minutes": 30.7
+    },
+    {
+     "player": "De'Aaron Fox",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.13,
+     "minutes": 27.3
     },
     {
      "player": "Tobias Harris",
@@ -608,13 +608,13 @@
    ]
   },
   "26": {
-   "loss": 1.23,
+   "loss": 0.49,
    "items": [
     {
      "player": "Jaxson Hayes",
      "position": "C",
-     "status": "Out",
-     "points": 1.23,
+     "status": "Questionable",
+     "points": 0.49,
      "minutes": 22
     },
     {
@@ -700,13 +700,20 @@
    ]
   },
   "29": {
-   "loss": 3.79,
+   "loss": 4.2,
    "items": [
+    {
+     "player": "Isaiah Stewart",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.14,
+     "minutes": 18.1
+    },
     {
      "player": "Zach Edey",
      "position": "C",
-     "status": "Day-To-Day",
-     "points": 0.09,
+     "status": "Questionable",
+     "points": 0.36,
      "minutes": 20
     },
     {
