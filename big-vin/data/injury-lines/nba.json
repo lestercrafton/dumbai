@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-27T13:05:59.134Z",
+ "generatedAt": "2026-11-27T22:08:39.530Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -88,13 +88,13 @@
    ]
   },
   "4": {
-   "loss": 4.58,
+   "loss": 2.12,
    "items": [
     {
      "player": "Jalen Smith",
      "position": "F",
-     "status": "Out",
-     "points": 2.73,
+     "status": "Day-To-Day",
+     "points": 0.27,
      "minutes": 28.6
     },
     {
@@ -133,8 +133,15 @@
    ]
   },
   "6": {
-   "loss": 0,
+   "loss": 0.71,
    "items": [
+    {
+     "player": "Kyrie Irving",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.71,
+     "minutes": 31.6
+    },
     {
      "player": "Tobi Lawal",
      "position": "F",
@@ -250,18 +257,18 @@
    "loss": 0.36,
    "items": [
     {
-     "player": "Kelly Oubre Jr.",
-     "position": "G",
-     "status": "Questionable",
-     "points": 0.36,
-     "minutes": 25.9
-    },
-    {
      "player": "Tyrese Haliburton",
      "position": "G",
      "status": "Out",
      "points": 0,
      "minutes": 0
+    },
+    {
+     "player": "Kelly Oubre Jr.",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.36,
+     "minutes": 25.9
     },
     {
      "player": "Ben Sheppard",
@@ -292,16 +299,8 @@
    ]
   },
   "13": {
-   "loss": 3.43,
-   "items": [
-    {
-     "player": "Austin Reaves",
-     "position": "G",
-     "status": "Out",
-     "points": 3.43,
-     "minutes": 34.3
-    }
-   ]
+   "loss": 0,
+   "items": []
   },
   "14": {
    "loss": 0.5,
@@ -316,17 +315,25 @@
    ]
   },
   "15": {
-   "loss": 0,
-   "items": []
+   "loss": 1.06,
+   "items": [
+    {
+     "player": "Kasparas Jakucionis",
+     "position": "G",
+     "status": "Out",
+     "points": 1.06,
+     "minutes": 15.2
+    }
+   ]
   },
   "16": {
-   "loss": 0.29,
+   "loss": 0.73,
    "items": [
     {
      "player": "LaMelo Ball",
      "position": "G",
-     "status": "Questionable",
-     "points": 0.29,
+     "status": "Out",
+     "points": 0.73,
      "minutes": 30.1
     },
     {
@@ -372,8 +379,22 @@
    ]
   },
   "18": {
-   "loss": 0.27,
+   "loss": 1.78,
    "items": [
+    {
+     "player": "Miles McBride",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 16.9
+    },
+    {
+     "player": "OG Anunoby",
+     "position": "F",
+     "status": "Out",
+     "points": 0.27,
+     "minutes": 35.1
+    },
     {
      "player": "Jordan Clarkson",
      "position": "G",
@@ -382,17 +403,38 @@
      "minutes": 10
     },
     {
-     "player": "OG Anunoby",
-     "position": "F",
+     "player": "Karl-Anthony Towns",
+     "position": "C",
+     "status": "Questionable",
+     "points": 1.51,
+     "minutes": 33.7
+    },
+    {
+     "player": "Andre Drummond",
+     "position": "C",
      "status": "Out",
-     "points": 0.27,
-     "minutes": 35.1
+     "points": 0,
+     "minutes": 14.2
     }
    ]
   },
   "19": {
-   "loss": 0,
+   "loss": 0.08,
    "items": [
+    {
+     "player": "Kevin Porter Jr.",
+     "position": "G",
+     "status": "Out",
+     "points": 0,
+     "minutes": 0
+    },
+    {
+     "player": "Anthony Black",
+     "position": "G",
+     "status": "Questionable",
+     "points": 0.08,
+     "minutes": 34.8
+    },
     {
      "player": "Jonathan Isaac",
      "position": "F",
@@ -424,13 +466,13 @@
    ]
   },
   "20": {
-   "loss": 2.76,
+   "loss": 2.05,
    "items": [
     {
      "player": "Joel Embiid",
      "position": "C",
-     "status": "Questionable",
-     "points": 0.95,
+     "status": "Day-To-Day",
+     "points": 0.24,
      "minutes": 30.7
     },
     {
@@ -462,8 +504,15 @@
    ]
   },
   "22": {
-   "loss": 0,
+   "loss": 1.82,
    "items": [
+    {
+     "player": "Damian Lillard",
+     "position": "G",
+     "status": "Out",
+     "points": 1.82,
+     "minutes": 29.5
+    },
     {
      "player": "Chris Youngblood",
      "position": "G",
@@ -608,8 +657,15 @@
    ]
   },
   "26": {
-   "loss": 0.49,
+   "loss": 0.75,
    "items": [
+    {
+     "player": "Mo Bamba",
+     "position": "C",
+     "status": "Questionable",
+     "points": 0.26,
+     "minutes": 23.4
+    },
     {
      "player": "Jaxson Hayes",
      "position": "C",
