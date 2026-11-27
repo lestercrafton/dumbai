@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nfl",
- "generatedAt": "2026-11-27T03:16:56.773Z",
+ "generatedAt": "2026-11-27T13:05:55.192Z",
  "season": 2026,
  "method": "QB: (starter EPA/play - backup EPA/play, each shrunk toward a prior over 250 plays) x 36 plays x 0.85, between 2 and 10 points, reduced 8% per game the starter already missed (max 50%). Other starters: fixed points by position, capped at 3 per team. Out/IR/Doubtful/suspended count fully, Questionable 25%.",
  "sources": [
@@ -405,7 +405,7 @@
      "player": "Quinnen Williams",
      "espnId": "4040982",
      "status": "Questionable",
-     "reported": "2026-11-27T01:22Z",
+     "reported": "2026-11-27T03:11Z",
      "weight": 0.25,
      "points": 0.13
     },
@@ -688,7 +688,7 @@
   },
   "KC": {
    "team": "KC",
-   "loss": 0.4,
+   "loss": 0.48,
    "starter": {
     "name": "Patrick Mahomes",
     "espnId": "3139477",
@@ -704,6 +704,16 @@
      "reported": "2026-11-27T00:01Z",
      "weight": 1,
      "points": 0.4
+    },
+    {
+     "group": "rg",
+     "position": "RG",
+     "player": "Trey Smith",
+     "espnId": "4242459",
+     "status": "Questionable",
+     "reported": "2026-11-27T05:22Z",
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": []
@@ -1168,7 +1178,7 @@
   },
   "PHI": {
    "team": "PHI",
-   "loss": 1.1,
+   "loss": 0.98,
    "starter": {
     "name": "Joe Milton III",
     "espnId": "4360698",
@@ -1176,14 +1186,14 @@
    },
    "items": [
     {
-     "group": "wr2",
+     "group": "wr1",
      "position": "WR",
      "player": "DeVonta Smith",
      "espnId": "4241478",
      "status": "Questionable",
      "reported": "2026-11-27T02:39Z",
      "weight": 0.25,
-     "points": 0.1
+     "points": 0.2
     },
     {
      "group": "te1",
@@ -1220,10 +1230,10 @@
      "position": "SS",
      "player": "Marcus Epps",
      "espnId": "3139368",
-     "status": "Out",
+     "status": "Questionable",
      "reported": "2026-11-27T00:13Z",
-     "weight": 1,
-     "points": 0.3
+     "weight": 0.25,
+     "points": 0.08
     }
    ],
    "notes": [
