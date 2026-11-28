@@ -2,14 +2,14 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nba-totals-v1",
  "sport": "nba",
- "generatedAt": "2026-11-27T22:20:48.405Z",
+ "generatedAt": "2026-11-28T04:14:24.819Z",
  "method": "NBA: Offense and defense points ratings fit to ESPN finals (ridge shrinkage, 90-day half-life, home edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. No injury data for this sport yet. A total 8+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
-  "wins": 39,
-  "losses": 36,
+  "wins": 41,
+  "losses": 39,
   "pushes": 0,
-  "pending": 8,
-  "bankroll": 488.51,
+  "pending": 7,
+  "bankroll": 477.38,
   "bankrollStart": 500
  },
  "backtest": {
@@ -1079,9 +1079,12 @@
    "awayPoints": 110.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 213,
+   "stake": {
+    "stake": 9.77,
+    "net": -9.77
+   }
   },
   "401909327": {
    "side": "over",
@@ -1097,9 +1100,12 @@
    "awayPoints": 105.5,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 211,
+   "stake": {
+    "stake": 9.77,
+    "net": -9.77
+   }
   },
   "401909328": {
    "side": "over",
@@ -1115,9 +1121,12 @@
    "awayPoints": 116.3,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "loss",
+   "actualTotal": 198,
+   "stake": {
+    "stake": 9.77,
+    "net": -9.77
+   }
   },
   "401909329": {
    "side": "over",
@@ -1133,9 +1142,12 @@
    "awayPoints": 108.2,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 224,
+   "stake": {
+    "stake": 9.77,
+    "net": 9.05
+   }
   },
   "401909330": {
    "side": null,
@@ -1169,9 +1181,12 @@
    "awayPoints": 111.9,
    "injuryEffect": 0,
    "check": null,
-   "result": null,
-   "actualTotal": null,
-   "stake": null
+   "result": "win",
+   "actualTotal": 223,
+   "stake": {
+    "stake": 9.77,
+    "net": 9.13
+   }
   },
   "401909332": {
    "side": "over",
@@ -4614,6 +4629,78 @@
    "startTime": "2026-11-24T03:00:00.000Z",
    "homePoints": 105.9,
    "awayPoints": 119.2,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401910046": {
+   "side": "over",
+   "total": 225.73,
+   "modelTotal": 225.73,
+   "marketTotal": 218.5,
+   "edge": 7.23,
+   "price": -114,
+   "provider": "Draft Kings",
+   "capturedAt": "2026-11-28T04:14:24.819Z",
+   "startTime": "2026-11-28T22:00:00.000Z",
+   "homePoints": 112.6,
+   "awayPoints": 114.4,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401910047": {
+   "side": "over",
+   "total": 218.31,
+   "modelTotal": 218.31,
+   "marketTotal": 213.5,
+   "edge": 4.81,
+   "price": -110,
+   "provider": "Draft Kings",
+   "capturedAt": "2026-11-28T04:14:24.819Z",
+   "startTime": "2026-11-28T23:00:00.000Z",
+   "homePoints": 112.1,
+   "awayPoints": 107.1,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401910048": {
+   "side": "over",
+   "total": 237.11,
+   "modelTotal": 237.11,
+   "marketTotal": 234.5,
+   "edge": 2.61,
+   "price": -108,
+   "provider": "Draft Kings",
+   "capturedAt": "2026-11-28T04:14:24.819Z",
+   "startTime": "2026-11-29T01:00:00.000Z",
+   "homePoints": 119.4,
+   "awayPoints": 118,
+   "injuryEffect": 0,
+   "check": null,
+   "result": null,
+   "actualTotal": null,
+   "stake": null
+  },
+  "401910049": {
+   "side": "under",
+   "total": 225.51,
+   "modelTotal": 225.51,
+   "marketTotal": 228.5,
+   "edge": 2.99,
+   "price": -110,
+   "provider": "Draft Kings",
+   "capturedAt": "2026-11-28T04:14:24.819Z",
+   "startTime": "2026-11-29T01:00:00.000Z",
+   "homePoints": 108,
+   "awayPoints": 117.4,
    "injuryEffect": 0,
    "check": null,
    "result": null,
