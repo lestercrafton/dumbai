@@ -1,7 +1,7 @@
 {
  "schema": "big-vin-injury-lines/1",
  "sport": "nba",
- "generatedAt": "2026-11-28T04:14:18.110Z",
+ "generatedAt": "2026-11-28T13:35:45.330Z",
  "method": "Player value = last-10-game average of (game score - 0.3 x minutes), floor 0, players with 3+ games and 15+ minutes a game. Team loss = 0.31 x sum(value x status weight); Out 1, Doubtful 0.75, Questionable 0.4, other day-to-day 0.1. 0.31 is fitted on 2024-26 games.",
  "sources": [
   "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
@@ -69,14 +69,14 @@
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 14.3
+     "minutes": 17
     },
     {
      "player": "Dejounte Murray",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 24.7
+     "minutes": 23
     }
    ]
   },
@@ -126,21 +126,28 @@
    ]
   },
   "6": {
-   "loss": 1.77,
+   "loss": 2.14,
    "items": [
+    {
+     "player": "Caleb Martin",
+     "position": "F",
+     "status": "Day-To-Day",
+     "points": 0.07,
+     "minutes": 23.9
+    },
     {
      "player": "Kyrie Irving",
      "position": "G",
      "status": "Out",
-     "points": 1.77,
-     "minutes": 31.6
+     "points": 2.07,
+     "minutes": 32
     },
     {
      "player": "Tobi Lawal",
      "position": "F",
      "status": "Out",
      "points": 0,
-     "minutes": 6.8
+     "minutes": 8.7
     },
     {
      "player": "Sergio de Larrea",
@@ -210,14 +217,21 @@
    ]
   },
   "9": {
-   "loss": 4.11,
+   "loss": 4.3,
    "items": [
+    {
+     "player": "Gui Santos",
+     "position": "F",
+     "status": "Out",
+     "points": 0.33,
+     "minutes": 18
+    },
     {
      "player": "Stephen Curry",
      "position": "G",
      "status": "Out",
-     "points": 4.11,
-     "minutes": 22.8
+     "points": 3.97,
+     "minutes": 21
     },
     {
      "player": "Kristaps Porzingis",
@@ -275,6 +289,13 @@
   "12": {
    "loss": 0,
    "items": [
+    {
+     "player": "Yanic Konan Niederhauser",
+     "position": "C",
+     "status": "Out",
+     "points": 0,
+     "minutes": 12.6
+    },
     {
      "player": "Bradley Beal",
      "position": "G",
@@ -451,8 +472,22 @@
    ]
   },
   "20": {
-   "loss": 1.9,
+   "loss": 7.59,
    "items": [
+    {
+     "player": "Joel Embiid",
+     "position": "C",
+     "status": "Out",
+     "points": 2.87,
+     "minutes": 31.1
+    },
+    {
+     "player": "LeBron James",
+     "position": "F",
+     "status": "Out",
+     "points": 2.82,
+     "minutes": 31.6
+    },
     {
      "player": "Dean Wade",
      "position": "F",
@@ -489,21 +524,21 @@
    ]
   },
   "22": {
-   "loss": 1.82,
+   "loss": 1.91,
    "items": [
     {
      "player": "Damian Lillard",
      "position": "G",
      "status": "Out",
-     "points": 1.82,
-     "minutes": 29.5
+     "points": 1.91,
+     "minutes": 30.6
     },
     {
      "player": "Chris Youngblood",
      "position": "G",
      "status": "Out",
      "points": 0,
-     "minutes": 22
+     "minutes": 14
     },
     {
      "player": "Vit Krejci",
@@ -628,14 +663,14 @@
    ]
   },
   "26": {
-   "loss": 0.66,
+   "loss": 0.69,
    "items": [
     {
      "player": "Mo Bamba",
      "position": "C",
      "status": "Out",
-     "points": 0.66,
-     "minutes": 23.4
+     "points": 0.69,
+     "minutes": 24.1
     },
     {
      "player": "Lauri Markkanen",

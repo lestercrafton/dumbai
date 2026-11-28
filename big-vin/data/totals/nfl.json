@@ -2,7 +2,7 @@
  "schema": "big-vin-totals/1",
  "version": "bv-nfl-totals-v1",
  "sport": "nfl",
- "generatedAt": "2026-11-28T04:14:18.404Z",
+ "generatedAt": "2026-11-28T13:35:45.934Z",
  "method": "Offense and defense points ratings fit to nflverse finals (ridge shrinkage, 150-day half-life, home edge, indoor edge; for basketball the ratings are points per game, so pace is inside them). Game total = both teams’ expected points. Injuries: 60% of each team’s offensive injury value comes off its own points; 60% of its defensive injury value is added to the opponent’s points. A total 4+ points from the market with no injury or weather explanation is halved toward the market and marked for review.",
  "record": {
   "wins": 30,
@@ -1753,13 +1753,13 @@
   },
   "401873086": {
    "side": "over",
-   "total": 42.5,
+   "total": 42,
    "modelTotal": 45.19,
-   "marketTotal": 39.5,
-   "edge": 3,
-   "price": -103,
+   "marketTotal": 38.5,
+   "edge": 3.5,
+   "price": -114,
    "provider": "Draft Kings",
-   "capturedAt": "2026-11-28T04:14:18.404Z",
+   "capturedAt": "2026-11-28T13:35:45.934Z",
    "startTime": "2026-11-30T01:20:00.000Z",
    "homePoints": 23.8,
    "awayPoints": 21.4,
@@ -1767,9 +1767,9 @@
    "check": {
     "flagged": true,
     "review": true,
-    "gap": 5.69,
+    "gap": 6.69,
     "unshrunkTotal": 45.19,
-    "note": "Gap of 5.69 points vs the market total, of which injuries and weather explain 0.31; the unexplained part is halved toward the market and marked for review."
+    "note": "Gap of 6.69 points vs the market total, of which injuries and weather explain 0.31; the unexplained part is halved toward the market and marked for review."
    },
    "result": null,
    "actualTotal": null,
